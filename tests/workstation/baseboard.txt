@@ -1,0 +1,35 @@
+# dmidecode 3.1
+Getting SMBIOS data from sysfs.
+SMBIOS 2.3 present.
+
+Handle 0x0200, DMI type 2, 8 bytes
+Base Board Information
+	Manufacturer: Dell Inc.          
+	Product Name: 0MY171
+	Version: A00
+	Serial Number: ..CN125321L404Q.
+
+Handle 0x0A02, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Ethernet
+	Status: Enabled
+	Description: Broadcom 5752 NetXtreme Gigabit Controller
+
+Handle 0x0A03, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Sound
+	Status: Enabled
+	Description: Intel(R) High Definition Audio Controller
+
+Handle 0x0A05, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Other
+	Status: Enabled
+	Description: IEEE-1394
+
+Handle 0x0A08, DMI type 10, 6 bytes
+On Board Device Information
+	Type: SCSI Controller
+	Status: Enabled
+	Description: Dell SAS5 Host Bus Adapter
+

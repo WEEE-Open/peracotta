@@ -1,0 +1,304 @@
+00:00.0 Host bridge: Intel Corporation 5000X Chipset Memory Controller Hub (rev 12)
+	Subsystem: Intel Corporation 5000X Chipset Memory Controller Hub
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] MSI: Enable- Count=1/2 Maskable- 64bit-
+	Capabilities: [6c] Express Root Port (Slot-), MSI 00
+	Capabilities: [100] Advanced Error Reporting
+
+00:02.0 PCI bridge: Intel Corporation 5000 Series Chipset PCI Express x4 Port 2 (rev 12) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=01, subordinate=05, sec-latency=0
+	I/O behind bridge: 0000c000-0000cfff
+	Memory behind bridge: f7d00000-f7ffffff
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] MSI: Enable- Count=1/2 Maskable- 64bit-
+	Capabilities: [6c] Express Root Port (Slot-), MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:03.0 PCI bridge: Intel Corporation 5000 Series Chipset PCI Express x4 Port 3 (rev 12) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=06, subordinate=06, sec-latency=0
+	Memory behind bridge: f7b00000-f7bfffff
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] MSI: Enable- Count=1/2 Maskable- 64bit-
+	Capabilities: [6c] Express Root Port (Slot+), MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:04.0 PCI bridge: Intel Corporation 5000X Chipset PCI Express x16 Port 4-7 (rev 12) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=07, subordinate=07, sec-latency=0
+	I/O behind bridge: 0000d000-0000dfff
+	Memory behind bridge: f8000000-fbefffff
+	Prefetchable memory behind bridge: 00000000c0000000-00000000dfffffff
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] MSI: Enable- Count=1/2 Maskable- 64bit-
+	Capabilities: [6c] Express Root Port (Slot+), MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:05.0 PCI bridge: Intel Corporation 5000 Series Chipset PCI Express x4 Port 5 (rev 12) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=08, subordinate=08, sec-latency=0
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] MSI: Enable- Count=1/2 Maskable- 64bit-
+	Capabilities: [6c] Express Root Port (Slot-), MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:06.0 PCI bridge: Intel Corporation 5000 Series Chipset PCI Express x4 Port 6 (rev 12) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=09, subordinate=09, sec-latency=0
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] MSI: Enable- Count=1/2 Maskable- 64bit-
+	Capabilities: [6c] Express Root Port (Slot-), MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:07.0 PCI bridge: Intel Corporation 5000 Series Chipset PCI Express x4 Port 7 (rev 12) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=0a, subordinate=0a, sec-latency=0
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] MSI: Enable- Count=1/2 Maskable- 64bit-
+	Capabilities: [6c] Express Root Port (Slot-), MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:10.0 Host bridge: Intel Corporation 5000 Series Chipset FSB Registers (rev 12)
+	Subsystem: Dell 5000 Series Chipset FSB Registers
+	Flags: fast devsel
+	Kernel driver in use: i5000_edac
+	Kernel modules: i5k_amb, i5000_edac
+
+00:10.1 Host bridge: Intel Corporation 5000 Series Chipset FSB Registers (rev 12)
+	Subsystem: Intel Corporation 5000 Series Chipset FSB Registers
+	Flags: fast devsel
+	Kernel modules: i5k_amb, i5000_edac
+
+00:10.2 Host bridge: Intel Corporation 5000 Series Chipset FSB Registers (rev 12)
+	Subsystem: Intel Corporation 5000 Series Chipset FSB Registers
+	Flags: fast devsel
+	Kernel modules: i5k_amb, i5000_edac
+
+00:11.0 Host bridge: Intel Corporation 5000 Series Chipset Reserved Registers (rev 12)
+	Subsystem: Intel Corporation 5000 Series Chipset Reserved Registers
+	Flags: fast devsel
+
+00:13.0 Host bridge: Intel Corporation 5000 Series Chipset Reserved Registers (rev 12)
+	Subsystem: Intel Corporation 5000 Series Chipset Reserved Registers
+	Flags: fast devsel
+
+00:15.0 Host bridge: Intel Corporation 5000 Series Chipset FBD Registers (rev 12)
+	Subsystem: Intel Corporation 5000 Series Chipset FBD Registers
+	Flags: fast devsel
+
+00:16.0 Host bridge: Intel Corporation 5000 Series Chipset FBD Registers (rev 12)
+	Subsystem: Intel Corporation 5000 Series Chipset FBD Registers
+	Flags: fast devsel
+
+00:1b.0 Audio device: Intel Corporation 631xESB/632xESB High Definition Audio Controller (rev 09)
+	Subsystem: Dell 631xESB/632xESB High Definition Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Memory at fbffc000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [60] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Express Root Complex Integrated Endpoint, MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [130] Root Complex Link
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+00:1c.0 PCI bridge: Intel Corporation 631xESB/632xESB/3100 Chipset PCI Express Root Port 1 (rev 09) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=0b, subordinate=0b, sec-latency=0
+	Memory behind bridge: f7a00000-f7afffff
+	Capabilities: [40] Express Root Port (Slot-), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Dell 631xESB/632xESB/3100 Chipset PCI Express Root Port 1
+	Capabilities: [a0] Power Management version 2
+	Capabilities: [100] Virtual Channel
+	Capabilities: [180] Root Complex Link
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1d.0 USB controller: Intel Corporation 631xESB/632xESB/3100 Chipset UHCI USB Controller #1 (rev 09) (prog-if 00 [UHCI])
+	Subsystem: Dell 631xESB/632xESB/3100 Chipset UHCI USB Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 21
+	I/O ports at ff80 [size=32]
+	Kernel driver in use: uhci_hcd
+
+00:1d.1 USB controller: Intel Corporation 631xESB/632xESB/3100 Chipset UHCI USB Controller #2 (rev 09) (prog-if 00 [UHCI])
+	Subsystem: Dell 631xESB/632xESB/3100 Chipset UHCI USB Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 22
+	I/O ports at ff60 [size=32]
+	Kernel driver in use: uhci_hcd
+
+00:1d.2 USB controller: Intel Corporation 631xESB/632xESB/3100 Chipset UHCI USB Controller #3 (rev 09) (prog-if 00 [UHCI])
+	Subsystem: Dell 631xESB/632xESB/3100 Chipset UHCI USB Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 18
+	I/O ports at ff40 [size=32]
+	Kernel driver in use: uhci_hcd
+
+00:1d.3 USB controller: Intel Corporation 631xESB/632xESB/3100 Chipset UHCI USB Controller #4 (rev 09) (prog-if 00 [UHCI])
+	Subsystem: Dell 631xESB/632xESB/3100 Chipset UHCI USB Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 23
+	I/O ports at ff20 [size=32]
+	Kernel driver in use: uhci_hcd
+
+00:1d.7 USB controller: Intel Corporation 631xESB/632xESB/3100 Chipset EHCI USB2 Controller (rev 09) (prog-if 20 [EHCI])
+	Subsystem: Dell 631xESB/632xESB/3100 Chipset EHCI USB2 Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 21
+	Memory at ff980800 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] Debug port: BAR=1 offset=00a0
+	Kernel driver in use: ehci-pci
+
+00:1e.0 PCI bridge: Intel Corporation 82801 PCI Bridge (rev d9) (prog-if 01 [Subtractive decode])
+	Flags: bus master, fast devsel, latency 0
+	Bus: primary=00, secondary=0c, subordinate=0c, sec-latency=32
+	Memory behind bridge: f7c00000-f7cfffff
+	Capabilities: [50] Subsystem: Dell 82801 PCI Bridge
+
+00:1f.0 ISA bridge: Intel Corporation 631xESB/632xESB/3100 Chipset LPC Interface Controller (rev 09)
+	Subsystem: Dell 631xESB/632xESB/3100 Chipset LPC Interface Controller
+	Flags: bus master, medium devsel, latency 0
+	Kernel driver in use: lpc_ich
+	Kernel modules: intel_rng, lpc_ich
+
+00:1f.1 IDE interface: Intel Corporation 631xESB/632xESB IDE Controller (rev 09) (prog-if 8a [ISA Compatibility mode controller, supports both channels switched to PCI native mode, supports bus mastering])
+	Subsystem: Dell 631xESB/632xESB IDE Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 16
+	I/O ports at 01f0 [size=8]
+	I/O ports at 03f4
+	I/O ports at 0170 [size=8]
+	I/O ports at 0374
+	I/O ports at ffa0 [size=16]
+	Kernel driver in use: ata_piix
+	Kernel modules: pata_acpi
+
+00:1f.2 IDE interface: Intel Corporation 631xESB/632xESB/3100 Chipset SATA IDE Controller (rev 09) (prog-if 8f [PCI native mode controller, supports both channels switched to ISA compatibility mode, supports bus mastering])
+	Subsystem: Dell 631xESB/632xESB/3100 Chipset SATA IDE Controller
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 20
+	I/O ports at fe00 [size=8]
+	I/O ports at fe10 [size=4]
+	I/O ports at fe20 [size=8]
+	I/O ports at fe30 [size=4]
+	I/O ports at fec0 [size=16]
+	Memory at f0000000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [70] Power Management version 2
+	Kernel driver in use: ata_piix
+	Kernel modules: pata_acpi
+
+00:1f.3 SMBus: Intel Corporation 631xESB/632xESB/3100 Chipset SMBus Controller (rev 09)
+	Subsystem: Dell 631xESB/632xESB/3100 Chipset SMBus Controller
+	Flags: medium devsel, IRQ 5
+	I/O ports at ece0 [size=32]
+	Kernel modules: i2c_i801
+
+01:00.0 PCI bridge: Intel Corporation 6311ESB/6321ESB PCI Express Upstream Port (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=01, secondary=02, subordinate=04, sec-latency=0
+	Capabilities: [44] Express Upstream Port, MSI 00
+	Capabilities: [70] Power Management version 2
+	Capabilities: [80] Subsystem: Dell 6311ESB/6321ESB PCI Express Upstream Port
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+01:00.3 PCI bridge: Intel Corporation 6311ESB/6321ESB PCI Express to PCI-X Bridge (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0
+	Bus: primary=01, secondary=05, subordinate=05, sec-latency=64
+	I/O behind bridge: 0000c000-0000cfff
+	Memory behind bridge: f7d00000-f7efffff
+	Capabilities: [44] Express PCI-Express to PCI/PCI-X Bridge, MSI 00
+	Capabilities: [6c] Power Management version 2
+	Capabilities: [80] Subsystem: Dell 6311ESB/6321ESB PCI Express to PCI-X Bridge
+	Capabilities: [d8] PCI-X bridge device
+	Capabilities: [100] Advanced Error Reporting
+	Kernel modules: shpchp
+
+02:00.0 PCI bridge: Intel Corporation 6311ESB/6321ESB PCI Express Downstream Port E1 (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=02, secondary=03, subordinate=03, sec-latency=0
+	Capabilities: [44] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [60] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Power Management version 2
+	Capabilities: [80] Subsystem: Dell 6311ESB/6321ESB PCI Express Downstream Port E1
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+02:01.0 PCI bridge: Intel Corporation 6311ESB/6321ESB PCI Express Downstream Port E2 (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=02, secondary=04, subordinate=04, sec-latency=0
+	Capabilities: [44] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [60] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Power Management version 2
+	Capabilities: [80] Subsystem: Dell 6311ESB/6321ESB PCI Express Downstream Port E2
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+05:0b.0 SCSI storage controller: LSI Logic / Symbios Logic SAS1068 PCI-X Fusion-MPT SAS (rev 01)
+	Subsystem: Dell SAS 5/iR Integrated RAID Controller
+	Flags: bus master, 66MHz, medium devsel, latency 72, IRQ 24
+	I/O ports at cc00 [disabled] [size=256]
+	Memory at f7dec000 (64-bit, non-prefetchable) [size=16K]
+	Memory at f7df0000 (64-bit, non-prefetchable) [size=64K]
+	Expansion ROM at f7e00000 [disabled] [size=1M]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [98] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [68] PCI-X non-bridge device
+	Capabilities: [b0] MSI-X: Enable- Count=1 Masked-
+	Kernel driver in use: mptsas
+	Kernel modules: mptsas
+
+07:00.0 VGA compatible controller: NVIDIA Corporation G94 [GeForce 9600 GT] (rev a1) (prog-if 00 [VGA controller])
+	Subsystem: ASUSTeK Computer Inc. G94 [GeForce 9600 GT]
+	Flags: bus master, fast devsel, latency 0, IRQ 27
+	Memory at fa000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at c0000000 (64-bit, prefetchable) [size=512M]
+	Memory at f8000000 (64-bit, non-prefetchable) [size=32M]
+	I/O ports at dc80 [size=128]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: [60] Power Management version 3
+	Capabilities: [68] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [78] Express Endpoint, MSI 00
+	Capabilities: [b4] Vendor Specific Information: Len=14 <?>
+	Capabilities: [100] Virtual Channel
+	Capabilities: [128] Power Budgeting <?>
+	Capabilities: [600] Vendor Specific Information: ID=0001 Rev=1 Len=024 <?>
+	Kernel driver in use: nvidia
+	Kernel modules: nvidiafb, nouveau, nvidia
+
+0b:00.0 Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5752 Gigabit Ethernet PCI Express (rev 02)
+	Subsystem: Dell NetXtreme BCM5752 Gigabit Ethernet PCI Express
+	Flags: bus master, fast devsel, latency 0, IRQ 26
+	Memory at f7af0000 (64-bit, non-prefetchable) [size=64K]
+	Expansion ROM at <ignored> [disabled]
+	Capabilities: [48] Power Management version 2
+	Capabilities: [50] Vital Product Data
+	Capabilities: [58] MSI: Enable+ Count=1/8 Maskable- 64bit+
+	Capabilities: [d0] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [13c] Virtual Channel
+	Kernel driver in use: tg3
+	Kernel modules: tg3
+
+0c:0a.0 FireWire (IEEE 1394): Texas Instruments TSB43AB22A IEEE-1394a-2000 Controller (PHY/Link) [iOHCI-Lynx] (prog-if 10 [OHCI])
+	Subsystem: Dell TSB43AB22A IEEE-1394a-2000 Controller (PHY/Link) [iOHCI-Lynx]
+	Flags: bus master, medium devsel, latency 64, IRQ 18
+	Memory at f79fb800 (32-bit, non-prefetchable) [size=2K]
+	Memory at f79fc000 (32-bit, non-prefetchable) [size=16K]
+	Capabilities: [44] Power Management version 2
+	Kernel driver in use: firewire_ohci
+	Kernel modules: firewire_ohci
+

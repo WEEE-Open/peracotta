@@ -1,0 +1,187 @@
+00:00.0 Host bridge: Intel Corporation 3rd Gen Core processor DRAM Controller (rev 09)
+	Subsystem: Lenovo 3rd Gen Core processor DRAM Controller
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=0c <?>
+	Kernel driver in use: ivb_uncore
+
+00:02.0 VGA compatible controller: Intel Corporation 3rd Gen Core processor Graphics Controller (rev 09) (prog-if 00 [VGA controller])
+	Subsystem: Lenovo 3rd Gen Core processor Graphics Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 29
+	Memory at f0000000 (64-bit, non-prefetchable) [size=4M]
+	Memory at e0000000 (64-bit, prefetchable) [size=256M]
+	I/O ports at 4000 [size=64]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: [90] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [d0] Power Management version 2
+	Capabilities: [a4] PCI Advanced Features
+	Kernel driver in use: i915
+	Kernel modules: i915
+
+00:14.0 USB controller: Intel Corporation 7 Series/C210 Series Chipset Family USB xHCI Host Controller (rev 04) (prog-if 30 [XHCI])
+	Subsystem: Lenovo 7 Series/C210 Series Chipset Family USB xHCI Host Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 24
+	Memory at f2600000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: [70] Power Management version 2
+	Capabilities: [80] MSI: Enable+ Count=1/8 Maskable- 64bit+
+	Kernel driver in use: xhci_hcd
+
+00:16.0 Communication controller: Intel Corporation 7 Series/C216 Chipset Family MEI Controller #1 (rev 04)
+	Subsystem: Lenovo 7 Series/C216 Chipset Family MEI Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 28
+	Memory at f2615000 (64-bit, non-prefetchable) [size=16]
+	Capabilities: [50] Power Management version 3
+	Capabilities: [8c] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Kernel driver in use: mei_me
+	Kernel modules: mei_me
+
+00:1a.0 USB controller: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller #2 (rev 04) (prog-if 20 [EHCI])
+	Subsystem: Lenovo 7 Series/C216 Chipset Family USB Enhanced Host Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 16
+	Memory at f261a000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] Debug port: BAR=1 offset=00a0
+	Capabilities: [98] PCI Advanced Features
+	Kernel driver in use: ehci-pci
+
+00:1b.0 Audio device: Intel Corporation 7 Series/C216 Chipset Family High Definition Audio Controller (rev 04)
+	Subsystem: Lenovo 7 Series/C216 Chipset Family High Definition Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 31
+	Memory at f2610000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [60] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Express Root Complex Integrated Endpoint, MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [130] Root Complex Link
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+00:1c.0 PCI bridge: Intel Corporation 7 Series/C216 Chipset Family PCI Express Root Port 1 (rev c4) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=01, subordinate=05, sec-latency=0
+	I/O behind bridge: 00003000-00003fff
+	Memory behind bridge: f1e00000-f25fffff
+	Prefetchable memory behind bridge: 00000000f0400000-00000000f0bfffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Lenovo 7 Series/C216 Chipset Family PCI Express Root Port 1
+	Capabilities: [a0] Power Management version 2
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1c.1 PCI bridge: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 2 (rev c4) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 17
+	Bus: primary=00, secondary=06, subordinate=06, sec-latency=0
+	Memory behind bridge: f1d00000-f1dfffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Lenovo 7 Series/C210 Series Chipset Family PCI Express Root Port 2
+	Capabilities: [a0] Power Management version 2
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1c.2 PCI bridge: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 3 (rev c4) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 18
+	Bus: primary=00, secondary=07, subordinate=0b, sec-latency=0
+	I/O behind bridge: 00002000-00002fff
+	Memory behind bridge: f1500000-f1cfffff
+	Prefetchable memory behind bridge: 00000000f0c00000-00000000f13fffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Lenovo 7 Series/C210 Series Chipset Family PCI Express Root Port 3
+	Capabilities: [a0] Power Management version 2
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1c.3 PCI bridge: Intel Corporation 7 Series/C216 Chipset Family PCI Express Root Port 4 (rev c4) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 19
+	Bus: primary=00, secondary=0c, subordinate=0c, sec-latency=0
+	I/O behind bridge: 00001000-00001fff
+	Prefetchable memory behind bridge: 00000000f1400000-00000000f14fffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Lenovo 7 Series/C216 Chipset Family PCI Express Root Port 4
+	Capabilities: [a0] Power Management version 2
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1d.0 USB controller: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller #1 (rev 04) (prog-if 20 [EHCI])
+	Subsystem: Lenovo 7 Series/C216 Chipset Family USB Enhanced Host Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 23
+	Memory at f2619000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] Debug port: BAR=1 offset=00a0
+	Capabilities: [98] PCI Advanced Features
+	Kernel driver in use: ehci-pci
+
+00:1f.0 ISA bridge: Intel Corporation HM76 Express Chipset LPC Controller (rev 04)
+	Subsystem: Lenovo HM76 Express Chipset LPC Controller
+	Flags: bus master, medium devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=0c <?>
+	Kernel driver in use: lpc_ich
+	Kernel modules: lpc_ich
+
+00:1f.2 SATA controller: Intel Corporation 7 Series Chipset Family 6-port SATA Controller [AHCI mode] (rev 04) (prog-if 01 [AHCI 1.0])
+	Subsystem: Lenovo 7 Series Chipset Family 6-port SATA Controller [AHCI mode]
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 27
+	I/O ports at 4088 [size=8]
+	I/O ports at 4094 [size=4]
+	I/O ports at 4080 [size=8]
+	I/O ports at 4090 [size=4]
+	I/O ports at 4060 [size=32]
+	Memory at f2618000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [70] Power Management version 3
+	Capabilities: [a8] SATA HBA v1.0
+	Capabilities: [b0] PCI Advanced Features
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+
+00:1f.3 SMBus: Intel Corporation 7 Series/C216 Chipset Family SMBus Controller (rev 04)
+	Subsystem: Lenovo 7 Series/C216 Chipset Family SMBus Controller
+	Flags: medium devsel
+	Memory at f2614000 (64-bit, non-prefetchable) [size=256]
+	I/O ports at efa0 [size=32]
+	Kernel modules: i2c_i801
+
+01:00.0 Unassigned class [ff00]: Realtek Semiconductor Co., Ltd. RTS5229 PCI Express Card Reader (rev 01)
+	Subsystem: Lenovo RTS5229 PCI Express Card Reader
+	Physical Slot: 1
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Memory at f1e00000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: [40] Power Management version 3
+	Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Device Serial Number 01-00-00-00-69-2d-f0-00
+	Kernel driver in use: rtsx_pci
+	Kernel modules: rtsx_pci
+
+06:00.0 Network controller: Intel Corporation Centrino Wireless-N 2200 (rev c4)
+	Subsystem: Intel Corporation Centrino Wireless-N 2200 BGN
+	Flags: bus master, fast devsel, latency 0, IRQ 30
+	Memory at f1d00000 (64-bit, non-prefetchable) [size=8K]
+	Capabilities: [c8] Power Management version 3
+	Capabilities: [d0] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [e0] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Device Serial Number 9c-4e-36-ff-ff-7d-4c-90
+	Kernel driver in use: iwlwifi
+	Kernel modules: iwlwifi
+
+0c:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 07)
+	Subsystem: Lenovo RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 19
+	I/O ports at 1000 [size=256]
+	Memory at f1404000 (64-bit, prefetchable) [size=4K]
+	Memory at f1400000 (64-bit, prefetchable) [size=16K]
+	Capabilities: [40] Power Management version 3
+	Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Express Endpoint, MSI 01
+	Capabilities: [b0] MSI-X: Enable+ Count=4 Masked-
+	Capabilities: [d0] Vital Product Data
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Virtual Channel
+	Capabilities: [160] Device Serial Number 01-00-00-00-69-2d-f0-00
+	Kernel driver in use: r8169
+	Kernel modules: r8169
+

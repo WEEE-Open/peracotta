@@ -1,0 +1,22 @@
+# dmidecode 3.1
+Getting SMBIOS data from sysfs.
+SMBIOS 2.7 present.
+
+Handle 0x0010, DMI type 3, 22 bytes
+Chassis Information
+	Manufacturer: LENOVO
+	Type: Notebook
+	Lock: Not Present
+	Version: Not Available
+	Serial Number: A2K3GED
+	Asset Tag: No Asset Information
+	Boot-up State: Unknown
+	Power Supply State: Unknown
+	Thermal State: Unknown
+	Security Status: Unknown
+	OEM Information: 0x00000000
+	Height: Unspecified
+	Number Of Power Cords: Unspecified
+	Contained Elements: 0
+	SKU Number: LENOVO_MT_2468
+
