@@ -1,0 +1,33 @@
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 2.7 present.
+
+Handle 0x0002, DMI type 2, 15 bytes
+Base Board Information
+	Manufacturer: Gigabyte Technology Co., Ltd.
+	Product Name: 970A-DS3P FX
+	Version: x.x
+	Serial Number: To be filled by O.E.M.
+	Asset Tag: To be filled by O.E.M.
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: To be filled by O.E.M.
+	Chassis Handle: 0x0003
+	Type: Motherboard
+	Contained Object Handles: 0
+
+Handle 0x0029, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Video
+	Status: Enabled
+	Description:    To Be Filled By O.E.M.
+
+Handle 0x0037, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation:  Onboard LAN
+	Type: Ethernet
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:00:19.0
+
