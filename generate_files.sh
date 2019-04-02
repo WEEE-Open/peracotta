@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 dmidecode -t baseboard > baseboard.txt
+dmidecode -t connector > connector.txt
 dmidecode -t chassis > chassis.txt
 lscpu > lscpu.txt
 lspci -v > lspci.txt
