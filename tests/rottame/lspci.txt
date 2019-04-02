@@ -1,0 +1,173 @@
+00:00.0 Host bridge: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Subsystem: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Flags: bus master, medium devsel, latency 8
+	Memory at f0000000 (32-bit, prefetchable) [size=128M]
+	Capabilities: [80] AGP version 3.5
+	Capabilities: [50] Power Management version 2
+	Kernel driver in use: agpgart-via
+
+00:00.1 Host bridge: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Subsystem: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Flags: bus master, medium devsel, latency 0
+
+00:00.2 Host bridge: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Subsystem: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Flags: bus master, medium devsel, latency 0
+
+00:00.3 Host bridge: VIA Technologies, Inc. PT890 Host Bridge
+	Flags: bus master, medium devsel, latency 0
+
+00:00.4 Host bridge: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Subsystem: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Flags: bus master, medium devsel, latency 0
+
+00:00.7 Host bridge: VIA Technologies, Inc. CN700/VN800/P4M800CE/Pro Host Bridge
+	Flags: bus master, medium devsel, latency 0
+
+00:01.0 PCI bridge: VIA Technologies, Inc. VT8237/VX700 PCI Bridge (prog-if 00 [Normal decode])
+	Flags: bus master, 66MHz, medium devsel, latency 0
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	Memory behind bridge: fca00000-feafffff
+	Prefetchable memory behind bridge: d7f00000-dfefffff
+	Capabilities: [70] Power Management version 2
+	Kernel modules: shpchp
+
+00:0f.0 IDE interface: VIA Technologies, Inc. VT8251 AHCI/SATA 4-Port Controller (prog-if 8f [Master SecP SecO PriP PriO])
+	Subsystem: VIA Technologies, Inc. VT8251 AHCI/SATA 4-Port Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 26
+	I/O ports at ec00 [size=8]
+	I/O ports at e880 [size=4]
+	I/O ports at e800 [size=8]
+	I/O ports at e480 [size=4]
+	I/O ports at e400 [size=16]
+	Memory at febffc00 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [c0] Power Management version 2
+	Capabilities: [e0] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Kernel driver in use: ahci
+	Kernel modules: ahci, ata_generic
+
+00:0f.1 IDE interface: VIA Technologies, Inc. VT82C586A/B/VT82C686/A/B/VT823x/A/C PIPC Bus Master IDE (rev 07) (prog-if 8a [Master SecP PriP])
+	Subsystem: VIA Technologies, Inc. VT82C586/B/VT82C686/A/B/VT8233/A/C/VT8235 PIPC Bus Master IDE
+	Flags: bus master, medium devsel, latency 32
+	[virtual] Memory at 000001f0 (32-bit, non-prefetchable) [size=8]
+	[virtual] Memory at 000003f0 (type 3, non-prefetchable)
+	[virtual] Memory at 00000170 (32-bit, non-prefetchable) [size=8]
+	[virtual] Memory at 00000370 (type 3, non-prefetchable)
+	I/O ports at fc00 [size=16]
+	Capabilities: [c0] Power Management version 2
+	Kernel driver in use: pata_via
+	Kernel modules: pata_via, ata_generic
+
+00:10.0 USB controller: VIA Technologies, Inc. VT82xx/62xx UHCI USB 1.1 Controller (rev 90) (prog-if 00 [UHCI])
+	Subsystem: VIA Technologies, Inc. VT82xx/62xx UHCI USB 1.1 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 20
+	I/O ports at e080 [size=32]
+	Capabilities: [80] Power Management version 2
+	Kernel driver in use: uhci_hcd
+	Kernel modules: uhci_hcd
+
+00:10.1 USB controller: VIA Technologies, Inc. VT82xx/62xx UHCI USB 1.1 Controller (rev 90) (prog-if 00 [UHCI])
+	Subsystem: VIA Technologies, Inc. VT82xx/62xx UHCI USB 1.1 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 22
+	I/O ports at e000 [size=32]
+	Capabilities: [80] Power Management version 2
+	Kernel driver in use: uhci_hcd
+	Kernel modules: uhci_hcd
+
+00:10.2 USB controller: VIA Technologies, Inc. VT82xx/62xx UHCI USB 1.1 Controller (rev 90) (prog-if 00 [UHCI])
+	Subsystem: VIA Technologies, Inc. VT82xx/62xx UHCI USB 1.1 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 21
+	I/O ports at dc00 [size=32]
+	Capabilities: [80] Power Management version 2
+	Kernel driver in use: uhci_hcd
+	Kernel modules: uhci_hcd
+
+00:10.3 USB controller: VIA Technologies, Inc. VT82xx/62xx UHCI USB 1.1 Controller (rev 90) (prog-if 00 [UHCI])
+	Subsystem: VIA Technologies, Inc. VT82xx/62xx UHCI USB 1.1 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 23
+	I/O ports at d880 [size=32]
+	Capabilities: [80] Power Management version 2
+	Kernel driver in use: uhci_hcd
+	Kernel modules: uhci_hcd
+
+00:10.4 USB controller: VIA Technologies, Inc. USB 2.0 (rev 90) (prog-if 20 [EHCI])
+	Subsystem: VIA Technologies, Inc. USB 2.0 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 22
+	Memory at febff800 (32-bit, non-prefetchable) [size=256]
+	Capabilities: [80] Power Management version 2
+	Capabilities: [88] Debug port: BAR=1 offset=00a0
+	Kernel driver in use: ehci-pci
+	Kernel modules: ehci_pci
+
+00:11.0 ISA bridge: VIA Technologies, Inc. VT8251 PCI to ISA Bridge
+	Subsystem: VIA Technologies, Inc. VT8251 PCI to ISA Bridge
+	Flags: medium devsel
+	Capabilities: [c0] Power Management version 2
+	Kernel modules: i2c_viapro
+
+00:11.5 Multimedia audio controller: VIA Technologies, Inc. VT8233/A/8235/8237 AC97 Audio Controller (rev 70)
+	Subsystem: ASUSTeK Computer Inc. VT8233/A/8235/8237 AC97 Audio Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 22
+	I/O ports at d400 [size=256]
+	Capabilities: [c0] Power Management version 2
+	Kernel driver in use: snd_via82xx
+	Kernel modules: snd_via82xx
+
+00:11.7 Host bridge: VIA Technologies, Inc. VT8237/8251 Ultra VLINK Controller
+	Subsystem: VIA Technologies, Inc. VT8237/8251 Ultra VLINK Controller
+	Flags: bus master, medium devsel, latency 128
+	Capabilities: [58] HyperTransport: Interrupt Discovery and Configuration
+
+00:12.0 Ethernet controller: VIA Technologies, Inc. VT6102/VT6103 [Rhine-II] (rev 7c)
+	Subsystem: ASUSTeK Computer Inc. VT6102/VT6103 [Rhine-II]
+	Flags: bus master, medium devsel, latency 64, IRQ 23
+	I/O ports at d000 [size=256]
+	Memory at febff400 (32-bit, non-prefetchable) [size=256]
+	Capabilities: [40] Power Management version 2
+	Kernel driver in use: via-rhine
+	Kernel modules: via_rhine
+
+00:13.0 PCI bridge: VIA Technologies, Inc. VT8251 Host Bridge (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0
+	Bus: primary=00, secondary=02, subordinate=04, sec-latency=0
+	Kernel modules: shpchp
+
+00:13.1 PCI bridge: VIA Technologies, Inc. VT8251 PCI to PCI Bridge (prog-if 01 [Subtractive decode])
+	Flags: bus master, fast devsel, latency 0
+	Bus: primary=00, secondary=05, subordinate=05, sec-latency=0
+
+01:00.0 VGA compatible controller: NVIDIA Corporation NV18 [GeForce4 MX 440SE AGP 8x] (rev a2) (prog-if 00 [VGA controller])
+	Subsystem: ASUSTeK Computer Inc. NV18 [GeForce4 MX 440SE AGP 8x]
+	Flags: bus master, 66MHz, medium devsel, latency 64, IRQ 16
+	Memory at fd000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at d8000000 (32-bit, prefetchable) [size=64M]
+	Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: [60] Power Management version 2
+	Capabilities: [44] AGP version 3.0
+	Kernel driver in use: nouveau
+	Kernel modules: nouveau
+
+02:00.0 PCI bridge: VIA Technologies, Inc. VT8251 PCIE Root Port (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 24
+	Bus: primary=02, secondary=03, subordinate=03, sec-latency=0
+	Capabilities: [40] Express Root Port (Slot-), MSI 00
+	Capabilities: [68] Power Management version 2
+	Capabilities: [70] MSI: Enable+ Count=1/1 Maskable+ 64bit+
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Virtual Channel
+	Capabilities: [180] Root Complex Link
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+02:00.1 PCI bridge: VIA Technologies, Inc. VT8251 PCIE Root Port (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Bus: primary=02, secondary=04, subordinate=04, sec-latency=0
+	Capabilities: [40] Express Root Port (Slot-), MSI 00
+	Capabilities: [68] Power Management version 2
+	Capabilities: [70] MSI: Enable+ Count=1/1 Maskable+ 64bit+
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Virtual Channel
+	Capabilities: [180] Root Complex Link
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
