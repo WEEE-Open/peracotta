@@ -1,0 +1,5 @@
+# decode-dimms version 6250 (2014-06-19 09:19:09 +0200)
+
+Memory Serial Presence Detect Decoder
+By Philip Edelbrock, Christian Zuckschwerdt, Burkart Lingner,
+Jean Delvare, Trent Piepho and others
