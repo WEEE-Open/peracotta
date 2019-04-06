@@ -18,8 +18,17 @@ class Dimm:
         self.capacity_multiplier = ""
         self.RAM_type = ""  # DDR, DDR2, DDR3 etc.
         self.ECC = "No"  # enum: "Yes" or "No"
-        self.CAS_latency = ""  # feature not yet implemented on TARALLO
+        self.CAS_latencies = ""  # feature not yet implemented on TARALLO
         self._manufacturer_data_type = ""
+
+# initial_chars_to_ignore is the length of the feature whose name the line begins with
+# e.g. "Fundamental Memory Type" begins with 23 characters that are not all spaces, then n spaces to ignore,
+# and finally there's the value needed, e.g. "DDR3 SDRAM"
+def ignore_spaces(line:str, initial_chars_to_ignore:int):
+    relevant_part = line[initial_chars_to_ignore:]
+    while relevant_part.startswith(" "):
+        relevant_part = relevant_part[1:]
+    return relevant_part
 
 # TODO: revert to original state
 # filepath = sys.argv[1]
@@ -94,32 +103,40 @@ for dimm in dimm_sections:
 
         if line.startswith(dimms[i]._manufacturer_data_type):
             if dimms[i]._manufacturer_data_type == "DRAM Manufacturer":
-                relevant_part = line[17:]
-                while relevant_part.startswith(" "):
-                    relevant_part = relevant_part[1:]
-                dimms[i].brand = relevant_part
+                dimms[i].brand = ignore_spaces(line, len("DRAM Manufacturer"))
             elif dimms[i]._manufacturer_data_type == "Manufacturer":
-                relevant_part = line[12:]
-                while relevant_part.startswith(" "):
-                    relevant_part = relevant_part[1:]
-                dimms[i].brand = relevant_part
+                dimms[i].brand = ignore_spaces(line, len("Manufacturer"))
 
         # is part number the model?
         if line.startswith("Part Number") and dimms[i].serial_number == "":
-            dimms[i].serial_number = line.split(" ")[-1]
+            # dimms[i].serial_number = line.split(" ")[-1]
+            dimms[i].serial_number = ignore_spaces(line, len("Part Number"))
 
         # part number can be overwritten by serial number if present
         if line.startswith("Assembly Serial Number"):
-            dimms[i].serial_number = line.split(" ")[-1]
+            # dimms[i].serial_number = line.split(" ")[-1]
+            dimms[i].serial_number = ignore_spaces(line, len("Assembly Serial Number"))
 
+        if line.startswith("Module Configuration Type") and \
+                ("Data Parity" in line
+                or "Data ECC" in line
+                or "Address/Command Parity" in line):
+            dimms[i].ECC = "Yes"
+
+        if line.startswith("Supported CAS Latencies (tCL)"):
+            dimms[i].CAS_latencies = ignore_spaces(line, len("Supported CAS Latencies (tCL)"))
 
     # proceed to next dimm
     i += 1
 
 for dimm in dimms:
-    print("----------------------------")
+    print("-"*25)
     print(dimm.RAM_type)
     print(str(dimm.frequency) + dimm.frequency_multiplier)
     print(str(dimm.capacity) + dimm.capacity_multiplier)
     print(dimm.brand)
     print(dimm.serial_number)
+    print(dimm.ECC)
+    print(dimm.CAS_latencies)
+
+# TODO: return all the dimms to caller script otherwise this thing is utterly useless
