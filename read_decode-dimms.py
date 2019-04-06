@@ -17,7 +17,7 @@ class Dimm:
         self.capacity = -1
         self.capacity_multiplier = ""
         self.RAM_type = ""  # DDR, DDR2, DDR3 etc.
-        self.ECC = ""  # enum: "Yes" or "No"
+        self.ECC = "No"  # enum: "Yes" or "No"
         self.CAS_latency = ""  # feature not yet implemented on TARALLO
         self._manufacturer_data_type = ""
 
@@ -104,6 +104,15 @@ for dimm in dimm_sections:
                     relevant_part = relevant_part[1:]
                 dimms[i].brand = relevant_part
 
+        # is part number the model?
+        if line.startswith("Part Number") and dimms[i].serial_number == "":
+            dimms[i].serial_number = line.split(" ")[-1]
+
+        # part number can be overwritten by serial number if present
+        if line.startswith("Assembly Serial Number"):
+            dimms[i].serial_number = line.split(" ")[-1]
+
+
     # proceed to next dimm
     i += 1
 
@@ -113,3 +122,4 @@ for dimm in dimms:
     print(str(dimm.frequency) + dimm.frequency_multiplier)
     print(str(dimm.capacity) + dimm.capacity_multiplier)
     print(dimm.brand)
+    print(dimm.serial_number)
