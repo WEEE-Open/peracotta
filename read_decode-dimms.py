@@ -26,14 +26,30 @@ class Dimm:
 # and finally there's the value needed, e.g. "DDR3 SDRAM"
 def ignore_spaces(line:str, initial_chars_to_ignore:int):
     relevant_part = line[initial_chars_to_ignore:]
-    while relevant_part.startswith(" "):
-        relevant_part = relevant_part[1:]
-    return relevant_part
+    return relevant_part.strip()
 
 # TODO: revert to original state
 # filepath = sys.argv[1]
 # f = open(filepath + '/dimms.txt', 'r')
-f = open("/Users/Caste/Documents/WEEEOpen/peracotta/tests/asdpc/dimms.txt", 'r')
+
+"""START TEST"""
+asdpc = False
+rottame = False
+ECC1 = False
+ECC2 = False
+_149 = True
+if asdpc:
+    f = open("tests/asdpc/dimms.txt", 'r')
+elif rottame:
+    f = open("tests/rottame/dimms.txt", 'r')
+elif ECC1:
+    f = open("tests/decode-dimms/ECC/R451-R450.txt", 'r')
+elif ECC2:
+    f = open("tests/decode-dimms/ECC/R480-R479.txt", 'r')
+elif _149:
+    f = open("tests/decode-dimms/non ECC/R469-R470-R471-R472.txt", 'r')
+"""END TEST"""
+
 
 if f == 0:
     print("Cannot open file.")
