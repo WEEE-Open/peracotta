@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import sys
 
 '''
 Read "decode-dimms" output:
@@ -8,7 +7,7 @@ This script is based on read_dmidecode.py
 
 class Dimm:
     def __init__(self):
-        self.type = "RAM"
+        self.type = "ram"
         self.brand = ""
         self.model = ""
         self.serial_number = ""
