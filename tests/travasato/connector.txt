@@ -1,0 +1,28 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x0008, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: PRIMARY
+	Internal Connector Type: On Board IDE
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
+Handle 0x0009, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SECONDARY
+	Internal Connector Type: On Board IDE
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
+Handle 0x000A, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: ATX_PWR
+	Internal Connector Type: Other
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
