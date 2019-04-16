@@ -1,0 +1,316 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+SMBIOS 2.5 present.
+
+Handle 0x000F, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: PS/2 Keyboard
+	Internal Connector Type: None
+	External Reference Designator: PS/2 Keyboard
+	External Connector Type: PS/2
+	Port Type: Keyboard Port
+
+Handle 0x0010, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: USB12
+	Internal Connector Type: None
+	External Reference Designator: USB12
+	External Connector Type: Access Bus (USB)
+	Port Type: USB
+
+Handle 0x0011, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: USB34
+	Internal Connector Type: None
+	External Reference Designator: USB34
+	External Connector Type: Access Bus (USB)
+	Port Type: USB
+
+Handle 0x0012, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: USB56
+	Internal Connector Type: None
+	External Reference Designator: USB56
+	External Connector Type: Access Bus (USB)
+	Port Type: USB
+
+Handle 0x0013, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: USB78
+	Internal Connector Type: None
+	External Reference Designator: USB78
+	External Connector Type: Access Bus (USB)
+	Port Type: USB
+
+Handle 0x0014, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: IE1394_1
+	Internal Connector Type: None
+	External Reference Designator: IEEE1394 1
+	External Connector Type: IEEE 1394
+	Port Type: Firewire (IEEE P1394)
+
+Handle 0x0015, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: ESATA
+	Internal Connector Type: None
+	External Reference Designator: ESATA
+	External Connector Type: IEEE 1394
+	Port Type: SATA
+
+Handle 0x0016, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: LAN1
+	Internal Connector Type: None
+	External Reference Designator: GbE LAN 1
+	External Connector Type: RJ-45
+	Port Type: Network Port
+
+Handle 0x0017, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: LAN2
+	Internal Connector Type: None
+	External Reference Designator: GbE LAN 2
+	External Connector Type: RJ-45
+	Port Type: Network Port
+
+Handle 0x0018, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: AUDIO
+	Internal Connector Type: None
+	External Reference Designator: AUDIO
+	External Connector Type: Other
+	Port Type: Audio Port
+
+Handle 0x0019, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Audio Line Out1
+	Internal Connector Type: None
+	External Reference Designator: Audio Line Out1
+	External Connector Type: Mini Jack (headphones)
+	Port Type: Audio Port
+
+Handle 0x001A, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Audio Line Out2
+	Internal Connector Type: None
+	External Reference Designator: Audio Line Out2
+	External Connector Type: Mini Jack (headphones)
+	Port Type: Audio Port
+
+Handle 0x001B, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Audio Line Out3
+	Internal Connector Type: None
+	External Reference Designator: Audio Line Out3
+	External Connector Type: Mini Jack (headphones)
+	Port Type: Audio Port
+
+Handle 0x001C, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Audio Line Out4
+	Internal Connector Type: None
+	External Reference Designator: Audio Line Out4
+	External Connector Type: Mini Jack (headphones)
+	Port Type: Audio Port
+
+Handle 0x001D, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Audio Line Out5
+	Internal Connector Type: None
+	External Reference Designator: Audio Line Out5
+	External Connector Type: Mini Jack (headphones)
+	Port Type: Audio Port
+
+Handle 0x001E, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: Audio Line Out6
+	Internal Connector Type: None
+	External Reference Designator: Audio Line Out6
+	External Connector Type: Mini Jack (headphones)
+	Port Type: Audio Port
+
+Handle 0x001F, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SATA1
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0020, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SATA2
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0021, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SATA3
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0022, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SATA4
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0023, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SATA5
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0024, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SATA6
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0025, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SAS1
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0026, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SAS2
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0027, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: PRI_EIDE
+	Internal Connector Type: SAS/SATA Plug Receptacle
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: SATA
+
+Handle 0x0028, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: FLOPPY
+	Internal Connector Type: On Board Floppy
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
+Handle 0x0029, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: USB910
+	Internal Connector Type: Access Bus (USB)
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: USB
+
+Handle 0x002A, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: USB1112
+	Internal Connector Type: Access Bus (USB)
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: USB
+
+Handle 0x002B, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: USB1314
+	Internal Connector Type: Access Bus (USB)
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: USB
+
+Handle 0x002C, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: IE1394_2
+	Internal Connector Type: IEEE 1394
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Firewire (IEEE P1394)
+
+Handle 0x002D, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: CD
+	Internal Connector Type: On Board Sound Input From CD-ROM
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Audio Port
+
+Handle 0x002E, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: AAFP
+	Internal Connector Type: Mini Jack (headphones)
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Audio Port
+
+Handle 0x002F, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: CPU_FAN
+	Internal Connector Type: Other
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
+Handle 0x0030, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: PWR_FAN
+	Internal Connector Type: Other
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
+Handle 0x0031, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: CHA_FAN1
+	Internal Connector Type: Other
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
+Handle 0x0032, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: CHA_FAN2
+	Internal Connector Type: Other
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
+Handle 0x0033, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: CHA_FAN3
+	Internal Connector Type: Other
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Other
+
+Handle 0x0034, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: SPDIF_OUT
+	Internal Connector Type: On Board Sound Input From CD-ROM
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Audio Port
+
+Handle 0x0035, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: FP_AUDIO
+	Internal Connector Type: On Board Sound Input From CD-ROM
+	External Reference Designator: Not Specified
+	External Connector Type: None
+	Port Type: Audio Port
+
