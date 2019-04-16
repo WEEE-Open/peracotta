@@ -1,0 +1,228 @@
+00:00.0 Host bridge: Intel Corporation 82975X Memory Controller Hub
+	Subsystem: Intel Corporation 82975X Memory Controller Hub
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=09 <?>
+	Kernel driver in use: i82975x_edac
+	Kernel modules: i82975x_edac
+
+00:01.0 PCI bridge: Intel Corporation 82975X PCI Express Root Port (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 24
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: 00003000-00003fff
+	Memory behind bridge: ea000000-eb0fffff
+	Prefetchable memory behind bridge: 00000000e0000000-00000000e9ffffff
+	Capabilities: [88] Subsystem: Intel Corporation 82975X PCI Express Root Port
+	Capabilities: [80] Power Management version 2
+	Capabilities: [90] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [a0] Express Root Port (Slot+), MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [140] Root Complex Link
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1b.0 Audio device: Intel Corporation NM10/ICH7 Family High Definition Audio Controller (rev 01)
+	Subsystem: Intel Corporation NM10/ICH7 Family High Definition Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 31
+	Memory at eb400000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [60] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Express Root Complex Integrated Endpoint, MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [130] Root Complex Link
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+00:1c.0 PCI bridge: Intel Corporation NM10/ICH7 Family PCI Express Port 1 (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=0
+	I/O behind bridge: 00005000-00005fff
+	Memory behind bridge: eb500000-eb6fffff
+	Prefetchable memory behind bridge: 00000000eb700000-00000000eb8fffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Intel Corporation NM10/ICH7 Family PCI Express Port 1
+	Capabilities: [a0] Power Management version 2
+	Capabilities: [100] Virtual Channel
+	Capabilities: [180] Root Complex Link
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1c.4 PCI bridge: Intel Corporation 82801GR/GH/GHM (ICH7 Family) PCI Express Port 5 (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 26
+	Bus: primary=00, secondary=03, subordinate=03, sec-latency=0
+	I/O behind bridge: 00002000-00002fff
+	Memory behind bridge: eb300000-eb3fffff
+	Prefetchable memory behind bridge: 00000000eb900000-00000000ebafffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Intel Corporation 82801GR/GH/GHM (ICH7 Family) PCI Express Port 5
+	Capabilities: [a0] Power Management version 2
+	Capabilities: [100] Virtual Channel
+	Capabilities: [180] Root Complex Link
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1c.5 PCI bridge: Intel Corporation 82801GR/GH/GHM (ICH7 Family) PCI Express Port 6 (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 27
+	Bus: primary=00, secondary=04, subordinate=04, sec-latency=0
+	I/O behind bridge: 00001000-00001fff
+	Memory behind bridge: eb200000-eb2fffff
+	Prefetchable memory behind bridge: 00000000ebb00000-00000000ebcfffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Intel Corporation 82801GR/GH/GHM (ICH7 Family) PCI Express Port 6
+	Capabilities: [a0] Power Management version 2
+	Capabilities: [100] Virtual Channel
+	Capabilities: [180] Root Complex Link
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1d.0 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #1 (rev 01) (prog-if 00 [UHCI])
+	Subsystem: Intel Corporation NM10/ICH7 Family USB UHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 23
+	I/O ports at 4080 [size=32]
+	Kernel driver in use: uhci_hcd
+	Kernel modules: uhci_hcd
+
+00:1d.1 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #2 (rev 01) (prog-if 00 [UHCI])
+	Subsystem: Intel Corporation NM10/ICH7 Family USB UHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 19
+	I/O ports at 4060 [size=32]
+	Kernel driver in use: uhci_hcd
+	Kernel modules: uhci_hcd
+
+00:1d.2 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #3 (rev 01) (prog-if 00 [UHCI])
+	Subsystem: Intel Corporation NM10/ICH7 Family USB UHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 18
+	I/O ports at 4040 [size=32]
+	Kernel driver in use: uhci_hcd
+	Kernel modules: uhci_hcd
+
+00:1d.3 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #4 (rev 01) (prog-if 00 [UHCI])
+	Subsystem: Intel Corporation NM10/ICH7 Family USB UHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 16
+	I/O ports at 4020 [size=32]
+	Kernel driver in use: uhci_hcd
+	Kernel modules: uhci_hcd
+
+00:1d.7 USB controller: Intel Corporation NM10/ICH7 Family USB2 EHCI Controller (rev 01) (prog-if 20 [EHCI])
+	Subsystem: Intel Corporation NM10/ICH7 Family USB2 EHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 23
+	Memory at eb404400 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] Debug port: BAR=1 offset=00a0
+	Kernel driver in use: ehci-pci
+	Kernel modules: ehci_pci
+
+00:1e.0 PCI bridge: Intel Corporation 82801 PCI Bridge (rev e1) (prog-if 01 [Subtractive decode])
+	Flags: bus master, fast devsel, latency 0
+	Bus: primary=00, secondary=05, subordinate=05, sec-latency=32
+	Memory behind bridge: eb100000-eb1fffff
+	Capabilities: [50] Subsystem: Intel Corporation 82801 PCI Bridge
+
+00:1f.0 ISA bridge: Intel Corporation 82801GH (ICH7DH) LPC Interface Bridge (rev 01)
+	Subsystem: Intel Corporation 82801GH (ICH7DH) LPC Interface Bridge
+	Flags: bus master, medium devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=0c <?>
+	Kernel driver in use: lpc_ich
+	Kernel modules: lpc_ich, leds_ss4200
+
+00:1f.1 IDE interface: Intel Corporation 82801G (ICH7 Family) IDE Controller (rev 01) (prog-if 8a [Master SecP PriP])
+	Subsystem: Intel Corporation 82801G (ICH7 Family) IDE Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 18
+	I/O ports at 01f0 [size=8]
+	I/O ports at 03f4
+	I/O ports at 0170 [size=8]
+	I/O ports at 0374
+	I/O ports at 40b0 [size=16]
+	Kernel driver in use: ata_piix
+	Kernel modules: ata_piix, ata_generic
+
+00:1f.2 SATA controller: Intel Corporation NM10/ICH7 Family SATA Controller [AHCI mode] (rev 01) (prog-if 01 [AHCI 1.0])
+	Subsystem: Intel Corporation DeskTop Board D975XBX
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 30
+	I/O ports at 40c8 [size=8]
+	I/O ports at 40e4 [size=4]
+	I/O ports at 40c0 [size=8]
+	I/O ports at 40e0 [size=4]
+	I/O ports at 40a0 [size=16]
+	Memory at eb404000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [70] Power Management version 2
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+
+00:1f.3 SMBus: Intel Corporation NM10/ICH7 Family SMBus Controller (rev 01)
+	Subsystem: Intel Corporation DeskTop Board D975XBX
+	Flags: medium devsel, IRQ 19
+	I/O ports at 4000 [size=32]
+	Kernel driver in use: i801_smbus
+	Kernel modules: i2c_i801
+
+01:00.0 VGA compatible controller: NVIDIA Corporation GF119 [GeForce GT 610] (rev a1) (prog-if 00 [VGA controller])
+	Subsystem: ASUSTeK Computer Inc. GF119 [GeForce GT 610]
+	Flags: bus master, fast devsel, latency 0, IRQ 29
+	Memory at ea000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at e0000000 (64-bit, prefetchable) [size=128M]
+	Memory at e8000000 (64-bit, prefetchable) [size=32M]
+	I/O ports at 3000 [size=128]
+	Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: [60] Power Management version 3
+	Capabilities: [68] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [78] Express Endpoint, MSI 00
+	Capabilities: [b4] Vendor Specific Information: Len=14 <?>
+	Capabilities: [100] Virtual Channel
+	Capabilities: [128] Power Budgeting <?>
+	Capabilities: [600] Vendor Specific Information: ID=0001 Rev=1 Len=024 <?>
+	Kernel driver in use: nouveau
+	Kernel modules: nouveau
+
+01:00.1 Audio device: NVIDIA Corporation GF119 HDMI Audio Controller (rev a1)
+	Subsystem: ASUSTeK Computer Inc. GF119 HDMI Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 17
+	Memory at eb000000 (32-bit, non-prefetchable) [size=16K]
+	Capabilities: [60] Power Management version 3
+	Capabilities: [68] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [78] Express Endpoint, MSI 00
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+03:00.0 SATA controller: Marvell Technology Group Ltd. 88SE6145 SATA II PCI-E controller (rev a1) (prog-if 8f)
+	Subsystem: Intel Corporation 88SE6145 SATA II PCI-E controller
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	I/O ports at 2018 [size=8]
+	I/O ports at 2024 [size=4]
+	I/O ports at 2010 [size=8]
+	I/O ports at 2020 [size=4]
+	I/O ports at 2000 [size=16]
+	Memory at eb300000 (32-bit, non-prefetchable) [size=1K]
+	Expansion ROM at eb340000 [disabled] [size=256K]
+	Capabilities: [48] Power Management version 2
+	Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [e0] Express Legacy Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Kernel driver in use: pata_marvell
+	Kernel modules: ahci, pata_marvell
+
+04:00.0 Ethernet controller: Intel Corporation 82573L Gigabit Ethernet Controller
+	Subsystem: Intel Corporation Desktop Board D975XBX
+	Flags: bus master, fast devsel, latency 0, IRQ 28
+	Memory at eb200000 (32-bit, non-prefetchable) [size=128K]
+	I/O ports at 1000 [size=32]
+	Capabilities: [c8] Power Management version 2
+	Capabilities: [d0] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [e0] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Device Serial Number 00-19-d1-ff-ff-b1-98-5c
+	Kernel driver in use: e1000e
+	Kernel modules: e1000e
+
+05:04.0 FireWire (IEEE 1394): Texas Instruments TSB43AB23 IEEE-1394a-2000 Controller (PHY/Link) (prog-if 10 [OHCI])
+	Subsystem: Intel Corporation TSB43AB23 IEEE-1394a-2000 Controller (PHY/Link)
+	Flags: bus master, medium devsel, latency 32, IRQ 18
+	Memory at eb104000 (32-bit, non-prefetchable) [size=2K]
+	Memory at eb100000 (32-bit, non-prefetchable) [size=16K]
+	Capabilities: [44] Power Management version 2
+	Kernel driver in use: firewire_ohci
+	Kernel modules: firewire_ohci
+

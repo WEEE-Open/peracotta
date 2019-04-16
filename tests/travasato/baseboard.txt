@@ -1,0 +1,43 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x0006, DMI type 2, 20 bytes
+Base Board Information
+	Manufacturer: Intel Corporation
+	Product Name: D975XBX2
+	Version: AAD53350-508
+	Serial Number: BAOB4B9001YY
+	Asset Tag: Base Board Asset Tag
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: Base Board Chassis Location
+	Chassis Handle: 0x0007
+	Type: Unknown
+	Contained Object Handles: 0
+
+Handle 0x0010, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Ethernet
+	Status: Enabled
+	Description: Intel (R) 82562 Ethernet Device
+
+Handle 0x0011, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Sound
+	Status: Enabled
+	Description: Intel(R) Azalia Audio Device
+
+Handle 0x0012, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Other
+	Status: Enabled
+	Description: Marvell 6145 SATA RAID Controller
+
+Handle 0x0013, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Other
+	Status: Enabled
+	Description: Texas Instruments TSB82AA2 1394A/B Controller
+
