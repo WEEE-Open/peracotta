@@ -8,7 +8,7 @@ Chassis Information
 	Type: Laptop
 	Lock: Not Present
 	Version: Mac-937A206F2EE63C01
-	Serial Number: ***REMOVED***
+	Serial Number: CENSORED
 	Asset Tag:  
 	Boot-up State: Safe
 	Power Supply State: Safe
