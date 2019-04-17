@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Read "lspci -v" output
+Read "lspci -v" and "glxinfo" outputs
 """
 
 # TODO: add specs from lvps's messages - everything is a single function which gets called
@@ -47,19 +47,20 @@ gpu = VideoCard()
 glxinfo_path = ""
 lspci_path = ""
 
-# dedicated
+# dedicated:
 _2018mbp = 0
 _2014mbp = 0
 castes_pc = 0
-_9400gt = 0
-gtx970 = 1
+_9400gt = 1
+gtx970 = 0
 
-# integrated
+# integrated:
 # jm11 = 0
 _8300gt = 0
 _82865g = 0
 es1000 = 0
 
+# dedicated:
 if _2018mbp:
     glxinfo_path = "2018-castes-mbp/glxinfo.txt"
     lspci_path = "2018-castes-mbp/lspci.txt"
@@ -75,6 +76,7 @@ elif _9400gt:
 elif gtx970:
     glxinfo_path = "glxinfo+lspci/dedicated/glxinfo-gtx-970.txt"
     lspci_path = "glxinfo+lspci/dedicated/lspci-gtx-970.txt"
+# integrated:
 # elif jm11:
 #     glxinfo_path = "castes-pc/glxinfo.txt"
 #     lspci_path = "castes-pc/lspci.txt"
@@ -130,82 +132,71 @@ if has_dedicated:
                             print("Please enter the brand/manufacturer again:")
                             continue
 
-    for line in glxinfo_output.splitlines():
+    glxinfo_output_len = len(glxinfo_output.splitlines())
+    for i, line in enumerate(glxinfo_output.splitlines()):
+
+        dedicated_memory_found = False
+
+        # this line comes before the "Dedicated video memory" line
+        # this basically saves a default value if the dedicated memory line cannot be found
+        if "Video memory" in line:
+            try:
+                tmp_vid_mem = int(line.split(" ")[6].split(" ")[0][:-2])
+                tmp_vid_mem_multiplier = line[-2:]
+            except ValueError:
+                print("There was a problem reading glxinfo's output. Please try again or run generate_files.sh again.")
+                exit(-1)
+
+            gpu.vram_capacity = tmp_vid_mem
+
+            if tmp_vid_mem_multiplier == "GB":
+                gpu.vram_capacity *= 1024*1024*1024
+            elif tmp_vid_mem_multiplier == "MB":
+                gpu.vram_capacity *= 1024*1024
+            elif tmp_vid_mem_multiplier.upper() == "KB":
+                gpu.vram_capacity *= 1024
+            else:
+                gpu.vram_capacity = -1
+                print("The VRAM capacity could not be detected. "
+                      "Please try looking for it on the Video Card or on the Internet. "
+                      "The detected value defaulted to -1.")
+
         if "Dedicated video memory" in line:
+
+            dedicated_memory_found = True
+
             try:
                 tmp_vram = int(line.split(" ")[7].split(" ")[0])
                 tmp_vram_multiplier = line[-2:]
-            except ValueError as ve:
+            except ValueError:
                 print("There was a problem reading glxinfo's output. Please try again or run generate_files.sh again.")
-                print(ve)
                 exit(-1)
 
             gpu.vram_capacity = tmp_vram
 
             if tmp_vram_multiplier == "GB":
                 gpu.vram_capacity *= 1024*1024*1024
+                break
             elif tmp_vram_multiplier == "MB":
                 gpu.vram_capacity *= 1024*1024
+                break
             elif tmp_vram_multiplier.upper() == "KB":
                 gpu.vram_capacity *= 1024
+                break
             else:
-                print("The VRAM capacity could not be detected. Please try looking for it on the Video Card or on the Internet.")
-                # gpu.vram_capacity = -1
+                print("The dedicated video memory could not be found. "
+                      "A video memory value will try to be found, which needs to be corrected by hand. "
+                      "Ugh, humans.")
 
-            # for line in section.splitlines():
-                # # only considering prefetchable VRAM
-                # # TODO: delete code below, prefetchable does not mean VRAM
-                # if "Memory" in line and "non" not in line and "prefetchable" in line:
-                #     vram = line.split("size=")[1].split("]")[0]
-                #     last_char = vram[-1].upper()
-                #     size = int(vram[:-1])
-                #
-                #     # selects biggest prefetchable memory
-                #     if gpu.vram_capacity < size:
-                #         gpu.vram_capacity = size
-                #     else:
-                #         break
-                #
-                #     if last_char == "M":
-                #         gpu.vram_capacity_multiplier = "M"
-                #     elif last_char == "K":
-                #         gpu.vram_capacity_multiplier = "K"
-                #     elif last_char == "G":
-                #         gpu.vram_capacity_multiplier = "G"
-                #     else:
-                #         while True:
-                #             tmp = input("I couldn't find the VRAM Capacity. Please check the VRAM (Video Memory) of the card"
-                #                         " and enter it below: \nformat: <integer><K/M/G for Kilobytes/Megabytes/Gigabytes\n"
-                #                         "e.g. 256M\n")
-                #             multiplier = tmp[-1].upper()
-                #             mult_full = ""
-                #             if multiplier == "K":
-                #                 mult_full = "Kilobytes"
-                #             elif multiplier == "M":
-                #                 mult_full = "Megabytes"
-                #             elif multiplier == "G":
-                #                 mult_full = "Gigabytes"
-                #             else:
-                #                 print("Unrecognized format. Please try again.")
-                #                 continue
-                #
-                #             try:
-                #                 size = int(tmp[:-1])
-                #             except ValueError:
-                #                 print("Unrecognized format. Please try again.")
-                #                 continue
-                #
-                #             confirm = input("Confirm the VRAM has a capacity of " + str(size) + " " + mult_full + " Y/N\n")
-                #             if confirm.lower() == "y":
-                #                 gpu.vram_capacity = size
-                #                 gpu.vram_capacity_multiplier = multiplier
-                #                 break
-                #             else:
-                #                 print("Enter a new value.")
-                #                 continue
-
-            # break
-
+        if i == glxinfo_output_len - 1 and not dedicated_memory_found:
+            if gpu.vram_capacity == -1:
+                print("A dedicated video memory couldn't be found. "
+                      "Value defaulted to -1. "
+                      "Please humans, fix this error by hand.")
+            else:
+                print("A dedicated video memory couldn't be found. "
+                      "A generic video memory was found instead. "
+                      "Please humans, fix this error by hand.")
 
 else:
     if integrated_in_mobo:
