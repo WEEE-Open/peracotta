@@ -1,0 +1,37 @@
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x000E, DMI type 2, 16 bytes
+Base Board Information
+	Manufacturer: Apple Inc.
+	Product Name: Mac-2BD1B31983FE1663
+	Version: MacBookPro11,3
+	Serial Number: ***REMOVED***
+	Asset Tag: Base Board Asset Tag#
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: Part Component
+	Chassis Handle: 0x000F
+	Type: Motherboard
+	Contained Object Handles: 0
+
+Handle 0x001F, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Video
+	Status: Enabled
+	Description: nVidia Video Adapter
+
+Handle 0x0020, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Sound
+	Status: Enabled
+	Description: Azalia Audio Codec
+
+Handle 0x0021, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Other
+	Status: Enabled
+	Description: SATA
+
