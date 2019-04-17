@@ -1,0 +1,538 @@
+00:00.0 Host bridge: Intel Corporation 8th Gen Core Processor Host Bridge/DRAM Registers (rev 07)
+	DeviceName: SATA
+	Subsystem: Intel Corporation 8th Gen Core Processor Host Bridge/DRAM Registers
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=10 <?>
+	Kernel driver in use: skl_uncore
+
+00:01.0 PCI bridge: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x16) (rev 07) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: 00003000-00003fff [size=4K]
+	Memory behind bridge: 81500000-815fffff [size=1M]
+	Prefetchable memory behind bridge: 00000000b0000000-00000000c01fffff [size=258M]
+	Capabilities: [88] Subsystem: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x16)
+	Capabilities: [80] Power Management version 3
+	Capabilities: [90] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [a0] Express Root Port (Slot+), MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [140] Root Complex Link
+	Capabilities: [d94] Secondary PCI Express <?>
+	Kernel driver in use: pcieport
+
+00:01.1 PCI bridge: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x8) (rev 07) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=04, subordinate=79, sec-latency=0
+	I/O behind bridge: 00005000-00008fff [size=16K]
+	Memory behind bridge: 81700000-8f8fffff [size=226M]
+	Prefetchable memory behind bridge: 00000000c1700000-00000000cf6fffff [size=224M]
+	Capabilities: [88] Subsystem: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x8)
+	Capabilities: [80] Power Management version 3
+	Capabilities: [90] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [a0] Express Root Port (Slot+), MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [140] Root Complex Link
+	Capabilities: [d94] Secondary PCI Express <?>
+	Kernel driver in use: pcieport
+
+00:01.2 PCI bridge: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x4) (rev 07) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=7a, subordinate=ef, sec-latency=0
+	I/O behind bridge: 00009000-0000cfff [size=16K]
+	Memory behind bridge: 8f900000-9dafffff [size=226M]
+	Prefetchable memory behind bridge: 00000000cf700000-00000000dd6fffff [size=224M]
+	Capabilities: [88] Subsystem: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x4)
+	Capabilities: [80] Power Management version 3
+	Capabilities: [90] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [a0] Express Root Port (Slot+), MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [140] Root Complex Link
+	Capabilities: [d94] Secondary PCI Express <?>
+	Kernel driver in use: pcieport
+
+00:12.0 Signal processing controller: Intel Corporation Cannon Lake PCH Thermal Controller (rev 10)
+	Subsystem: Intel Corporation Cannon Lake PCH Thermal Controller
+	Flags: fast devsel, IRQ -2147483648
+	Memory at 81612000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: [50] Power Management version 3
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Kernel driver in use: intel_pch_thermal
+	Kernel modules: intel_pch_thermal
+
+00:14.0 USB controller: Intel Corporation Cannon Lake PCH USB 3.1 xHCI Host Controller (rev 10) (prog-if 30 [XHCI])
+	Subsystem: Intel Corporation Cannon Lake PCH USB 3.1 xHCI Host Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 52
+	Memory at 81600000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: [70] Power Management version 2
+	Capabilities: [80] MSI: Enable+ Count=1/8 Maskable- 64bit+
+	Capabilities: [90] Vendor Specific Information: Len=14 <?>
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+
+00:14.2 RAM memory: Intel Corporation Cannon Lake PCH Shared SRAM (rev 10)
+	Flags: fast devsel
+	Memory at 81610000 (64-bit, non-prefetchable) [disabled] [size=8K]
+	Memory at 81613000 (64-bit, non-prefetchable) [disabled] [size=4K]
+	Capabilities: [80] Power Management version 3
+
+00:16.0 Communication controller: Intel Corporation Cannon Lake PCH HECI Controller (rev 10)
+	Subsystem: Intel Corporation Cannon Lake PCH HECI Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 36
+	Memory at 81614000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: [50] Power Management version 3
+	Capabilities: [8c] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [a4] Vendor Specific Information: Len=14 <?>
+	Kernel driver in use: mei_me
+	Kernel modules: mei_me
+
+00:1b.0 PCI bridge: Intel Corporation Cannon Lake PCH PCI Express Root Port #17 (rev f0) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=0
+	I/O behind bridge: None
+	Memory behind bridge: None
+	Prefetchable memory behind bridge: 00000000c0400000-00000000c16fffff [size=19M]
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Intel Corporation Cannon Lake PCH PCI Express Root Port
+	Capabilities: [a0] Power Management version 3
+	Capabilities: [100] Null
+	Capabilities: [140] Access Control Services
+	Capabilities: [150] Precision Time Measurement
+	Capabilities: [200] L1 PM Substates
+	Capabilities: [220] Secondary PCI Express <?>
+	Capabilities: [250] Downstream Port Containment
+	Kernel driver in use: pcieport
+
+00:1c.0 PCI bridge: Intel Corporation Cannon Lake PCH PCI Express Root Port #1 (rev f0) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=03, subordinate=03, sec-latency=0
+	I/O behind bridge: None
+	Memory behind bridge: 81000000-814fffff [size=5M]
+	Prefetchable memory behind bridge: None
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Intel Corporation Cannon Lake PCH PCI Express Root Port
+	Capabilities: [a0] Power Management version 3
+	Capabilities: [100] Null
+	Capabilities: [140] Access Control Services
+	Capabilities: [150] Precision Time Measurement
+	Capabilities: [200] L1 PM Substates
+	Capabilities: [250] Downstream Port Containment
+	Kernel driver in use: pcieport
+
+00:1e.0 Communication controller: Intel Corporation Device a328 (rev 10)
+	Subsystem: Intel Corporation Device 7270
+	Flags: bus master, fast devsel, latency 0, IRQ 20
+	[virtual] Memory at 4000000000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [90] Vendor Specific Information: Len=14 <?>
+	Kernel driver in use: intel-lpss
+	Kernel modules: intel_lpss_pci
+
+00:1f.0 ISA bridge: Intel Corporation Device a313 (rev 10)
+	Subsystem: Intel Corporation Device 7270
+	Flags: fast devsel
+
+00:1f.4 SMBus: Intel Corporation Cannon Lake PCH SMBus Controller (rev 10)
+	Subsystem: Intel Corporation Cannon Lake PCH SMBus Controller
+	Flags: medium devsel, IRQ 16
+	Memory at 81616000 (64-bit, non-prefetchable) [size=256]
+	I/O ports at 4040 [size=32]
+	Kernel driver in use: i801_smbus
+	Kernel modules: i2c_i801
+
+00:1f.5 Serial bus controller [0c80]: Intel Corporation Cannon Lake PCH SPI Controller (rev 10)
+	Subsystem: Intel Corporation Cannon Lake PCH SPI Controller
+	Flags: fast devsel
+	Memory at fe010000 (32-bit, non-prefetchable) [size=4K]
+
+01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Baffin [Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X] (rev c2) (prog-if 00 [VGA controller])
+	Subsystem: Apple Inc. Radeon Pro 560X
+	Flags: bus master, fast devsel, latency 0, IRQ 38
+	Memory at b0000000 (64-bit, prefetchable) [size=256M]
+	Memory at c0000000 (64-bit, prefetchable) [size=2M]
+	I/O ports at 3000 [size=256]
+	Memory at 81500000 (32-bit, non-prefetchable) [size=256K]
+	Expansion ROM at 81540000 [disabled] [size=128K]
+	Capabilities: [48] Vendor Specific Information: Len=08 <?>
+	Capabilities: [50] Power Management version 3
+	Capabilities: [58] Express Legacy Endpoint, MSI 00
+	Capabilities: [a0] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [100] Vendor Specific Information: ID=0001 Rev=1 Len=010 <?>
+	Capabilities: [270] Secondary PCI Express <?>
+	Capabilities: [320] Latency Tolerance Reporting
+	Kernel driver in use: amdgpu
+	Kernel modules: amdgpu
+
+01:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Baffin HDMI/DP Audio [Radeon RX 550 640SP / RX 560/560X]
+	Subsystem: Advanced Micro Devices, Inc. [AMD/ATI] Baffin HDMI/DP Audio [Radeon RX 550 640SP / RX 560/560X]
+	Flags: bus master, fast devsel, latency 0, IRQ 40
+	Memory at 81560000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: [48] Vendor Specific Information: Len=08 <?>
+	Capabilities: [50] Power Management version 3
+	Capabilities: [58] Express Legacy Endpoint, MSI 00
+	Capabilities: [a0] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [100] Vendor Specific Information: ID=0001 Rev=1 Len=010 <?>
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+02:00.0 Mass storage controller: Apple Inc. ANS2 NVMe Controller (rev 01) (prog-if 02)
+	Subsystem: Apple Inc. ANS2 NVMe Controller
+	Flags: bus master, fast devsel, latency 0
+	Memory at c0400000 (64-bit, prefetchable) [size=4M]
+	Memory at c1400000 (64-bit, prefetchable) [size=512K]
+	Memory at c1600000 (64-bit, prefetchable) [size=64K]
+	Capabilities: [40] Power Management version 3
+	Capabilities: [50] MSI: Enable- Count=1/8 Maskable- 64bit+
+	Capabilities: [70] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [148] Secondary PCI Express <?>
+	Capabilities: [168] Latency Tolerance Reporting
+	Capabilities: [170] L1 PM Substates
+	Capabilities: [180] Vendor Specific Information: ID=0002 Rev=1 Len=100 <?>
+	Capabilities: [280] Resizable BAR <?>
+
+02:00.1 Non-VGA unclassified device: Apple Inc. T2 Bridge Controller (rev 01)
+	Subsystem: Apple Inc. T2 Bridge Controller
+	Flags: bus master, fast devsel, latency 0
+	Memory at c0800000 (64-bit, prefetchable) [size=4M]
+	Memory at c1480000 (64-bit, prefetchable) [size=512K]
+	Memory at c1610000 (64-bit, prefetchable) [size=64K]
+	Capabilities: [40] Power Management version 3
+	Capabilities: [50] MSI: Enable- Count=1/8 Maskable- 64bit+
+	Capabilities: [70] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [180] Vendor Specific Information: ID=0002 Rev=1 Len=100 <?>
+	Capabilities: [280] Resizable BAR <?>
+
+02:00.2 Non-VGA unclassified device: Apple Inc. T2 Secure Enclave Processor (rev 01)
+	Subsystem: Apple Inc. T2 Secure Enclave Processor
+	Flags: bus master, fast devsel, latency 0
+	Memory at c0c00000 (64-bit, prefetchable) [size=4M]
+	Memory at c1500000 (64-bit, prefetchable) [size=512K]
+	Memory at c1620000 (64-bit, prefetchable) [size=64K]
+	Capabilities: [40] Power Management version 3
+	Capabilities: [50] MSI: Enable- Count=1/8 Maskable- 64bit+
+	Capabilities: [70] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [180] Vendor Specific Information: ID=0002 Rev=1 Len=100 <?>
+	Capabilities: [280] Resizable BAR <?>
+
+02:00.3 Multimedia audio controller: Apple Inc. Device 1803 (rev 01)
+	Subsystem: Apple Inc. Device 1881
+	Flags: fast devsel
+	Memory at c1000000 (64-bit, prefetchable) [disabled] [size=4M]
+	Memory at c1580000 (64-bit, prefetchable) [disabled] [size=512K]
+	Memory at c1630000 (64-bit, prefetchable) [disabled] [size=64K]
+	Capabilities: [40] Power Management version 3
+	Capabilities: [50] MSI: Enable- Count=1/8 Maskable- 64bit+
+	Capabilities: [70] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [180] Vendor Specific Information: ID=0002 Rev=1 Len=100 <?>
+	Capabilities: [280] Resizable BAR <?>
+
+03:00.0 Network controller: Broadcom Inc. and subsidiaries Device 4464 (rev 03)
+	Subsystem: Apple Inc. Device 07bf
+	Flags: fast devsel, IRQ 255
+	Memory at 81400000 (64-bit, non-prefetchable) [disabled] [size=32K]
+	Memory at 81000000 (64-bit, non-prefetchable) [disabled] [size=4M]
+	Capabilities: [48] Power Management version 3
+	Capabilities: [58] MSI: Enable- Count=1/16 Maskable- 64bit+
+	Capabilities: [68] Vendor Specific Information: Len=44 <?>
+	Capabilities: [ac] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [13c] Device Serial Number ff-92-d3-ff-ff-70-38-f9
+	Capabilities: [150] Power Budgeting <?>
+	Capabilities: [160] Virtual Channel
+	Capabilities: [1b0] Latency Tolerance Reporting
+	Capabilities: [220] Resizable BAR <?>
+	Capabilities: [240] L1 PM Substates
+
+04:00.0 PCI bridge: Intel Corporation DSL6540 Thunderbolt 3 Bridge [Alpine Ridge 4C 2015] (rev 06) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 26
+	Bus: primary=04, secondary=05, subordinate=79, sec-latency=0
+	I/O behind bridge: 00005000-00008fff [size=16K]
+	Memory behind bridge: 81700000-8f8fffff [size=226M]
+	Prefetchable memory behind bridge: 00000000c1700000-00000000cf6fffff [size=224M]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation DSL6540 Thunderbolt 3 Bridge [Alpine Ridge 4C 2015]
+	Capabilities: [c0] Express Upstream Port, MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-7a-01-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [800] Latency Tolerance Reporting
+	Capabilities: [a00] L1 PM Substates
+	Capabilities: [b00] Precision Time Measurement
+	Kernel driver in use: pcieport
+
+05:00.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 27
+	Bus: primary=05, secondary=06, subordinate=06, sec-latency=0
+	I/O behind bridge: None
+	Memory behind bridge: 81800000-818fffff [size=1M]
+	Prefetchable memory behind bridge: None
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018]
+	Capabilities: [c0] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-7a-01-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [900] Access Control Services
+	Kernel driver in use: pcieport
+
+05:01.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06) (prog-if 00 [Normal decode])
+	Physical Slot: 1
+	Flags: bus master, fast devsel, latency 0, IRQ 28
+	Bus: primary=05, secondary=08, subordinate=40, sec-latency=0
+	I/O behind bridge: 00005000-00006fff [size=8K]
+	Memory behind bridge: 81900000-888fffff [size=112M]
+	Prefetchable memory behind bridge: 00000000c1700000-00000000c86fffff [size=112M]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018]
+	Capabilities: [c0] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-7a-01-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [900] Access Control Services
+	Kernel driver in use: pcieport
+
+05:02.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 29
+	Bus: primary=05, secondary=07, subordinate=07, sec-latency=0
+	I/O behind bridge: None
+	Memory behind bridge: 81700000-817fffff [size=1M]
+	Prefetchable memory behind bridge: None
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018]
+	Capabilities: [c0] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-7a-01-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [900] Access Control Services
+	Kernel driver in use: pcieport
+
+05:04.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06) (prog-if 00 [Normal decode])
+	Physical Slot: 2
+	Flags: bus master, fast devsel, latency 0, IRQ 30
+	Bus: primary=05, secondary=41, subordinate=79, sec-latency=0
+	I/O behind bridge: 00007000-00008fff [size=8K]
+	Memory behind bridge: 88900000-8f8fffff [size=112M]
+	Prefetchable memory behind bridge: 00000000c8700000-00000000cf6fffff [size=112M]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018]
+	Capabilities: [c0] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-7a-01-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [900] Access Control Services
+	Kernel driver in use: pcieport
+
+06:00.0 System peripheral: Intel Corporation JHL7540 Thunderbolt 3 NHI [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation JHL7540 Thunderbolt 3 NHI [Titan Ridge 4C 2018]
+	Flags: fast devsel, IRQ 17
+	Memory at 81800000 (32-bit, non-prefetchable) [size=256K]
+	Memory at 81840000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [c0] Express Endpoint, MSI 00
+	Capabilities: [a0] MSI-X: Enable- Count=16 Masked-
+	Capabilities: [100] Device Serial Number cb-1e-70-7a-01-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Latency Tolerance Reporting
+	Kernel modules: thunderbolt
+
+07:00.0 USB controller: Intel Corporation JHL7540 Thunderbolt 3 USB Controller [Titan Ridge 4C 2018] (rev 06) (prog-if 30 [XHCI])
+	Subsystem: Intel Corporation JHL7540 Thunderbolt 3 USB Controller [Titan Ridge 4C 2018]
+	Flags: bus master, fast devsel, latency 0, IRQ 37
+	Memory at 81700000 (32-bit, non-prefetchable) [size=64K]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/8 Maskable- 64bit+
+	Capabilities: [c0] Express Endpoint, MSI 00
+	Capabilities: [100] Device Serial Number cb-1e-70-7a-01-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [800] Latency Tolerance Reporting
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+
+7a:00.0 PCI bridge: Intel Corporation DSL6540 Thunderbolt 3 Bridge [Alpine Ridge 4C 2015] (rev 06) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 31
+	Bus: primary=7a, secondary=7b, subordinate=ef, sec-latency=0
+	I/O behind bridge: 00009000-0000cfff [size=16K]
+	Memory behind bridge: 8f900000-9dafffff [size=226M]
+	Prefetchable memory behind bridge: 00000000cf700000-00000000dd6fffff [size=224M]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation DSL6540 Thunderbolt 3 Bridge [Alpine Ridge 4C 2015]
+	Capabilities: [c0] Express Upstream Port, MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-79-43-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [800] Latency Tolerance Reporting
+	Capabilities: [a00] L1 PM Substates
+	Capabilities: [b00] Precision Time Measurement
+	Kernel driver in use: pcieport
+
+7b:00.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 32
+	Bus: primary=7b, secondary=7c, subordinate=7c, sec-latency=0
+	I/O behind bridge: None
+	Memory behind bridge: 8fa00000-8fafffff [size=1M]
+	Prefetchable memory behind bridge: None
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018]
+	Capabilities: [c0] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-79-43-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [900] Access Control Services
+	Kernel driver in use: pcieport
+
+7b:01.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06) (prog-if 00 [Normal decode])
+	Physical Slot: 1-1
+	Flags: bus master, fast devsel, latency 0, IRQ 33
+	Bus: primary=7b, secondary=7e, subordinate=b6, sec-latency=0
+	I/O behind bridge: 00009000-0000afff [size=8K]
+	Memory behind bridge: 8fb00000-96afffff [size=112M]
+	Prefetchable memory behind bridge: 00000000cf700000-00000000d66fffff [size=112M]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018]
+	Capabilities: [c0] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-79-43-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [900] Access Control Services
+	Kernel driver in use: pcieport
+
+7b:02.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 34
+	Bus: primary=7b, secondary=7d, subordinate=7d, sec-latency=0
+	I/O behind bridge: None
+	Memory behind bridge: 8f900000-8f9fffff [size=1M]
+	Prefetchable memory behind bridge: None
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018]
+	Capabilities: [c0] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-79-43-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [900] Access Control Services
+	Kernel driver in use: pcieport
+
+7b:04.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06) (prog-if 00 [Normal decode])
+	Physical Slot: 2-1
+	Flags: bus master, fast devsel, latency 0, IRQ 35
+	Bus: primary=7b, secondary=b7, subordinate=ef, sec-latency=0
+	I/O behind bridge: 0000b000-0000cfff [size=8K]
+	Memory behind bridge: 96b00000-9dafffff [size=112M]
+	Prefetchable memory behind bridge: 00000000d6700000-00000000dd6fffff [size=112M]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [ac] Subsystem: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018]
+	Capabilities: [c0] Express Downstream Port (Slot+), MSI 00
+	Capabilities: [50] Capability ID 0x15 [0000]
+	Capabilities: [100] Device Serial Number cb-1e-70-79-43-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [900] Access Control Services
+	Kernel driver in use: pcieport
+
+7c:00.0 System peripheral: Intel Corporation JHL7540 Thunderbolt 3 NHI [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation JHL7540 Thunderbolt 3 NHI [Titan Ridge 4C 2018]
+	Flags: fast devsel, IRQ 18
+	Memory at 8fa00000 (32-bit, non-prefetchable) [size=256K]
+	Memory at 8fa40000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [c0] Express Endpoint, MSI 00
+	Capabilities: [a0] MSI-X: Enable- Count=16 Masked-
+	Capabilities: [100] Device Serial Number cb-1e-70-79-43-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Latency Tolerance Reporting
+	Kernel modules: thunderbolt
+
+7d:00.0 USB controller: Intel Corporation JHL7540 Thunderbolt 3 USB Controller [Titan Ridge 4C 2018] (rev 06) (prog-if 30 [XHCI])
+	Subsystem: Intel Corporation JHL7540 Thunderbolt 3 USB Controller [Titan Ridge 4C 2018]
+	Flags: bus master, fast devsel, latency 0, IRQ 39
+	Memory at 8f900000 (32-bit, non-prefetchable) [size=64K]
+	Capabilities: [80] Power Management version 3
+	Capabilities: [88] MSI: Enable+ Count=1/8 Maskable- 64bit+
+	Capabilities: [c0] Express Endpoint, MSI 00
+	Capabilities: [100] Device Serial Number cb-1e-70-79-43-b7-d0-00
+	Capabilities: [200] Advanced Error Reporting
+	Capabilities: [300] Virtual Channel
+	Capabilities: [400] Power Budgeting <?>
+	Capabilities: [500] Vendor Specific Information: ID=1234 Rev=1 Len=100 <?>
+	Capabilities: [600] Vendor Specific Information: ID=8086 Rev=2 Len=04c <?>
+	Capabilities: [700] Secondary PCI Express <?>
+	Capabilities: [800] Latency Tolerance Reporting
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+
