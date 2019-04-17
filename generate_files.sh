@@ -5,6 +5,8 @@ dmidecode -t connector > connector.txt
 dmidecode -t chassis > chassis.txt
 lscpu > lscpu.txt
 lspci -v > lspci.txt
+# TODO: uncomment glxinfo when closed issue#16 on falce
+# glxinfo > glxinfo.txt
 DISKZ=($(lsblk -d -I 8 -o NAME -n))
 echo Found ${#DISKZ[@]} disks
 for d in "${DISKZ[@]}"
