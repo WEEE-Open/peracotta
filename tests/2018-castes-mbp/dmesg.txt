@@ -1,0 +1,1773 @@
+[    0.860800] pci 0000:7b:01.0: PCI bridge to [bus 7e-b6]
+[    0.860801] pci 0000:7b:01.0:   bridge window [io  0x9000-0xafff]
+[    0.860804] pci 0000:7b:01.0:   bridge window [mem 0x8fb00000-0x96afffff]
+[    0.860806] pci 0000:7b:01.0:   bridge window [mem 0xcf700000-0xd66fffff 64bit pref]
+[    0.860810] pci 0000:7d:00.0: BAR 0: assigned [mem 0x8f900000-0x8f90ffff]
+[    0.860813] pci 0000:7b:02.0: PCI bridge to [bus 7d]
+[    0.860816] pci 0000:7b:02.0:   bridge window [mem 0x8f900000-0x8f9fffff]
+[    0.860821] pci 0000:7b:04.0: PCI bridge to [bus b7-ef]
+[    0.860822] pci 0000:7b:04.0:   bridge window [io  0xb000-0xcfff]
+[    0.860825] pci 0000:7b:04.0:   bridge window [mem 0x96b00000-0x9dafffff]
+[    0.860827] pci 0000:7b:04.0:   bridge window [mem 0xd6700000-0xdd6fffff 64bit pref]
+[    0.860830] pci 0000:7a:00.0: PCI bridge to [bus 7b-ef]
+[    0.860832] pci 0000:7a:00.0:   bridge window [io  0x9000-0xcfff]
+[    0.860835] pci 0000:7a:00.0:   bridge window [mem 0x8f900000-0x9dafffff]
+[    0.860837] pci 0000:7a:00.0:   bridge window [mem 0xcf700000-0xdd6fffff 64bit pref]
+[    0.860840] pci 0000:00:01.2: PCI bridge to [bus 7a-ef]
+[    0.860841] pci 0000:00:01.2:   bridge window [io  0x9000-0xcfff]
+[    0.860843] pci 0000:00:01.2:   bridge window [mem 0x8f900000-0x9dafffff]
+[    0.860844] pci 0000:00:01.2:   bridge window [mem 0xcf700000-0xdd6fffff 64bit pref]
+[    0.860847] pci 0000:00:1b.0: PCI bridge to [bus 02]
+[    0.860862] pci 0000:00:1b.0:   bridge window [mem 0xc0400000-0xc16fffff 64bit pref]
+[    0.860868] pci 0000:00:1c.0: PCI bridge to [bus 03]
+[    0.860874] pci 0000:00:1c.0:   bridge window [mem 0x81000000-0x814fffff]
+[    0.860883] pci_bus 0000:00: resource 4 [io  0x0000-0x0cf7 window]
+[    0.860884] pci_bus 0000:00: resource 5 [io  0x0d00-0xffff window]
+[    0.860885] pci_bus 0000:00: resource 6 [mem 0x000a0000-0x000bffff window]
+[    0.860886] pci_bus 0000:00: resource 7 [mem 0x000c0000-0x000c3fff window]
+[    0.860887] pci_bus 0000:00: resource 8 [mem 0x000c4000-0x000c7fff window]
+[    0.860888] pci_bus 0000:00: resource 9 [mem 0x000c8000-0x000cbfff window]
+[    0.860888] pci_bus 0000:00: resource 10 [mem 0x000cc000-0x000cffff window]
+[    0.860889] pci_bus 0000:00: resource 11 [mem 0x000d0000-0x000d3fff window]
+[    0.860890] pci_bus 0000:00: resource 12 [mem 0x000d4000-0x000d7fff window]
+[    0.860891] pci_bus 0000:00: resource 13 [mem 0x000d8000-0x000dbfff window]
+[    0.860892] pci_bus 0000:00: resource 14 [mem 0x000dc000-0x000dffff window]
+[    0.860892] pci_bus 0000:00: resource 15 [mem 0x000e0000-0x000e3fff window]
+[    0.860893] pci_bus 0000:00: resource 16 [mem 0x000e4000-0x000e7fff window]
+[    0.860894] pci_bus 0000:00: resource 17 [mem 0x000e8000-0x000ebfff window]
+[    0.860895] pci_bus 0000:00: resource 18 [mem 0x000ec000-0x000effff window]
+[    0.860896] pci_bus 0000:00: resource 19 [mem 0x000f0000-0x000fffff window]
+[    0.860896] pci_bus 0000:00: resource 20 [mem 0x80000000-0xfeafffff window]
+[    0.860897] pci_bus 0000:00: resource 21 [mem 0x4000000000-0x7fffffffff window]
+[    0.860898] pci_bus 0000:01: resource 0 [io  0x3000-0x3fff]
+[    0.860899] pci_bus 0000:01: resource 1 [mem 0x81500000-0x815fffff]
+[    0.860900] pci_bus 0000:01: resource 2 [mem 0xb0000000-0xc01fffff 64bit pref]
+[    0.860901] pci_bus 0000:04: resource 0 [io  0x5000-0x8fff]
+[    0.860901] pci_bus 0000:04: resource 1 [mem 0x81700000-0x8f8fffff]
+[    0.860902] pci_bus 0000:04: resource 2 [mem 0xc1700000-0xcf6fffff 64bit pref]
+[    0.860903] pci_bus 0000:05: resource 0 [io  0x5000-0x8fff]
+[    0.860904] pci_bus 0000:05: resource 1 [mem 0x81700000-0x8f8fffff]
+[    0.860905] pci_bus 0000:05: resource 2 [mem 0xc1700000-0xcf6fffff 64bit pref]
+[    0.860905] pci_bus 0000:06: resource 1 [mem 0x81800000-0x818fffff]
+[    0.860906] pci_bus 0000:08: resource 0 [io  0x5000-0x6fff]
+[    0.860907] pci_bus 0000:08: resource 1 [mem 0x81900000-0x888fffff]
+[    0.860908] pci_bus 0000:08: resource 2 [mem 0xc1700000-0xc86fffff 64bit pref]
+[    0.860909] pci_bus 0000:07: resource 1 [mem 0x81700000-0x817fffff]
+[    0.860909] pci_bus 0000:41: resource 0 [io  0x7000-0x8fff]
+[    0.860910] pci_bus 0000:41: resource 1 [mem 0x88900000-0x8f8fffff]
+[    0.860911] pci_bus 0000:41: resource 2 [mem 0xc8700000-0xcf6fffff 64bit pref]
+[    0.860912] pci_bus 0000:7a: resource 0 [io  0x9000-0xcfff]
+[    0.860913] pci_bus 0000:7a: resource 1 [mem 0x8f900000-0x9dafffff]
+[    0.860913] pci_bus 0000:7a: resource 2 [mem 0xcf700000-0xdd6fffff 64bit pref]
+[    0.860914] pci_bus 0000:7b: resource 0 [io  0x9000-0xcfff]
+[    0.860915] pci_bus 0000:7b: resource 1 [mem 0x8f900000-0x9dafffff]
+[    0.860916] pci_bus 0000:7b: resource 2 [mem 0xcf700000-0xdd6fffff 64bit pref]
+[    0.860917] pci_bus 0000:7c: resource 1 [mem 0x8fa00000-0x8fafffff]
+[    0.860917] pci_bus 0000:7e: resource 0 [io  0x9000-0xafff]
+[    0.860918] pci_bus 0000:7e: resource 1 [mem 0x8fb00000-0x96afffff]
+[    0.860919] pci_bus 0000:7e: resource 2 [mem 0xcf700000-0xd66fffff 64bit pref]
+[    0.860920] pci_bus 0000:7d: resource 1 [mem 0x8f900000-0x8f9fffff]
+[    0.860921] pci_bus 0000:b7: resource 0 [io  0xb000-0xcfff]
+[    0.860921] pci_bus 0000:b7: resource 1 [mem 0x96b00000-0x9dafffff]
+[    0.860922] pci_bus 0000:b7: resource 2 [mem 0xd6700000-0xdd6fffff 64bit pref]
+[    0.860923] pci_bus 0000:02: resource 2 [mem 0xc0400000-0xc16fffff 64bit pref]
+[    0.860924] pci_bus 0000:03: resource 1 [mem 0x81000000-0x814fffff]
+[    0.861098] NET: Registered protocol family 2
+[    0.861177] tcp_listen_portaddr_hash hash table entries: 8192 (order: 5, 131072 bytes)
+[    0.861208] TCP established hash table entries: 131072 (order: 8, 1048576 bytes)
+[    0.861306] TCP bind hash table entries: 65536 (order: 8, 1048576 bytes)
+[    0.861379] TCP: Hash tables configured (established 131072 bind 65536)
+[    0.861402] UDP hash table entries: 8192 (order: 6, 262144 bytes)
+[    0.861427] UDP-Lite hash table entries: 8192 (order: 6, 262144 bytes)
+[    0.861474] NET: Registered protocol family 1
+[    0.861476] NET: Registered protocol family 44
+[    0.861716] pci 0000:01:00.1: Linked as a consumer to 0000:01:00.0
+[    0.861871] pci 0000:07:00.0: enabling device (0000 -> 0002)
+[    0.862060] pci 0000:7d:00.0: enabling device (0000 -> 0002)
+[    0.862290] PCI: CLS 256 bytes, default 64
+[    0.862313] Unpacking initramfs...
+[    5.076049] Freeing initrd memory: 39280K
+[    5.076100] PCI-DMA: Using software bounce buffering for IO (SWIOTLB)
+[    5.076103] software IO TLB: mapped [mem 0x65fd7000-0x69fd7000] (64MB)
+[    5.076150] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x1fd3b81b95f, max_idle_ns: 440795257325 ns
+[    5.076179] clocksource: Switched to clocksource tsc
+[    5.076214] platform rtc_cmos: registered platform RTC device (no PNP device found)
+[    5.076427] Scanning for low memory corruption every 60 seconds
+[    5.077058] Initialise system trusted keyrings
+[    5.077067] Key type blacklist registered
+[    5.077120] workingset: timestamp_bits=41 max_order=22 bucket_order=0
+[    5.078285] zbud: loaded
+[    5.078592] pstore: using zstd compression
+[    5.079714] Key type asymmetric registered
+[    5.079715] Asymmetric key parser 'x509' registered
+[    5.079722] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 244)
+[    5.079763] io scheduler noop registered
+[    5.079764] io scheduler deadline registered
+[    5.079790] io scheduler cfq registered
+[    5.079791] io scheduler mq-deadline registered
+[    5.079791] io scheduler kyber registered
+[    5.079813] io scheduler bfq registered
+[    5.079833] io scheduler bfq-sq registered (default)
+[    5.079834] BFQ I/O-scheduler: v9 (with cgroups support)
+[    5.079854] io scheduler bfq-mq registered
+[    5.079854] BFQ I/O-scheduler: v9 (with cgroups support)
+[    5.081825] pciehp 0000:05:01.0:pcie204: Slot #1 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ LLActRep+
+[    5.081861] pciehp 0000:05:04.0:pcie204: Slot #4 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ LLActRep+
+[    5.081889] pciehp 0000:7b:01.0:pcie204: Slot #1 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ LLActRep+
+[    5.081914] pciehp 0000:7b:04.0:pcie204: Slot #4 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ LLActRep+
+[    5.081945] shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
+[    5.081989] efifb: probing for efifb
+[    5.082013] efifb: No BGRT, not showing boot graphics
+[    5.082014] efifb: framebuffer at 0xb0300000, using 29440k, total 29440k
+[    5.082014] efifb: mode is 3360x2100x32, linelength=14336, pages=1
+[    5.082015] efifb: scrolling: redraw
+[    5.082016] efifb: Truecolor: size=8:8:8:8, shift=24:16:8:0
+[    5.082036] fbcon: Deferring console take-over
+[    5.082037] fb0: EFI VGA frame buffer device
+[    5.082042] intel_idle: MWAIT substates: 0x11142120
+[    5.082042] intel_idle: v0.4.1 model 0x9E
+[    5.082399] intel_idle: lapic_timer_reliable_states 0xffffffff
+[    5.082469] input: Lid Switch as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/input/input0
+[    5.082475] ACPI: Lid Switch [LID0]
+[    5.082496] input: Power Button as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0C:00/input/input1
+[    5.082500] ACPI: Power Button [PWRB]
+[    5.082518] input: Sleep Button as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0E:00/input/input2
+[    5.082521] ACPI: Sleep Button [SLPB]
+[    5.082537] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input3
+[    5.082541] ACPI: Power Button [PWRF]
+[    5.082583] [Firmware Bug]: ACPI(GFX0) defines _DOD but not _DOS
+[    5.082599] ACPI: Video Device [GFX0] (multi-head: yes  rom: no  post: no)
+[    5.084026] acpi device:02: registered as cooling_device0
+[    5.084043] input: Video Bus as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/device:01/LNXVIDEO:00/input/input4
+[    5.084837] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+[    5.086946] usbcore: registered new interface driver usbserial_generic
+[    5.086948] usbserial: USB Serial support registered for generic
+[    5.086975] rtc_cmos rtc_cmos: RTC can wake from S4
+[    5.087471] rtc_cmos rtc_cmos: registered as rtc0
+[    5.087477] rtc_cmos rtc_cmos: alarms up to one month, y3k, 114 bytes nvram, hpet irqs
+[    5.087504] intel_pstate: Intel P-state driver initializing
+[    5.087515] intel_pstate: Disabling energy efficiency optimization
+[    5.088148] intel_pstate: HWP enabled
+[    5.088643] ledtrig-cpu: registered to indicate activity on CPUs
+[    5.088663] intel_pmc_core:  initialized
+[    5.088860] NET: Registered protocol family 10
+[    5.092392] Segment Routing with IPv6
+[    5.092402] NET: Registered protocol family 17
+[    5.093350] RAS: Correctable Errors collector initialized.
+[    5.093371] microcode: sig=0x906ea, pf=0x20, revision=0x9a
+[    5.093773] microcode: Microcode Update Driver: v2.2.
+[    5.093778] sched_clock: Marking stable (5092810717, 960399)->(5116879623, -23108507)
+[    5.094276] registered taskstats version 1
+[    5.094280] Loading compiled-in X.509 certificates
+[    5.095921] Loaded X.509 cert 'Build time autogenerated kernel key: 7cc678f0e704b9d44757f3af9dd7007b5ca8f55c'
+[    5.095940] zswap: loaded using pool lzo/zbud
+[    5.098461] Key type big_key registered
+[    5.099086]   Magic number: 15:459:580
+[    5.099110] pci_bus 0000:01: hash matches
+[    5.099299] rtc_cmos rtc_cmos: setting system clock to 2019-04-17 11:33:40 UTC (1555500820)
+[    5.258887] CPU9: Core temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258887] CPU3: Core temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258888] CPU9: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258889] CPU3: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258937] CPU0: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258938] CPU6: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258939] CPU1: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258940] CPU7: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258941] CPU8: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258942] CPU2: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258943] CPU4: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258943] CPU10: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258944] CPU5: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.258945] CPU11: Package temperature above threshold, cpu clock throttled (total events = 1)
+[    5.259884] CPU9: Core temperature/speed normal
+[    5.259885] CPU3: Core temperature/speed normal
+[    5.259885] CPU9: Package temperature/speed normal
+[    5.259886] CPU3: Package temperature/speed normal
+[    5.259939] CPU7: Package temperature/speed normal
+[    5.259939] CPU1: Package temperature/speed normal
+[    5.259940] CPU6: Package temperature/speed normal
+[    5.259941] CPU0: Package temperature/speed normal
+[    5.259941] CPU8: Package temperature/speed normal
+[    5.259942] CPU2: Package temperature/speed normal
+[    5.259943] CPU10: Package temperature/speed normal
+[    5.259944] CPU4: Package temperature/speed normal
+[    5.259945] CPU5: Package temperature/speed normal
+[    5.259945] CPU11: Package temperature/speed normal
+[    5.266718] Freeing unused decrypted memory: 2040K
+[    5.391695] Freeing unused kernel image memory: 1540K
+[    5.391775] Write protecting the kernel read-only data: 18432k
+[    5.392797] Freeing unused kernel image memory: 2008K
+[    5.393009] Freeing unused kernel image memory: 400K
+[    5.397727] x86/mm: Checked W+X mappings: passed, no W+X pages found.
+[    5.397728] x86/mm: Checking user space page tables
+[    5.402141] x86/mm: Checked W+X mappings: passed, no W+X pages found.
+[    5.402142] Run /init as init process
+[    5.417109] loop: module loaded
+[    5.420618] device-mapper: uevent: version 1.0.3
+[    5.420703] device-mapper: ioctl: 4.39.0-ioctl (2018-04-03) initialised: dm-devel@redhat.com
+[    5.472240] thunderbolt 0000:06:00.0: NHI initialized, starting thunderbolt
+[    5.472245] thunderbolt 0000:06:00.0: allocating TX ring 0 of size 10
+[    5.472261] thunderbolt 0000:06:00.0: allocating RX ring 0 of size 10
+[    5.472271] thunderbolt 0000:06:00.0: control channel created
+[    5.472271] thunderbolt 0000:06:00.0: control channel starting...
+[    5.472273] thunderbolt 0000:06:00.0: starting TX ring 0
+[    5.472278] thunderbolt 0000:06:00.0: enabling interrupt at register 0x38200 bit 0 (0x0 -> 0x1)
+[    5.472279] thunderbolt 0000:06:00.0: starting RX ring 0
+[    5.472285] thunderbolt 0000:06:00.0: enabling interrupt at register 0x38200 bit 12 (0x1 -> 0x1001)
+[    5.472290] thunderbolt 0000:06:00.0: starting ICM firmware
+[    5.474773] cryptd: max_cpu_qlen set to 1000
+[    5.476683] xhci_hcd 0000:00:14.0: xHCI Host Controller
+[    5.476687] xhci_hcd 0000:00:14.0: new USB bus registered, assigned bus number 1
+[    5.477783] xhci_hcd 0000:00:14.0: hcc params 0x200077c1 hci version 0x110 quirks 0x0000000000009810
+[    5.477789] xhci_hcd 0000:00:14.0: cache line size of 256 is not supported
+[    5.477991] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 4.19
+[    5.477993] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    5.477994] usb usb1: Product: xHCI Host Controller
+[    5.477995] usb usb1: Manufacturer: Linux 4.19.28-1-MANJARO xhci-hcd
+[    5.477996] usb usb1: SerialNumber: 0000:00:14.0
+[    5.478094] hub 1-0:1.0: USB hub found
+[    5.478115] hub 1-0:1.0: 16 ports detected
+[    5.478588] xhci_hcd 0000:00:14.0: xHCI Host Controller
+[    5.478591] xhci_hcd 0000:00:14.0: new USB bus registered, assigned bus number 2
+[    5.478594] xhci_hcd 0000:00:14.0: Host supports USB 3.1 Enhanced SuperSpeed
+[    5.478634] usb usb2: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 4.19
+[    5.478636] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    5.478637] usb usb2: Product: xHCI Host Controller
+[    5.478638] usb usb2: Manufacturer: Linux 4.19.28-1-MANJARO xhci-hcd
+[    5.478639] usb usb2: SerialNumber: 0000:00:14.0
+[    5.478715] hub 2-0:1.0: USB hub found
+[    5.478736] hub 2-0:1.0: 10 ports detected
+[    5.479123] xhci_hcd 0000:07:00.0: xHCI Host Controller
+[    5.479127] xhci_hcd 0000:07:00.0: new USB bus registered, assigned bus number 3
+[    5.479477] AVX2 version of gcm_enc/dec engaged.
+[    5.479477] AES CTR mode by8 optimization enabled
+[    5.480213] xhci_hcd 0000:07:00.0: hcc params 0x200077c1 hci version 0x110 quirks 0x0000000000009810
+[    5.481629] usb usb3: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 4.19
+[    5.481630] usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    5.481631] usb usb3: Product: xHCI Host Controller
+[    5.481632] usb usb3: Manufacturer: Linux 4.19.28-1-MANJARO xhci-hcd
+[    5.481633] usb usb3: SerialNumber: 0000:07:00.0
+[    5.481711] hub 3-0:1.0: USB hub found
+[    5.481717] hub 3-0:1.0: 2 ports detected
+[    5.481839] xhci_hcd 0000:07:00.0: xHCI Host Controller
+[    5.481841] xhci_hcd 0000:07:00.0: new USB bus registered, assigned bus number 4
+[    5.481843] xhci_hcd 0000:07:00.0: Host supports USB 3.1 Enhanced SuperSpeed
+[    5.481867] usb usb4: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 4.19
+[    5.481868] usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    5.481868] usb usb4: Product: xHCI Host Controller
+[    5.481869] usb usb4: Manufacturer: Linux 4.19.28-1-MANJARO xhci-hcd
+[    5.481870] usb usb4: SerialNumber: 0000:07:00.0
+[    5.481926] hub 4-0:1.0: USB hub found
+[    5.481932] hub 4-0:1.0: 2 ports detected
+[    5.482086] xhci_hcd 0000:7d:00.0: xHCI Host Controller
+[    5.482089] xhci_hcd 0000:7d:00.0: new USB bus registered, assigned bus number 5
+[    5.483171] xhci_hcd 0000:7d:00.0: hcc params 0x200077c1 hci version 0x110 quirks 0x0000000000009810
+[    5.483303] usb usb5: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 4.19
+[    5.483304] usb usb5: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    5.483305] usb usb5: Product: xHCI Host Controller
+[    5.483305] usb usb5: Manufacturer: Linux 4.19.28-1-MANJARO xhci-hcd
+[    5.483306] usb usb5: SerialNumber: 0000:7d:00.0
+[    5.483364] hub 5-0:1.0: USB hub found
+[    5.483369] hub 5-0:1.0: 2 ports detected
+[    5.483478] xhci_hcd 0000:7d:00.0: xHCI Host Controller
+[    5.483481] xhci_hcd 0000:7d:00.0: new USB bus registered, assigned bus number 6
+[    5.483483] xhci_hcd 0000:7d:00.0: Host supports USB 3.1 Enhanced SuperSpeed
+[    5.483506] usb usb6: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 4.19
+[    5.483506] usb usb6: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    5.483507] usb usb6: Product: xHCI Host Controller
+[    5.483508] usb usb6: Manufacturer: Linux 4.19.28-1-MANJARO xhci-hcd
+[    5.483509] usb usb6: SerialNumber: 0000:7d:00.0
+[    5.483560] hub 6-0:1.0: USB hub found
+[    5.483565] hub 6-0:1.0: 2 ports detected
+[    5.807694] usb 1-4: new high-speed USB device number 2 using xhci_hcd
+[    5.917939] usb 4-2: new SuperSpeed Gen 1 USB device number 2 using xhci_hcd
+[    5.938753] usb 4-2: New USB device found, idVendor=05e3, idProduct=0626, bcdDevice= 6.54
+[    5.938757] usb 4-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    5.938760] usb 4-2: Product: USB3.1 Hub
+[    5.938763] usb 4-2: Manufacturer: GenesysLogic
+[    5.941664] hub 4-2:1.0: USB hub found
+[    5.942169] hub 4-2:1.0: 4 ports detected
+[    5.951443] usb 1-4: New USB device found, idVendor=05e3, idProduct=0610, bcdDevice= 6.54
+[    5.951447] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    5.951451] usb 1-4: Product: USB2.1 Hub
+[    5.951454] usb 1-4: Manufacturer: GenesysLogic
+[    5.952659] hub 1-4:1.0: USB hub found
+[    5.953038] hub 1-4:1.0: 4 ports detected
+[    6.244505] usb 4-2.3: new SuperSpeed Gen 1 USB device number 3 using xhci_hcd
+[    6.257698] usb 1-4.1: new full-speed USB device number 3 using xhci_hcd
+[    6.262264] usb 4-2.3: New USB device found, idVendor=05dc, idProduct=a205, bcdDevice= a.00
+[    6.262269] usb 4-2.3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[    6.262272] usb 4-2.3: Product: JumpDrive
+[    6.262275] usb 4-2.3: Manufacturer: Lexar
+[    6.262278] usb 4-2.3: SerialNumber: 1505731250
+[    6.292767] SCSI subsystem initialized
+[    6.294673] usb-storage 4-2.3:1.0: USB Mass Storage device detected
+[    6.294808] scsi host0: usb-storage 4-2.3:1.0
+[    6.294873] usbcore: registered new interface driver usb-storage
+[    6.295779] usbcore: registered new interface driver uas
+[    6.358005] usb 4-2.4: new SuperSpeed Gen 1 USB device number 4 using xhci_hcd
+[    6.375667] usb 1-4.1: New USB device found, idVendor=046d, idProduct=c52b, bcdDevice=24.07
+[    6.375671] usb 1-4.1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    6.375674] usb 1-4.1: Product: USB Receiver
+[    6.375677] usb 1-4.1: Manufacturer: Logitech
+[    6.378397] usb 4-2.4: New USB device found, idVendor=05e3, idProduct=0626, bcdDevice= 6.54
+[    6.378402] usb 4-2.4: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    6.378405] usb 4-2.4: Product: USB3.1 Hub
+[    6.378408] usb 4-2.4: Manufacturer: GenesysLogic
+[    6.381032] random: fast init done
+[    6.381836] hub 4-2.4:1.0: USB hub found
+[    6.382234] hub 4-2.4:1.0: 4 ports detected
+[    6.391269] hidraw: raw HID events driver (C) Jiri Kosina
+[    6.399788] usbcore: registered new interface driver usbhid
+[    6.399789] usbhid: USB HID core driver
+[    6.402174] logitech-djreceiver 0003:046D:C52B.0003: hiddev0,hidraw0: USB HID v1.11 Device [Logitech USB Receiver] on usb-0000:00:14.0-4.1/input2
+[    6.484364] usb 1-4.2: new full-speed USB device number 4 using xhci_hcd
+[    6.516747] input: Logitech Unifying Device. Wireless PID:4069 Keyboard as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.1/1-4.1:1.2/0003:046D:C52B.0003/0003:046D:4069.0004/input/input5
+[    6.516823] input: Logitech Unifying Device. Wireless PID:4069 Mouse as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.1/1-4.1:1.2/0003:046D:C52B.0003/0003:046D:4069.0004/input/input6
+[    6.516921] input: Logitech Unifying Device. Wireless PID:4069 Consumer Control as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.1/1-4.1:1.2/0003:046D:C52B.0003/0003:046D:4069.0004/input/input7
+[    6.516974] input: Logitech Unifying Device. Wireless PID:4069 System Control as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.1/1-4.1:1.2/0003:046D:C52B.0003/0003:046D:4069.0004/input/input8
+[    6.517153] hid-generic 0003:046D:4069.0004: input,hidraw1: USB HID v1.11 Keyboard [Logitech Unifying Device. Wireless PID:4069] on usb-0000:00:14.0-4.1:1
+[    6.603510] usb 1-4.2: New USB device found, idVendor=0483, idProduct=4010, bcdDevice= 2.00
+[    6.603515] usb 1-4.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[    6.603518] usb 1-4.2: Product: 72M-RGB
+[    6.603521] usb 1-4.2: Manufacturer: CATEX TECH.
+[    6.603524] usb 1-4.2: SerialNumber: CA2017041
+[    6.608313] input: Logitech MX Master 2S as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.1/1-4.1:1.2/0003:046D:C52B.0003/0003:046D:4069.0004/input/input12
+[    6.608484] logitech-hidpp-device 0003:046D:4069.0004: input,hidraw1: USB HID v1.11 Keyboard [Logitech MX Master 2S] on usb-0000:00:14.0-4.1:1
+[    6.618099] input: CATEX TECH. 72M-RGB as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.2/1-4.2:1.0/0003:0483:4010.0005/input/input13
+[    6.661190] usb 4-2.4.1: new SuperSpeed Gen 1 USB device number 5 using xhci_hcd
+[    6.674579] hid-generic 0003:0483:4010.0005: input,hidraw2: USB HID v1.10 Keyboard [CATEX TECH. 72M-RGB] on usb-0000:00:14.0-4.2/input0
+[    6.676854] hid-generic 0003:0483:4010.0006: hiddev1,hidraw3: USB HID v1.00 Device [CATEX TECH. 72M-RGB] on usb-0000:00:14.0-4.2/input1
+[    6.678848] usb 4-2.4.1: New USB device found, idVendor=0bda, idProduct=8153, bcdDevice=31.00
+[    6.678852] usb 4-2.4.1: New USB device strings: Mfr=1, Product=2, SerialNumber=6
+[    6.678856] usb 4-2.4.1: Product: USB 10/100/1000 LAN
+[    6.678859] usb 4-2.4.1: Manufacturer: Realtek
+[    6.678861] usb 4-2.4.1: SerialNumber: 001000001
+[    6.679182] input: CATEX TECH. 72M-RGB Consumer Control as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.2/1-4.2:1.2/0003:0483:4010.0007/input/input14
+[    6.691395] usbcore: registered new interface driver r8152
+[    6.698872] usbcore: registered new interface driver cdc_ether
+[    6.734423] input: CATEX TECH. 72M-RGB System Control as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.2/1-4.2:1.2/0003:0483:4010.0007/input/input15
+[    6.734468] input: CATEX TECH. 72M-RGB Keyboard as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.2/1-4.2:1.2/0003:0483:4010.0007/input/input16
+[    6.734506] input: CATEX TECH. 72M-RGB Mouse as /devices/pci0000:00/0000:00:14.0/usb1/1-4/1-4.2/1-4.2:1.2/0003:0483:4010.0007/input/input17
+[    6.734649] hid-generic 0003:0483:4010.0007: input,hidraw4: USB HID v1.10 Keyboard [CATEX TECH. 72M-RGB] on usb-0000:00:14.0-4.2/input2
+[    6.754837] usb 4-2.4.4: new SuperSpeed Gen 1 USB device number 6 using xhci_hcd
+[    6.777399] usb 4-2.4.4: New USB device found, idVendor=05e3, idProduct=0749, bcdDevice=15.37
+[    6.777404] usb 4-2.4.4: New USB device strings: Mfr=3, Product=4, SerialNumber=5
+[    6.777408] usb 4-2.4.4: Product: USB3.0 Card Reader
+[    6.777411] usb 4-2.4.4: Manufacturer: Generic
+[    6.777413] usb 4-2.4.4: SerialNumber: 000000001537
+[    6.782246] usb-storage 4-2.4.4:1.0: USB Mass Storage device detected
+[    6.782917] scsi host1: usb-storage 4-2.4.4:1.0
+[    6.831034] usb 1-4.4: new high-speed USB device number 5 using xhci_hcd
+[    6.848293] usb 4-2.4.1: reset SuperSpeed Gen 1 USB device number 5 using xhci_hcd
+[    6.914874] r8152 4-2.4.1:1.0 eth0: v1.09.9
+[    6.948005] usb 1-4.4: New USB device found, idVendor=05e3, idProduct=0610, bcdDevice= 6.54
+[    6.948010] usb 1-4.4: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    6.948013] usb 1-4.4: Product: USB2.1 Hub
+[    6.948016] usb 1-4.4: Manufacturer: GenesysLogic
+[    6.949364] hub 1-4.4:1.0: USB hub found
+[    6.949845] hub 1-4.4:1.0: 4 ports detected
+[    7.254364] usb 1-4.4.3: new full-speed USB device number 6 using xhci_hcd
+[    7.321928] scsi 0:0:0:0: Direct-Access     Lexar    JumpDrive        1.00 PQ: 0 ANSI: 6
+[    7.328566] sd 0:0:0:0: [sda] 31293440 512-byte logical blocks: (16.0 GB/14.9 GiB)
+[    7.328683] sd 0:0:0:0: [sda] Write Protect is off
+[    7.328685] sd 0:0:0:0: [sda] Mode Sense: 23 00 00 00
+[    7.328830] sd 0:0:0:0: [sda] Write cache: disabled, read cache: disabled, doesn't support DPO or FUA
+[    7.330402]  sda: sda1 sda2
+[    7.331224] sd 0:0:0:0: [sda] Attached SCSI removable disk
+[    7.370633] usb 1-4.4.3: New USB device found, idVendor=1d5c, idProduct=7102, bcdDevice= 1.00
+[    7.370637] usb 1-4.4.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    7.370639] usb 1-4.4.3: Product: Generic Billboard Device
+[    7.370641] usb 1-4.4.3: Manufacturer: Fresco Logic, Inc
+[    7.804473] scsi 1:0:0:0: Direct-Access     Generic  MassStorageClass 1537 PQ: 0 ANSI: 6
+[    7.807363] sd 1:0:0:0: [sdb] Attached SCSI removable disk
+[    8.681035] thunderbolt 0000:06:00.0: could not start ICM firmware
+[    8.681042] thunderbolt 0000:06:00.0: stopping RX ring 0
+[    8.681052] thunderbolt 0000:06:00.0: disabling interrupt at register 0x38200 bit 12 (0x1001 -> 0x1)
+[    8.681138] thunderbolt 0000:06:00.0: stopping TX ring 0
+[    8.681148] thunderbolt 0000:06:00.0: disabling interrupt at register 0x38200 bit 0 (0x1 -> 0x0)
+[    8.681234] thunderbolt 0000:06:00.0: control channel stopped
+[    8.681261] thunderbolt 0000:06:00.0: freeing RX ring 0
+[    8.681274] thunderbolt 0000:06:00.0: freeing TX ring 0
+[    8.681295] thunderbolt 0000:06:00.0: shutdown
+[    8.681738] thunderbolt: probe of 0000:06:00.0 failed with error -110
+[    8.682317] thunderbolt 0000:7c:00.0: NHI initialized, starting thunderbolt
+[    8.682324] thunderbolt 0000:7c:00.0: allocating TX ring 0 of size 10
+[    8.682356] thunderbolt 0000:7c:00.0: allocating RX ring 0 of size 10
+[    8.682380] thunderbolt 0000:7c:00.0: control channel created
+[    8.682382] thunderbolt 0000:7c:00.0: control channel starting...
+[    8.682386] thunderbolt 0000:7c:00.0: starting TX ring 0
+[    8.682396] thunderbolt 0000:7c:00.0: enabling interrupt at register 0x38200 bit 0 (0x0 -> 0x1)
+[    8.682399] thunderbolt 0000:7c:00.0: starting RX ring 0
+[    8.682408] thunderbolt 0000:7c:00.0: enabling interrupt at register 0x38200 bit 12 (0x1 -> 0x1001)
+[    8.682415] thunderbolt 0000:7c:00.0: starting ICM firmware
+[   11.881032] thunderbolt 0000:7c:00.0: could not start ICM firmware
+[   11.881040] thunderbolt 0000:7c:00.0: stopping RX ring 0
+[   11.881049] thunderbolt 0000:7c:00.0: disabling interrupt at register 0x38200 bit 12 (0x1001 -> 0x1)
+[   11.881147] thunderbolt 0000:7c:00.0: stopping TX ring 0
+[   11.881157] thunderbolt 0000:7c:00.0: disabling interrupt at register 0x38200 bit 0 (0x1 -> 0x0)
+[   11.881240] thunderbolt 0000:7c:00.0: control channel stopped
+[   11.881266] thunderbolt 0000:7c:00.0: freeing RX ring 0
+[   11.881279] thunderbolt 0000:7c:00.0: freeing TX ring 0
+[   11.881299] thunderbolt 0000:7c:00.0: shutdown
+[   11.881727] thunderbolt: probe of 0000:7c:00.0 failed with error -110
+[   11.956176] ISO 9660 Extensions: RRIP_1991A
+[   12.050181] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[   12.389263] overlayfs: fs on '/run/miso/sfs/livefs' does not support file handles, falling back to index=off,nfs_export=off.
+[   13.065918] systemd[1]: systemd 241.607-1-manjaro running in system mode. (+PAM +AUDIT -SELINUX -IMA -APPARMOR +SMACK -SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 +SECCOMP +BLKID +ELFUTILS +KMOD +IDN2 -IDN +PCRE2 default-hierarchy=hybrid)
+[   13.081106] systemd[1]: Detected architecture x86-64.
+[   13.102155] fbcon: Taking over console
+[   13.102257] Console: switching to colour frame buffer device 420x131
+[   13.111699] systemd[1]: Set hostname to <manjaro-gnome>.
+[   13.711019] random: crng init done
+[   13.715464] systemd[1]: Reached target Remote File Systems.
+[   13.715577] systemd[1]: Listening on initctl Compatibility Named Pipe.
+[   13.715623] systemd[1]: Reached target Login Prompts.
+[   13.717428] systemd[1]: Listening on LVM2 metadata daemon socket.
+[   13.717503] systemd[1]: Listening on Device-mapper event daemon FIFOs.
+[   13.718163] systemd[1]: Listening on udev Control Socket.
+[   13.718274] systemd[1]: Listening on LVM2 poll daemon socket.
+[   13.762674] audit: type=1130 audit(1555500829.159:2): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=kmod-static-nodes comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.771118] audit: type=1130 audit(1555500829.169:3): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-remount-fs comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.780574] audit: type=1130 audit(1555500829.176:4): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-random-seed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.803503] audit: type=1130 audit(1555500829.199:5): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-journald comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.812591] audit: type=1130 audit(1555500829.209:6): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-modules-load comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.840934] audit: type=1130 audit(1555500829.236:7): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-sysctl comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.841248] audit: type=1130 audit(1555500829.239:8): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-tmpfiles-setup-dev comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.858280] systemd-journald[363]: Received request to flush runtime journal from PID 1
+[   13.858771] audit: type=1130 audit(1555500829.256:9): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-udev-trigger comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.859068] audit: type=1130 audit(1555500829.256:10): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-journal-flush comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   13.868324] audit: type=1130 audit(1555500829.266:11): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=lvm2-lvmetad comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   14.004800] ACPI: AC Adapter [ADP1] (off-line)
+[   14.006537] acpi-tad ACPI000E:00: Missing _PRW
+[   14.039864] smbus_hc ACPI0001:00: SBS HC: offset = 0x20, query_bit = 0x10
+[   14.063075] ACPI: Smart Battery System [SBS0]: AC Adapter [AC0] (on-line)
+[   14.077114] intel_pch_thermal 0000:00:12.0: can't derive routing for PCI INT A
+[   14.077117] intel_pch_thermal 0000:00:12.0: PCI INT A: not connected
+[   14.108458] input: PC Speaker as /devices/platform/pcspkr/input/input18
+[   14.183316] i801_smbus 0000:00:1f.4: SPD Write Disable is set
+[   14.183569] i801_smbus 0000:00:1f.4: SMBus using PCI interrupt
+[   14.184499] RAPL PMU: API unit is 2^-32 Joules, 5 fixed counters, 655360 ms ovfl timer
+[   14.184500] RAPL PMU: hw unit of domain pp0-core 2^-14 Joules
+[   14.184501] RAPL PMU: hw unit of domain package 2^-14 Joules
+[   14.184502] RAPL PMU: hw unit of domain dram 2^-14 Joules
+[   14.184502] RAPL PMU: hw unit of domain pp1-gpu 2^-14 Joules
+[   14.184503] RAPL PMU: hw unit of domain psys 2^-14 Joules
+[   14.193332] apple_gmux: Failed to find gmux I/O resource
+[   14.197700] intel-lpss 0000:00:1e.0: enabling device (0000 -> 0002)
+[   14.220482] iTCO_vendor_support: vendor-support=0
+[   14.236207] idma64 idma64.0: Found Intel integrated DMA 64-bit
+[   14.277574] Bluetooth: Core ver 2.22
+[   14.277584] NET: Registered protocol family 31
+[   14.277585] Bluetooth: HCI device and connection manager initialized
+[   14.277587] Bluetooth: HCI socket layer initialized
+[   14.277588] Bluetooth: L2CAP socket layer initialized
+[   14.277592] Bluetooth: SCO socket layer initialized
+[   14.284563] dw-apb-uart.0: ttyS0 at MMIO 0x4000000000 (irq = 20, base_baud = 7500000) is a 16550A
+[   14.284623] serial serial0: tty port ttyS0 registered
+[   14.302625] iTCO_wdt: Intel TCO WatchDog Timer Driver v1.11
+[   14.302843] iTCO_wdt iTCO_wdt: can't request region for resource [mem 0x00c5fffc-0x00c5ffff]
+[   14.302847] iTCO_wdt: probe of iTCO_wdt failed with error -16
+[   14.314187] Linux agpgart interface v0.103
+[   14.341194] Bluetooth: HCI UART driver ver 2.3
+[   14.341196] Bluetooth: HCI UART protocol H4 registered
+[   14.341196] Bluetooth: HCI UART protocol BCSP registered
+[   14.347681] Bluetooth: HCI UART protocol LL registered
+[   14.347682] Bluetooth: HCI UART protocol ATH3K registered
+[   14.347701] Bluetooth: HCI UART protocol Three-wire (H5) registered
+[   14.347733] Bluetooth: HCI UART protocol Intel registered
+[   14.348148] Bluetooth: HCI UART protocol Broadcom registered
+[   14.348157] Bluetooth: HCI UART protocol QCA registered
+[   14.348158] Bluetooth: HCI UART protocol AG6XX registered
+[   14.348159] Bluetooth: HCI UART protocol Marvell registered
+[   14.354666] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   14.354667] applesmc: #KEY: read arg fail
+[   14.363103] ACPI: Smart Battery System [SBS0]: Battery Slot [BAT0] (battery present)
+[   14.364431] hci_uart_bcm serial0-0: Unexpected ACPI gpio_int_idx: -1
+[   14.364433] hci_uart_bcm serial0-0: Unexpected number of ACPI GPIOs: 0
+[   14.364437] hci_uart_bcm serial0-0: No reset resource, using default baud rate
+[   14.415019] intel_rapl: Found RAPL domain package
+[   14.415021] intel_rapl: Found RAPL domain core
+[   14.415021] intel_rapl: Found RAPL domain uncore
+[   14.415022] intel_rapl: Found RAPL domain dram
+[   14.415317] snd_hda_intel 0000:01:00.1: enabling device (0000 -> 0002)
+[   14.415377] snd_hda_intel 0000:01:00.1: Handle vga_switcheroo audio client
+[   14.415378] snd_hda_intel 0000:01:00.1: Force to non-snoop mode
+[   14.426326] input: HDA ATI HDMI HDMI/DP,pcm=3 as /devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card0/input19
+[   14.426363] input: HDA ATI HDMI HDMI/DP,pcm=7 as /devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card0/input20
+[   14.426404] input: HDA ATI HDMI HDMI/DP,pcm=8 as /devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card0/input21
+[   14.426435] input: HDA ATI HDMI HDMI/DP,pcm=9 as /devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card0/input22
+[   14.426466] input: HDA ATI HDMI HDMI/DP,pcm=10 as /devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card0/input23
+[   14.426496] input: HDA ATI HDMI HDMI/DP,pcm=11 as /devices/pci0000:00/0000:00:01.0/0000:01:00.1/sound/card0/input24
+[   14.543331] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   14.543331] applesmc: #KEY: read arg fail
+[   14.616823] [drm] amdgpu kernel modesetting enabled.
+[   14.637016] AMD IOMMUv2 driver by Joerg Roedel <jroedel@suse.de>
+[   14.637017] AMD IOMMUv2 functionality not available on this system
+[   14.647102] CRAT table not found
+[   14.647104] Virtual CRAT table created for CPU
+[   14.647104] Parsing CRAT table with 1 nodes
+[   14.647105] Creating topology SYSFS entries
+[   14.647110] Topology: Add CPU node
+[   14.647110] Finished initializing topology
+[   14.647186] kfd kfd: Initialized module
+[   14.647408] checking generic (b0300000 1cc0000) vs hw (b0000000 10000000)
+[   14.647409] fb: switching to amdgpudrmfb from EFI VGA
+[   14.647422] Console: switching to colour dummy device 80x25
+[   14.647688] [drm] initializing kernel modesetting (POLARIS11 0x1002:0x67EF 0x106B:0x018F 0xC2).
+[   14.647720] [drm] register mmio base: 0x81500000
+[   14.647721] [drm] register mmio size: 262144
+[   14.647730] [drm] add ip block number 0 <vi_common>
+[   14.647731] [drm] add ip block number 1 <gmc_v8_0>
+[   14.647731] [drm] add ip block number 2 <tonga_ih>
+[   14.647732] [drm] add ip block number 3 <powerplay>
+[   14.647733] [drm] add ip block number 4 <dm>
+[   14.647734] [drm] add ip block number 5 <gfx_v8_0>
+[   14.647734] [drm] add ip block number 6 <sdma_v3_0>
+[   14.647735] [drm] add ip block number 7 <uvd_v6_0>
+[   14.647736] [drm] add ip block number 8 <vce_v3_0>
+[   14.647745] [drm] UVD is enabled in VM mode
+[   14.647746] [drm] UVD ENC is enabled in VM mode
+[   14.647747] [drm] VCE enabled in VM mode
+[   14.647768] ATOM BIOS: 113-C97501U-005
+[   14.647790] [drm] vm size is 64 GB, 2 levels, block size is 10-bit, fragment size is 9-bit
+[   14.661005] amdgpu 0000:01:00.0: BAR 2: releasing [mem 0xc0000000-0xc01fffff 64bit pref]
+[   14.661006] amdgpu 0000:01:00.0: BAR 0: releasing [mem 0xb0000000-0xbfffffff 64bit pref]
+[   14.661012] amdgpu 0000:01:00.0: BAR 0: assigned [mem 0xb0000000-0xbfffffff 64bit pref]
+[   14.661018] amdgpu 0000:01:00.0: BAR 2: assigned [mem 0xc0000000-0xc01fffff 64bit pref]
+[   14.661030] amdgpu 0000:01:00.0: VRAM: 4096M 0x000000F400000000 - 0x000000F4FFFFFFFF (4096M used)
+[   14.661031] amdgpu 0000:01:00.0: GART: 256M 0x0000000000000000 - 0x000000000FFFFFFF
+[   14.661035] [drm] Detected VRAM RAM=4096M, BAR=256M
+[   14.661036] [drm] RAM width 128bits GDDR5
+[   14.661142] [TTM] Zone  kernel: Available graphics memory: 8156752 kiB
+[   14.661142] [TTM] Zone   dma32: Available graphics memory: 2097152 kiB
+[   14.661143] [TTM] Initializing pool allocator
+[   14.661145] [TTM] Initializing DMA pool allocator
+[   14.661168] [drm] amdgpu: 4096M of VRAM memory ready
+[   14.661169] [drm] amdgpu: 4096M of GTT memory ready.
+[   14.661175] [drm] GART: num cpu pages 65536, num gpu pages 65536
+[   14.661812] [drm] PCIE GART of 256M enabled (table at 0x000000F401AEB000).
+[   14.670373] [drm] Chained IB support enabled!
+[   14.704903] [drm] Found UVD firmware Version: 1.130 Family ID: 16
+[   14.714103] [drm] Found VCE firmware Version: 53.26 Binary ID: 3
+[   14.729954] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   14.729954] applesmc: #KEY: read arg fail
+[   14.756798] Bluetooth: hci0: BCM: failed to write update baudrate (-16)
+[   14.756799] Bluetooth: hci0: Failed to set baudrate
+[   14.775873] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched 
+[   14.775874] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched 
+[   14.775874] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched 
+[   14.787385] amdgpu: [powerplay] Failed to retrieve minimum clocks.
+[   14.787386] amdgpu: [powerplay] Error in phm_get_clock_info 
+[   14.787417] [drm] DM_PPLIB: values for Engine clock
+[   14.787418] [drm] DM_PPLIB:	 214000
+[   14.787418] [drm] DM_PPLIB:	 363000
+[   14.787419] [drm] DM_PPLIB:	 533000
+[   14.787419] [drm] DM_PPLIB:	 670000
+[   14.787419] [drm] DM_PPLIB:	 780000
+[   14.787420] [drm] DM_PPLIB:	 888000
+[   14.787420] [drm] DM_PPLIB:	 966000
+[   14.787421] [drm] DM_PPLIB:	 1004000
+[   14.787421] [drm] DM_PPLIB: Validation clocks:
+[   14.787422] [drm] DM_PPLIB:    engine_max_clock: 100400
+[   14.787422] [drm] DM_PPLIB:    memory_max_clock: 147000
+[   14.787422] [drm] DM_PPLIB:    level           : 8
+[   14.787423] [drm] DM_PPLIB: values for Memory clock
+[   14.787424] [drm] DM_PPLIB:	 300000
+[   14.787424] [drm] DM_PPLIB:	 1470000
+[   14.787424] [drm] DM_PPLIB: Validation clocks:
+[   14.787425] [drm] DM_PPLIB:    engine_max_clock: 100400
+[   14.787425] [drm] DM_PPLIB:    memory_max_clock: 147000
+[   14.787425] [drm] DM_PPLIB:    level           : 8
+[   14.817712] [drm] Display Core initialized with v3.1.59!
+[   14.827223] [drm] SADs count is: -2, don't need to read it
+[   14.828444] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+[   14.828445] [drm] Driver supports precise vblank timestamp query.
+[   14.878035] [drm] UVD and UVD ENC initialized successfully.
+[   14.916933] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   14.916935] applesmc: #KEY: read arg fail
+[   14.919466] Bluetooth: hci0: BCM: chip id 123
+[   14.920432] Bluetooth: hci0: BCM: features 0x0f
+[   14.922217] Bluetooth: hci0: BCM4364B0 Maui Olympic GEN (MFG)
+[   14.922219] Bluetooth: hci0: BCM (001.000.066) build 0297
+[   14.922571] bluetooth hci0: Direct firmware load for brcm/BCM.hcd failed with error -2
+[   14.922572] Bluetooth: hci0: BCM: Patch brcm/BCM.hcd not found
+[   14.988975] [drm] VCE initialized successfully.
+[   14.990067] kfd kfd: Allocated 3969056 bytes on gart
+[   14.990080] Virtual CRAT table created for GPU
+[   14.990080] Parsing CRAT table with 1 nodes
+[   14.990083] Creating topology SYSFS entries
+[   14.990110] Topology: Add dGPU node [0x67ef:0x1002]
+[   14.990163] kfd kfd: added device 1002:67ef
+[   14.993596] [drm] fb mappable at 0xB2013000
+[   14.993597] [drm] vram apper at 0xB0000000
+[   14.993597] [drm] size 20738048
+[   14.993598] [drm] fb depth is 24
+[   14.993598] [drm]    pitch is 11520
+[   14.993714] fbcon: amdgpudrmfb (fb0) is primary device
+[   14.998845] Console: switching to colour frame buffer device 360x112
+[   15.004661] amdgpu 0000:01:00.0: fb0: amdgpudrmfb frame buffer device
+[   15.042059] [drm] Initialized amdgpu 3.27.0 20150101 for 0000:01:00.0 on minor 0
+[   15.103263] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   15.103264] applesmc: #KEY: read arg fail
+[   15.290009] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   15.290010] applesmc: #KEY: read arg fail
+[   15.476575] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   15.476576] applesmc: #KEY: read arg fail
+[   15.663307] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   15.663308] applesmc: #KEY: read arg fail
+[   15.850074] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   15.850075] applesmc: #KEY: read arg fail
+[   15.886347] mousedev: PS/2 mouse device common for all mice
+[   16.036611] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   16.036612] applesmc: #KEY: read arg fail
+[   16.223368] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   16.223369] applesmc: #KEY: read arg fail
+[   16.395231] r8152 4-2.4.1:1.0 enp7s0u2u4u1: renamed from eth0
+[   16.410226] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   16.410226] applesmc: #KEY: read arg fail
+[   16.596723] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   16.596724] applesmc: #KEY: read arg fail
+[   16.603531] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+[   16.603531] Bluetooth: BNEP filters: protocol multicast
+[   16.603534] Bluetooth: BNEP socket layer initialized
+[   16.783307] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   16.783308] applesmc: #KEY: read arg fail
+[   16.970054] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   16.970055] applesmc: #KEY: read arg fail
+[   17.143569] IPv6: ADDRCONF(NETDEV_UP): enp7s0u2u4u1: link is not ready
+[   17.147945] IPv6: ADDRCONF(NETDEV_UP): enp7s0u2u4u1: link is not ready
+[   17.156416] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   17.156417] applesmc: #KEY: read arg fail
+[   17.178346] IPv6: ADDRCONF(NETDEV_CHANGE): enp7s0u2u4u1: link becomes ready
+[   17.178541] r8152 4-2.4.1:1.0 enp7s0u2u4u1: carrier on
+[   17.343238] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   17.343239] applesmc: #KEY: read arg fail
+[   17.530089] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   17.530090] applesmc: #KEY: read arg fail
+[   17.716585] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   17.716586] applesmc: #KEY: read arg fail
+[   17.826917] st: Version 20160209, fixed bufsize 32768, s/g segs 256
+[   17.856466] sd 0:0:0:0: Attached scsi generic sg0 type 0
+[   17.856640] sd 1:0:0:0: Attached scsi generic sg1 type 0
+[   17.906658] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   17.906660] applesmc: #KEY: read arg fail
+[   18.093273] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   18.093274] applesmc: #KEY: read arg fail
+[   18.279916] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   18.279917] applesmc: #KEY: read arg fail
+[   18.466751] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   18.466752] applesmc: #KEY: read arg fail
+[   18.653257] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   18.653258] applesmc: #KEY: read arg fail
+[   18.839649] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   18.839650] applesmc: #KEY: read arg fail
+[   19.026609] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   19.026610] applesmc: #KEY: read arg fail
+[   19.213020] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   19.213021] applesmc: #KEY: read arg fail
+[   19.399764] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   19.399765] applesmc: #KEY: read arg fail
+[   19.424379] kauditd_printk_skb: 36 callbacks suppressed
+[   19.424380] audit: type=1131 audit(1555500834.823:48): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-rfkill comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   19.586484] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   19.586485] applesmc: #KEY: read arg fail
+[   19.773054] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   19.773055] applesmc: #KEY: read arg fail
+[   19.960080] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   19.960081] applesmc: #KEY: read arg fail
+[   20.146694] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   20.146695] applesmc: #KEY: read arg fail
+[   20.333271] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   20.333272] applesmc: #KEY: read arg fail
+[   20.519906] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   20.519907] applesmc: #KEY: read arg fail
+[   20.706340] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   20.706341] applesmc: #KEY: read arg fail
+[   20.893060] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   20.893061] applesmc: #KEY: read arg fail
+[   21.079901] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   21.079902] applesmc: #KEY: read arg fail
+[   21.266429] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   21.266430] applesmc: #KEY: read arg fail
+[   21.453354] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   21.453355] applesmc: #KEY: read arg fail
+[   21.639491] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   21.639492] applesmc: #KEY: read arg fail
+[   21.826662] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   21.826664] applesmc: #KEY: read arg fail
+[   22.013053] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   22.013054] applesmc: #KEY: read arg fail
+[   22.200048] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   22.200049] applesmc: #KEY: read arg fail
+[   22.386522] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   22.386522] applesmc: #KEY: read arg fail
+[   22.573295] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   22.573296] applesmc: #KEY: read arg fail
+[   22.759484] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   22.759484] applesmc: #KEY: read arg fail
+[   22.946683] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   22.946683] applesmc: #KEY: read arg fail
+[   23.133303] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   23.133304] applesmc: #KEY: read arg fail
+[   23.319756] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   23.319756] applesmc: #KEY: read arg fail
+[   23.506514] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   23.506515] applesmc: #KEY: read arg fail
+[   23.693301] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   23.693302] applesmc: #KEY: read arg fail
+[   23.879704] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   23.879705] applesmc: #KEY: read arg fail
+[   24.066479] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   24.066481] applesmc: #KEY: read arg fail
+[   24.253244] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   24.253245] applesmc: #KEY: read arg fail
+[   24.439733] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   24.439733] applesmc: #KEY: read arg fail
+[   24.626458] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   24.626459] applesmc: #KEY: read arg fail
+[   24.813096] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   24.813096] applesmc: #KEY: read arg fail
+[   24.999744] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   24.999745] applesmc: #KEY: read arg fail
+[   25.186392] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   25.186392] applesmc: #KEY: read arg fail
+[   25.373381] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   25.373382] applesmc: #KEY: read arg fail
+[   25.559710] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   25.559710] applesmc: #KEY: read arg fail
+[   25.746340] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   25.746341] applesmc: #KEY: read arg fail
+[   25.933331] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   25.933332] applesmc: #KEY: read arg fail
+[   26.119927] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   26.119928] applesmc: #KEY: read arg fail
+[   26.306763] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   26.306764] applesmc: #KEY: read arg fail
+[   26.408461] audit: type=1130 audit(1555500841.806:49): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=mhwd-live comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   26.408483] audit: type=1131 audit(1555500841.806:50): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=mhwd-live comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   26.493381] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   26.493381] applesmc: #KEY: read arg fail
+[   26.502610] audit: type=1130 audit(1555500841.899:51): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=pacman-init comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   26.680124] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   26.680124] applesmc: #KEY: read arg fail
+[   26.866484] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   26.866485] applesmc: #KEY: read arg fail
+[   27.018250] audit: type=1131 audit(1555500842.416:52): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=NetworkManager-dispatcher comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   27.053253] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   27.053253] applesmc: #KEY: read arg fail
+[   27.240172] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   27.240172] applesmc: #KEY: read arg fail
+[   27.426809] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   27.426809] applesmc: #KEY: read arg fail
+[   27.613409] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   27.613410] applesmc: #KEY: read arg fail
+[   27.799997] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   27.799997] applesmc: #KEY: read arg fail
+[   27.986593] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   27.986594] applesmc: #KEY: read arg fail
+[   28.172985] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   28.172985] applesmc: #KEY: read arg fail
+[   28.360068] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   28.360069] applesmc: #KEY: read arg fail
+[   28.430944] audit: type=1130 audit(1555500843.826:53): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=mirrors-live comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   28.430947] audit: type=1131 audit(1555500843.826:54): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=mirrors-live comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   28.439727] audit: type=1130 audit(1555500843.836:55): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-user-sessions comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   28.462916] audit: type=1130 audit(1555500843.859:56): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=gdm comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   28.495363] audit: type=1130 audit(1555500843.893:57): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=accounts-daemon comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   28.546853] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   28.546854] applesmc: #KEY: read arg fail
+[   28.623110] audit: type=1130 audit(1555500844.019:58): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=tlp comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   28.733487] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   28.733488] applesmc: #KEY: read arg fail
+[   28.919979] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   28.919980] applesmc: #KEY: read arg fail
+[   29.106437] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   29.106438] applesmc: #KEY: read arg fail
+[   29.293191] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   29.293192] applesmc: #KEY: read arg fail
+[   29.480146] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   29.480147] applesmc: #KEY: read arg fail
+[   29.666579] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   29.666580] applesmc: #KEY: read arg fail
+[   29.853472] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   29.853473] applesmc: #KEY: read arg fail
+[   30.040055] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   30.040056] applesmc: #KEY: read arg fail
+[   30.226767] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   30.226768] applesmc: #KEY: read arg fail
+[   30.413205] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   30.413206] applesmc: #KEY: read arg fail
+[   30.599884] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   30.599885] applesmc: #KEY: read arg fail
+[   30.787426] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   30.787427] applesmc: #KEY: read arg fail
+[   30.973221] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   30.973222] applesmc: #KEY: read arg fail
+[   31.160102] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   31.160103] applesmc: #KEY: read arg fail
+[   31.346559] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   31.346560] applesmc: #KEY: read arg fail
+[   31.532993] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   31.532994] applesmc: #KEY: read arg fail
+[   31.719933] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   31.719934] applesmc: #KEY: read arg fail
+[   31.906830] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   31.906831] applesmc: #KEY: read arg fail
+[   32.093209] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   32.093210] applesmc: #KEY: read arg fail
+[   32.243085] fuse init (API version 7.27)
+[   32.280092] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   32.280093] applesmc: #KEY: read arg fail
+[   32.400975] kauditd_printk_skb: 5 callbacks suppressed
+[   32.400976] audit: type=1130 audit(1555500847.796:64): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=rtkit-daemon comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   32.466550] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   32.466552] applesmc: #KEY: read arg fail
+[   32.653246] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   32.653247] applesmc: #KEY: read arg fail
+[   32.819843] Bluetooth: RFCOMM TTY layer initialized
+[   32.819847] Bluetooth: RFCOMM socket layer initialized
+[   32.819928] Bluetooth: RFCOMM ver 1.11
+[   32.839939] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   32.839940] applesmc: #KEY: read arg fail
+[   32.894314] applesmc: probe of applesmc.768 failed with error -5
+[   33.026609] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   33.026610] applesmc: #KEY: read arg fail
+[   33.213145] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   33.213146] applesmc: #KEY: read arg fail
+[   33.399777] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   33.399778] applesmc: #KEY: read arg fail
+[   33.586487] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   33.586487] applesmc: #KEY: read arg fail
+[   33.772863] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   33.772864] applesmc: #KEY: read arg fail
+[   33.959933] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   33.959934] applesmc: #KEY: read arg fail
+[   34.146804] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   34.146805] applesmc: #KEY: read arg fail
+[   34.332867] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   34.332868] applesmc: #KEY: read arg fail
+[   34.520021] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   34.520022] applesmc: #KEY: read arg fail
+[   34.706513] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   34.706514] applesmc: #KEY: read arg fail
+[   34.893240] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   34.893241] applesmc: #KEY: read arg fail
+[   35.079882] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   35.079883] applesmc: #KEY: read arg fail
+[   35.266606] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   35.266607] applesmc: #KEY: read arg fail
+[   35.453404] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   35.453405] applesmc: #KEY: read arg fail
+[   35.639585] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   35.639586] applesmc: #KEY: read arg fail
+[   35.826397] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   35.826398] applesmc: #KEY: read arg fail
+[   36.013153] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   36.013154] applesmc: #KEY: read arg fail
+[   36.199827] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   36.199828] applesmc: #KEY: read arg fail
+[   36.386685] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   36.386685] applesmc: #KEY: read arg fail
+[   36.573000] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   36.573000] applesmc: #KEY: read arg fail
+[   36.759666] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   36.759667] applesmc: #KEY: read arg fail
+[   36.946639] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   36.946641] applesmc: #KEY: read arg fail
+[   37.136594] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   37.136595] applesmc: #KEY: read arg fail
+[   37.323075] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   37.323076] applesmc: #KEY: read arg fail
+[   37.509934] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   37.509935] applesmc: #KEY: read arg fail
+[   37.699855] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   37.699857] applesmc: #KEY: read arg fail
+[   37.759028] audit: type=1130 audit(1555500853.156:65): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=udisks2 comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   37.765871] audit: type=1130 audit(1555500853.163:66): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=wpa_supplicant comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   37.769486] audit: type=1130 audit(1555500853.166:67): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=geoclue comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   37.890161] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   37.890162] applesmc: #KEY: read arg fail
+[   37.922233] rfkill: input handler disabled
+[   37.987471] audit: type=1130 audit(1555500853.383:68): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=colord comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   38.076836] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   38.076837] applesmc: #KEY: read arg fail
+[   38.100277] audit: type=1130 audit(1555500853.496:69): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=upower comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   38.105269] audit: type=1130 audit(1555500853.503:70): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=org.cups.cupsd comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   38.203653] audit: type=1130 audit(1555500853.599:71): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-localed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   38.263532] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   38.263534] applesmc: #KEY: read arg fail
+[   38.451293] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   38.451294] applesmc: #KEY: read arg fail
+[   38.639882] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   38.639883] applesmc: #KEY: read arg fail
+[   38.826865] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   38.826866] applesmc: #KEY: read arg fail
+[   39.013262] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   39.013264] applesmc: #KEY: read arg fail
+[   39.203502] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   39.203503] applesmc: #KEY: read arg fail
+[   39.393003] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   39.393004] applesmc: #KEY: read arg fail
+[   39.579953] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   39.579954] applesmc: #KEY: read arg fail
+[   39.766541] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   39.766542] applesmc: #KEY: read arg fail
+[   39.953014] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   39.953015] applesmc: #KEY: read arg fail
+[   40.140032] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   40.140033] applesmc: #KEY: read arg fail
+[   40.326570] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   40.326571] applesmc: #KEY: read arg fail
+[   40.513052] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   40.513053] applesmc: #KEY: read arg fail
+[   40.699955] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   40.699956] applesmc: #KEY: read arg fail
+[   40.886728] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   40.886729] applesmc: #KEY: read arg fail
+[   41.073375] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   41.073376] applesmc: #KEY: read arg fail
+[   41.259742] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   41.259743] applesmc: #KEY: read arg fail
+[   41.446340] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   41.446340] applesmc: #KEY: read arg fail
+[   41.633115] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   41.633116] applesmc: #KEY: read arg fail
+[   41.732004] logitech-hidpp-device 0003:046D:4069.0004: HID++ 4.5 device connected.
+[   41.819629] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   41.819629] applesmc: #KEY: read arg fail
+[   42.006483] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   42.006484] applesmc: #KEY: read arg fail
+[   42.193355] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   42.193356] applesmc: #KEY: read arg fail
+[   42.379957] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   42.379958] applesmc: #KEY: read arg fail
+[   42.566555] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   42.566555] applesmc: #KEY: read arg fail
+[   42.753112] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   42.753114] applesmc: #KEY: read arg fail
+[   42.939948] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   42.939948] applesmc: #KEY: read arg fail
+[   43.126640] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   43.126641] applesmc: #KEY: read arg fail
+[   43.313608] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   43.313609] applesmc: #KEY: read arg fail
+[   43.500007] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   43.500007] applesmc: #KEY: read arg fail
+[   43.686661] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   43.686662] applesmc: #KEY: read arg fail
+[   43.873001] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   43.873002] applesmc: #KEY: read arg fail
+[   44.059982] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   44.059983] applesmc: #KEY: read arg fail
+[   44.246735] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   44.246736] applesmc: #KEY: read arg fail
+[   44.433024] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   44.433025] applesmc: #KEY: read arg fail
+[   44.619927] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   44.619928] applesmc: #KEY: read arg fail
+[   44.806380] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   44.806381] applesmc: #KEY: read arg fail
+[   44.993584] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   44.993585] applesmc: #KEY: read arg fail
+[   45.179976] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   45.179977] applesmc: #KEY: read arg fail
+[   45.366524] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   45.366524] applesmc: #KEY: read arg fail
+[   45.553391] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   45.553392] applesmc: #KEY: read arg fail
+[   45.739678] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   45.739679] applesmc: #KEY: read arg fail
+[   45.926406] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   45.926407] applesmc: #KEY: read arg fail
+[   46.113630] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   46.113631] applesmc: #KEY: read arg fail
+[   46.299991] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   46.299993] applesmc: #KEY: read arg fail
+[   46.486598] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   46.486599] applesmc: #KEY: read arg fail
+[   46.673190] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   46.673191] applesmc: #KEY: read arg fail
+[   46.860009] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   46.860010] applesmc: #KEY: read arg fail
+[   47.046402] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   47.046403] applesmc: #KEY: read arg fail
+[   47.233094] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   47.233094] applesmc: #KEY: read arg fail
+[   47.419992] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   47.419993] applesmc: #KEY: read arg fail
+[   47.606492] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   47.606493] applesmc: #KEY: read arg fail
+[   47.796812] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   47.796813] applesmc: #KEY: read arg fail
+[   47.983117] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   47.983118] applesmc: #KEY: read arg fail
+[   48.170007] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   48.170008] applesmc: #KEY: read arg fail
+[   48.356704] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   48.356705] applesmc: #KEY: read arg fail
+[   48.543626] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   48.543628] applesmc: #KEY: read arg fail
+[   48.579175] SGI XFS with ACLs, security attributes, realtime, scrub, no debug enabled
+[   48.592406] JFS: nTxBlock = 8192, nTxLock = 65536
+[   48.636777] ntfs: driver 2.1.32 [Flags: R/W MODULE].
+[   48.730978] raid6: sse2x1   gen() 12685 MB/s
+[   48.733566] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   48.733567] applesmc: #KEY: read arg fail
+[   48.787644] raid6: sse2x1   xor()  8951 MB/s
+[   48.798334] audit: type=1130 audit(1555500864.196:72): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-timedated comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   48.844310] raid6: sse2x2   gen() 16032 MB/s
+[   48.900965] raid6: sse2x2   xor() 10801 MB/s
+[   48.919724] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   48.919725] applesmc: #KEY: read arg fail
+[   48.957632] raid6: sse2x4   gen() 18916 MB/s
+[   49.014296] raid6: sse2x4   xor() 12191 MB/s
+[   49.070963] raid6: avx2x1   gen() 26376 MB/s
+[   49.106835] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   49.106836] applesmc: #KEY: read arg fail
+[   49.127629] raid6: avx2x1   xor() 18202 MB/s
+[   49.184298] raid6: avx2x2   gen() 31734 MB/s
+[   49.240962] raid6: avx2x2   xor() 20214 MB/s
+[   49.293234] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   49.293235] applesmc: #KEY: read arg fail
+[   49.297635] raid6: avx2x4   gen() 36672 MB/s
+[   49.354296] raid6: avx2x4   xor() 23098 MB/s
+[   49.354298] raid6: using algorithm avx2x4 gen() 36672 MB/s
+[   49.354298] raid6: .... xor() 23098 MB/s, rmw enabled
+[   49.354299] raid6: using avx2x2 recovery algorithm
+[   49.356422] xor: automatically using best checksumming function   avx       
+[   49.427570] Btrfs loaded, crc32c=crc32c-intel
+[   49.479991] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   49.479992] applesmc: #KEY: read arg fail
+[   49.666479] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   49.666480] applesmc: #KEY: read arg fail
+[   49.856694] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   49.856695] applesmc: #KEY: read arg fail
+[   50.043129] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   50.043130] applesmc: #KEY: read arg fail
+[   50.229684] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   50.229685] applesmc: #KEY: read arg fail
+[   50.416822] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   50.416823] applesmc: #KEY: read arg fail
+[   50.603495] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   50.603496] applesmc: #KEY: read arg fail
+[   50.789703] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   50.789704] applesmc: #KEY: read arg fail
+[   50.976257] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   50.976257] applesmc: #KEY: read arg fail
+[   51.163417] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   51.163418] applesmc: #KEY: read arg fail
+[   51.349749] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   51.349750] applesmc: #KEY: read arg fail
+[   51.536736] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   51.536737] applesmc: #KEY: read arg fail
+[   51.591007] applesmc: driver init failed (ret=-5)!
+[   51.782310] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   51.782311] applesmc: #KEY: read arg fail
+[   51.969840] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   51.969841] applesmc: #KEY: read arg fail
+[   52.156626] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   52.156627] applesmc: #KEY: read arg fail
+[   52.343522] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   52.343523] applesmc: #KEY: read arg fail
+[   52.530108] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   52.530109] applesmc: #KEY: read arg fail
+[   52.716733] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   52.716734] applesmc: #KEY: read arg fail
+[   52.903290] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   52.903291] applesmc: #KEY: read arg fail
+[   53.089819] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   53.089820] applesmc: #KEY: read arg fail
+[   53.276686] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   53.276687] applesmc: #KEY: read arg fail
+[   53.463222] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   53.463223] applesmc: #KEY: read arg fail
+[   53.650108] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   53.650109] applesmc: #KEY: read arg fail
+[   53.836704] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   53.836705] applesmc: #KEY: read arg fail
+[   54.026665] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   54.026666] applesmc: #KEY: read arg fail
+[   54.216698] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   54.216699] applesmc: #KEY: read arg fail
+[   54.403490] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   54.403491] applesmc: #KEY: read arg fail
+[   54.590088] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   54.590089] applesmc: #KEY: read arg fail
+[   54.776720] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   54.776721] applesmc: #KEY: read arg fail
+[   54.966829] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   54.966830] applesmc: #KEY: read arg fail
+[   54.971072] usb 4-2.4.2: new SuperSpeed Gen 1 USB device number 7 using xhci_hcd
+[   54.989611] usb 4-2.4.2: New USB device found, idVendor=0951, idProduct=1666, bcdDevice= 1.10
+[   54.989613] usb 4-2.4.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[   54.989614] usb 4-2.4.2: Product: DataTraveler 3.0
+[   54.989614] usb 4-2.4.2: Manufacturer: Kingston
+[   54.989615] usb 4-2.4.2: SerialNumber: 1831BFBBBED1B310B95F07C7
+[   54.991666] usb-storage 4-2.4.2:1.0: USB Mass Storage device detected
+[   54.992331] scsi host2: usb-storage 4-2.4.2:1.0
+[   55.153561] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   55.153562] applesmc: #KEY: read arg fail
+[   55.343584] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   55.343585] applesmc: #KEY: read arg fail
+[   55.530108] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   55.530110] applesmc: #KEY: read arg fail
+[   55.716790] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   55.716791] applesmc: #KEY: read arg fail
+[   55.903384] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   55.903385] applesmc: #KEY: read arg fail
+[   56.015369] scsi 2:0:0:0: Direct-Access     Kingston DataTraveler 3.0 PMAP PQ: 0 ANSI: 6
+[   56.015797] sd 2:0:0:0: Attached scsi generic sg2 type 0
+[   56.016476] sd 2:0:0:0: [sdc] 60604416 512-byte logical blocks: (31.0 GB/28.9 GiB)
+[   56.016703] sd 2:0:0:0: [sdc] Write Protect is off
+[   56.016704] sd 2:0:0:0: [sdc] Mode Sense: 45 00 00 00
+[   56.016927] sd 2:0:0:0: [sdc] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[   56.090144] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   56.090145] applesmc: #KEY: read arg fail
+[   56.184805]  sdc: sdc1 sdc2
+[   56.187083] sd 2:0:0:0: [sdc] Attached SCSI removable disk
+[   56.276902] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   56.276904] applesmc: #KEY: read arg fail
+[   56.376362] ISO 9660 Extensions: RRIP_1991A
+[   56.463451] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   56.463452] applesmc: #KEY: read arg fail
+[   56.650111] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   56.650112] applesmc: #KEY: read arg fail
+[   56.836483] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   56.836485] applesmc: #KEY: read arg fail
+[   57.023428] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   57.023429] applesmc: #KEY: read arg fail
+[   57.210131] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   57.210132] applesmc: #KEY: read arg fail
+[   57.396560] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   57.396561] applesmc: #KEY: read arg fail
+[   57.583368] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   57.583368] applesmc: #KEY: read arg fail
+[   57.770100] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   57.770101] applesmc: #KEY: read arg fail
+[   57.956876] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   57.956877] applesmc: #KEY: read arg fail
+[   58.143386] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   58.143387] applesmc: #KEY: read arg fail
+[   58.329960] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   58.329961] applesmc: #KEY: read arg fail
+[   58.516796] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   58.516797] applesmc: #KEY: read arg fail
+[   58.703523] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   58.703523] applesmc: #KEY: read arg fail
+[   58.889999] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   58.889999] applesmc: #KEY: read arg fail
+[   59.076594] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   59.076595] applesmc: #KEY: read arg fail
+[   59.263574] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   59.263575] applesmc: #KEY: read arg fail
+[   59.449915] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   59.449916] applesmc: #KEY: read arg fail
+[   59.636568] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   59.636569] applesmc: #KEY: read arg fail
+[   59.823523] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   59.823524] applesmc: #KEY: read arg fail
+[   60.009849] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   60.009850] applesmc: #KEY: read arg fail
+[   60.196833] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   60.196834] applesmc: #KEY: read arg fail
+[   60.383430] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   60.383431] applesmc: #KEY: read arg fail
+[   60.569798] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   60.569799] applesmc: #KEY: read arg fail
+[   60.760025] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   60.760025] applesmc: #KEY: read arg fail
+[   60.946622] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   60.946623] applesmc: #KEY: read arg fail
+[   61.133709] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   61.133709] applesmc: #KEY: read arg fail
+[   61.319836] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   61.319837] applesmc: #KEY: read arg fail
+[   61.506897] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   61.506898] applesmc: #KEY: read arg fail
+[   61.693551] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   61.693552] applesmc: #KEY: read arg fail
+[   61.879879] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   61.879879] applesmc: #KEY: read arg fail
+[   62.066859] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   62.066860] applesmc: #KEY: read arg fail
+[   62.253183] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   62.253183] applesmc: #KEY: read arg fail
+[   62.439768] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   62.439769] applesmc: #KEY: read arg fail
+[   62.626673] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   62.626674] applesmc: #KEY: read arg fail
+[   62.813342] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   62.813343] applesmc: #KEY: read arg fail
+[   62.999987] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   62.999988] applesmc: #KEY: read arg fail
+[   63.186618] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   63.186619] applesmc: #KEY: read arg fail
+[   63.373594] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   63.373595] applesmc: #KEY: read arg fail
+[   63.559922] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   63.559922] applesmc: #KEY: read arg fail
+[   63.746661] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   63.746662] applesmc: #KEY: read arg fail
+[   63.933646] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   63.933647] applesmc: #KEY: read arg fail
+[   64.119986] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   64.119986] applesmc: #KEY: read arg fail
+[   64.306600] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   64.306601] applesmc: #KEY: read arg fail
+[   64.493489] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   64.493490] applesmc: #KEY: read arg fail
+[   64.680029] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   64.680030] applesmc: #KEY: read arg fail
+[   64.866660] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   64.866661] applesmc: #KEY: read arg fail
+[   65.053645] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   65.053646] applesmc: #KEY: read arg fail
+[   65.239858] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   65.239858] applesmc: #KEY: read arg fail
+[   65.426708] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   65.426709] applesmc: #KEY: read arg fail
+[   65.613695] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   65.613696] applesmc: #KEY: read arg fail
+[   65.800031] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   65.800032] applesmc: #KEY: read arg fail
+[   65.986658] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   65.986659] applesmc: #KEY: read arg fail
+[   66.173219] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   66.173220] applesmc: #KEY: read arg fail
+[   66.359961] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   66.359961] applesmc: #KEY: read arg fail
+[   66.546705] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   66.546706] applesmc: #KEY: read arg fail
+[   66.733273] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   66.733274] applesmc: #KEY: read arg fail
+[   66.920003] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   66.920004] applesmc: #KEY: read arg fail
+[   67.106639] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   67.106640] applesmc: #KEY: read arg fail
+[   67.293490] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   67.293491] applesmc: #KEY: read arg fail
+[   67.480074] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   67.480075] applesmc: #KEY: read arg fail
+[   67.666597] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   67.666598] applesmc: #KEY: read arg fail
+[   67.853687] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   67.853688] applesmc: #KEY: read arg fail
+[   68.039896] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   68.039897] applesmc: #KEY: read arg fail
+[   68.226544] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   68.226545] applesmc: #KEY: read arg fail
+[   68.413307] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   68.413308] applesmc: #KEY: read arg fail
+[   68.599992] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   68.599994] applesmc: #KEY: read arg fail
+[   68.787081] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   68.787082] applesmc: #KEY: read arg fail
+[   68.878787] audit: type=1131 audit(1555500884.276:73): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-localed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   68.973350] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   68.973351] applesmc: #KEY: read arg fail
+[   69.159962] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   69.159963] applesmc: #KEY: read arg fail
+[   69.346601] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   69.346602] applesmc: #KEY: read arg fail
+[   69.508116] audit: type=1131 audit(1555500884.906:74): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-hostnamed comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   69.533530] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   69.533530] applesmc: #KEY: read arg fail
+[   69.719953] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   69.719954] applesmc: #KEY: read arg fail
+[   69.906542] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   69.906543] applesmc: #KEY: read arg fail
+[   70.093573] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   70.093574] applesmc: #KEY: read arg fail
+[   70.280347] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   70.280349] applesmc: #KEY: read arg fail
+[   70.334362] applesmc: probe of applesmc.768 failed with error -5
+[   70.466739] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   70.466740] applesmc: #KEY: read arg fail
+[   70.653400] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   70.653401] applesmc: #KEY: read arg fail
+[   70.839943] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   70.839944] applesmc: #KEY: read arg fail
+[   71.026712] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   71.026713] applesmc: #KEY: read arg fail
+[   71.213358] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   71.213359] applesmc: #KEY: read arg fail
+[   71.400042] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   71.400043] applesmc: #KEY: read arg fail
+[   71.586433] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   71.586433] applesmc: #KEY: read arg fail
+[   71.773185] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   71.773186] applesmc: #KEY: read arg fail
+[   71.960054] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   71.960055] applesmc: #KEY: read arg fail
+[   72.146772] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   72.146772] applesmc: #KEY: read arg fail
+[   72.333347] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   72.333348] applesmc: #KEY: read arg fail
+[   72.520041] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   72.520042] applesmc: #KEY: read arg fail
+[   72.706455] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   72.706456] applesmc: #KEY: read arg fail
+[   72.893579] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   72.893580] applesmc: #KEY: read arg fail
+[   73.080100] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   73.080101] applesmc: #KEY: read arg fail
+[   73.266779] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   73.266780] applesmc: #KEY: read arg fail
+[   73.453349] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   73.453350] applesmc: #KEY: read arg fail
+[   73.640123] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   73.640124] applesmc: #KEY: read arg fail
+[   73.826403] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   73.826405] applesmc: #KEY: read arg fail
+[   74.013389] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   74.013390] applesmc: #KEY: read arg fail
+[   74.200146] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   74.200147] applesmc: #KEY: read arg fail
+[   74.386783] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   74.386784] applesmc: #KEY: read arg fail
+[   74.573373] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   74.573374] applesmc: #KEY: read arg fail
+[   74.760082] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   74.760083] applesmc: #KEY: read arg fail
+[   74.946827] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   74.946827] applesmc: #KEY: read arg fail
+[   75.133395] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   75.133396] applesmc: #KEY: read arg fail
+[   75.320081] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   75.320082] applesmc: #KEY: read arg fail
+[   75.506596] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   75.506597] applesmc: #KEY: read arg fail
+[   75.693769] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   75.693770] applesmc: #KEY: read arg fail
+[   75.880051] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   75.880052] applesmc: #KEY: read arg fail
+[   76.066723] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   76.066724] applesmc: #KEY: read arg fail
+[   76.253671] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   76.253672] applesmc: #KEY: read arg fail
+[   76.440027] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   76.440028] applesmc: #KEY: read arg fail
+[   76.626449] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   76.626450] applesmc: #KEY: read arg fail
+[   76.813534] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   76.813535] applesmc: #KEY: read arg fail
+[   77.000037] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   77.000038] applesmc: #KEY: read arg fail
+[   77.186515] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   77.186516] applesmc: #KEY: read arg fail
+[   77.373236] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   77.373237] applesmc: #KEY: read arg fail
+[   77.559683] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   77.559684] applesmc: #KEY: read arg fail
+[   77.746877] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   77.746878] applesmc: #KEY: read arg fail
+[   77.933414] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   77.933415] applesmc: #KEY: read arg fail
+[   78.120107] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   78.120108] applesmc: #KEY: read arg fail
+[   78.306565] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   78.306567] applesmc: #KEY: read arg fail
+[   78.493274] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   78.493275] applesmc: #KEY: read arg fail
+[   78.680077] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   78.680078] applesmc: #KEY: read arg fail
+[   78.866560] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   78.866561] applesmc: #KEY: read arg fail
+[   78.882142] audit: type=1131 audit(1555500894.279:75): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-timedated comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   79.053404] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   79.053405] applesmc: #KEY: read arg fail
+[   79.240128] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   79.240129] applesmc: #KEY: read arg fail
+[   79.426768] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   79.426769] applesmc: #KEY: read arg fail
+[   79.613473] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   79.613474] applesmc: #KEY: read arg fail
+[   79.800127] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   79.800128] applesmc: #KEY: read arg fail
+[   79.986932] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   79.986933] applesmc: #KEY: read arg fail
+[   80.173523] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   80.173524] applesmc: #KEY: read arg fail
+[   80.360068] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   80.360069] applesmc: #KEY: read arg fail
+[   80.546566] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   80.546567] applesmc: #KEY: read arg fail
+[   80.733493] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   80.733494] applesmc: #KEY: read arg fail
+[   80.920152] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   80.920153] applesmc: #KEY: read arg fail
+[   81.106697] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   81.106698] applesmc: #KEY: read arg fail
+[   81.293487] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   81.293488] applesmc: #KEY: read arg fail
+[   81.480170] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   81.480170] applesmc: #KEY: read arg fail
+[   81.666809] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   81.666810] applesmc: #KEY: read arg fail
+[   81.853885] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   81.853886] applesmc: #KEY: read arg fail
+[   82.039596] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   82.039597] applesmc: #KEY: read arg fail
+[   82.226323] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   82.226324] applesmc: #KEY: read arg fail
+[   82.413151] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   82.413152] applesmc: #KEY: read arg fail
+[   82.603483] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   82.603485] applesmc: #KEY: read arg fail
+[   82.789909] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   82.789911] applesmc: #KEY: read arg fail
+[   82.952799] audit: type=1130 audit(1555500898.349:76): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-timedated comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[   82.980132] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   82.980133] applesmc: #KEY: read arg fail
+[   83.166717] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   83.166718] applesmc: #KEY: read arg fail
+[   83.353153] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   83.353154] applesmc: #KEY: read arg fail
+[   83.540112] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   83.540113] applesmc: #KEY: read arg fail
+[   83.726721] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   83.726722] applesmc: #KEY: read arg fail
+[   83.913558] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   83.913559] applesmc: #KEY: read arg fail
+[   84.099631] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   84.099632] applesmc: #KEY: read arg fail
+[   84.286766] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   84.286767] applesmc: #KEY: read arg fail
+[   84.473176] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   84.473177] applesmc: #KEY: read arg fail
+[   84.660181] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   84.660182] applesmc: #KEY: read arg fail
+[   84.847039] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   84.847040] applesmc: #KEY: read arg fail
+[   85.033547] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   85.033548] applesmc: #KEY: read arg fail
+[   85.219768] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   85.219769] applesmc: #KEY: read arg fail
+[   85.406599] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   85.406600] applesmc: #KEY: read arg fail
+[   85.593246] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   85.593247] applesmc: #KEY: read arg fail
+[   85.779718] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   85.779719] applesmc: #KEY: read arg fail
+[   85.966718] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   85.966719] applesmc: #KEY: read arg fail
+[   86.153501] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   86.153502] applesmc: #KEY: read arg fail
+[   86.339881] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   86.339882] applesmc: #KEY: read arg fail
+[   86.526682] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   86.526683] applesmc: #KEY: read arg fail
+[   86.713554] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   86.713555] applesmc: #KEY: read arg fail
+[   86.903251] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   86.903252] applesmc: #KEY: read arg fail
+[   87.089700] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   87.089701] applesmc: #KEY: read arg fail
+[   87.276671] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   87.276672] applesmc: #KEY: read arg fail
+[   87.462976] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   87.462976] applesmc: #KEY: read arg fail
+[   87.649681] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   87.649682] applesmc: #KEY: read arg fail
+[   87.836666] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   87.836667] applesmc: #KEY: read arg fail
+[   88.026401] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   88.026402] applesmc: #KEY: read arg fail
+[   88.213323] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   88.213323] applesmc: #KEY: read arg fail
+[   88.400237] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   88.400238] applesmc: #KEY: read arg fail
+[   88.587058] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   88.587059] applesmc: #KEY: read arg fail
+[   88.773204] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   88.773205] applesmc: #KEY: read arg fail
+[   88.959730] applesmc: send_byte(0x10, 0x0304) fail: 0xff
+[   88.959730] applesmc: #KEY: read arg fail
+[   89.014375] applesmc: driver init failed (ret=-5)!
+[   98.041734] audit: type=1131 audit(1555500913.439:77): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=geoclue comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  113.018085] audit: type=1131 audit(1555500928.416:78): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-timedated comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  318.096879] CPU5: Core temperature above threshold, cpu clock throttled (total events = 434)
+[  318.096880] CPU11: Core temperature above threshold, cpu clock throttled (total events = 434)
+[  318.096883] CPU5: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.096883] CPU11: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097045] CPU7: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097046] CPU0: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097047] CPU6: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097048] CPU3: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097048] CPU9: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097049] CPU8: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097050] CPU2: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097051] CPU10: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097052] CPU4: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.097053] CPU1: Package temperature above threshold, cpu clock throttled (total events = 1961)
+[  318.098878] CPU5: Core temperature/speed normal
+[  318.098878] CPU11: Core temperature/speed normal
+[  318.098879] CPU6: Package temperature/speed normal
+[  318.098880] CPU0: Package temperature/speed normal
+[  318.098881] CPU11: Package temperature/speed normal
+[  318.098882] CPU7: Package temperature/speed normal
+[  318.098882] CPU5: Package temperature/speed normal
+[  318.099022] CPU8: Package temperature/speed normal
+[  318.099023] CPU9: Package temperature/speed normal
+[  318.099023] CPU3: Package temperature/speed normal
+[  318.099024] CPU2: Package temperature/speed normal
+[  318.099025] CPU10: Package temperature/speed normal
+[  318.099026] CPU4: Package temperature/speed normal
+[  318.099140] CPU1: Package temperature/speed normal
+[  622.035894] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035895] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035896] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035897] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035933] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035934] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035935] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035936] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035937] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035938] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035939] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.035940] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2233)
+[  622.036893] CPU2: Package temperature/speed normal
+[  622.036894] CPU10: Package temperature/speed normal
+[  622.036895] CPU4: Package temperature/speed normal
+[  622.036896] CPU5: Package temperature/speed normal
+[  622.036896] CPU11: Package temperature/speed normal
+[  622.036897] CPU8: Package temperature/speed normal
+[  622.036930] CPU1: Package temperature/speed normal
+[  622.036931] CPU6: Package temperature/speed normal
+[  622.036932] CPU0: Package temperature/speed normal
+[  622.036933] CPU3: Package temperature/speed normal
+[  622.036934] CPU9: Package temperature/speed normal
+[  622.036934] CPU7: Package temperature/speed normal
+[  635.608888] CPU7: Core temperature above threshold, cpu clock throttled (total events = 533)
+[  635.608889] CPU1: Core temperature above threshold, cpu clock throttled (total events = 533)
+[  635.611893] CPU7: Core temperature/speed normal
+[  635.611893] CPU1: Core temperature/speed normal
+[  903.023449] audit: type=1130 audit(1555501718.419:79): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-tmpfiles-clean comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  903.023451] audit: type=1131 audit(1555501718.419:80): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-tmpfiles-clean comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[  982.162855] CPU9: Core temperature above threshold, cpu clock throttled (total events = 952)
+[  982.162855] CPU3: Core temperature above threshold, cpu clock throttled (total events = 952)
+[  982.162858] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162859] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162908] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162909] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162910] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162910] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162912] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162913] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162914] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162915] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162916] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.162917] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2274)
+[  982.164886] CPU3: Core temperature/speed normal
+[  982.164887] CPU9: Core temperature/speed normal
+[  982.164889] CPU3: Package temperature/speed normal
+[  982.164889] CPU9: Package temperature/speed normal
+[  982.164937] CPU1: Package temperature/speed normal
+[  982.164937] CPU0: Package temperature/speed normal
+[  982.164938] CPU7: Package temperature/speed normal
+[  982.164939] CPU6: Package temperature/speed normal
+[  982.164940] CPU10: Package temperature/speed normal
+[  982.164941] CPU8: Package temperature/speed normal
+[  982.164942] CPU2: Package temperature/speed normal
+[  982.164942] CPU4: Package temperature/speed normal
+[  982.164943] CPU5: Package temperature/speed normal
+[  982.164944] CPU11: Package temperature/speed normal
+[ 1302.177901] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177902] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177903] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177904] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177944] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177945] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177946] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177947] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177948] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177950] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177951] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.177952] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2308)
+[ 1302.178837] CPU3: Package temperature/speed normal
+[ 1302.178837] CPU9: Package temperature/speed normal
+[ 1302.178885] CPU2: Package temperature/speed normal
+[ 1302.178886] CPU0: Package temperature/speed normal
+[ 1302.178887] CPU6: Package temperature/speed normal
+[ 1302.178888] CPU1: Package temperature/speed normal
+[ 1302.178889] CPU8: Package temperature/speed normal
+[ 1302.178890] CPU7: Package temperature/speed normal
+[ 1302.178891] CPU4: Package temperature/speed normal
+[ 1302.178892] CPU11: Package temperature/speed normal
+[ 1302.178893] CPU10: Package temperature/speed normal
+[ 1302.178893] CPU5: Package temperature/speed normal
+[ 1627.316884] CPU7: Core temperature above threshold, cpu clock throttled (total events = 648)
+[ 1627.316885] CPU1: Core temperature above threshold, cpu clock throttled (total events = 648)
+[ 1627.316886] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316887] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316888] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316889] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316929] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316931] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316932] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316933] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316934] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316935] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316936] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.316937] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2392)
+[ 1627.319891] CPU7: Core temperature/speed normal
+[ 1627.319892] CPU1: Core temperature/speed normal
+[ 1627.319893] CPU11: Package temperature/speed normal
+[ 1627.319893] CPU5: Package temperature/speed normal
+[ 1627.319894] CPU1: Package temperature/speed normal
+[ 1627.319894] CPU7: Package temperature/speed normal
+[ 1627.319937] CPU0: Package temperature/speed normal
+[ 1627.319938] CPU3: Package temperature/speed normal
+[ 1627.319939] CPU9: Package temperature/speed normal
+[ 1627.319940] CPU6: Package temperature/speed normal
+[ 1627.319941] CPU8: Package temperature/speed normal
+[ 1627.319941] CPU2: Package temperature/speed normal
+[ 1627.319942] CPU4: Package temperature/speed normal
+[ 1627.319943] CPU10: Package temperature/speed normal
+[ 1955.286839] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286840] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286841] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286842] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286843] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286844] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286879] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286880] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286881] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286882] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286883] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.286884] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2552)
+[ 1955.288892] CPU3: Package temperature/speed normal
+[ 1955.288892] CPU9: Package temperature/speed normal
+[ 1955.288941] CPU1: Package temperature/speed normal
+[ 1955.288942] CPU0: Package temperature/speed normal
+[ 1955.288943] CPU6: Package temperature/speed normal
+[ 1955.288943] CPU7: Package temperature/speed normal
+[ 1955.288944] CPU11: Package temperature/speed normal
+[ 1955.288945] CPU8: Package temperature/speed normal
+[ 1955.288946] CPU5: Package temperature/speed normal
+[ 1955.288947] CPU2: Package temperature/speed normal
+[ 1955.288948] CPU4: Package temperature/speed normal
+[ 1955.288949] CPU10: Package temperature/speed normal
+[ 2265.235872] CPU1: Core temperature above threshold, cpu clock throttled (total events = 781)
+[ 2265.235872] CPU7: Core temperature above threshold, cpu clock throttled (total events = 781)
+[ 2265.235874] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235875] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235875] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235877] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235889] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235890] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235922] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235922] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235923] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235924] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235938] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.235938] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2652)
+[ 2265.236856] CPU1: Core temperature/speed normal
+[ 2265.236856] CPU7: Core temperature/speed normal
+[ 2265.236857] CPU4: Package temperature/speed normal
+[ 2265.236858] CPU10: Package temperature/speed normal
+[ 2265.236858] CPU7: Package temperature/speed normal
+[ 2265.236859] CPU1: Package temperature/speed normal
+[ 2265.236904] CPU2: Package temperature/speed normal
+[ 2265.236905] CPU0: Package temperature/speed normal
+[ 2265.236906] CPU6: Package temperature/speed normal
+[ 2265.236906] CPU8: Package temperature/speed normal
+[ 2265.236907] CPU9: Package temperature/speed normal
+[ 2265.236908] CPU3: Package temperature/speed normal
+[ 2265.236909] CPU11: Package temperature/speed normal
+[ 2265.236910] CPU5: Package temperature/speed normal
+[ 2338.153887] CPU3: Core temperature above threshold, cpu clock throttled (total events = 1081)
+[ 2338.153888] CPU9: Core temperature above threshold, cpu clock throttled (total events = 1081)
+[ 2338.155861] CPU3: Core temperature/speed normal
+[ 2338.155862] CPU9: Core temperature/speed normal
+[ 2606.675844] CPU7: Core temperature above threshold, cpu clock throttled (total events = 814)
+[ 2606.675845] CPU1: Core temperature above threshold, cpu clock throttled (total events = 814)
+[ 2606.675846] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675847] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675848] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675849] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675889] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675890] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675891] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675892] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675893] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675894] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675895] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.675896] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2714)
+[ 2606.677855] CPU7: Core temperature/speed normal
+[ 2606.677856] CPU1: Core temperature/speed normal
+[ 2606.677857] CPU7: Package temperature/speed normal
+[ 2606.677858] CPU1: Package temperature/speed normal
+[ 2606.677906] CPU0: Package temperature/speed normal
+[ 2606.677906] CPU6: Package temperature/speed normal
+[ 2606.677907] CPU10: Package temperature/speed normal
+[ 2606.677908] CPU4: Package temperature/speed normal
+[ 2606.677909] CPU3: Package temperature/speed normal
+[ 2606.677910] CPU5: Package temperature/speed normal
+[ 2606.677911] CPU11: Package temperature/speed normal
+[ 2606.677912] CPU2: Package temperature/speed normal
+[ 2606.677913] CPU8: Package temperature/speed normal
+[ 2606.677913] CPU9: Package temperature/speed normal
+[ 2914.436862] CPU1: Core temperature above threshold, cpu clock throttled (total events = 827)
+[ 2914.436863] CPU7: Core temperature above threshold, cpu clock throttled (total events = 827)
+[ 2914.436865] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436866] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436911] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436912] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436913] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436914] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436915] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436916] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436917] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436918] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436919] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.436920] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2727)
+[ 2914.438867] CPU1: Core temperature/speed normal
+[ 2914.438867] CPU7: Core temperature/speed normal
+[ 2914.438869] CPU7: Package temperature/speed normal
+[ 2914.438870] CPU1: Package temperature/speed normal
+[ 2914.438923] CPU0: Package temperature/speed normal
+[ 2914.438923] CPU6: Package temperature/speed normal
+[ 2914.438924] CPU2: Package temperature/speed normal
+[ 2914.438925] CPU8: Package temperature/speed normal
+[ 2914.438926] CPU9: Package temperature/speed normal
+[ 2914.438927] CPU3: Package temperature/speed normal
+[ 2914.438928] CPU11: Package temperature/speed normal
+[ 2914.438929] CPU5: Package temperature/speed normal
+[ 2914.438930] CPU10: Package temperature/speed normal
+[ 2914.438930] CPU4: Package temperature/speed normal
+[ 3248.799865] CPU0: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799866] CPU9: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799867] CPU3: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799868] CPU10: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799869] CPU8: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799870] CPU2: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799871] CPU11: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799872] CPU6: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799873] CPU5: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799874] CPU4: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799897] CPU7: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.799898] CPU1: Package temperature above threshold, cpu clock throttled (total events = 2756)
+[ 3248.800882] CPU11: Package temperature/speed normal
+[ 3248.800882] CPU3: Package temperature/speed normal
+[ 3248.800883] CPU10: Package temperature/speed normal
+[ 3248.800884] CPU9: Package temperature/speed normal
+[ 3248.800885] CPU4: Package temperature/speed normal
+[ 3248.800885] CPU5: Package temperature/speed normal
+[ 3248.800924] CPU7: Package temperature/speed normal
+[ 3248.800925] CPU1: Package temperature/speed normal
+[ 3248.800926] CPU0: Package temperature/speed normal
+[ 3248.800926] CPU6: Package temperature/speed normal
+[ 3248.800927] CPU2: Package temperature/speed normal
+[ 3248.800928] CPU8: Package temperature/speed normal
+[ 3321.219058] audit: type=1130 audit(1555504136.616:81): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-timedated comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 3351.307503] audit: type=1131 audit(1555504166.706:82): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-timedated comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 3432.392469] EXT4-fs (sdc): mounted filesystem with ordered data mode. Opts: (null)
+[ 3439.526203] audit: type=1130 audit(1555504254.923:83): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-timedated comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 3469.587464] audit: type=1131 audit(1555504284.986:84): pid=1 uid=0 auid=4294967295 ses=4294967295 msg='unit=systemd-timedated comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+[ 3553.467477]  sdc:
+[ 3554.408319] GPT:partition_entry_array_crc32 values don't match: 0x4f44b61d != 0xcf8c9ec7
+[ 3554.408322] GPT: Use GNU Parted to correct GPT errors.
+[ 3554.408335]  sdc: sdc1
+[ 3845.429639] EXT4-fs (sdc2): mounted filesystem with ordered data mode. Opts: (null)
