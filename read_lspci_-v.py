@@ -4,13 +4,14 @@
 Read "lspci -v" output
 """
 
+# TODO: add specs from Ludovicos's messages
 class VideoCard:
     def __init__(self):
         self.type = "graphics-card"
         self.brand = ""
         self.model = ""
         self.vram_capacity = -1 # int
-        self.vram_capacity_mulitplier = ""
+        self.vram_capacity_multiplier = ""
 
 # ASK THE USER
 has_dedicated = None
@@ -101,6 +102,7 @@ if has_dedicated:
 
             for line in section.splitlines():
                 # only considering prefetchable VRAM
+                # TODO: delete code below, prefetchable does not mean VRAM
                 if "Memory" in line and "non" not in line and "prefetchable" in line:
                     vram = line.split("size=")[1].split("]")[0]
                     last_char = vram[-1].upper()
@@ -113,11 +115,11 @@ if has_dedicated:
                         break
 
                     if last_char == "M":
-                        gpu.vram_capacity_mulitplier = "M"
+                        gpu.vram_capacity_multiplier = "M"
                     elif last_char == "K":
-                        gpu.vram_capacity_mulitplier = "K"
+                        gpu.vram_capacity_multiplier = "K"
                     elif last_char == "G":
-                        gpu.vram_capacity_mulitplier = "G"
+                        gpu.vram_capacity_multiplier = "G"
                     else:
                         while True:
                             tmp = input("I couldn't find the VRAM Capacity. Please check the VRAM (Video Memory) of the card"
@@ -144,7 +146,7 @@ if has_dedicated:
                             confirm = input("Confirm the VRAM has a capacity of " + str(size) + " " + mult_full + " Y/N\n")
                             if confirm.lower() == "y":
                                 gpu.vram_capacity = size
-                                gpu.vram_capacity_mulitplier = multiplier
+                                gpu.vram_capacity_multiplier = multiplier
                                 break
                             else:
                                 print("Enter a new value.")
@@ -162,4 +164,4 @@ else:
 
 print(gpu.brand)
 print(gpu.model)
-print(str(gpu.vram_capacity) + gpu.vram_capacity_mulitplier)
+print(str(gpu.vram_capacity) + gpu.vram_capacity_multiplier)
