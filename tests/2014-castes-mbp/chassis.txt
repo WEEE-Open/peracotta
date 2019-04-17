@@ -8,7 +8,7 @@ Chassis Information
 	Type: Notebook
 	Lock: Not Present
 	Version: Mac-2BD1B31983FE1663
-	Serial Number: C02NC0Q5G3QP
+	Serial Number: CENSORED
 	Asset Tag: Not Specified
 	Boot-up State: Safe
 	Power Supply State: Safe
