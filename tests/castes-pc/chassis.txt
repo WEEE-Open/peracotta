@@ -1,0 +1,23 @@
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 2.8 present.
+
+Handle 0x0003, DMI type 3, 25 bytes
+Chassis Information
+	Manufacturer: To Be Filled By O.E.M.
+	Type: Desktop
+	Lock: Not Present
+	Version: To Be Filled By O.E.M.
+	Serial Number: To Be Filled By O.E.M.
+	Asset Tag: To Be Filled By O.E.M.
+	Boot-up State: Safe
+	Power Supply State: Safe
+	Thermal State: Safe
+	Security Status: None
+	OEM Information: 0x00000000
+	Height: Unspecified
+	Number Of Power Cords: 1
+	Contained Elements: 1
+		<OUT OF SPEC> (0)
+	SKU Number: To be filled by O.E.M.
+
