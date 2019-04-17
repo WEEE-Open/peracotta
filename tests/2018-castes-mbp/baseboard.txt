@@ -1,0 +1,42 @@
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 3.0.0 present.
+
+Handle 0x0006, DMI type 2, 17 bytes
+Base Board Information
+	Manufacturer: Apple Inc.
+	Product Name: Mac-937A206F2EE63C01
+	Version: MacBookPro15,1
+	Serial Number: ***REMOVED***
+	Asset Tag:  
+	Features:
+		Board is a hosting board
+	Location In Chassis:  
+	Chassis Handle: 0x0007
+	Type: Motherboard
+	Contained Object Handles: 0
+
+Handle 0x000F, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: Integrated Video Controller
+	Type: Video
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:00:00.0
+
+Handle 0x0010, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: Azalia Audio Codec
+	Type: Sound
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:00:00.0
+
+Handle 0x0011, DMI type 41, 11 bytes
+Onboard Device
+	Reference Designation: SATA
+	Type: SATA Controller
+	Status: Enabled
+	Type Instance: 1
+	Bus Address: 0000:00:00.0
+
