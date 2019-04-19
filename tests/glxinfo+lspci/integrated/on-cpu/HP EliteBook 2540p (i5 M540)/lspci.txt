@@ -1,0 +1,181 @@
+00:00.0 Host bridge: Intel Corporation Core Processor DRAM Controller (rev 02)
+	Subsystem: Hewlett-Packard Company Core Processor DRAM Controller
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: <access denied>
+
+00:02.0 VGA compatible controller: Intel Corporation Core Processor Integrated Graphics Controller (rev 02) (prog-if 00 [VGA controller])
+	Subsystem: Hewlett-Packard Company Core Processor Integrated Graphics Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 31
+	Memory at d0000000 (64-bit, non-prefetchable) [size=4M]
+	Memory at c0000000 (64-bit, prefetchable) [size=256M]
+	I/O ports at 5050 [size=8]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: <access denied>
+	Kernel driver in use: i915
+	Kernel modules: i915
+
+00:16.0 Communication controller: Intel Corporation 5 Series/3400 Series Chipset HECI Controller (rev 06)
+	Subsystem: Hewlett-Packard Company 5 Series/3400 Series Chipset HECI Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 29
+	Memory at d4724000 (64-bit, non-prefetchable) [size=16]
+	Capabilities: <access denied>
+	Kernel driver in use: mei_me
+	Kernel modules: mei_me
+
+00:19.0 Ethernet controller: Intel Corporation 82577LM Gigabit Network Connection (rev 05)
+	Subsystem: Hewlett-Packard Company 82577LM Gigabit Network Connection
+	Flags: bus master, fast devsel, latency 0, IRQ 27
+	Memory at d4700000 (32-bit, non-prefetchable) [size=128K]
+	Memory at d472a000 (32-bit, non-prefetchable) [size=4K]
+	I/O ports at 5020 [size=32]
+	Capabilities: <access denied>
+	Kernel driver in use: e1000e
+	Kernel modules: e1000e
+
+00:1a.0 USB controller: Intel Corporation 5 Series/3400 Series Chipset USB2 Enhanced Host Controller (rev 05) (prog-if 20 [EHCI])
+	Subsystem: Hewlett-Packard Company 5 Series/3400 Series Chipset USB2 Enhanced Host Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 16
+	Memory at d4729000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: <access denied>
+	Kernel driver in use: ehci-pci
+	Kernel modules: ehci_pci
+
+00:1b.0 Audio device: Intel Corporation 5 Series/3400 Series Chipset High Definition Audio (rev 05)
+	Subsystem: Hewlett-Packard Company 5 Series/3400 Series Chipset High Definition Audio
+	Flags: bus master, fast devsel, latency 0, IRQ 30
+	Memory at d4720000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+00:1c.0 PCI bridge: Intel Corporation 5 Series/3400 Series Chipset PCI Express Root Port 1 (rev 05) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 24
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	Memory behind bridge: d4600000-d46fffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1c.1 PCI bridge: Intel Corporation 5 Series/3400 Series Chipset PCI Express Root Port 2 (rev 05) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Bus: primary=00, secondary=02, subordinate=42, sec-latency=0
+	I/O behind bridge: 00003000-00004fff
+	Memory behind bridge: d0600000-d45fffff
+	Prefetchable memory behind bridge: 00000000d4900000-00000000d4afffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1c.3 PCI bridge: Intel Corporation 5 Series/3400 Series Chipset PCI Express Root Port 4 (rev 05) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 26
+	Bus: primary=00, secondary=43, subordinate=43, sec-latency=0
+	Memory behind bridge: d0500000-d05fffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1d.0 USB controller: Intel Corporation 5 Series/3400 Series Chipset USB2 Enhanced Host Controller (rev 05) (prog-if 20 [EHCI])
+	Subsystem: Hewlett-Packard Company 5 Series/3400 Series Chipset USB2 Enhanced Host Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 20
+	Memory at d4728000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: <access denied>
+	Kernel driver in use: ehci-pci
+	Kernel modules: ehci_pci
+
+00:1e.0 PCI bridge: Intel Corporation 82801 Mobile PCI Bridge (rev a5) (prog-if 01 [Subtractive decode])
+	Flags: bus master, fast devsel, latency 0
+	Bus: primary=00, secondary=44, subordinate=45, sec-latency=64
+	I/O behind bridge: 00002000-00002fff
+	Memory behind bridge: d0400000-d04fffff
+	Capabilities: <access denied>
+
+00:1f.0 ISA bridge: Intel Corporation QM57 Chipset LPC Interface Controller (rev 05)
+	Subsystem: Hewlett-Packard Company QM57 Chipset LPC Interface Controller
+	Flags: bus master, medium devsel, latency 0
+	Capabilities: <access denied>
+	Kernel driver in use: lpc_ich
+	Kernel modules: lpc_ich
+
+00:1f.2 SATA controller: Intel Corporation 5 Series/3400 Series Chipset 6 port SATA AHCI Controller (rev 05) (prog-if 01 [AHCI 1.0])
+	Subsystem: Hewlett-Packard Company 5 Series/3400 Series Chipset 6 port SATA AHCI Controller
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 28
+	I/O ports at 5048 [size=8]
+	I/O ports at 505c [size=4]
+	I/O ports at 5040 [size=8]
+	I/O ports at 5058 [size=4]
+	I/O ports at 5000 [size=32]
+	Memory at d4727000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: <access denied>
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+
+00:1f.6 Signal processing controller: Intel Corporation 5 Series/3400 Series Chipset Thermal Subsystem (rev 05)
+	Subsystem: Hewlett-Packard Company 5 Series/3400 Series Chipset Thermal Subsystem
+	Flags: bus master, fast devsel, latency 0, IRQ 18
+	Memory at d4726000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: intel ips
+	Kernel modules: intel_ips
+
+43:00.0 Network controller: Intel Corporation Centrino Advanced-N 6200 (rev 35)
+	Subsystem: Intel Corporation Centrino Advanced-N 6200 2x2 AGN
+	Flags: bus master, fast devsel, latency 0, IRQ 32
+	Memory at d0500000 (64-bit, non-prefetchable) [size=8K]
+	Capabilities: <access denied>
+	Kernel driver in use: iwlwifi
+	Kernel modules: iwlwifi
+
+44:06.0 FireWire (IEEE 1394): Ricoh Co Ltd R5C832 IEEE 1394 Controller (rev 06) (prog-if 10 [OHCI])
+	Subsystem: Hewlett-Packard Company R5C832 IEEE 1394 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 20
+	Memory at d0401000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: <access denied>
+	Kernel driver in use: firewire_ohci
+	Kernel modules: firewire_ohci
+
+44:06.1 SD Host controller: Ricoh Co Ltd R5C822 SD/SDIO/MMC/MS/MSPro Host Adapter (rev 25)
+	Subsystem: Hewlett-Packard Company R5C822 SD/SDIO/MMC/MS/MSPro Host Adapter
+	Flags: bus master, medium devsel, latency 64, IRQ 22
+	Memory at d0403000 (32-bit, non-prefetchable) [size=256]
+	Capabilities: <access denied>
+	Kernel driver in use: sdhci-pci
+	Kernel modules: sdhci_pci
+
+44:06.2 CardBus bridge: Ricoh Co Ltd RL5c476 II (rev bb)
+	Subsystem: Hewlett-Packard Company RL5c476 II
+	Flags: bus master, medium devsel, latency 168, IRQ 22
+	Memory at d0400000 (32-bit, non-prefetchable) [size=4K]
+	Bus: primary=44, secondary=45, subordinate=45, sec-latency=176
+	Memory window 0: d8000000-dbffffff (prefetchable)
+	Memory window 1: dc000000-dfffffff
+	I/O window 0: 00002000-000020ff
+	I/O window 1: 00002400-000024ff
+	16-bit legacy interface ports at 0001
+	Capabilities: <access denied>
+	Kernel driver in use: yenta_cardbus
+	Kernel modules: yenta_socket
+
+ff:00.0 Host bridge: Intel Corporation Core Processor QuickPath Architecture Generic Non-core Registers (rev 02)
+	Subsystem: Intel Corporation Core Processor QuickPath Architecture Generic Non-core Registers
+	Flags: bus master, fast devsel, latency 0
+
+ff:00.1 Host bridge: Intel Corporation Core Processor QuickPath Architecture System Address Decoder (rev 02)
+	Subsystem: Intel Corporation Core Processor QuickPath Architecture System Address Decoder
+	Flags: bus master, fast devsel, latency 0
+
+ff:02.0 Host bridge: Intel Corporation Core Processor QPI Link 0 (rev 02)
+	Subsystem: Intel Corporation Core Processor QPI Link 0
+	Flags: bus master, fast devsel, latency 0
+
+ff:02.1 Host bridge: Intel Corporation 1st Generation Core i3/5/7 Processor QPI Physical 0 (rev 02)
+	Subsystem: Intel Corporation 1st Generation Core i3/5/7 Processor QPI Physical 0
+	Flags: bus master, fast devsel, latency 0
+
+ff:02.2 Host bridge: Intel Corporation 1st Generation Core i3/5/7 Processor Reserved (rev 02)
+	Subsystem: Intel Corporation 1st Generation Core i3/5/7 Processor Reserved
+	Flags: bus master, fast devsel, latency 0
+
+ff:02.3 Host bridge: Intel Corporation 1st Generation Core i3/5/7 Processor Reserved (rev 02)
+	Subsystem: Intel Corporation 1st Generation Core i3/5/7 Processor Reserved
+	Flags: bus master, fast devsel, latency 0
+

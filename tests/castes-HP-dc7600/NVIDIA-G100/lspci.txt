@@ -1,0 +1,166 @@
+00:00.0 Host bridge: Intel Corporation 82945G/GZ/P/PL Memory Controller Hub (rev 02)
+	Subsystem: Hewlett-Packard Company 82945G/GZ/P/PL Memory Controller Hub
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=09 <?>
+
+00:01.0 PCI bridge: Intel Corporation 82945G/GZ/P/PL PCI Express Root Port (rev 02) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: 00002000-00002fff
+	Memory behind bridge: e2000000-e51fffff
+	Prefetchable memory behind bridge: 00000000d0000000-00000000e01fffff
+	Capabilities: [88] Subsystem: Intel Corporation 82945G/GZ/P/PL PCI Express Root Port
+	Capabilities: [80] Power Management version 2
+	Capabilities: [90] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [a0] Express Root Port (Slot+), MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [140] Root Complex Link
+	Kernel driver in use: pcieport
+
+00:1b.0 Audio device: Intel Corporation NM10/ICH7 Family High Definition Audio Controller (rev 01)
+	Subsystem: Hewlett-Packard Company NM10/ICH7 Family High Definition Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 26
+	Memory at e0500000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [60] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Express Root Complex Integrated Endpoint, MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [130] Root Complex Link
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+00:1c.0 PCI bridge: Intel Corporation NM10/ICH7 Family PCI Express Port 1 (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0
+	Bus: primary=00, secondary=20, subordinate=20, sec-latency=0
+	I/O behind bridge: 00004000-00004fff
+	Memory behind bridge: f4000000-f41fffff
+	Prefetchable memory behind bridge: 00000000f4200000-00000000f43fffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Hewlett-Packard Company NM10/ICH7 Family PCI Express Port 1
+	Capabilities: [a0] Power Management version 2
+	Capabilities: [100] Virtual Channel
+	Capabilities: [180] Root Complex Link
+	Kernel driver in use: pcieport
+
+00:1c.1 PCI bridge: Intel Corporation NM10/ICH7 Family PCI Express Port 2 (rev 01) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 17
+	Bus: primary=00, secondary=3f, subordinate=3f, sec-latency=0
+	I/O behind bridge: 00005000-00005fff
+	Memory behind bridge: e0200000-e04fffff
+	Prefetchable memory behind bridge: 00000000f4400000-00000000f45fffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: Hewlett-Packard Company NM10/ICH7 Family PCI Express Port 2
+	Capabilities: [a0] Power Management version 2
+	Capabilities: [100] Virtual Channel
+	Capabilities: [180] Root Complex Link
+	Kernel driver in use: pcieport
+
+00:1d.0 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #1 (rev 01) (prog-if 00 [UHCI])
+	Subsystem: Hewlett-Packard Company NM10/ICH7 Family USB UHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 20
+	I/O ports at 3000 [size=32]
+	Kernel driver in use: uhci_hcd
+
+00:1d.1 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #2 (rev 01) (prog-if 00 [UHCI])
+	Subsystem: Hewlett-Packard Company NM10/ICH7 Family USB UHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 18
+	I/O ports at 3020 [size=32]
+	Kernel driver in use: uhci_hcd
+
+00:1d.2 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #3 (rev 01) (prog-if 00 [UHCI])
+	Subsystem: Hewlett-Packard Company NM10/ICH7 Family USB UHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 21
+	I/O ports at 3040 [size=32]
+	Kernel driver in use: uhci_hcd
+
+00:1d.3 USB controller: Intel Corporation NM10/ICH7 Family USB UHCI Controller #4 (rev 01) (prog-if 00 [UHCI])
+	Subsystem: Hewlett-Packard Company NM10/ICH7 Family USB UHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 22
+	I/O ports at 3060 [size=32]
+	Kernel driver in use: uhci_hcd
+
+00:1d.7 USB controller: Intel Corporation NM10/ICH7 Family USB2 EHCI Controller (rev 01) (prog-if 20 [EHCI])
+	Subsystem: Hewlett-Packard Company NM10/ICH7 Family USB2 EHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 20
+	Memory at e0504000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] Debug port: BAR=1 offset=00a0
+	Kernel driver in use: ehci-pci
+
+00:1e.0 PCI bridge: Intel Corporation 82801 PCI Bridge (rev e1) (prog-if 01 [Subtractive decode])
+	Flags: bus master, fast devsel, latency 0
+	Bus: primary=00, secondary=05, subordinate=05, sec-latency=32
+	I/O behind bridge: 00001000-00001fff
+	Memory behind bridge: e0800000-e0afffff
+	Capabilities: [50] Subsystem: Hewlett-Packard Company 82801 PCI Bridge
+
+00:1f.0 ISA bridge: Intel Corporation 82801GB/GR (ICH7 Family) LPC Interface Bridge (rev 01)
+	Subsystem: Hewlett-Packard Company 82801GB/GR (ICH7 Family) LPC Interface Bridge
+	Flags: bus master, medium devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=0c <?>
+	Kernel driver in use: lpc_ich
+	Kernel modules: intel_rng, lpc_ich, leds_ss4200
+
+00:1f.1 IDE interface: Intel Corporation 82801G (ICH7 Family) IDE Controller (rev 01) (prog-if 8a [Master SecP PriP])
+	Subsystem: Hewlett-Packard Company 82801G (ICH7 Family) IDE Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 17
+	I/O ports at 01f0 [size=8]
+	I/O ports at 03f4
+	I/O ports at 0170 [size=8]
+	I/O ports at 0374
+	I/O ports at 30a0 [size=16]
+	Kernel driver in use: ata_piix
+	Kernel modules: pata_acpi
+
+00:1f.2 IDE interface: Intel Corporation NM10/ICH7 Family SATA Controller [IDE mode] (rev 01) (prog-if 8f [Master SecP SecO PriP PriO])
+	Subsystem: Hewlett-Packard Company NM10/ICH7 Family SATA Controller [IDE mode]
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 19
+	I/O ports at 30d0 [size=8]
+	I/O ports at 30e8 [size=4]
+	I/O ports at 30d8 [size=8]
+	I/O ports at 30ec [size=4]
+	I/O ports at 30b0 [size=16]
+	Capabilities: [70] Power Management version 2
+	Kernel driver in use: ata_piix
+	Kernel modules: pata_acpi
+
+01:00.0 VGA compatible controller: NVIDIA Corporation G98 [GeForce G 100] (rev a1) (prog-if 00 [VGA controller])
+	Subsystem: PC Partner Limited / Sapphire Technology G98 [GeForce G 100]
+	Flags: bus master, fast devsel, latency 0, IRQ 24
+	Memory at e4000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at d0000000 (64-bit, prefetchable) [size=256M]
+	Memory at e2000000 (64-bit, non-prefetchable) [size=32M]
+	I/O ports at 2000 [size=128]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: [60] Power Management version 3
+	Capabilities: [68] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [78] Express Endpoint, MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [128] Power Budgeting <?>
+	Capabilities: [600] Vendor Specific Information: ID=0001 Rev=1 Len=024 <?>
+	Kernel driver in use: nouveau
+	Kernel modules: nvidiafb, nouveau
+
+05:04.0 SCSI storage controller: Adaptec AIC-7850T/7856T [AVA-2902/4/6 / AHA-2910] (rev 03)
+	Subsystem: Adaptec AIC-7850T/7856T [AVA-290x / AHA-2910]
+	Flags: bus master, medium devsel, latency 32, IRQ 16
+	I/O ports at 1000 [disabled] [size=256]
+	Memory at e0a00000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: [dc] Power Management version 1
+	Kernel driver in use: aic7xxx
+	Kernel modules: aic7xxx
+
+3f:00.0 Ethernet controller: Broadcom Limited NetXtreme BCM5752 Gigabit Ethernet PCI Express (rev 01)
+	Subsystem: Hewlett-Packard Company NetXtreme BCM5752 Gigabit Ethernet PCI Express
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Memory at e0400000 (64-bit, non-prefetchable) [size=64K]
+	Expansion ROM at <ignored> [disabled]
+	Capabilities: [48] Power Management version 2
+	Capabilities: [50] Vital Product Data
+	Capabilities: [58] MSI: Enable+ Count=1/8 Maskable- 64bit+
+	Capabilities: [d0] Express Endpoint, MSI 00
+	Kernel driver in use: tg3
+	Kernel modules: tg3
+
