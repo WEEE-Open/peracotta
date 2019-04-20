@@ -1,0 +1,65 @@
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 3.0.0 present.
+
+Handle 0x0002, DMI type 2, 15 bytes
+Base Board Information
+	Manufacturer: ASUSTeK COMPUTER INC.
+	Product Name: UX305CA
+	Version: 1.0       
+	Serial Number: BSN12345678901234567
+	Asset Tag: ATN12345678901234567
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: MIDDLE              
+	Chassis Handle: 0x0003
+	Type: Motherboard
+	Contained Object Handles: 0
+
+Handle 0x0004, DMI type 10, 26 bytes
+On Board Device 1 Information
+	Type: Video
+	Status: Enabled
+	Description:  VGA
+On Board Device 2 Information
+	Type: Ethernet
+	Status: Enabled
+	Description:  GLAN
+On Board Device 3 Information
+	Type: Ethernet
+	Status: Enabled
+	Description:  WLAN
+On Board Device 4 Information
+	Type: Sound
+	Status: Enabled
+	Description:  Audio CODEC 
+On Board Device 5 Information
+	Type: SATA Controller
+	Status: Enabled
+	Description:  SATA Controller
+On Board Device 6 Information
+	Type: Other
+	Status: Enabled
+	Description:  USB 2.0 Controller
+On Board Device 7 Information
+	Type: Other
+	Status: Enabled
+	Description:  USB 3.0 Controller
+On Board Device 8 Information
+	Type: Other
+	Status: Enabled
+	Description:  SMBus Controller
+On Board Device 9 Information
+	Type: Other
+	Status: Enabled
+	Description:  Card Reader
+On Board Device 10 Information
+	Type: Other
+	Status: Enabled
+	Description:  Cmos Camera
+On Board Device 11 Information
+	Type: Other
+	Status: Enabled
+	Description:  Bluetooth
+
