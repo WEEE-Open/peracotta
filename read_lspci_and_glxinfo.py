@@ -4,10 +4,8 @@
 Read "lspci -v" and "glxinfo" outputs
 """
 
-from read_lspci_glxinfo_test import glxinfo_path, lspci_path
 import re
 
-# TODO: add specs from @quel_tale's messages - everything is a single function which gets called
 class VideoCard:
     def __init__(self):
         self.type = "graphics-card"
@@ -16,38 +14,36 @@ class VideoCard:
         self.model = ""
         self.vram_capacity = -1 # bytes
 
-# ASK THE USER
-has_dedicated = None
-integrated_in_mobo = None
-while True:
-    dedicated = input("Does this system have a dedicated video card? Y/N:\n")
-    if dedicated.lower() == "y":
-        has_dedicated = True
-        break
-    elif dedicated.lower() == "n":
-        has_dedicated = False
-        while True:
-            where_is_integrated = input("Is the video card integrated in the motherboard (press M)"
-                                       " or in the CPU (press C)? Tip: the older the system,"
-                                       " the higher the chance the GPU is integrated in the"
-                                       " motherboard.\n")
-            if where_is_integrated.lower() == "m":
-                integrated_in_mobo = True
-                break
-            elif where_is_integrated.lower() == "c":
-                integrated_in_mobo = False
-                break
-            else:
-                print("Please enter 'M' for motherboard or 'C' for CPU.")
-                continue
-        break
-    else:
-        print("Please enter 'Y' or 'N'")
-        continue
+# # ASK THE USER
+# has_dedicated = None
+# integrated_in_mobo = None
+# while True:
+#     dedicated = input("Does this system have a dedicated video card? Y/N:\n")
+#     if dedicated.lower() == "y":
+#         has_dedicated = True
+#         break
+#     elif dedicated.lower() == "n":
+#         has_dedicated = False
+#         # while True:
+#         #     where_is_integrated = input("Is the video card integrated in the motherboard (press M)"
+#         #                                " or in the CPU (press C)? Tip: the older the system,"
+#         #                                " the higher the chance the GPU is integrated in the"
+#         #                                " motherboard.\n")
+#         #     if where_is_integrated.lower() == "m":
+#         #         integrated_in_mobo = True
+#         #         break
+#         #     elif where_is_integrated.lower() == "c":
+#         #         integrated_in_mobo = False
+#         #         break
+#         #     else:
+#         #         print("Please enter 'M' for motherboard or 'C' for CPU.")
+#         #         continue
+#         break
+#     else:
+#         print("Please enter 'Y' or 'N'")
+#         continue
 
-gpu = VideoCard()
-
-def parse_lspci_output(lspci_path:str):
+def parse_lspci_output(gpu:VideoCard, lspci_path:str):
     try:
         # TODO: reformat path for general use
         with open("tests/" + lspci_path, 'r') as f:
@@ -81,6 +77,7 @@ def parse_lspci_output(lspci_path:str):
             else:
                 if "NVIDIA" in first_line.upper():
                     gpu.manufacturer_brand = "NVIDIA"
+
                 elif "Intel" in first_line:
                     gpu.manufacturer_brand = "Intel"
                     if "Integrated Graphics" in first_line:
@@ -103,23 +100,18 @@ def parse_lspci_output(lspci_path:str):
                               + first_line + "\n"
                               + second_line + "\n")
 
-
                 else:
-                    while True:
-                        tmp = input("I couldn't find the Video Card brand. Please enter it below:\n")
-                        confirm = input("Confirm " + str(tmp) + " as the Video Card brand? Y/N\n")
-                        if confirm.lower() == "y":
-                            gpu.manufacturer_brand = tmp
-                            print("GPU brand confirmed, continuing...")
-                            break
-                        else:
-                            print("Please enter the brand/manufacturer again:")
-                            continue
+                    gpu.manufacturer_brand = None
+                    print("I couldn't find the Video Card brand. "
+                          "The model was set to 'None' and is to be edited logging into the TARALLO afterwards. "
+                          "The information you're looking for should be in the following 2 lines:\n"
+                          + first_line + "\n"
+                          + second_line + "\n")
             break
 
 
 
-def parse_glxinfo_output(glxinfo_path:str):
+def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
     try:
         # TODO: reformat path for general use
         with open("tests/" + glxinfo_path, 'r') as f:
@@ -197,25 +189,26 @@ def parse_glxinfo_output(glxinfo_path:str):
                       "Please humans, fix this error by hand.")
 
 # SCRIPT
-if has_dedicated:
-    parse_lspci_output(lspci_path)
-    parse_glxinfo_output(glxinfo_path)
-else:
-    if integrated_in_mobo:
-        parse_lspci_output(lspci_path)
+# TODO: generalize path so that it's not a parameter of this function
+def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str):
+    gpu = VideoCard()
+    if has_dedicated:
+        parse_lspci_output(gpu, lspci_path)
+        parse_glxinfo_output(gpu, glxinfo_path)
+    else: # integrated_in_mobo or integrated_in_cpu
+        parse_lspci_output(gpu, lspci_path)
         # don't parse glxinfo because the VRAM is part of the RAM and varies
         gpu.vram_capacity = None
         print("The VRAM capacity could not be detected. "
               "Please try looking for it on the Video Card or on the Internet. "
               "The capacity value defaulted to 'None'. "
               "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
-    else: # integrated_in_cpu
-        pass
-        # TODO: gather data to write code
 
-print(gpu.manufacturer_brand)
-print(gpu.model)
-print(str(gpu.vram_capacity))
+    print(gpu.manufacturer_brand)
+    print(gpu.model)
+    print(str(gpu.vram_capacity))
 
-# if __name__ == '__main__':
-#     read_lspci_-v_and_glxinfo()
+    # TODO: add return of dict or json
+
+if __name__ == '__main__':
+    read_lspci_and_glxinfo()
