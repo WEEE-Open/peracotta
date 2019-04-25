@@ -5,12 +5,14 @@ Read "lspci -v" and "glxinfo" outputs
 """
 
 from read_lspci_glxinfo_test import glxinfo_path, lspci_path
+import re
 
 # TODO: add specs from @quel_tale's messages - everything is a single function which gets called
 class VideoCard:
     def __init__(self):
         self.type = "graphics-card"
-        self.brand = ""
+        self.manufacturer_brand = ""
+        self.reseller_brand = ""
         self.model = ""
         self.vram_capacity = -1 # bytes
 
@@ -47,6 +49,7 @@ gpu = VideoCard()
 
 def parse_lspci_output(lspci_path:str):
     try:
+        # TODO: reformat path for general use
         with open("tests/" + lspci_path, 'r') as f:
             print("Reading lspci -v...")
             lspci_output = f.read()
@@ -60,6 +63,7 @@ def parse_lspci_output(lspci_path:str):
     for section in lspci_sections:
         if "VGA compatible controller" in section:
             first_line = section.splitlines()[0]
+            second_line = section.splitlines()[1]
             try:
                 # take the first string between [] from the first line
                 # works with NVIDIA cards
@@ -69,34 +73,55 @@ def parse_lspci_output(lspci_path:str):
                 pass
 
             if "AMD" in gpu.model or "ATI" in gpu.model:
-                gpu.brand = gpu.model
+                gpu.manufacturer_brand = gpu.model
                 # take second string between []
                 gpu.model = first_line.split("[")[2].split("]")[0]
                 if "controller" in gpu.model:
                     gpu.model = section.splitlines()[1].split(" ")[-1]
             else:
                 if "NVIDIA" in first_line.upper():
-                    gpu.brand = "NVIDIA"
+                    gpu.manufacturer_brand = "NVIDIA"
                 elif "Intel" in first_line:
-                    gpu.brand = "Intel"
-                    # TODO: check the following line is valid for other Intel integrated GPUs (works with 82865G)
-                    gpu.model = first_line.split("Intel Corporation ")[1].split(" ")[0]
+                    gpu.manufacturer_brand = "Intel"
+                    if "Integrated Graphics" in first_line:
+                        tmp_model = first_line.split("Intel Corporation ")[1].split(" Integrated Graphics")[0]
+                        # if there are no numbers, e.g. "Core Processor", tmp_model is not a model number
+                        if not re.search('\d+', tmp_model):
+                            tmp_model = ""
+                    elif "[" in first_line and "]" in first_line:
+                        tmp_model = first_line.split("[")[1].split("]")[0]
+                    else:
+                        tmp_model = ""
+
+                    if tmp_model != "":
+                        gpu.model = tmp_model
+                    else:
+                        gpu.model = None
+                        print("I couldn't find the Integrated Graphics model. "
+                              "The model was set to 'None' and is to be edited logging into the TARALLO afterwards. "
+                              "The information you're looking for should be in the following 2 lines:\n"
+                              + first_line + "\n"
+                              + second_line + "\n")
+
+
                 else:
                     while True:
                         tmp = input("I couldn't find the Video Card brand. Please enter it below:\n")
                         confirm = input("Confirm " + str(tmp) + " as the Video Card brand? Y/N\n")
                         if confirm.lower() == "y":
-                            gpu.brand = tmp
+                            gpu.manufacturer_brand = tmp
                             print("GPU brand confirmed, continuing...")
                             break
                         else:
                             print("Please enter the brand/manufacturer again:")
                             continue
+            break
 
 
 
 def parse_glxinfo_output(glxinfo_path:str):
     try:
+        # TODO: reformat path for general use
         with open("tests/" + glxinfo_path, 'r') as f:
             print("Reading glxinfo...")
             glxinfo_output = f.read()
@@ -182,13 +207,13 @@ else:
         gpu.vram_capacity = None
         print("The VRAM capacity could not be detected. "
               "Please try looking for it on the Video Card or on the Internet. "
-              "The capacity value defaulted to 'None'."
-              "For an integrated GPU, the VRAM may also be shared with the RAM, so an empty value is acceptable. ")
+              "The capacity value defaulted to 'None'. "
+              "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
     else: # integrated_in_cpu
         pass
         # TODO: gather data to write code
 
-print(gpu.brand)
+print(gpu.manufacturer_brand)
 print(gpu.model)
 print(str(gpu.vram_capacity))
 
