@@ -1,0 +1,143 @@
+00:00.0 Host bridge: Advanced Micro Devices, Inc. [AMD/ATI] RS480/RS482/RS485 Host Bridge (rev 10)
+	Subsystem: Hewlett-Packard Company RS480/RS482/RS485 Host Bridge
+	Flags: bus master, 66MHz, medium devsel, latency 64, NUMA node 0
+	I/O ports at 4100 [disabled] [size=32]
+	Memory at <ignored> (64-bit, non-prefetchable)
+
+00:02.0 PCI bridge: Advanced Micro Devices, Inc. [AMD/ATI] RS4xx PCI Express Port [ext gfx] (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, NUMA node 0
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: 0000e000-0000efff
+	Memory behind bridge: fa000000-fcffffff
+	Prefetchable memory behind bridge: 00000000d0000000-00000000dfffffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:12.0 IDE interface: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB4x0 Serial ATA Controller (prog-if 8f [PCI native mode controller, supports both channels switched to ISA compatibility mode, supports bus mastering])
+	Subsystem: Hewlett-Packard Company IXP SB4x0 Serial ATA Controller
+	Flags: bus master, 66MHz, medium devsel, latency 64, IRQ 22, NUMA node 0
+	I/O ports at fe00 [size=8]
+	I/O ports at fd00 [size=4]
+	I/O ports at fc00 [size=8]
+	I/O ports at fb00 [size=4]
+	I/O ports at fa00 [size=16]
+	Memory at fe02f000 (32-bit, non-prefetchable) [size=512]
+	[virtual] Expansion ROM at 40000000 [disabled] [size=512K]
+	Capabilities: <access denied>
+	Kernel driver in use: sata_sil
+	Kernel modules: sata_sil, pata_acpi
+
+00:13.0 USB controller: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB4x0 USB Host Controller (prog-if 10 [OHCI])
+	Subsystem: Hewlett-Packard Company IXP SB4x0 USB Host Controller
+	Flags: bus master, 66MHz, medium devsel, latency 64, IRQ 19, NUMA node 0
+	Memory at fe02e000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: ohci-pci
+
+00:13.1 USB controller: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB4x0 USB Host Controller (prog-if 10 [OHCI])
+	Subsystem: Hewlett-Packard Company IXP SB4x0 USB Host Controller
+	Flags: bus master, 66MHz, medium devsel, latency 64, IRQ 19, NUMA node 0
+	Memory at fe02d000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: ohci-pci
+
+00:13.2 USB controller: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB4x0 USB2 Host Controller (prog-if 20 [EHCI])
+	Subsystem: Hewlett-Packard Company IXP SB4x0 USB2 Host Controller
+	Flags: bus master, 66MHz, medium devsel, latency 64, IRQ 19, NUMA node 0
+	Memory at fe02c000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: ehci-pci
+
+00:14.0 SMBus: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB4x0 SMBus Controller (rev 11)
+	Subsystem: Hewlett-Packard Company IXP SB4x0 SMBus Controller
+	Flags: 66MHz, medium devsel, NUMA node 0
+	I/O ports at 0500 [size=16]
+	Memory at fe02b000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: <access denied>
+	Kernel driver in use: piix4_smbus
+	Kernel modules: i2c_piix4
+
+00:14.1 IDE interface: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB4x0 IDE Controller (prog-if 8a [ISA Compatibility mode controller, supports both channels switched to PCI native mode, supports bus mastering])
+	Subsystem: Hewlett-Packard Company IXP SB4x0 IDE Controller
+	Flags: bus master, 66MHz, medium devsel, latency 64, IRQ 16, NUMA node 0
+	I/O ports at 01f0 [size=8]
+	I/O ports at 03f4
+	I/O ports at 0170 [size=8]
+	I/O ports at 0374
+	I/O ports at f800 [size=16]
+	Capabilities: <access denied>
+	Kernel driver in use: pata_atiixp
+	Kernel modules: pata_atiixp, pata_acpi
+
+00:14.3 ISA bridge: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB4x0 PCI-ISA Bridge
+	Subsystem: Hewlett-Packard Company IXP SB4x0 PCI-ISA Bridge
+	Flags: bus master, 66MHz, medium devsel, latency 0, NUMA node 0
+
+00:14.4 PCI bridge: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB4x0 PCI-PCI Bridge (prog-if 01 [Subtractive decode])
+	Flags: bus master, 66MHz, medium devsel, latency 64, NUMA node 0
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=32
+	I/O behind bridge: 0000d000-0000dfff
+	Memory behind bridge: fde00000-fdefffff
+	Prefetchable memory behind bridge: fdd00000-fddfffff
+
+00:14.5 Multimedia audio controller: Advanced Micro Devices, Inc. [AMD/ATI] IXP SB400 AC'97 Audio Controller (rev 02)
+	Subsystem: Hewlett-Packard Company IXP SB400 AC'97 Audio Controller
+	Flags: bus master, 66MHz, slow devsel, latency 64, IRQ 17, NUMA node 0
+	Memory at fe02a000 (32-bit, non-prefetchable) [size=256]
+	Capabilities: <access denied>
+	Kernel driver in use: snd_atiixp
+	Kernel modules: snd_atiixp
+
+00:18.0 Host bridge: Advanced Micro Devices, Inc. [AMD] K8 [Athlon64/Opteron] HyperTransport Technology Configuration
+	Flags: fast devsel, NUMA node 0
+	Capabilities: <access denied>
+
+00:18.1 Host bridge: Advanced Micro Devices, Inc. [AMD] K8 [Athlon64/Opteron] Address Map
+	Flags: fast devsel, NUMA node 0
+
+00:18.2 Host bridge: Advanced Micro Devices, Inc. [AMD] K8 [Athlon64/Opteron] DRAM Controller
+	Flags: fast devsel, NUMA node 0
+
+00:18.3 Host bridge: Advanced Micro Devices, Inc. [AMD] K8 [Athlon64/Opteron] Miscellaneous Control
+	Flags: fast devsel, NUMA node 0
+	Kernel driver in use: k8temp
+	Kernel modules: k8temp
+
+01:00.0 VGA compatible controller: NVIDIA Corporation NV44 [GeForce 6200 SE TurboCache] (rev a1) (prog-if 00 [VGA controller])
+	Subsystem: ASUSTeK Computer Inc. NV44 [GeForce 6200 SE TurboCache]
+	Flags: bus master, fast devsel, latency 0, IRQ 18, NUMA node 0
+	Memory at fa000000 (32-bit, non-prefetchable) [size=16M]
+	Memory at d0000000 (64-bit, prefetchable) [size=256M]
+	Memory at fb000000 (64-bit, non-prefetchable) [size=16M]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: <access denied>
+	Kernel driver in use: nouveau
+	Kernel modules: nvidiafb, nouveau
+
+02:01.0 Multimedia controller: Philips Semiconductors SAA7131/SAA7133/SAA7135 Video Broadcast Decoder (rev d0)
+	Subsystem: ASUSTeK Computer Inc. TV-FM 7135
+	Flags: bus master, medium devsel, latency 64, IRQ 9, NUMA node 0
+	Memory at fdeff000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: <access denied>
+	Kernel driver in use: saa7134
+	Kernel modules: saa7134
+
+02:03.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL-8100/8101L/8139 PCI Fast Ethernet Adapter (rev 10)
+	Subsystem: Hewlett-Packard Company RTL-8100/8101L/8139 PCI Fast Ethernet Adapter
+	Flags: bus master, medium devsel, latency 64, IRQ 20, NUMA node 0
+	I/O ports at df00 [size=256]
+	Memory at fdefe000 (32-bit, non-prefetchable) [size=256]
+	[virtual] Expansion ROM at fdd00000 [disabled] [size=64K]
+	Capabilities: <access denied>
+	Kernel driver in use: 8139too
+	Kernel modules: 8139cp, 8139too
+
+02:04.0 FireWire (IEEE 1394): VIA Technologies, Inc. VT6306/7/8 [Fire II(M)] IEEE 1394 OHCI Controller (rev 80) (prog-if 10 [OHCI])
+	Subsystem: Hewlett-Packard Company VT6306/7/8 [Fire II(M)] IEEE 1394 OHCI Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 9, NUMA node 0
+	Memory at fdefd000 (32-bit, non-prefetchable) [size=2K]
+	I/O ports at de00 [size=128]
+	Capabilities: <access denied>
+	Kernel driver in use: firewire_ohci
+	Kernel modules: firewire_ohci
+
