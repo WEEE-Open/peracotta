@@ -59,8 +59,8 @@ class Welcome(QWidget):
             # TODO: change to generate_files.sh
             process = sp.Popen(["./test.sh"], shell=True)
             process.wait(timeout=20)
-            new_widget = FileGenerated(window)
-            # window.setCentralWidget(new_widget)
+            new_widget = FileGenerated()
+            window.setCentralWidget(new_widget)
 
         except sp.CalledProcessError as err:
             QMessageBox.critical(self, "Error", "Something went wrong while running 'generate_files.sh'. Here is the stderr:\n" + err.output)
@@ -69,22 +69,29 @@ class Welcome(QWidget):
             print("I couldn't find the 'generate_files.sh' script in the current directory. Please import it and try again.")
 
         except Exception as e:
-            print("What the fuck did you do")
+            print("What the fuck did you do\n" + str(e))
 
 class FileGenerated(QWidget):
-    def __init__(self, window:QMainWindow):
+    def __init__(self):
         super().__init__()
-        self.init_ui(window)
+        self.init_ui()
 
-    def init_ui(self, window:QMainWindow):
-        h_box = QHBoxLayout()
-
-        self.label = QLabel("Everything went fine. Click the button below if you want to proceed with the data extraction. "
-                       "You will be able to review the data after this process.")
+    def init_ui(self):
+        self.label = QLabel("Everything went fine. Click the button below if you want to proceed with the data extraction.\n"
+                            "You will be able to review the data after this process.")
         self.extract_data_button = QPushButton("Extract data from output files")
-        h_box.addWidget(self.label)
+
+        h_box = QHBoxLayout()
+        h_box.addStretch()
         h_box.addWidget(self.extract_data_button)
-        window.setCentralWidget(self)
+        h_box.addStretch()
+
+        v_box = QVBoxLayout()
+        v_box.addWidget(self.label)
+        v_box.addSpacing(15)
+        v_box.addLayout(h_box)
+
+        self.setLayout(v_box)
 
 
 
