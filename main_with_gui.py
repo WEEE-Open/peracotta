@@ -3,6 +3,7 @@
 import sys, os, subprocess as sp
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QMessageBox
 from PyQt5.QtGui import QFont
+from extract_data import extract_and_collect_data_from_generated_files
 
 
 class Window(QMainWindow):
@@ -20,11 +21,11 @@ class Window(QMainWindow):
 
 
 class Welcome(QWidget):
-    def __init__(self, window:QMainWindow):
+    def __init__(self, window: QMainWindow):
         super().__init__()
         self.init_ui(window)
 
-    def init_ui(self, window:QMainWindow):
+    def init_ui(self, window: QMainWindow):
         self.title = QLabel("Welcome to P.E.R.A.C.O.T.T.A.")
         self.subtitle = QLabel("(Progetto Esteso Raccolta Automatica Configurazioni hardware Organizzate Tramite Tarallo Autonomamente)")
         self.intro = QLabel("When you're ready to generate the files required to gather info about this system, click the 'Generate files' button below.")
@@ -52,7 +53,7 @@ class Welcome(QWidget):
 
         self.setLayout(v_box)
 
-    def generate_files(self, window:QMainWindow):
+    def generate_files(self, window: QMainWindow):
         try:
             working_directory = sp.check_output(["pwd"])
             path_to_gen_files_sh = working_directory[:-1].decode("ascii") + "/generate_files.sh"
@@ -60,7 +61,7 @@ class Welcome(QWidget):
                 process.wait(timeout=10)
             # the line below is needed in order to not close the window!
             window.takeCentralWidget()
-            new_widget = FilesGenerated()
+            new_widget = FilesGenerated(window)
             window.setCentralWidget(new_widget)
 
         except sp.CalledProcessError as err:
@@ -74,14 +75,15 @@ class Welcome(QWidget):
 
 
 class FilesGenerated(QWidget):
-    def __init__(self):
+    def __init__(self, window: QMainWindow):
         super().__init__()
-        self.init_ui()
+        self.init_ui(window)
 
-    def init_ui(self):
+    def init_ui(self, window: QMainWindow):
         self.label = QLabel("Everything went fine. Click the button below if you want to proceed with the data extraction.\n"
                             "You will be able to review the data after this process.")
         self.extract_data_button = QPushButton("Extract data from output files")
+        self.extract_data_button.clicked.connect(lambda: self.extract_data_from_generated_files(window))
 
         h_box = QHBoxLayout()
         h_box.addStretch()
@@ -95,7 +97,25 @@ class FilesGenerated(QWidget):
 
         self.setLayout(v_box)
 
+    def extract_data_from_generated_files(self, window: QMainWindow):
+        try:
+            system_info = extract_and_collect_data_from_generated_files()
+            window.takeCentralWidget()
+            new_widget = VerifyExtractedData(window, system_info)
+            window.setCentralWidget(new_widget)
 
+        except Exception as e:
+            QMessageBox.critical(self, "WTF", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+
+
+class VerifyExtractedData(QWidget):
+    def __init__(self, window: QMainWindow, system_info):
+        super().__init__()
+        self.init_ui(window, system_info)
+
+    def init_ui(self, window: QMainWindow, system_info):
+        pass
+    # TODO: OwO *notices beautifully displayed gathered system info*
 
 
 def main():
