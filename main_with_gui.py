@@ -18,9 +18,6 @@ class Window(QMainWindow):
 
         self.show()
 
-    def next_clicked(self):
-        pass
-
 
 class Welcome(QWidget):
     def __init__(self, window:QMainWindow):
@@ -55,19 +52,14 @@ class Welcome(QWidget):
 
         self.setLayout(v_box)
 
-    # TODO: fix when dmidecode, lscpu and lspci are not installed the program hangs on macOS instead of spawning dialog
     def generate_files(self, window:QMainWindow):
         try:
             working_directory = sp.check_output(["pwd"])
             path_to_gen_files_sh = working_directory[:-1].decode("ascii") + "/generate_files.sh"
-            process = sp.Popen(["sudo", path_to_gen_files_sh], shell=False, stdin=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
-            # with  as process:
-                # TODO: enter password at sudo prompt - doesn't work for some reason - maybe add dialog box prompt for password or simply run the script as su
-                # sudo_password = (mysudopassword + "\n").encode("ascii")
-                # print(sudo_password)
-                # process.communicate(sudo_password)[1]
-                # process = sp.Popen("sudo " + path_to_gen_files_sh, shell=True)
-            process.wait(timeout=10)
+            with sp.Popen(["sudo", path_to_gen_files_sh], shell=False) as process:
+                process.wait(timeout=10)
+            # the line below is needed in order to not close the window!
+            window.takeCentralWidget()
             new_widget = FilesGenerated()
             window.setCentralWidget(new_widget)
 
@@ -78,7 +70,8 @@ class Welcome(QWidget):
             QMessageBox.warning(self, "Warning", "I couldn't find the 'generate_files.sh' script in the current directory. Please import it and try again.")
 
         except Exception as e:
-            QMessageBox.critical(self, "WTF", "What the fuck did you do\n" + str(e))
+            QMessageBox.critical(self, "WTF", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+
 
 class FilesGenerated(QWidget):
     def __init__(self):
