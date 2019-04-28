@@ -1,5 +1,6 @@
-import sys, os, subprocess
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QDialogButtonBox
+import sys, os, subprocess as sp
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QMessageBox
+from PyQt5.QtGui import QFont
 
 
 class Window(QMainWindow):
@@ -9,7 +10,7 @@ class Window(QMainWindow):
 
     def init_ui(self):
 
-        welcome_widget = Welcome()
+        welcome_widget = Welcome(self)
         self.setCentralWidget(welcome_widget)
         self.setWindowTitle("P.E.R.A.C.O.T.T.A.")
 
@@ -20,54 +21,73 @@ class Window(QMainWindow):
 
 
 class Welcome(QWidget):
-    def __init__(self):
+    def __init__(self, window:QMainWindow):
         super().__init__()
-        self.init_ui()
+        self.init_ui(window)
 
-    def init_ui(self):
-        self.welcome_message = QLabel("Welcome to P.E.R.A.C.O.T.T.A.")
-        self.intro_message = QLabel(
-            "(Progetto Esteso Raccolta Automatica Configurazioni hardware Organizzate Tramite Tarallo Autonomamente)\n"
-            "When you're ready to generate the files required to gather info about this system, click the 'Generate files' button below.")
-        # TODO: set font size (bigger for welcome_message)
+    def init_ui(self, window:QMainWindow):
+        self.title = QLabel("Welcome to P.E.R.A.C.O.T.T.A.")
+        self.subtitle = QLabel("(Progetto Esteso Raccolta Automatica Configurazioni hardware Organizzate Tramite Tarallo Autonomamente)")
+        self.intro = QLabel("When you're ready to generate the files required to gather info about this system, click the 'Generate files' button below.")
+
+        title_font = QFont("futura", pointSize=24, italic=False)
+        subtitle_font = QFont("futura", pointSize=14, italic=True)
+        self.title.setFont(title_font)
+        self.subtitle.setFont(subtitle_font)
 
         self.generate_files_button = QPushButton("Generate Files")
-        self.generate_files_button.clicked.connect(self.generate_files)
+        self.generate_files_button.clicked.connect(lambda: self.generate_files(window))
 
         h_box = QHBoxLayout()
         h_box.addStretch()
         h_box.addWidget(self.generate_files_button)
+        h_box.addStretch()
 
         v_box = QVBoxLayout()
-        v_box.addWidget(self.welcome_message)
-        v_box.addWidget(self.intro_message)
+        v_box.addWidget(self.title)
+        v_box.addWidget(self.subtitle)
+        v_box.addSpacing(30)
+        v_box.addWidget(self.intro)
+        v_box.addSpacing(15)
         v_box.addLayout(h_box)
 
         self.setLayout(v_box)
 
     # TODO: fix when dmidecode, lscpu and lspci are not installed the program hangs on macOS instead of spawning dialog
-    def generate_files(self):
+    def generate_files(self, window:QMainWindow):
         try:
-            # process = subprocess.Popen(["./generate_files.sh"])
-            # process.wait()
-            output = subprocess.check_output("./generate_files.sh")
-            next_button = QPushButton("Next")
-            self.dialog = QDialogButtonBox("Everything went fine.")
-            next_button.clicked.connect(self.dialog.close())
-            # next_button.clicked.connect() # change main window
-            self.dialog.addButton(next_button)
-            self.dialog.show()
-        except subprocess.CalledProcessError as err:
-            # stdout, stderr = process.communicate()
+            # TODO: change to generate_files.sh
+            process = sp.Popen(["./test.sh"], shell=True)
+            process.wait(timeout=20)
+            new_widget = FileGenerated(window)
+            # window.setCentralWidget(new_widget)
 
-            close_button = QPushButton("Close")
-            self.dialog = QDialogButtonBox("Something went wrong while running 'generate_files.sh'. Here is the stderr:\n" + err.output)
-            close_button.clicked.connect(self.dialog.close())
-            self.dialog.addButton(close_button)
-            self.dialog.show()
+        except sp.CalledProcessError as err:
+            QMessageBox.critical(self, "Error", "Something went wrong while running 'generate_files.sh'. Here is the stderr:\n" + err.output)
 
         except FileNotFoundError as e:
             print("I couldn't find the 'generate_files.sh' script in the current directory. Please import it and try again.")
+
+        except Exception as e:
+            print("What the fuck did you do")
+
+class FileGenerated(QWidget):
+    def __init__(self, window:QMainWindow):
+        super().__init__()
+        self.init_ui(window)
+
+    def init_ui(self, window:QMainWindow):
+        h_box = QHBoxLayout()
+
+        self.label = QLabel("Everything went fine. Click the button below if you want to proceed with the data extraction. "
+                       "You will be able to review the data after this process.")
+        self.extract_data_button = QPushButton("Extract data from output files")
+        h_box.addWidget(self.label)
+        h_box.addWidget(self.extract_data_button)
+        window.setCentralWidget(self)
+
+
+
 
 def main():
     app = QApplication(sys.argv)
