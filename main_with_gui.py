@@ -2,7 +2,7 @@
 
 import sys, os, subprocess as sp
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QMessageBox
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 from extract_data import extract_and_collect_data_from_generated_files
 
 
@@ -16,6 +16,7 @@ class Window(QMainWindow):
         welcome_widget = Welcome(self)
         self.setCentralWidget(welcome_widget)
         self.setWindowTitle("P.E.R.A.C.O.T.T.A.")
+        self.setWindowIcon(QIcon("pear_emoji.png"))
 
         self.show()
 
