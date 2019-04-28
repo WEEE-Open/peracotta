@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# allows X11 graphics to be run from root
-if [ grep "xhost +" $HOME/.bashrc > /dev/null ]; then
-    echo "xhost +" >> $HOME/.bashrc
-fi
-
 dmidecode -t baseboard > baseboard.txt
 dmidecode -t connector > connector.txt
 dmidecode -t chassis > chassis.txt
