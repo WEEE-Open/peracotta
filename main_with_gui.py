@@ -1,6 +1,9 @@
+#!/usr/bin/python3
+
 import sys, os, subprocess as sp
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QMessageBox
 from PyQt5.QtGui import QFont
+from mypass import mysudopassword
 
 
 class Window(QMainWindow):
@@ -56,22 +59,29 @@ class Welcome(QWidget):
     # TODO: fix when dmidecode, lscpu and lspci are not installed the program hangs on macOS instead of spawning dialog
     def generate_files(self, window:QMainWindow):
         try:
-            # TODO: change to generate_files.sh
-            process = sp.Popen(["./test.sh"], shell=True)
-            process.wait(timeout=20)
-            new_widget = FileGenerated()
+            working_directory = sp.check_output(["pwd"])
+            path_to_gen_files_sh = working_directory[:-1].decode("ascii") + "/generate_files.sh"
+            process = sp.Popen(["sudo", path_to_gen_files_sh], shell=False, stdin=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
+            # with  as process:
+                # TODO: enter password at sudo prompt - doesn't work for some reason - maybe add dialog box prompt for password or simply run the script as su
+                # sudo_password = (mysudopassword + "\n").encode("ascii")
+                # print(sudo_password)
+                # process.communicate(sudo_password)[1]
+                # process = sp.Popen("sudo " + path_to_gen_files_sh, shell=True)
+            process.wait(timeout=10)
+            new_widget = FilesGenerated()
             window.setCentralWidget(new_widget)
 
         except sp.CalledProcessError as err:
             QMessageBox.critical(self, "Error", "Something went wrong while running 'generate_files.sh'. Here is the stderr:\n" + err.output)
 
-        except FileNotFoundError as e:
-            print("I couldn't find the 'generate_files.sh' script in the current directory. Please import it and try again.")
+        except FileNotFoundError:
+            QMessageBox.warning(self, "Warning", "I couldn't find the 'generate_files.sh' script in the current directory. Please import it and try again.")
 
         except Exception as e:
-            print("What the fuck did you do\n" + str(e))
+            QMessageBox.critical(self, "WTF", "What the fuck did you do\n" + str(e))
 
-class FileGenerated(QWidget):
+class FilesGenerated(QWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()
@@ -98,7 +108,7 @@ class FileGenerated(QWidget):
 
 def main():
     app = QApplication(sys.argv)
-    window = Window()
+    Window()
     sys.exit(app.exec())
 
 if __name__ == '__main__':
