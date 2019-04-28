@@ -1,9 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/gksu /usr/bin/python3
 
 import sys, os, subprocess as sp
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QMessageBox
 from PyQt5.QtGui import QFont
-from mypass import mysudopassword
 
 
 class Window(QMainWindow):
