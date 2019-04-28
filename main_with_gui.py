@@ -2,7 +2,8 @@
 
 import sys, os, subprocess as sp
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QMessageBox
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
+from PyQt5.QtCore import Qt
 from extract_data import extract_and_collect_data_from_generated_files
 
 
@@ -121,6 +122,24 @@ class VerifyExtractedData(QWidget):
 
 def main():
     app = QApplication(sys.argv)
+
+    # set SUPERIOR dark theme
+    app.setStyle('Fusion')
+    palette = QPalette()
+    palette.setColor(QPalette.Window, QColor(53, 53, 53))
+    palette.setColor(QPalette.WindowText, Qt.white)
+    palette.setColor(QPalette.Base, QColor(15, 15, 15))
+    palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+    palette.setColor(QPalette.ToolTipBase, Qt.white)
+    palette.setColor(QPalette.ToolTipText, Qt.white)
+    palette.setColor(QPalette.Text, Qt.white)
+    palette.setColor(QPalette.Button, QColor(53, 53, 53))
+    palette.setColor(QPalette.ButtonText, Qt.white)
+    palette.setColor(QPalette.BrightText, Qt.red)
+    palette.setColor(QPalette.Highlight, QColor(142, 45, 197).lighter())
+    palette.setColor(QPalette.HighlightedText, Qt.black)
+
+    app.setPalette(palette)
     Window()
     sys.exit(app.exec())
 
