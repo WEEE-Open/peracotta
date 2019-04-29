@@ -14,38 +14,9 @@ class VideoCard:
         self.model = ""
         self.vram_capacity = -1 # bytes
 
-# # ASK THE USER
-# has_dedicated = None
-# integrated_in_mobo = None
-# while True:
-#     dedicated = input("Does this system have a dedicated video card? Y/N:\n")
-#     if dedicated.lower() == "y":
-#         has_dedicated = True
-#         break
-#     elif dedicated.lower() == "n":
-#         has_dedicated = False
-#         # while True:
-#         #     where_is_integrated = input("Is the video card integrated in the motherboard (press M)"
-#         #                                " or in the CPU (press C)? Tip: the older the system,"
-#         #                                " the higher the chance the GPU is integrated in the"
-#         #                                " motherboard.\n")
-#         #     if where_is_integrated.lower() == "m":
-#         #         integrated_in_mobo = True
-#         #         break
-#         #     elif where_is_integrated.lower() == "c":
-#         #         integrated_in_mobo = False
-#         #         break
-#         #     else:
-#         #         print("Please enter 'M' for motherboard or 'C' for CPU.")
-#         #         continue
-#         break
-#     else:
-#         print("Please enter 'Y' or 'N'")
-#         continue
-
 def parse_lspci_output(gpu:VideoCard, lspci_path:str):
     try:
-        # TODO: reformat path for general use
+        # TODO: reformat path for general use - also best to assume working directory
         with open("tests/" + lspci_path, 'r') as f:
             print("Reading lspci -v...")
             lspci_output = f.read()
@@ -123,8 +94,8 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
         exit(-1)
 
     glxinfo_output_len = len(glxinfo_output.splitlines())
-    for i, line in enumerate(glxinfo_output.splitlines()):
 
+    for i, line in enumerate(glxinfo_output.splitlines()):
         dedicated_memory_found = False
 
         # this line comes before the "Dedicated video memory" line
@@ -189,7 +160,6 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
                       "Please humans, fix this error by hand.")
 
 # SCRIPT
-# TODO: generalize path so that it's not a parameter of this function
 def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str):
     gpu = VideoCard()
     if has_dedicated:
@@ -204,11 +174,18 @@ def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str)
               "The capacity value defaulted to 'None'. "
               "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
 
+    # TODO: comment following lines in production code
     print(gpu.manufacturer_brand)
     print(gpu.model)
     print(str(gpu.vram_capacity))
 
-    # TODO: add return of dict or json
+    return {
+        "type": "graphics-card",
+        "manufacturer_brand": gpu.manufacturer_brand,
+        "reseller_brand": gpu.reseller_brand,
+        "model": gpu.model,
+        "vram_capacity": gpu.vram_capacity
+    }
 
 if __name__ == '__main__':
     read_lspci_and_glxinfo()
