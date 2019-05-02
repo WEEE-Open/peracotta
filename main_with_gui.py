@@ -6,6 +6,7 @@ from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt
 from extract_data import extract_and_collect_data_from_generated_files
 
+from read_decode_dimms import read_decode_dimms
 
 class Window(QMainWindow):
     def __init__(self):
@@ -14,8 +15,14 @@ class Window(QMainWindow):
 
     def init_ui(self):
 
-        welcome_widget = Welcome(self)
-        self.setCentralWidget(welcome_widget)
+        # welcome_widget = Welcome(self)
+        # self.setCentralWidget(welcome_widget)
+
+        # test dicts display
+        # TODO: fix it doesn't display any window at all
+        sysinfo_widget = VerifyExtractedData(self, read_decode_dimms())
+        self.setCentralWidget(sysinfo_widget)
+
         self.setWindowTitle("P.E.R.A.C.O.T.T.A.")
         self.setWindowIcon(QIcon("pear_emoji.png"))
 
@@ -116,7 +123,26 @@ class VerifyExtractedData(QWidget):
         self.init_ui(window, system_info)
 
     def init_ui(self, window: QMainWindow, system_info):
-        pass
+
+        v_box = QVBoxLayout()
+
+        for component in system_info:
+            for item in component.items():
+                h_box = QHBoxLayout()
+
+                # the single dict entry is converted to a tuple
+                name = QLabel(str(item[0]))
+                desc = QLabel(str(item[1]))
+
+                h_box.addWidget(name)
+                h_box.addStretch()
+                h_box.addWidget(desc)
+
+                v_box.addLayout(h_box)
+                # v_box.addSpacing(5)
+
+        self.setLayout(v_box)
+
     # TODO: OwO *notices beautifully displayed gathered system info*
 
 
