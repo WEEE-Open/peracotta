@@ -1,0 +1,25 @@
+# dmidecode 3.1
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x0002, DMI type 2, 15 bytes
+Base Board Information
+	Manufacturer: ASUSTeK Computer INC.
+	Product Name: P5SD2-VM
+	Version: Rev x.xx
+	Serial Number: MT721CT11114269
+	Asset Tag: To Be Filled By O.E.M.
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: To Be Filled By O.E.M.
+	Chassis Handle: 0x0003
+	Type: Motherboard
+	Contained Object Handles: 0
+
+Handle 0x0029, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Video
+	Status: Enabled
+	Description:   To Be Filled By O.E.M.
+
