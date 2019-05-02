@@ -1,0 +1,222 @@
+smartctl 6.6 2016-05-31 r4324 [x86_64-linux-4.9.0-9-amd64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Model Family:     Maxtor DiamondMax Plus 9
+Device Model:     Maxtor 6Y080L0
+Serial Number:    Y2E5CRAE
+Firmware Version: YE3T0VW1
+User Capacity:    81.964.302.336 bytes [81,9 GB]
+Sector Size:      512 bytes logical/physical
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   ATA/ATAPI-7 T13/1532D revision 0
+Local Time is:    Thu May  2 17:54:00 2019 UTC
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+AAM level is:     254 (maximum performance), recommended: 192
+APM feature is:   Disabled
+Rd look-ahead is: Enabled
+Write cache is:   Enabled
+ATA Security is:  Disabled, NOT FROZEN [SEC1]
+Wt Cache Reorder: Unavailable
+
+=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
+
+General SMART Values:
+Offline data collection status:  (0x82)	Offline data collection activity
+					was completed without error.
+					Auto Offline Data Collection: Enabled.
+Self-test execution status:      (   0)	The previous self-test routine completed
+					without error or no self-test has ever 
+					been run.
+Total time to complete Offline 
+data collection: 		(  242) seconds.
+Offline data collection
+capabilities: 			 (0x5b) SMART execute Offline immediate.
+					Auto Offline data collection on/off support.
+					Suspend Offline collection upon new
+					command.
+					Offline surface scan supported.
+					Self-test supported.
+					No Conveyance Self-test supported.
+					Selective Self-test supported.
+SMART capabilities:            (0x0003)	Saves SMART data before entering
+					power-saving mode.
+					Supports SMART auto save timer.
+Error logging capability:        (0x01)	Error logging supported.
+					No General Purpose Logging support.
+Short self-test routine 
+recommended polling time: 	 (   2) minutes.
+Extended self-test routine
+recommended polling time: 	 (  41) minutes.
+
+SMART Attributes Data Structure revision number: 16
+Vendor Specific SMART Attributes with Thresholds:
+ID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE
+  3 Spin_Up_Time            POS--K   194   157   063    -    21293
+  4 Start_Stop_Count        -O--CK   253   253   000    -    1539
+  5 Reallocated_Sector_Ct   PO--CK   253   253   063    -    3
+  6 Read_Channel_Margin     P-----   253   253   100    -    0
+  7 Seek_Error_Rate         -O-R--   253   252   000    -    0
+  8 Seek_Time_Performance   POS--K   253   244   187    -    44709
+  9 Power_On_Minutes        -O--CK   124   124   000    -    1009h+15m
+ 10 Spin_Retry_Count        PO-R-K   251   232   157    -    2
+ 11 Calibration_Retry_Count PO-R-K   253   252   223    -    0
+ 12 Power_Cycle_Count       -O--CK   251   251   000    -    1169
+192 Power-Off_Retract_Count -O--CK   253   253   000    -    0
+193 Load_Cycle_Count        -O--CK   253   253   000    -    0
+194 Temperature_Celsius     -O--CK   253   253   000    -    36
+195 Hardware_ECC_Recovered  -O-R--   253   252   000    -    614
+196 Reallocated_Event_Count ---R--   250   250   000    -    3
+197 Current_Pending_Sector  ---R--   253   253   000    -    0
+198 Offline_Uncorrectable   ---R--   153   153   000    -    100
+199 UDMA_CRC_Error_Count    ---R--   198   196   000    -    3
+200 Multi_Zone_Error_Rate   -O-R--   253   252   000    -    0
+201 Soft_Read_Error_Rate    -O-R--   253   236   000    -    186
+202 Data_Address_Mark_Errs  -O-R--   253   251   000    -    0
+203 Run_Out_Cancel          PO-R--   253   252   180    -    11
+204 Soft_ECC_Correction     -O-R--   253   252   000    -    0
+205 Thermal_Asperity_Rate   -O-R--   253   252   000    -    0
+207 Spin_High_Current       -O-R-K   251   232   000    -    2
+208 Spin_Buzz               -O-R-K   253   252   000    -    0
+209 Offline_Seek_Performnce --S--K   201   200   000    -    0
+ 99 Unknown_Attribute       --S---   253   253   000    -    0
+100 Unknown_Attribute       --S---   253   253   000    -    0
+101 Unknown_Attribute       --S---   253   253   000    -    0
+                            ||||||_ K auto-keep
+                            |||||__ C event count
+                            ||||___ R error rate
+                            |||____ S speed/performance
+                            ||_____ O updated online
+                            |______ P prefailure warning
+
+Read SMART Log Directory failed: scsi error badly formed scsi parameters
+
+General Purpose Log Directory not supported
+
+SMART Extended Comprehensive Error Log (GP Log 0x03) not supported
+
+SMART Error Log Version: 1
+ATA Error Count: 20 (device log contains only the most recent five errors)
+	CR = Command Register [HEX]
+	FR = Features Register [HEX]
+	SC = Sector Count Register [HEX]
+	SN = Sector Number Register [HEX]
+	CL = Cylinder Low Register [HEX]
+	CH = Cylinder High Register [HEX]
+	DH = Device/Head Register [HEX]
+	DC = Device Command Register [HEX]
+	ER = Error register [HEX]
+	ST = Status register [HEX]
+Powered_Up_Time is measured from power on, and printed as
+DDd+hh:mm:SS.sss where DD=days, hh=hours, mm=minutes,
+SS=sec, and sss=millisec. It "wraps" after 49.710 days.
+
+Error 20 occurred at disk power-on lifetime: 32585 hours (1357 days + 17 hours)
+  When the command that caused the error occurred, the device was in an unknown state.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  84 51 00 07 e1 5b e1  Error: ICRC, ABRT at LBA = 0x015be107 = 22798599
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  c8 00 38 07 e1 5b e1 00  17d+06:12:01.552  READ DMA
+  c8 00 50 0f 9f 59 e1 00  17d+06:12:01.536  READ DMA
+  c8 00 08 df 5e 00 e0 00  17d+06:12:01.536  READ DMA
+  c8 00 58 4f 47 74 e2 00  17d+06:12:01.536  READ DMA
+  c8 00 38 7f af 5d e1 00  17d+06:12:01.536  READ DMA
+
+Error 19 occurred at disk power-on lifetime: 21739 hours (905 days + 19 hours)
+  When the command that caused the error occurred, the device was in an unknown state.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 01 7c 4b 67 e1  Error: UNC at LBA = 0x01674b7c = 23546748
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  40 00 01 7c 4b 67 e1 00      02:21:45.328  READ VERIFY SECTOR(S)
+  40 00 01 7b 4b 67 e1 00      02:21:44.304  READ VERIFY SECTOR(S)
+  40 00 01 7a 4b 67 e1 00      02:21:43.376  READ VERIFY SECTOR(S)
+  40 00 01 79 4b 67 e1 00      02:21:43.360  READ VERIFY SECTOR(S)
+  40 00 02 7d 4b 67 e1 00      02:21:42.416  READ VERIFY SECTOR(S)
+
+Error 18 occurred at disk power-on lifetime: 21739 hours (905 days + 19 hours)
+  When the command that caused the error occurred, the device was in an unknown state.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 01 7b 4b 67 e1  Error: UNC at LBA = 0x01674b7b = 23546747
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  40 00 01 7b 4b 67 e1 00      02:21:44.304  READ VERIFY SECTOR(S)
+  40 00 01 7a 4b 67 e1 00      02:21:43.376  READ VERIFY SECTOR(S)
+  40 00 01 79 4b 67 e1 00      02:21:43.360  READ VERIFY SECTOR(S)
+  40 00 02 7d 4b 67 e1 00      02:21:42.416  READ VERIFY SECTOR(S)
+  40 00 02 7b 4b 67 e1 00      02:21:41.392  READ VERIFY SECTOR(S)
+
+Error 17 occurred at disk power-on lifetime: 21739 hours (905 days + 19 hours)
+  When the command that caused the error occurred, the device was in an unknown state.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 01 7a 4b 67 e1  Error: UNC at LBA = 0x01674b7a = 23546746
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  40 00 01 7a 4b 67 e1 00      02:21:43.376  READ VERIFY SECTOR(S)
+  40 00 01 79 4b 67 e1 00      02:21:43.360  READ VERIFY SECTOR(S)
+  40 00 02 7d 4b 67 e1 00      02:21:42.416  READ VERIFY SECTOR(S)
+  40 00 02 7b 4b 67 e1 00      02:21:41.392  READ VERIFY SECTOR(S)
+  40 00 02 79 4b 67 e1 00      02:21:40.528  READ VERIFY SECTOR(S)
+
+Error 16 occurred at disk power-on lifetime: 21739 hours (905 days + 19 hours)
+  When the command that caused the error occurred, the device was in an unknown state.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 51 02 7d 4b 67 e1  Error: UNC at LBA = 0x01674b7d = 23546749
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  40 00 02 7d 4b 67 e1 00      02:21:42.416  READ VERIFY SECTOR(S)
+  40 00 02 7b 4b 67 e1 00      02:21:41.392  READ VERIFY SECTOR(S)
+  40 00 02 79 4b 67 e1 00      02:21:40.528  READ VERIFY SECTOR(S)
+  40 00 02 77 4b 67 e1 00      02:21:40.528  READ VERIFY SECTOR(S)
+  40 00 04 7b 4b 67 e1 00      02:21:39.504  READ VERIFY SECTOR(S)
+
+SMART Extended Self-test Log (GP Log 0x07) not supported
+
+SMART Self-test log structure revision number 1
+No self-tests have been logged.  [To run self-tests, use: smartctl -t]
+
+SMART Selective self-test log data structure revision number 1
+ SPAN  MIN_LBA  MAX_LBA  CURRENT_TEST_STATUS
+    1        0        0  Not_testing
+    2        0        0  Not_testing
+    3        0        0  Not_testing
+    4        0        0  Not_testing
+    5        0        0  Not_testing
+Selective self-test flags (0x0):
+  After scanning selected spans, do NOT read-scan remainder of disk.
+If Selective self-test is pending on power-up, resume after 0 minute delay.
+
+SCT Commands not supported
+
+Device Statistics (GP/SMART Log 0x04) not supported
+
+SATA Phy Event Counters (GP Log 0x11) not supported
+

@@ -1,0 +1,11 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x0002, DMI type 2, 8 bytes
+Base Board Information
+	Manufacturer: ASUSTeK Computer INC.
+	Product Name: P5VD2-VM
+	Version: 1.XX
+	Serial Number: 123456789000
+
