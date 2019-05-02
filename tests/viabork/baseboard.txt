@@ -1,0 +1,25 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+SMBIOS 2.3 present.
+
+Handle 0x0002, DMI type 2, 15 bytes
+Base Board Information
+	Manufacturer: ASUSTeK Computer INC.
+	Product Name: P5V-VM-ULTRA
+	Version: Rev 1.xx
+	Serial Number: MB-1234567890
+	Asset Tag: To Be Filled By O.E.M.
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: To Be Filled By O.E.M.
+	Chassis Handle: 0x0003
+	Type: Motherboard
+	Contained Object Handles: 0
+
+Handle 0x0024, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Video
+	Status: Enabled
+	Description:   To Be Filled By O.E.M.
+

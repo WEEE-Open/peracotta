@@ -1,0 +1,21 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+SMBIOS 2.3 present.
+
+Handle 0x0003, DMI type 3, 21 bytes
+Chassis Information
+	Manufacturer: Chassis Manufacture
+	Type: Desktop
+	Lock: Not Present
+	Version: Chassis Version
+	Serial Number: Chassis Serial Number
+	Asset Tag: Asset-1234567890
+	Boot-up State: Safe
+	Power Supply State: Safe
+	Thermal State: Safe
+	Security Status: None
+	OEM Information: 0x00000001
+	Height: Unspecified
+	Number Of Power Cords: 1
+	Contained Elements: 0
+
