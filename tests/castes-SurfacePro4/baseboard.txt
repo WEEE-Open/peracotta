@@ -1,0 +1,18 @@
+# dmidecode 3.1
+Getting SMBIOS data from sysfs.
+SMBIOS 3.1.1 present.
+
+Handle 0x0002, DMI type 2, 17 bytes
+Base Board Information
+	Manufacturer: Microsoft Corporation
+	Product Name: Surface Pro 4
+	Version: Not Specified
+	Serial Number: A01012111654643A
+	Asset Tag: Not Specified
+	Features:
+		Board is a hosting board
+	Location In Chassis: Not Specified
+	Chassis Handle: 0x0000
+	Type: Unknown
+	Contained Object Handles: 0
+

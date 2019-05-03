@@ -1,2 +1,4 @@
 .idea/
 venv/
+dev_dmdi_files/
+.DS_Store

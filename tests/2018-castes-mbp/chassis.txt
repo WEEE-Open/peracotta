@@ -1,0 +1,22 @@
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 3.0.0 present.
+
+Handle 0x0007, DMI type 3, 24 bytes
+Chassis Information
+	Manufacturer: Apple Inc.
+	Type: Laptop
+	Lock: Not Present
+	Version: Mac-937A206F2EE63C01
+	Serial Number: CENSORED
+	Asset Tag:  
+	Boot-up State: Safe
+	Power Supply State: Safe
+	Thermal State: Safe
+	Security Status: None
+	OEM Information: 0x00000000
+	Height: Unspecified
+	Number Of Power Cords: Unspecified
+	Contained Elements: 0
+	SKU Number: Not Specified
+

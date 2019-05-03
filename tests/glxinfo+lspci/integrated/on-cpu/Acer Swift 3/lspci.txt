@@ -1,0 +1,120 @@
+00:00.0 Host bridge: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers (rev 08)
+	Subsystem: Acer Incorporated [ALI] Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor Host Bridge/DRAM Registers
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: <access denied>
+	Kernel driver in use: skl_uncore
+
+00:02.0 VGA compatible controller: Intel Corporation Skylake GT2 [HD Graphics 520] (rev 07) (prog-if 00 [VGA controller])
+	Subsystem: Acer Incorporated [ALI] Skylake GT2 [HD Graphics 520]
+	Flags: bus master, fast devsel, latency 0, IRQ 126
+	Memory at b0000000 (64-bit, non-prefetchable) [size=16M]
+	Memory at a0000000 (64-bit, prefetchable) [size=256M]
+	I/O ports at 3000 [size=64]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: <access denied>
+	Kernel driver in use: i915
+	Kernel modules: i915
+
+00:14.0 USB controller: Intel Corporation Sunrise Point-LP USB 3.0 xHCI Controller (rev 21) (prog-if 30 [XHCI])
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP USB 3.0 xHCI Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 124
+	Memory at b1200000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: <access denied>
+	Kernel driver in use: xhci_hcd
+
+00:14.2 Signal processing controller: Intel Corporation Sunrise Point-LP Thermal subsystem (rev 21)
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP Thermal subsystem
+	Flags: bus master, fast devsel, latency 0, IRQ 18
+	Memory at b122a000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: intel_pch_thermal
+	Kernel modules: intel_pch_thermal
+
+00:15.0 Signal processing controller: Intel Corporation Sunrise Point-LP Serial IO I2C Controller #0 (rev 21)
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP Serial IO I2C Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Memory at b122b000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: intel-lpss
+	Kernel modules: intel_lpss_pci
+
+00:15.1 Signal processing controller: Intel Corporation Sunrise Point-LP Serial IO I2C Controller #1 (rev 21)
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP Serial IO I2C Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 17
+	Memory at b122c000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: intel-lpss
+	Kernel modules: intel_lpss_pci
+
+00:16.0 Communication controller: Intel Corporation Sunrise Point-LP CSME HECI #1 (rev 21)
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP CSME HECI
+	Flags: bus master, fast devsel, latency 0, IRQ 127
+	Memory at b122d000 (64-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+	Kernel driver in use: mei_me
+	Kernel modules: mei_me
+
+00:17.0 SATA controller: Intel Corporation Sunrise Point-LP SATA Controller [AHCI mode] (rev 21) (prog-if 01 [AHCI 1.0])
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP SATA Controller [AHCI mode]
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 125
+	Memory at b1228000 (32-bit, non-prefetchable) [size=8K]
+	Memory at b1230000 (32-bit, non-prefetchable) [size=256]
+	I/O ports at 3080 [size=8]
+	I/O ports at 3088 [size=4]
+	I/O ports at 3060 [size=32]
+	Memory at b122e000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: <access denied>
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+
+00:1c.0 PCI bridge: Intel Corporation Sunrise Point-LP PCI Express Root Port #1 (rev f1) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 122
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: 00004000-00004fff
+	Memory behind bridge: 90100000-902fffff
+	Prefetchable memory behind bridge: 0000000090300000-00000000904fffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1c.3 PCI bridge: Intel Corporation Device 9d13 (rev f1) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 123
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=0
+	Memory behind bridge: b1000000-b11fffff
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:1f.0 ISA bridge: Intel Corporation Sunrise Point-LP LPC Controller (rev 21)
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP LPC Controller
+	Flags: bus master, medium devsel, latency 0
+
+00:1f.2 Memory controller: Intel Corporation Sunrise Point-LP PMC (rev 21)
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP PMC
+	Flags: bus master, fast devsel, latency 0
+	Memory at b1224000 (32-bit, non-prefetchable) [size=16K]
+
+00:1f.3 Audio device: Intel Corporation Sunrise Point-LP HD Audio (rev 21)
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP HD Audio
+	Flags: bus master, fast devsel, latency 32, IRQ 129
+	Memory at b1220000 (64-bit, non-prefetchable) [size=16K]
+	Memory at b1210000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: <access denied>
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel, snd_soc_skl
+
+00:1f.4 SMBus: Intel Corporation Sunrise Point-LP SMBus (rev 21)
+	Subsystem: Acer Incorporated [ALI] Sunrise Point-LP SMBus
+	Flags: medium devsel, IRQ 11
+	Memory at b122f000 (64-bit, non-prefetchable) [size=256]
+	I/O ports at 3040 [size=32]
+	Kernel modules: i2c_i801
+
+02:00.0 Network controller: Qualcomm Atheros QCA6174 802.11ac Wireless Network Adapter (rev 32)
+	Subsystem: Foxconn International, Inc. QCA6174 802.11ac Wireless Network Adapter
+	Flags: bus master, fast devsel, latency 0, IRQ 128
+	Memory at b1000000 (64-bit, non-prefetchable) [size=2M]
+	Capabilities: <access denied>
+	Kernel driver in use: ath10k_pci
+	Kernel modules: ath10k_pci
+
