@@ -86,6 +86,17 @@ class Welcome(QWidget):
             working_directory = sp.check_output(["pwd"])[:-1].decode("ascii")
             if not os.path.isdir(working_directory + "/tmp"):
                 os.makedirs(working_directory + "/tmp")
+            # else:
+            #     # maybe replace with subprocess.run([rm, tmp/*.txt]) ?
+            #     folder = working_directory + "/tmp"
+            #     for file in os.listdir(folder):
+            #         file_path = os.path.join(folder, file)
+            #         try:
+            #             if os.path.isfile(file_path):
+            #                 os.unlink(file_path)
+            #         except Exception as e:
+            #             print(e)
+
             path_to_gen_files_sh = working_directory + "/generate_files.sh tmp"
             with sp.Popen(["sudo", path_to_gen_files_sh], shell=False) as process:
                 process.wait(timeout=10)

@@ -11,7 +11,7 @@ from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 
 def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
     return [].extend(read_lspci_and_glxinfo(has_dedicated_gpu, "tmp/lspci.txt", "tmp/glxinfo.txt"))\
-        .extend(read_decode_dimms())
+        .extend(read_decode_dimms("tmp/dimms.txt"))
 
 if __name__ == '__main__':
     extract_and_collect_data_from_generated_files()
