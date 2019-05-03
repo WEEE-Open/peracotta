@@ -1,0 +1,18 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x0003, DMI type 3, 17 bytes
+Chassis Information
+	Manufacturer: Chassis Manufacture
+	Type: Desktop
+	Lock: Not Present
+	Version: 1111
+	Serial Number: EVAL          
+	Asset Tag: 123456789000
+	Boot-up State: Safe
+	Power Supply State: Safe
+	Thermal State: Safe
+	Security Status: None
+	OEM Information: 0x00000001
+

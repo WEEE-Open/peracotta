@@ -1,0 +1,12 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+Legacy DMI 2.3 present.
+
+Handle 0x0014, DMI type 8, 9 bytes
+Port Connector Information
+	Internal Reference Designator: USB                             
+	Internal Connector Type: Mini Centronics
+	External Reference Designator: Def                             
+	External Connector Type: DB-25 male
+	Port Type: SSA SCSI
+

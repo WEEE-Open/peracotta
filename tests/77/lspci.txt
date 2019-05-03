@@ -1,0 +1,121 @@
+00:00.0 Host bridge: Silicon Integrated Systems [SiS] 671MX
+	Subsystem: ASUSTeK Computer Inc. 671MX
+	Flags: bus master, medium devsel, latency 64
+	Memory at f0000000 (32-bit, non-prefetchable) [size=128M]
+	Capabilities: [c0] AGP version 3.5
+	Kernel driver in use: agpgart-sis
+	Kernel modules: sis_agp
+
+00:01.0 PCI bridge: Silicon Integrated Systems [SiS] AGP Port (virtual PCI-to-PCI bridge) (prog-if 00 [Normal decode])
+	Flags: bus master, 66MHz, fast devsel, latency 0
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: 0000e000-0000efff
+	Memory behind bridge: feb00000-febfffff
+	Prefetchable memory behind bridge: d0000000-dfffffff
+	Kernel modules: shpchp
+
+00:02.0 ISA bridge: Silicon Integrated Systems [SiS] SiS968 [MuTIOL Media IO] (rev 01)
+	Flags: bus master, medium devsel, latency 0
+
+00:02.5 IDE interface: Silicon Integrated Systems [SiS] 5513 IDE Controller (rev 01) (prog-if 80 [Master])
+	Subsystem: ASUSTeK Computer Inc. 5513 IDE Controller
+	Flags: bus master, medium devsel, latency 128
+	I/O ports at 01f0 [size=8]
+	I/O ports at 03f4
+	I/O ports at 0170 [size=8]
+	I/O ports at 0374
+	I/O ports at fff0 [size=16]
+	Capabilities: [58] Power Management version 2
+	Kernel driver in use: pata_sis
+	Kernel modules: pata_acpi
+
+00:03.0 USB controller: Silicon Integrated Systems [SiS] USB 1.1 Controller (rev 0f) (prog-if 10 [OHCI])
+	Subsystem: ASUSTeK Computer Inc. USB 1.1 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 20
+	Memory at feaff000 (32-bit, non-prefetchable) [size=4K]
+	Kernel driver in use: ohci-pci
+
+00:03.1 USB controller: Silicon Integrated Systems [SiS] USB 1.1 Controller (rev 0f) (prog-if 10 [OHCI])
+	Subsystem: ASUSTeK Computer Inc. USB 1.1 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 21
+	Memory at feafe000 (32-bit, non-prefetchable) [size=4K]
+	Kernel driver in use: ohci-pci
+
+00:03.3 USB controller: Silicon Integrated Systems [SiS] USB 2.0 Controller (prog-if 20 [EHCI])
+	Subsystem: ASUSTeK Computer Inc. USB 2.0 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 22
+	Memory at feafd000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: [50] Power Management version 2
+	Kernel driver in use: ehci-pci
+
+00:04.0 Ethernet controller: Silicon Integrated Systems [SiS] 191 Gigabit Ethernet Adapter (rev 02)
+	Subsystem: ASUSTeK Computer Inc. 191 Gigabit Ethernet Adapter
+	Flags: bus master, medium devsel, latency 0, IRQ 19
+	Memory at feafcc00 (32-bit, non-prefetchable) [size=128]
+	I/O ports at dc00 [size=128]
+	Capabilities: [40] Power Management version 2
+	Kernel driver in use: sis190
+	Kernel modules: sis190
+
+00:05.0 IDE interface: Silicon Integrated Systems [SiS] SATA Controller / IDE mode (rev 03) (prog-if 85 [Master SecO PriO])
+	Subsystem: ASUSTeK Computer Inc. SATA Controller / IDE mode
+	Flags: bus master, medium devsel, latency 64, IRQ 17
+	I/O ports at d800 [size=8]
+	I/O ports at d400 [size=4]
+	I/O ports at d000 [size=8]
+	I/O ports at cc00 [size=4]
+	I/O ports at c800 [size=16]
+	I/O ports at c400 [size=128]
+	Capabilities: [58] Power Management version 2
+	Kernel driver in use: sata_sis
+	Kernel modules: sata_sis, pata_acpi
+
+00:06.0 PCI bridge: Silicon Integrated Systems [SiS] PCI-to-PCI bridge (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 24
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=0
+	Capabilities: [b0] Subsystem: Silicon Integrated Systems [SiS] PCI-to-PCI bridge
+	Capabilities: [c0] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [d0] Express Root Port (Slot+), MSI 00
+	Capabilities: [f4] Power Management version 2
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:07.0 PCI bridge: Silicon Integrated Systems [SiS] PCI-to-PCI bridge (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Bus: primary=00, secondary=03, subordinate=03, sec-latency=0
+	Capabilities: [b0] Subsystem: Silicon Integrated Systems [SiS] PCI-to-PCI bridge
+	Capabilities: [c0] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [d0] Express Root Port (Slot+), MSI 00
+	Capabilities: [f4] Power Management version 2
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+00:0f.0 Audio device: Silicon Integrated Systems [SiS] Azalia Audio Controller
+	Subsystem: ASUSTeK Computer Inc. Azalia Audio Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 18
+	Memory at feaf4000 (32-bit, non-prefetchable) [size=16K]
+	Capabilities: [50] Power Management version 2
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+00:1f.0 PCI bridge: Silicon Integrated Systems [SiS] PCI-to-PCI bridge (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 26
+	Bus: primary=00, secondary=04, subordinate=04, sec-latency=0
+	Capabilities: [d0] Express Root Port (Slot+), MSI 00
+	Capabilities: [a0] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [f4] Power Management version 2
+	Capabilities: [70] Subsystem: Silicon Integrated Systems [SiS] PCI-to-PCI bridge
+	Kernel driver in use: pcieport
+	Kernel modules: shpchp
+
+01:00.0 VGA compatible controller: Silicon Integrated Systems [SiS] 771/671 PCIE VGA Display Adapter (rev 10) (prog-if 00 [VGA controller])
+	Subsystem: ASUSTeK Computer Inc. 771/671 PCIE VGA Display Adapter
+	Flags: 66MHz, medium devsel, IRQ 10
+	BIST result: 00
+	Memory at d0000000 (32-bit, prefetchable) [size=256M]
+	Memory at febe0000 (32-bit, non-prefetchable) [size=128K]
+	I/O ports at ec00 [size=128]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: [40] Power Management version 2
+	Capabilities: [50] AGP version 3.0
+
