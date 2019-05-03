@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 '''
 Read "decode-dimms" output
@@ -26,10 +26,6 @@ def ignore_spaces(line:str, initial_chars_to_ignore:int):
     relevant_part = line[initial_chars_to_ignore:]
     return relevant_part.strip()
 
-# TODO: accept generic file path (best to assume working directory)
-# filepath = sys.argv[1]
-# f = open(filepath + '/dimms.txt', 'r')
-
 """START TEST"""
 asdpc = 0
 rottame = 0
@@ -51,6 +47,7 @@ else:
 """END TEST"""
 
 def read_decode_dimms(path: str):
+    print(path)
     try:
         with open(path, 'r') as f:
             output = f.read()
@@ -174,6 +171,4 @@ def read_decode_dimms(path: str):
     return dimms_dicts
 
 if __name__ == '__main__':
-    # print(read_decode_dimms())
-    # TODO: comment line above and uncomment line below
     read_decode_dimms(path)
