@@ -12,7 +12,8 @@ class VideoCard:
         self.manufacturer_brand = ""
         self.reseller_brand = ""
         self.model = ""
-        self.vram_capacity = -1 # bytes
+        self.capacity = -1 # bytes
+        self.human_readable_capacity = ""
 
 def parse_lspci_output(gpu:VideoCard, lspci_path:str):
     try:
@@ -108,16 +109,19 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
                 print("There was a problem reading glxinfo's output. Please try again or run generate_files.sh again.")
                 exit(-1)
 
-            gpu.vram_capacity = tmp_vid_mem
+            gpu.capacity = tmp_vid_mem
 
             if tmp_vid_mem_multiplier == "GB":
-                gpu.vram_capacity *= 1024 * 1024 * 1024
+                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vram_multiplier
+                gpu.capacity *= 1024 * 1024 * 1024
             elif tmp_vid_mem_multiplier == "MB":
-                gpu.vram_capacity *= 1024 * 1024
+                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vram_multiplier
+                gpu.capacity *= 1024 * 1024
             elif tmp_vid_mem_multiplier.upper() == "KB":
-                gpu.vram_capacity *= 1024
+                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vram_multiplier
+                gpu.capacity *= 1024
             else:
-                gpu.vram_capacity = -1
+                gpu.capacity = -1
                 print("The VRAM capacity could not be detected. "
                       "Please try looking for it on the Video Card or on the Internet. "
                       "The detected value defaulted to -1.")
@@ -133,16 +137,19 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
                 print("There was a problem reading glxinfo's output. Please try again or run generate_files.sh again.")
                 exit(-1)
 
-            gpu.vram_capacity = tmp_vram
+            gpu.capacity = tmp_vram
 
             if tmp_vram_multiplier == "GB":
-                gpu.vram_capacity *= 1024 * 1024 * 1024
+                gpu.human_readable_capacity = str(tmp_vram) + " " + tmp_vram_multiplier
+                gpu.capacity *= 1024 * 1024 * 1024
                 break
             elif tmp_vram_multiplier == "MB":
-                gpu.vram_capacity *= 1024 * 1024
+                gpu.human_readable_capacity = str(tmp_vram) + " " + tmp_vram_multiplier
+                gpu.capacity *= 1024 * 1024
                 break
             elif tmp_vram_multiplier.upper() == "KB":
-                gpu.vram_capacity *= 1024
+                gpu.human_readable_capacity = str(tmp_vram) + " " + tmp_vram_multiplier
+                gpu.capacity *= 1024
                 break
             else:
                 print("The dedicated video memory could not be found. "
@@ -150,7 +157,7 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
                       "Ugh, humans.")
 
         if i == glxinfo_output_len - 1 and not dedicated_memory_found:
-            if gpu.vram_capacity == -1:
+            if gpu.capacity == -1:
                 print("A dedicated video memory couldn't be found. "
                       "Value defaulted to -1. "
                       "Please humans, fix this error by hand.")
@@ -168,7 +175,7 @@ def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str)
     else: # integrated_in_mobo or integrated_in_cpu
         parse_lspci_output(gpu, lspci_path)
         # don't parse glxinfo because the VRAM is part of the RAM and varies
-        gpu.vram_capacity = None
+        gpu.capacity = None
         print("The VRAM capacity could not be detected. "
               "Please try looking for it on the Video Card or on the Internet. "
               "The capacity value defaulted to 'None'. "
@@ -177,14 +184,16 @@ def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str)
     # TODO: comment following lines in production code
     print(gpu.manufacturer_brand)
     print(gpu.model)
-    print(str(gpu.vram_capacity))
+    print(str(gpu.capacity))
+    print(gpu.human_readable_capacity)
 
     return {
         "type": "graphics-card",
         "manufacturer_brand": gpu.manufacturer_brand,
         "reseller_brand": gpu.reseller_brand,
         "model": gpu.model,
-        "vram_capacity": gpu.vram_capacity
+        "capacity": gpu.capacity,
+        "human_readable_capcity": gpu.human_readable_capacity
     }
 
 if __name__ == '__main__':
