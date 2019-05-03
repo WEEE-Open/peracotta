@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 """
 Read "lspci -v" and "glxinfo" outputs
@@ -17,8 +17,7 @@ class VideoCard:
 
 def parse_lspci_output(gpu:VideoCard, lspci_path:str):
     try:
-        # TODO: reformat path for general use - also best to assume working directory
-        with open("tests/" + lspci_path, 'r') as f:
+        with open(lspci_path, 'r') as f:
             print("Reading lspci -v...")
             lspci_output = f.read()
     except FileNotFoundError:
@@ -85,8 +84,7 @@ def parse_lspci_output(gpu:VideoCard, lspci_path:str):
 
 def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
     try:
-        # TODO: reformat path for general use
-        with open("tests/" + glxinfo_path, 'r') as f:
+        with open(glxinfo_path, 'r') as f:
             print("Reading glxinfo...")
             glxinfo_output = f.read()
     except FileNotFoundError:
@@ -193,8 +191,8 @@ def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str)
         "reseller_brand": gpu.reseller_brand,
         "model": gpu.model,
         "capacity": gpu.capacity,
-        "human_readable_capcity": gpu.human_readable_capacity
+        "human_readable_capacity": gpu.human_readable_capacity
     }
 
 if __name__ == '__main__':
-    read_lspci_and_glxinfo()
+    read_lspci_and_glxinfo(has_dedicated, lspci_path, glxinfo_path)
