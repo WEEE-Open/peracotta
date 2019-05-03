@@ -1,0 +1,11 @@
+# dmidecode 3.0
+Getting SMBIOS data from sysfs.
+Legacy DMI 2.3 present.
+
+Handle 0x0002, DMI type 2, 8 bytes
+Base Board Information
+	Manufacturer: Matsonic                        
+	Product Name: MS8318E                         
+	Version: 1.0                             
+	Serial Number: 00000000                        
+

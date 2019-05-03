@@ -1,0 +1,85 @@
+00:00.0 Host bridge: Silicon Integrated Systems [SiS] 740 Host (rev 01)
+	Flags: bus master, medium devsel, latency 32
+	Memory at d0000000 (32-bit, non-prefetchable) [size=64M]
+	Capabilities: [c0] AGP version 2.0
+	Kernel driver in use: agpgart-sis
+	Kernel modules: sis_agp
+
+00:01.0 PCI bridge: Silicon Integrated Systems [SiS] AGP Port (virtual PCI-to-PCI bridge) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 64
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=64
+	I/O behind bridge: 0000a000-0000afff
+	Memory behind bridge: cfe00000-cfefffff
+	Prefetchable memory behind bridge: bfc00000-cfcfffff
+	Kernel modules: shpchp
+
+00:02.0 ISA bridge: Silicon Integrated Systems [SiS] SiS961 [MuTIOL Media IO]
+	Flags: bus master, medium devsel, latency 0
+
+00:02.1 SMBus: Silicon Integrated Systems [SiS] SiS961/2/3 SMBus controller
+	Flags: medium devsel
+	I/O ports at 0c00 [size=32]
+	Kernel modules: i2c_sis96x
+
+00:02.2 USB controller: Silicon Integrated Systems [SiS] USB 1.1 Controller (rev 07) (prog-if 10 [OHCI])
+	Subsystem: Silicon Integrated Systems [SiS] USB 1.1 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 12
+	Memory at cfffa000 (32-bit, non-prefetchable) [size=4K]
+	Kernel driver in use: ohci-pci
+
+00:02.3 USB controller: Silicon Integrated Systems [SiS] USB 1.1 Controller (rev 07) (prog-if 10 [OHCI])
+	Subsystem: Silicon Integrated Systems [SiS] USB 1.1 Controller
+	Flags: bus master, medium devsel, latency 64, IRQ 5
+	Memory at cfffb000 (32-bit, non-prefetchable) [size=4K]
+	Kernel driver in use: ohci-pci
+
+00:02.5 IDE interface: Silicon Integrated Systems [SiS] 5513 IDE Controller (rev d0) (prog-if 80 [Master])
+	Subsystem: Silicon Integrated Systems [SiS] SiS5513 EIDE Controller (A,B step)
+	Flags: bus master, fast devsel, latency 128
+	[virtual] Memory at 000001f0 (32-bit, non-prefetchable) [size=8]
+	[virtual] Memory at 000003f0 (type 3, non-prefetchable)
+	[virtual] Memory at 00000170 (32-bit, non-prefetchable) [size=8]
+	[virtual] Memory at 00000370 (type 3, non-prefetchable)
+	I/O ports at ff00 [size=16]
+	Kernel driver in use: pata_sis
+	Kernel modules: pata_acpi
+
+00:02.6 Modem: Silicon Integrated Systems [SiS] AC'97 Modem Controller (rev a0) (prog-if 00 [Generic])
+	Subsystem: Silicon Integrated Systems [SiS] AC'97 Modem Controller
+	Flags: medium devsel, IRQ 11
+	I/O ports at d400 [size=256]
+	I/O ports at d000 [size=128]
+	Capabilities: [48] Power Management version 2
+	Kernel modules: snd_intel8x0m
+
+00:02.7 Multimedia audio controller: Silicon Integrated Systems [SiS] SiS7012 AC'97 Sound Controller (rev a0)
+	Subsystem: C-Media Electronics Inc CMI9739(A) on ECS K7S series motherboard
+	Flags: bus master, medium devsel, latency 64, IRQ 11
+	I/O ports at dc00 [size=256]
+	I/O ports at d800 [size=128]
+	Capabilities: [48] Power Management version 2
+	Kernel driver in use: snd_intel8x0
+	Kernel modules: snd_intel8x0
+
+00:03.0 Ethernet controller: Silicon Integrated Systems [SiS] SiS900 PCI Fast Ethernet (rev 90)
+	Subsystem: Silicon Integrated Systems [SiS] SiS900 10/100 Ethernet Adapter onboard
+	Flags: bus master, medium devsel, latency 64, IRQ 12
+	I/O ports at cc00 [size=256]
+	Memory at cffdd000 (32-bit, non-prefetchable) [size=4K]
+	Expansion ROM at cffa0000 [disabled] [size=128K]
+	Capabilities: [40] Power Management version 2
+	Kernel driver in use: sis900
+	Kernel modules: sis900
+
+01:00.0 VGA compatible controller: Silicon Integrated Systems [SiS] 65x/M650/740 PCI/AGP VGA Display Adapter (prog-if 00 [VGA controller])
+	Subsystem: Silicon Integrated Systems [SiS] SiS 651 onboard [Asus P4SC-EA]
+	Flags: 66MHz, medium devsel
+	BIST result: 00
+	Memory at c0000000 (32-bit, prefetchable) [size=128M]
+	Memory at cfee0000 (32-bit, non-prefetchable) [size=128K]
+	I/O ports at ac00 [size=128]
+	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: [40] Power Management version 2
+	Capabilities: [50] AGP version 2.0
+	Kernel modules: sisfb
+
