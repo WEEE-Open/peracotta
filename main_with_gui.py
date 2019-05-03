@@ -40,7 +40,7 @@ class Welcome(QWidget):
         self.subtitle.setFont(subtitle_font)
 
         self.generate_files_button = QPushButton("Generate Files")
-        self.generate_files_button.clicked.connect(lambda: self.generate_files(window))
+        self.generate_files_button.clicked.connect(lambda: self.prompt_has_dedicated_gpu(window))
 
         h_box = QHBoxLayout()
         h_box.addStretch()
@@ -57,15 +57,41 @@ class Welcome(QWidget):
 
         self.setLayout(v_box)
 
-    def generate_files(self, window: QMainWindow):
+    def prompt_has_dedicated_gpu(self, window: QMainWindow):
+        while True:
+            answer = QMessageBox.question(self, "Discrete GPU",
+                                          "Does this system have a dedicated video card?",
+                                          QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if answer == QMessageBox.Yes:
+                confirm = QMessageBox.question(self, "Confirm",
+                                               "Do you confirm this system has a dedicated video card?",
+                                               QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if confirm == QMessageBox.Yes:
+                    self.generate_files(window, True)
+                    break
+                else:
+                    continue
+            else:
+                confirm = QMessageBox.question(self, "Confirm",
+                                               "Do you confirm this system has an integrated GPU?",
+                                               QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if confirm == QMessageBox.Yes:
+                    self.generate_files(window, False)
+                    break
+                else:
+                    continue
+
+    def generate_files(self, window: QMainWindow, has_dedicated_gpu: bool):
         try:
-            working_directory = sp.check_output(["pwd"])
-            path_to_gen_files_sh = working_directory[:-1].decode("ascii") + "/generate_files.sh"
+            working_directory = sp.check_output(["pwd"])[:-1].decode("ascii")
+            if not os.path.isdir(working_directory + "/tmp"):
+                os.makedirs(working_directory + "/tmp")
+            path_to_gen_files_sh = working_directory + "/generate_files.sh tmp"
             with sp.Popen(["sudo", path_to_gen_files_sh], shell=False) as process:
                 process.wait(timeout=10)
             # the line below is needed in order to not close the window!
             window.takeCentralWidget()
-            new_widget = FilesGenerated(window)
+            new_widget = FilesGenerated(window, has_dedicated_gpu)
             window.setCentralWidget(new_widget)
 
         except sp.CalledProcessError as err:
@@ -79,15 +105,15 @@ class Welcome(QWidget):
 
 
 class FilesGenerated(QWidget):
-    def __init__(self, window: QMainWindow):
+    def __init__(self, window: QMainWindow, has_dedicated_gpu: bool):
         super().__init__()
-        self.init_ui(window)
+        self.init_ui(window, has_dedicated_gpu)
 
-    def init_ui(self, window: QMainWindow):
+    def init_ui(self, window: QMainWindow, has_dedicated_gpu: bool):
         self.label = QLabel("Everything went fine. Click the button below if you want to proceed with the data extraction.\n"
                             "You will be able to review the data after this process.")
         self.extract_data_button = QPushButton("Extract data from output files")
-        self.extract_data_button.clicked.connect(lambda: self.extract_data_from_generated_files(window))
+        self.extract_data_button.clicked.connect(lambda: self.extract_data_from_generated_files(window, has_dedicated_gpu))
 
         h_box = QHBoxLayout()
         h_box.addStretch()
@@ -101,10 +127,11 @@ class FilesGenerated(QWidget):
 
         self.setLayout(v_box)
 
-    def extract_data_from_generated_files(self, window: QMainWindow):
+    def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool):
         try:
-            # system_info = extract_and_collect_data_from_generated_files()
-            system_info = read_decode_dimms()
+            # TODO: uncomment line below
+            system_info = extract_and_collect_data_from_generated_files(has_dedicated_gpu)
+            # system_info = read_decode_dimms()
             window.takeCentralWidget()
             new_widget = VerifyExtractedData(window, system_info)
             window.setCentralWidget(new_widget)
