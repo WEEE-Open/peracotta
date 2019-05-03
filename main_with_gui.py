@@ -5,8 +5,8 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton,
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt
 from extract_data import extract_and_collect_data_from_generated_files
+from itertools import chain
 
-from read_decode_dimms import read_decode_dimms
 
 class Window(QMainWindow):
     def __init__(self):
@@ -86,19 +86,10 @@ class Welcome(QWidget):
             working_directory = sp.check_output(["pwd"])[:-1].decode("ascii")
             if not os.path.isdir(working_directory + "/tmp"):
                 os.makedirs(working_directory + "/tmp")
-            # else:
-            #     # maybe replace with subprocess.run([rm, tmp/*.txt]) ?
-            #     folder = working_directory + "/tmp"
-            #     for file in os.listdir(folder):
-            #         file_path = os.path.join(folder, file)
-            #         try:
-            #             if os.path.isfile(file_path):
-            #                 os.unlink(file_path)
-            #         except Exception as e:
-            #             print(e)
 
-            path_to_gen_files_sh = working_directory + "/generate_files.sh tmp"
-            with sp.Popen(["sudo", path_to_gen_files_sh], shell=False) as process:
+            folder_name = "tmp"
+            path_to_gen_files_sh = working_directory + "/generate_files.sh"
+            with sp.Popen(["sudo", path_to_gen_files_sh, folder_name], shell=False) as process:
                 process.wait(timeout=10)
             # the line below is needed in order to not close the window!
             window.takeCentralWidget()
@@ -112,7 +103,7 @@ class Welcome(QWidget):
             QMessageBox.warning(self, "Warning", "I couldn't find the 'generate_files.sh' script in the current directory. Please import it and try again.")
 
         except Exception as e:
-            QMessageBox.critical(self, "WTF", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+            QMessageBox.critical(self, "WTF1", "Have a look at the extent of your huge fuck-up:\n" + str(e))
 
 
 class FilesGenerated(QWidget):
@@ -140,15 +131,16 @@ class FilesGenerated(QWidget):
 
     def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool):
         try:
-            # TODO: uncomment line below
             system_info = extract_and_collect_data_from_generated_files(has_dedicated_gpu)
-            # system_info = read_decode_dimms()
+            # flatten system_info (list of list of dicts to list of dicts)
+            flattened_system_info = chain.from_iterable(system_info)
+            # print(list(flattened_system_info))
             window.takeCentralWidget()
-            new_widget = VerifyExtractedData(window, system_info)
+            new_widget = VerifyExtractedData(window, flattened_system_info)
             window.setCentralWidget(new_widget)
 
         except Exception as e:
-            QMessageBox.critical(self, "WTF", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+            QMessageBox.critical(self, "WTF2", "Have a look at the extent of your huge fuck-up:\n" + str(e))
 
 
 class VerifyExtractedData(QWidget):
@@ -160,6 +152,7 @@ class VerifyExtractedData(QWidget):
 
         v_box = QVBoxLayout()
 
+        # TODO: fix "string indices must be integers"
         for i, component in enumerate(system_info):
             if i == 0:
                 prev_type = component["type"]
