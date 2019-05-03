@@ -35,7 +35,7 @@ asdpc = 0
 rottame = 0
 ECC1 = 0
 ECC2 = 0
-_149 = 1
+_149 = 0
 if asdpc:
     path = "tests/asdpc/dimms.txt"
 elif rottame:
@@ -50,7 +50,7 @@ else:
     path = ""
 """END TEST"""
 
-def read_decode_dimms():
+def read_decode_dimms(path: str):
     try:
         with open(path, 'r') as f:
             output = f.read()
@@ -174,6 +174,6 @@ def read_decode_dimms():
     return dimms_dicts
 
 if __name__ == '__main__':
-    print(read_decode_dimms())
+    # print(read_decode_dimms())
     # TODO: comment line above and uncomment line below
-    # read_decode_dimms()
+    read_decode_dimms(path)
