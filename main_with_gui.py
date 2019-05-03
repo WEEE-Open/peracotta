@@ -15,13 +15,8 @@ class Window(QMainWindow):
 
     def init_ui(self):
 
-        # welcome_widget = Welcome(self)
-        # self.setCentralWidget(welcome_widget)
-
-        # test dicts display
-        # TODO: fix it doesn't display any window at all
-        sysinfo_widget = VerifyExtractedData(self, read_decode_dimms())
-        self.setCentralWidget(sysinfo_widget)
+        welcome_widget = Welcome(self)
+        self.setCentralWidget(welcome_widget)
 
         self.setWindowTitle("P.E.R.A.C.O.T.T.A.")
         self.setWindowIcon(QIcon("pear_emoji.png"))
@@ -108,7 +103,8 @@ class FilesGenerated(QWidget):
 
     def extract_data_from_generated_files(self, window: QMainWindow):
         try:
-            system_info = extract_and_collect_data_from_generated_files()
+            # system_info = extract_and_collect_data_from_generated_files()
+            system_info = read_decode_dimms()
             window.takeCentralWidget()
             new_widget = VerifyExtractedData(window, system_info)
             window.setCentralWidget(new_widget)
@@ -126,20 +122,46 @@ class VerifyExtractedData(QWidget):
 
         v_box = QVBoxLayout()
 
-        for component in system_info:
-            for item in component.items():
-                h_box = QHBoxLayout()
+        for i, component in enumerate(system_info):
+            if i == 0:
+                prev_type = component["type"]
+            else:
+                prev_type = system_info[i-1]["type"]
 
-                # the single dict entry is converted to a tuple
-                name = QLabel(str(item[0]))
-                desc = QLabel(str(item[1]))
+            if component["type"] != prev_type or i == 0:
+                title = QLabel(component["type"].upper())
+                title.setFont(QFont("futura", pointSize=16, italic=False))
+                if i != 0:
+                    v_box.addSpacing(10)
+                v_box.addWidget(title)
 
-                h_box.addWidget(name)
-                h_box.addStretch()
-                h_box.addWidget(desc)
+            for feature in component.items():
+                if feature[0] != "type":
+                    h_box = QHBoxLayout()
 
-                v_box.addLayout(h_box)
-                # v_box.addSpacing(5)
+                    # the single dict entry is converted to a tuple
+                    name = QLabel(str(feature[0]))
+                    if feature[1] != "":
+                        # skip not human readable frequency and capacity
+                        if feature[0] == "frequency" or feature[0] == "capacity":
+                            continue
+                        elif feature[0] == "human_readable_frequency":
+                            name = QLabel("frequency")
+                        elif feature[0] == "human_readable_capacity":
+                            name = QLabel("capacity")
+                        desc = QLabel(str(feature[1]))
+                    else:
+                        desc = QLabel("missing feature")
+                        name.setStyleSheet("color: yellow")
+                        desc.setStyleSheet("color: yellow")
+
+                    h_box.addWidget(name)
+                    h_box.addStretch()
+                    h_box.addWidget(desc)
+
+                    v_box.addLayout(h_box)
+
+            v_box.addSpacing(15)
 
         self.setLayout(v_box)
 
