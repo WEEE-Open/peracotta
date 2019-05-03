@@ -1,0 +1,17 @@
+# dmidecode 3.1
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x0002, DMI type 2, 8 bytes
+Base Board Information
+	Manufacturer: LENOVO
+	Product Name: 2718V8C
+	Version: Not Available
+	Serial Number: VQ1FF05G1WA
+
+Handle 0x0027, DMI type 10, 6 bytes
+On Board Device Information
+	Type: Other
+	Status: Disabled
+	Description: IBM Embedded Security hardware
+

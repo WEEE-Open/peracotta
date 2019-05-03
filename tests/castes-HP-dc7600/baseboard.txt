@@ -1,0 +1,11 @@
+# dmidecode 3.1
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x0003, DMI type 2, 8 bytes
+Base Board Information
+	Manufacturer: Hewlett-Packard
+	Product Name: 09F8h
+	Version: Not Specified
+	Serial Number: CZC6203MC5
+

@@ -1,0 +1,17 @@
+# dmidecode 3.1
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x0003, DMI type 3, 13 bytes
+Chassis Information
+	Manufacturer: LENOVO
+	Type: Notebook
+	Lock: Not Present
+	Version: Not Available
+	Serial Number: Not Available
+	Asset Tag: No Asset Information
+	Boot-up State: Unknown
+	Power Supply State: Unknown
+	Thermal State: Unknown
+	Security Status: Unknown
+

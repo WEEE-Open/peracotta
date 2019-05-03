@@ -1,0 +1,21 @@
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 2.4 present.
+
+Handle 0x000F, DMI type 3, 21 bytes
+Chassis Information
+	Manufacturer: Apple Inc.
+	Type: Notebook
+	Lock: Not Present
+	Version: Mac-2BD1B31983FE1663
+	Serial Number: CENSORED
+	Asset Tag: Not Specified
+	Boot-up State: Safe
+	Power Supply State: Safe
+	Thermal State: Other
+	Security Status: Other
+	OEM Information: 0x00000000
+	Height: Unspecified
+	Number Of Power Cords: Unspecified
+	Contained Elements: 0
+
