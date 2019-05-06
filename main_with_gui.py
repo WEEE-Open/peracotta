@@ -67,7 +67,7 @@ class Welcome(QWidget):
                                                "Do you confirm this system has a dedicated video card?",
                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if confirm == QMessageBox.Yes:
-                    self.generate_files(window, True)
+                    self.generate_files(window, has_dedicated_gpu=True)
                     break
                 else:
                     continue
@@ -76,7 +76,7 @@ class Welcome(QWidget):
                                                "Do you confirm this system has an integrated GPU?",
                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if confirm == QMessageBox.Yes:
-                    self.generate_files(window, False)
+                    self.generate_files(window, has_dedicated_gpu=False)
                     break
                 else:
                     continue
@@ -132,13 +132,15 @@ class FilesGenerated(QWidget):
     def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool):
         try:
             system_info = extract_and_collect_data_from_generated_files(has_dedicated_gpu)
+            print(system_info)
             # flatten system_info (list of list of dicts to list of dicts)
             flattened_system_info = chain.from_iterable(system_info)
-            # print(list(flattened_system_info))
+            print(flattened_system_info)
             window.takeCentralWidget()
             new_widget = VerifyExtractedData(window, flattened_system_info)
             window.setCentralWidget(new_widget)
 
+        # TODO: fix that the print() calls above don't work, and the window closes immediately after clicking "generate files", without spawning the dialog box of the except below
         except Exception as e:
             QMessageBox.critical(self, "WTF2", "Have a look at the extent of your huge fuck-up:\n" + str(e))
 
@@ -152,7 +154,12 @@ class VerifyExtractedData(QWidget):
 
         v_box = QVBoxLayout()
 
-        # TODO: fix "string indices must be integers"
+        # if system_info is empty
+        if not system_info:
+            nothing_found = QLabel("Nothing was found.")
+            v_box.addWidget(nothing_found)
+
+        # TODO: fix "string indices must be integers" - not an error anymore (?)
         for i, component in enumerate(system_info):
             if i == 0:
                 prev_type = component["type"]
