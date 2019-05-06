@@ -110,13 +110,13 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
             gpu.capacity = tmp_vid_mem
 
             if tmp_vid_mem_multiplier == "GB":
-                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vram_multiplier
+                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vid_mem_multiplier
                 gpu.capacity *= 1024 * 1024 * 1024
             elif tmp_vid_mem_multiplier == "MB":
-                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vram_multiplier
+                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vid_mem_multiplier
                 gpu.capacity *= 1024 * 1024
             elif tmp_vid_mem_multiplier.upper() == "KB":
-                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vram_multiplier
+                gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vid_mem_multiplier
                 gpu.capacity *= 1024
             else:
                 gpu.capacity = -1
