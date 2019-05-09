@@ -56,7 +56,7 @@ def read_decode_dimms(path: str):
         print("Make sure to execute 'sudo ./generate_files.sh' first!")
         exit(-1)
 
-    print("Reading decode-dimms...")
+    # print("Reading decode-dimms...")
 
     # this optimization can crash the script if output is empty
     # last_line = output.splitlines()[-1]
@@ -64,8 +64,10 @@ def read_decode_dimms(path: str):
     # check based on output of decode-dimms v6250
     if "Number of SDRAM DIMMs detected and decoded: 0" in output \
             or "Number of SDRAM DIMMs detected and decoded: " not in output:
+        # TO USE WITH extract_data.py
         print("decode-dimms was not able to find any RAM details")
-        exit(-1)
+        return None
+        # exit(-1)
 
     # split strings in 1 str array for each DIMM
     dimm_sections = output.split("Decoding EEPROM")
@@ -142,15 +144,15 @@ def read_decode_dimms(path: str):
                 dimms[i].CAS_latencies = ignore_spaces(line, len("Supported CAS Latencies (tCL)"))
 
     # TODO: comment following lines in production code
-    for dimm in dimms:
-        print("-"*25)
-        print(dimm.RAM_type)
-        print(str(dimm.frequency))
-        print(str(dimm.capacity))
-        print(dimm.brand)
-        print(dimm.serial_number)
-        print(dimm.ECC)
-        print(dimm.CAS_latencies)
+    # for dimm in dimms:
+    #     print("-"*25)
+    #     print(dimm.RAM_type)
+    #     print(str(dimm.frequency))
+    #     print(str(dimm.capacity))
+    #     print(dimm.brand)
+    #     print(dimm.serial_number)
+    #     print(dimm.ECC)
+    #     print(dimm.CAS_latencies)
 
     dimms_dicts = []
     for dimm in dimms:
