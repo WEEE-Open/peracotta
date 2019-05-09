@@ -1,3 +1,5 @@
+# TODO: delete read dmidecode (already done) and separate and elaborate read_lscpu
+
 #!/usr/bin/env python3
 import sys
 
