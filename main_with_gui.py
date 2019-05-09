@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton,
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt
 from extract_data import extract_and_collect_data_from_generated_files
-from itertools import chain
 
 
 class Window(QMainWindow):
@@ -133,11 +132,8 @@ class FilesGenerated(QWidget):
         try:
             system_info = extract_and_collect_data_from_generated_files(has_dedicated_gpu)
             print(system_info)
-            # flatten system_info (list of list of dicts to list of dicts)
-            flattened_system_info = chain.from_iterable(system_info)
-            print(flattened_system_info)
             window.takeCentralWidget()
-            new_widget = VerifyExtractedData(window, flattened_system_info)
+            new_widget = VerifyExtractedData(window, system_info)
             window.setCentralWidget(new_widget)
 
         # TODO: fix that the print() calls above don't work, and the window closes immediately after clicking "generate files", without spawning the dialog box of the except below
@@ -159,7 +155,6 @@ class VerifyExtractedData(QWidget):
             nothing_found = QLabel("Nothing was found.")
             v_box.addWidget(nothing_found)
 
-        # TODO: fix "string indices must be integers" - not an error anymore (?)
         for i, component in enumerate(system_info):
             if i == 0:
                 prev_type = component["type"]
