@@ -4,6 +4,8 @@
 Read "decode-dimms" output
 '''
 
+import sys
+
 class Dimm:
     def __init__(self):
         self.type = "ram"
@@ -26,28 +28,28 @@ def ignore_spaces(line:str, initial_chars_to_ignore:int):
     relevant_part = line[initial_chars_to_ignore:]
     return relevant_part.strip()
 
-"""START TEST"""
-asdpc = 0
-rottame = 0
-ECC1 = 0
-ECC2 = 0
-_149 = 0
-if asdpc:
-    path = "tests/asdpc/dimms.txt"
-elif rottame:
-    path = "tests/rottame/dimms.txt"
-elif ECC1:
-    path = "tests/decode-dimms/ECC/R451-R450.txt"
-elif ECC2:
-    path = "tests/decode-dimms/ECC/R480-R479.txt"
-elif _149:
-    path = "tests/decode-dimms/non ECC/R469-R470-R471-R472.txt"
-else:
-    path = ""
-"""END TEST"""
+# """START TEST"""
+# asdpc = 0
+# rottame = 0
+# ECC1 = 0
+# ECC2 = 0
+# _149 = 0
+# if asdpc:
+#     path = "tests/asdpc/dimms.txt"
+# elif rottame:
+#     path = "tests/rottame/dimms.txt"
+# elif ECC1:
+#     path = "tests/decode-dimms/ECC/R451-R450.txt"
+# elif ECC2:
+#     path = "tests/decode-dimms/ECC/R480-R479.txt"
+# elif _149:
+#     path = "tests/decode-dimms/non ECC/R469-R470-R471-R472.txt"
+# else:
+#     path = ""
+# """END TEST"""
 
 def read_decode_dimms(path: str):
-    print(path)
+    # print(path)
     try:
         with open(path, 'r') as f:
             output = f.read()
@@ -173,4 +175,4 @@ def read_decode_dimms(path: str):
     return dimms_dicts
 
 if __name__ == '__main__':
-    read_decode_dimms(path)
+    read_decode_dimms(sys.argv[1])
