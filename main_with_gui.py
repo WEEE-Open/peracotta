@@ -103,6 +103,7 @@ class Welcome(QWidget):
 
         except Exception as e:
             QMessageBox.critical(self, "WTF1", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+            print(e)
 
 
 class FilesGenerated(QWidget):
@@ -130,7 +131,7 @@ class FilesGenerated(QWidget):
 
     def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool):
         try:
-            system_info = extract_and_collect_data_from_generated_files(has_dedicated_gpu)
+            system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files(has_dedicated_gpu)
             print(system_info)
             window.takeCentralWidget()
             new_widget = VerifyExtractedData(window, system_info)
@@ -139,6 +140,7 @@ class FilesGenerated(QWidget):
         # TODO: fix that the print() calls above don't work, and the window closes immediately after clicking "generate files", without spawning the dialog box of the except below
         except Exception as e:
             QMessageBox.critical(self, "WTF2", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+            print(e)
 
 
 class VerifyExtractedData(QWidget):
