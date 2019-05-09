@@ -23,7 +23,8 @@ def parse_lspci_output(gpu:VideoCard, lspci_path:str):
     except FileNotFoundError:
         print("Cannot open file.")
         print("Make sure to execute 'sudo ./generate_files.sh' first!")
-        exit(-1)
+        return None
+        # exit(-1)
 
     lspci_sections = lspci_output.split("\n\n")
 
@@ -81,8 +82,7 @@ def parse_lspci_output(gpu:VideoCard, lspci_path:str):
             break
 
 
-
-def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
+def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
     try:
         with open(glxinfo_path, 'r') as f:
             print("Reading glxinfo...")
@@ -90,7 +90,8 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
     except FileNotFoundError:
         print("Cannot open file.")
         print("Make sure to execute 'sudo ./generate_files.sh' first!")
-        exit(-1)
+        return None
+        # exit(-1)
 
     glxinfo_output_len = len(glxinfo_output.splitlines())
 
@@ -104,7 +105,7 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
                 tmp_vid_mem = int(line.split(" ")[6].split(" ")[0][:-2])
                 tmp_vid_mem_multiplier = line[-2:]
             except ValueError:
-                print("There was a problem reading glxinfo's output. Please try again or run generate_files.sh again.")
+                # print("There was a problem reading glxinfo's output. Please try again or run generate_files.sh again.")
                 exit(-1)
 
             gpu.capacity = tmp_vid_mem
@@ -120,9 +121,9 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
                 gpu.capacity *= 1024
             else:
                 gpu.capacity = -1
-                print("The VRAM capacity could not be detected. "
-                      "Please try looking for it on the Video Card or on the Internet. "
-                      "The detected value defaulted to -1.")
+                # print("The VRAM capacity could not be detected. "
+                #       "Please try looking for it on the Video Card or on the Internet. "
+                #       "The detected value defaulted to -1.")
 
         if "Dedicated video memory" in line:
 
@@ -132,7 +133,7 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
                 tmp_vram = int(line.split(" ")[7].split(" ")[0])
                 tmp_vram_multiplier = line[-2:]
             except ValueError:
-                print("There was a problem reading glxinfo's output. Please try again or run generate_files.sh again.")
+                # print("There was a problem reading glxinfo's output. Please try again or run generate_files.sh again.")
                 exit(-1)
 
             gpu.capacity = tmp_vram
@@ -149,20 +150,21 @@ def parse_glxinfo_output(gpu:VideoCard, glxinfo_path:str):
                 gpu.human_readable_capacity = str(tmp_vram) + " " + tmp_vram_multiplier
                 gpu.capacity *= 1024
                 break
-            else:
-                print("The dedicated video memory could not be found. "
-                      "A video memory value will try to be found, which needs to be corrected by hand. "
-                      "Ugh, humans.")
+            # else:
+            #     print("The dedicated video memory could not be found. "
+            #           "A video memory value will try to be found, which needs to be corrected by hand. "
+            #           "Ugh, humans.")
 
-        if i == glxinfo_output_len - 1 and not dedicated_memory_found:
-            if gpu.capacity == -1:
-                print("A dedicated video memory couldn't be found. "
-                      "Value defaulted to -1. "
-                      "Please humans, fix this error by hand.")
-            else:
-                print("A dedicated video memory couldn't be found. "
-                      "A generic video memory capacity was found instead, which could be near the actual value. "
-                      "Please humans, fix this error by hand.")
+        # COMMENTED for coimpatibility with extract_data.py
+        # if i == glxinfo_output_len - 1 and not dedicated_memory_found:
+        #     if gpu.capacity == -1:
+        #         print("A dedicated video memory couldn't be found. "
+        #               "Value defaulted to -1. "
+        #               "Please humans, fix this error by hand.")
+        #     else:
+        #         print("A dedicated video memory couldn't be found. "
+        #               "A generic video memory capacity was found instead, which could be near the actual value. "
+        #               "Please humans, fix this error by hand.")
 
 # SCRIPT
 def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str):
@@ -174,16 +176,16 @@ def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str)
         parse_lspci_output(gpu, lspci_path)
         # don't parse glxinfo because the VRAM is part of the RAM and varies
         gpu.capacity = None
-        print("The VRAM capacity could not be detected. "
-              "Please try looking for it on the Video Card or on the Internet. "
-              "The capacity value defaulted to 'None'. "
-              "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
+        # print("The VRAM capacity could not be detected. "
+        #       "Please try looking for it on the Video Card or on the Internet. "
+        #       "The capacity value defaulted to 'None'. "
+        #       "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
 
     # TODO: comment following lines in production code
-    print(gpu.manufacturer_brand)
-    print(gpu.model)
-    print(str(gpu.capacity))
-    print(gpu.human_readable_capacity)
+    # print(gpu.manufacturer_brand)
+    # print(gpu.model)
+    # print(str(gpu.capacity))
+    # print(gpu.human_readable_capacity)
 
     return {
         "type": "graphics-card",
