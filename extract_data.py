@@ -12,8 +12,9 @@ from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
 
     # TODO: refactor after testing
+    # this is set in generate_files.sh and main_with_gui.py and has to be changed manually
     # directory = "tmp"
-    directory = "tests/dismone"
+    directory = "tests/travasato"
 
     dimms = read_decode_dimms(directory + "/dimms.txt")
     lspci_glxinfo = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt")
@@ -81,4 +82,3 @@ if __name__ == '__main__':
     # TODO: refactor after testing
     # extract_and_collect_data_from_generated_files()
     sys_info = extract_and_collect_data_from_generated_files(True)
-    print(sys_info)
