@@ -4,6 +4,7 @@
 Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
 
+from read_dmidecode import get_baseboard, get_chassis
 from read_decode_dimms import read_decode_dimms
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 # TODO: add remaining files
@@ -14,10 +15,14 @@ def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
     # TODO: refactor after testing
     # this is set in generate_files.sh and main_with_gui.py and has to be changed manually
     # directory = "tmp"
-    directory = "tests/travasato"
+    directory = "tests/castes-pc"
 
+    mobo = get_baseboard(directory + "/baseboard.txt")
+    chassis = get_chassis(directory + "/chassis.txt")
     dimms = read_decode_dimms(directory + "/dimms.txt")
     lspci_glxinfo = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt")
+
+    # TODO: add mobo and chassis checks
 
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
@@ -63,6 +68,10 @@ def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
 
 
     result = []
+
+    result.append(mobo)
+
+    result.append(chassis)
 
     if isinstance(dimms, dict):
         # otherwise it will append every key-value pair of the dict
