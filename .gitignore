@@ -2,3 +2,4 @@
 venv/
 dev_dmdi_files/
 .DS_Store
+__pycache__/
