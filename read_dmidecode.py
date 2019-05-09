@@ -1,59 +1,106 @@
 #!/usr/bin/env python3
 
 import subprocess as sp
+import sys
 
 class Baseboard:
     def __init__(self):
-        self.type = ""
+        self.type = "motherboard"
+        self.brand = ""
+        self.model = ""
+        self.serial_number = ""
+        # self.form_factor = "" # not detected by dmidecode
+
+class Chassis:
+    def __init__(self):
+        self.type = "case" # TODO: ?
         self.brand = ""
         self.model = ""
         self.serial_number = ""
 
+# TODO: implement read of connector.txt
+class Port:
+    def __init__(self):
+        self.type = ""
 
+# tmp/baseboard.txt
 def get_baseboard(path: str):
     mobo = Baseboard()
 
-    # need to set NOPASSWD: ALL in visudo
-    p = sp.Popen(['sudo dmidecode -t baseboard'], shell=True, stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
-    out = p.communicate()
+    # p = sp.Popen(['sudo dmidecode -t baseboard'], shell=True, stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
+    # out = p.communicate()
+    # strings = str.split(str(out[0]), sep="\\n")
 
-    strings = str.split(str(out[0]), sep="\\n")
+    try:
+        with open(path, 'r') as f:
+            output = f.read()
+    except FileNotFoundError:
+        print("Cannot open file.")
+        print("Make sure to execute 'sudo ./generate_files.sh' first!")
+        exit(-1)
 
-    for sub in strings:
-        if sub.startswith("\\tManufacturer:"):
-            mobo.brand = sub[16:]
+    for line in output.splitlines():
+        if "Manufacturer" in line:
+            mobo.brand = line.split("Manufacturer:")[1].strip()
 
-        if sub.startswith("\\tProduct Name:"):
-            mobo.model = sub[16:]
+        if "Product Name" in line:
+            mobo.model = line.split("Product Name:")[1].strip()
 
-        if sub.startswith("\\tSerial Number:"):
-            mobo.serial_number = sub[17:]
+        if "Serial Number" in line:
+            mobo.serial_number = line.split("Serial Number:")[1].strip()
 
-    return {
-        "ty"
+    result = {
+        "type": mobo.type,
+        "brand": mobo.brand,
+        "model": mobo.model,
+        "serial_number": mobo.serial_number
     }
 
-baseboard_list = [brand, model, serial_number]
-# print("baseboard_list: ", baseboard_list)
+    for key, value in result.items():
+        if value == "Unknown":
+            del result[key]
+            result[key] = None
 
+    return result
 
-p = sp.Popen(['sudo dmidecode -t chassis'], shell=True, stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
-out = p.communicate()
+def get_chassis(path: str):
+    chassis = Chassis()
 
-brand = ""
-model = ""
-serial_number = ""
-strings = str.split(str(out[0]), sep="\\n")
+    # p = sp.Popen(['sudo dmidecode -t chassis'], shell=True, stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
+    # out = p.communicate()
+    # strings = str.split(str(out[0]), sep="\\n")
 
-for sub in strings:
-    if sub.startswith("\\tManufacturer:"):
-        brand = sub[16:]
+    try:
+        with open(path, 'r') as f:
+            output = f.read()
+    except FileNotFoundError:
+        print("Cannot open file.")
+        print("Make sure to execute 'sudo ./generate_files.sh' first!")
+        exit(-1)
 
-    if sub.startswith("\\tType:"):
-        model = sub[8:]
+    for line in output.splitlines():
+        if "Manufacturer" in line:
+            chassis.brand = line.split("Manufacturer:")[1].strip()
 
-    if sub.startswith("\\tSerial Number:"):
-        serial_number = sub[17:]
+        if "Type" in line:
+            chassis.model = line.split("Type:")[1].strip()
 
-chassis_list = [brand, model, serial_number]
-# print("chassis_list: ", chassis_list)
+        if "Serial Number" in line:
+            chassis.serial_number = line.split("Serial Number:")[1].strip()
+
+    result = {
+        "type": chassis.type,
+        "brand": chassis.brand,
+        "model": chassis.model,
+        "serial_number": chassis.serial_number
+    }
+
+    for key, value in result.items():
+        if value == "Unknown":
+            del result[key]
+            result[key] = None
+
+    return result
+
+if __name__ == '__main__':
+    get_baseboard(sys.argv[1])
