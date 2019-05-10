@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-import sys, re
+import sys
 
 '''
 Read "lscpu" output
 '''
+
 
 class CPU:
     def __init__(self):
@@ -12,8 +13,8 @@ class CPU:
         self.architecture = ""
         self.model = ""
         self.brand = ""
-        self.n_cores = -1 # core-n on TARALLO
-        self.n_threads = -1 # thread-n on TARALLO
+        self.n_cores = -1  # core-n on TARALLO
+        self.n_threads = -1  # thread-n on TARALLO
         self.frequency = -1
         self.human_readable_frequency = "N/A"  # TODO: calculate it or remove it
 
@@ -23,13 +24,7 @@ def read_lscpu(path: str):
 
     cpu = CPU()
 
-    try:
-        with open(path, 'r') as f:
-            output = f.read()
-    except FileNotFoundError:
-        print("Cannot open file.")
-        print("Make sure to execute 'sudo ./generate_files.sh' first!")
-        exit(-1)
+    output = get_output(path)
 
     for line in output.splitlines():
         if "Architecture" in line:
@@ -68,6 +63,16 @@ def read_lscpu(path: str):
         "frequency-hertz": cpu.frequency,
         "human_readable_frequency": cpu.human_readable_frequency
     }
+
+
+def get_output(path):
+    try:
+        with open(path, 'r') as f:
+            return f.read()
+    except FileNotFoundError:
+        print("Cannot open file.")
+        print("Make sure to execute 'sudo ./generate_files.sh' first!")
+        exit(-1)
 
 
 if __name__ == '__main__':
