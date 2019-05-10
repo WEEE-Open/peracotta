@@ -1,8 +1,0 @@
-# decode-dimms version $Revision$
-
-Memory Serial Presence Detect Decoder
-By Philip Edelbrock, Christian Zuckschwerdt, Burkart Lingner,
-Jean Delvare, Trent Piepho and others
-
-
-Number of SDRAM DIMMs detected and decoded: 0
