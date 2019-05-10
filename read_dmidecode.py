@@ -43,10 +43,10 @@ def get_baseboard(path: str):
         if "Manufacturer" in line:
             mobo.brand = line.split("Manufacturer:")[1].strip()
 
-        if "Product Name" in line:
+        elif "Product Name" in line:
             mobo.model = line.split("Product Name:")[1].strip()
 
-        if "Serial Number" in line:
+        elif "Serial Number" in line:
             mobo.serial_number = line.split("Serial Number:")[1].strip()
 
     result = {
@@ -82,10 +82,10 @@ def get_chassis(path: str):
         if "Manufacturer" in line:
             chassis.brand = line.split("Manufacturer:")[1].strip()
 
-        if "Type" in line:
+        elif "Type" in line:
             chassis.model = line.split("Type:")[1].strip()
 
-        if "Serial Number" in line:
+        elif "Serial Number" in line:
             chassis.serial_number = line.split("Serial Number:")[1].strip()
 
     result = {
@@ -103,4 +103,11 @@ def get_chassis(path: str):
     return result
 
 if __name__ == '__main__':
-    get_baseboard(sys.argv[1])
+    while True:
+        b_or_c = input("Press b for baseboard or c for chassis:\n")
+        if b_or_c.lower() == "b":
+            get_baseboard(sys.argv[1])
+        elif b_or_c.lower() == "c":
+            get_chassis(sys.argv[1])
+        else:
+            print("Input not recognized.")
