@@ -6,7 +6,6 @@ from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt, QRect
 from extract_data import extract_and_collect_data_from_generated_files
 
-# TODO: set window scrollable when listing components
 
 class Window(QMainWindow):
     def __init__(self):
@@ -137,14 +136,13 @@ class FilesGenerated(QWidget):
             window.takeCentralWidget()
 
             # new_window = ScrollableWindow()
-            new_widget = VerifyExtractedData(window, system_info)
+            new_widget = VerifyExtractedDataScrollable(window, system_info)
             window.setCentralWidget(new_widget)
             # new_window.setCentralWidget(new_widget)
             # window.scroll_area = QScrollArea(window.centralWidget())
             # window.layout().addWidget(window.scroll_area)
 
             # window.close()
-
 
         except Exception as e:
             QMessageBox.critical(self, "WTF2", "Have a look at the extent of your huge fuck-up:\n" + str(e))
@@ -224,18 +222,19 @@ class VerifyExtractedData(QWidget):
 
             v_box.addSpacing(15)
 
-        # self.setLayout(v_box)
+        self.setLayout(v_box)
 
-        # window.scroll_area = QScrollArea()
-        # window.scroll_widget = self
-        # window.scroll_widget_layout = v_box
-        #
-        # window.scroll_widget.setLayout(window.scroll_widget_layout)
-        # window.scroll_area.setWidget(window.scroll_widget)
-        # window.scroll_area.setWidgetResizable(True)
-        #
-        # window.layout = QVBoxLayout()
-        # window.setLayout(window.layout)
+
+class VerifyExtractedDataScrollable(QScrollArea):
+    def __init__(self, window: QMainWindow, system_info):
+        super().__init__()
+        self.the_widget = VerifyExtractedData(window, system_info)
+        self.init_ui(window, self.the_widget, system_info)
+
+    def init_ui(self, window: QMainWindow, the_widget: VerifyExtractedData, system_info):
+        scroll_area = self
+        scroll_area.setWidget(the_widget)
+        scroll_area.setWidgetResizable(True)
 
 
 def main():
@@ -260,6 +259,7 @@ def main():
     app.setPalette(palette)
     Window()
     sys.exit(app.exec_())
+
 
 if __name__ == '__main__':
     main()
