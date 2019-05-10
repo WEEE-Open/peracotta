@@ -43,7 +43,6 @@ def read_lscpu(path: str):
             # .replace() needed because "ValueError: could not convert string to float: '3300,0000'"
             frequency_mhz = float(line.split("CPU max MHz:")[1].strip().replace(',', '.'))
             cpu.frequency = int(frequency_mhz * 1000 * 1000)
-            print(cpu.frequency)
 
         elif "Thread(s) per core" in line:
             cpu.n_threads = int(line.split("Thread(s) per core:")[1].strip())
