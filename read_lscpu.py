@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
+import sys, re
 
 '''
 Read "lscpu" output
@@ -15,7 +15,8 @@ class CPU:
         self.n_cores = -1 # core-n on TARALLO
         self.n_threads = -1 # thread-n on TARALLO
         self.frequency = -1
-        self.human_readable_frequency = ""
+        self.human_readable_frequency = "N/A"  # TODO: calculate it or remove it
+
 
 def read_lscpu(path: str):
     # print("Reading lscpu...")
@@ -37,25 +38,17 @@ def read_lscpu(path: str):
         elif "Model name" in line:
             tmp = line.split("Model name:")[1].split("@")
             cpu.model = tmp[0].strip()
-            tmp_freq = tmp[1].strip()
-            if tmp_freq is not None:
-                if "GHz" in tmp_freq:
-                    cpu.human_readable_frequency = tmp_freq
-                    tmp_freq = float(tmp_freq[:-3])
-                    cpu.frequency = tmp_freq * 1000 * 1000 * 1000
-
-                elif "MHz" in tmp_freq:
-                    cpu.human_readable_frequency = tmp_freq
-                    tmp_freq = float(tmp_freq[:-3])
-                    cpu.frequency = tmp_freq * 1000 * 1000
-
-                elif "KHZ" in tmp_freq.upper():
-                    cpu.human_readable_frequency = tmp_freq
-                    tmp_freq = float(tmp_freq[:-3])
-                    cpu.frequency = tmp_freq * 1000
 
         elif "Vendor ID" in line:
             cpu.brand = line.split("Vendor ID:")[1].strip()
+
+        elif "CPU max MHz" in line:
+            # It's formatted with "%.4f" by lscpu, at the moment
+            # https://github.com/karelzak/util-linux/blob/master/sys-utils/lscpu.c#L1246
+            # .replace() needed because "ValueError: could not convert string to float: '3300,0000'"
+            frequency_mhz = float(line.split("CPU max MHz:")[1].strip().replace(',', '.'))
+            cpu.frequency = int(frequency_mhz * 1000 * 1000)
+            print(cpu.frequency)
 
         elif "Thread(s) per core" in line:
             cpu.n_threads = int(line.split("Thread(s) per core:")[1].strip())
