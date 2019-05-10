@@ -1,11 +1,12 @@
 #!/usr/bin/gksu /usr/bin/python3
 
 import sys, os, subprocess as sp
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QMessageBox
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, QMessageBox, QScrollArea, QScrollBar
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRect
 from extract_data import extract_and_collect_data_from_generated_files
 
+# TODO: set window scrollable when listing components
 
 class Window(QMainWindow):
     def __init__(self):
@@ -134,13 +135,38 @@ class FilesGenerated(QWidget):
             system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files(has_dedicated_gpu)
             print(system_info)
             window.takeCentralWidget()
+
+            # new_window = ScrollableWindow()
             new_widget = VerifyExtractedData(window, system_info)
             window.setCentralWidget(new_widget)
+            # new_window.setCentralWidget(new_widget)
+            # window.scroll_area = QScrollArea(window.centralWidget())
+            # window.layout().addWidget(window.scroll_area)
 
-        # TODO: fix that the print() calls above don't work, and the window closes immediately after clicking "generate files", without spawning the dialog box of the except below
+            # window.close()
+
+
         except Exception as e:
             QMessageBox.critical(self, "WTF2", "Have a look at the extent of your huge fuck-up:\n" + str(e))
             print(e)
+
+
+# class ScrollableWindow(QMainWindow):
+#     def __init__(self):
+#         super().__init__()
+#
+#         self.scroll_area = QScrollArea(self)
+#         self.scroll_area.setWidgetResizable(True)
+#         self.scroll_area_widget_contents = QWidget(self.scroll_area)
+#         self.scroll_area_widget_contents.setGeometry(QRect(25, 25, 380, 247))
+#         self.scroll_area.setWidget(self.scroll_area_widget_contents)
+#
+#         self.v_box = QVBoxLayout(self)
+#         self.v_box.addWidget(self.scroll_area)
+#
+#         self.v_box_scroll = QVBoxLayout(self.scroll_area_widget_contents)
+#
+#         self.show()
 
 
 class VerifyExtractedData(QWidget):
@@ -198,9 +224,18 @@ class VerifyExtractedData(QWidget):
 
             v_box.addSpacing(15)
 
-        self.setLayout(v_box)
+        # self.setLayout(v_box)
 
-    # TODO: OwO *notices beautifully displayed gathered system info*
+        # window.scroll_area = QScrollArea()
+        # window.scroll_widget = self
+        # window.scroll_widget_layout = v_box
+        #
+        # window.scroll_widget.setLayout(window.scroll_widget_layout)
+        # window.scroll_area.setWidget(window.scroll_widget)
+        # window.scroll_area.setWidgetResizable(True)
+        #
+        # window.layout = QVBoxLayout()
+        # window.setLayout(window.layout)
 
 
 def main():
@@ -224,7 +259,7 @@ def main():
 
     app.setPalette(palette)
     Window()
-    sys.exit(app.exec())
+    sys.exit(app.exec_())
 
 if __name__ == '__main__':
     main()
