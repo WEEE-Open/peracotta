@@ -5,24 +5,27 @@ Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
 
 from read_dmidecode import get_baseboard, get_chassis
+from read_lscpu import read_lscpu
 from read_decode_dimms import read_decode_dimms
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
-# TODO: add remaining files
+from read_smartctl import read_smartctl
 
 
 def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
 
-    # TODO: refactor after testing
+    # TODO: reset to tmp after testing
     # this is set in generate_files.sh and main_with_gui.py and has to be changed manually
     # directory = "tmp"
     directory = "tests/castes-pc"
 
     mobo = get_baseboard(directory + "/baseboard.txt")
+    cpu = read_lscpu(directory + "/lscpu.txt")
     chassis = get_chassis(directory + "/chassis.txt")
     dimms = read_decode_dimms(directory + "/dimms.txt")
     lspci_glxinfo = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt")
+    disks = read_smartctl(directory)
 
-    # TODO: add mobo and chassis checks
+    # TODO: add mobo, chassis, cpu, disks checks
 
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
@@ -69,9 +72,11 @@ def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
 
     result = []
 
+    result.append(chassis)
+
     result.append(mobo)
 
-    result.append(chassis)
+    result.append(cpu)
 
     if isinstance(dimms, dict):
         # otherwise it will append every key-value pair of the dict
@@ -83,6 +88,12 @@ def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
     # assuming there is only 1 graphics card in the system
     result.append(lspci_glxinfo)
 
+    if isinstance(disks, dict):
+        result.append(disks)
+    else:
+        for disk in disks:
+            result.append(disk)
+
     # tuple = list(dicts), bool
     return result, print_lspci_lines_in_dialog
 
@@ -90,4 +101,4 @@ def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
 if __name__ == '__main__':
     # TODO: refactor after testing
     # extract_and_collect_data_from_generated_files()
-    sys_info = extract_and_collect_data_from_generated_files(True)
+    print(extract_and_collect_data_from_generated_files(True))
