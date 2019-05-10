@@ -4,7 +4,7 @@
 Read "lspci -v" and "glxinfo" outputs
 """
 
-import re
+import re, sys
 
 class VideoCard:
     def __init__(self):
@@ -189,12 +189,19 @@ def read_lspci_and_glxinfo(has_dedicated:bool, lspci_path:str, glxinfo_path:str)
 
     return {
         "type": "graphics-card",
-        "manufacturer_brand": gpu.manufacturer_brand,
-        "reseller_brand": gpu.reseller_brand,
+        "brand-manufacturer": gpu.manufacturer_brand,
+        "brand": gpu.reseller_brand,
         "model": gpu.model,
-        "capacity": gpu.capacity,
+        "capacity-byte": gpu.capacity,
         "human_readable_capacity": gpu.human_readable_capacity
     }
 
 if __name__ == '__main__':
-    read_lspci_and_glxinfo(has_dedicated, lspci_path, glxinfo_path)
+    while True:
+        ded = input("Does this system have a dedicated GPU? y/n:\n")
+        if ded.lower() == "y":
+            read_lspci_and_glxinfo(True, sys.argv[1], sys.argv[2])
+        elif ded.lower() == "n":
+            read_lspci_and_glxinfo(False, sys.argv[1], sys.argv[2])
+        else:
+            print("Unexpected character.")
