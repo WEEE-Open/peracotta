@@ -1,0 +1,22 @@
+smartctl 7.0 2018-12-30 r4883 [x86_64-linux-5.0.9-2-MANJARO] (local build)
+Copyright (C) 2002-18, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Device Model:     VBOX HARDDISK
+Serial Number:    VB5b1cb143-73753487
+Firmware Version: 1.0
+User Capacity:    42,949,672,960 bytes [42.9 GB]
+Sector Size:      512 bytes logical/physical
+Device is:        Not in smartctl database [for details use: -P showall]
+ATA Version is:   ATA/ATAPI-6 published, ANSI INCITS 361-2002
+Local Time is:    Fri May 10 00:30:16 2019 CEST
+SMART support is: Unavailable - device lacks SMART capability.
+AAM feature is:   Unavailable
+APM feature is:   Unavailable
+Rd look-ahead is: Enabled
+Write cache is:   Enabled
+DSN feature is:   Unavailable
+ATA Security is:  Unavailable
+Wt Cache Reorder: Unavailable
+
+A mandatory SMART command failed: exiting. To continue, add one or more '-T permissive' options.

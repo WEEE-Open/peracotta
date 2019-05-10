@@ -162,13 +162,13 @@ def read_decode_dimms(path: str):
             "type": "ram",
             "brand": dimm.brand,
             "model": dimm.model,
-            "serial_number": dimm.serial_number,
-            "frequency": dimm.frequency,
+            "sn": dimm.serial_number,
+            "frequency-hertz": dimm.frequency,
             "human_readable_frequency": dimm.human_readable_frequency,
-            "capacity": dimm.capacity,
+            "capacity-byte": dimm.capacity,
             "human_readable_capacity": dimm.human_readable_capacity,
-            "RAM_type": dimm.RAM_type,
-            "ECC": dimm.ECC
+            "ram-type": dimm.RAM_type,
+            "ram-ecc": dimm.ECC
             # "CAS_latencies": dimm.CAS_latencies,# feature not yet implemented on TARALLO
         })
 

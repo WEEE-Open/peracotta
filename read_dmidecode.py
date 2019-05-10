@@ -18,10 +18,7 @@ class Chassis:
         self.model = ""
         self.serial_number = ""
 
-# TODO: implement read of connector.txt
-class Port:
-    def __init__(self):
-        self.type = ""
+# TODO: implement read of connector.txt into Baseboard
 
 # tmp/baseboard.txt
 def get_baseboard(path: str):
@@ -53,7 +50,7 @@ def get_baseboard(path: str):
         "type": mobo.type,
         "brand": mobo.brand,
         "model": mobo.model,
-        "serial_number": mobo.serial_number
+        "sn": mobo.serial_number
     }
 
     for key, value in result.items():
@@ -63,6 +60,7 @@ def get_baseboard(path: str):
 
     return result
 
+# tmp/chassis.txt
 def get_chassis(path: str):
     chassis = Chassis()
 
@@ -92,7 +90,7 @@ def get_chassis(path: str):
         "type": chassis.type,
         "brand": chassis.brand,
         "model": chassis.model,
-        "serial_number": chassis.serial_number
+        "sn": chassis.serial_number
     }
 
     for key, value in result.items():

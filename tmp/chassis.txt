@@ -1,0 +1,17 @@
+# dmidecode 3.2
+Getting SMBIOS data from sysfs.
+SMBIOS 2.5 present.
+
+Handle 0x0003, DMI type 3, 13 bytes
+Chassis Information
+	Manufacturer: Oracle Corporation
+	Type: Other
+	Lock: Not Present
+	Version: Not Specified
+	Serial Number: Not Specified
+	Asset Tag: Not Specified
+	Boot-up State: Safe
+	Power Supply State: Safe
+	Thermal State: Safe
+	Security Status: None
+
