@@ -1,8 +1,10 @@
-#!/bin/usr/python3
+#!/usr/bin/env python3
 
 """
 Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
+import json
+import sys
 
 from read_dmidecode import get_baseboard, get_chassis
 from read_lscpu import read_lscpu
@@ -11,12 +13,8 @@ from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from read_smartctl import read_smartctl
 
 
-def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
-
-    # TODO: reset to tmp after testing
-    # this is set in generate_files.sh and main_with_gui.py and has to be changed manually
-    # directory = "tmp"
-    directory = "tests/castes-pc"
+def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool):
+    directory = directory.rstrip('/')
 
     mobo = get_baseboard(directory + "/baseboard.txt")
     cpu = read_lscpu(directory + "/lscpu.txt")
@@ -46,10 +44,10 @@ def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
             # "CAS_latencies": None # feature missing from TARALLO
         }
 
-    no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging into " \
-                  "the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
+    no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
+                      "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
     no_vram_info_str = "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which " \
-                  "could be near the actual value. Please humans, fix this error by hand."
+                       "could be near the actual value. Please humans, fix this error by hand."
 
     if lspci_glxinfo is None or (no_gpu_info_str in lspci_glxinfo and no_vram_info_str in lspci_glxinfo):
         lspci_glxinfo = {
@@ -62,21 +60,14 @@ def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
         }
         print_lspci_lines_in_dialog = True
 
-    elif no_vram_info_str in lspci_glxinfo and not no_gpu_info_str in lspci_glxinfo:
+    elif no_vram_info_str in lspci_glxinfo and no_gpu_info_str not in lspci_glxinfo:
         # TODO: check output in this case, change only VRAM field to None
         print_lspci_lines_in_dialog = False
 
     else:
         print_lspci_lines_in_dialog = False
 
-
-    result = []
-
-    result.append(chassis)
-
-    result.append(mobo)
-
-    result.append(cpu)
+    result = [chassis, mobo, cpu]
 
     if isinstance(dimms, dict):
         # otherwise it will append every key-value pair of the dict
@@ -99,6 +90,8 @@ def extract_and_collect_data_from_generated_files(has_dedicated_gpu: bool):
 
 
 if __name__ == '__main__':
-    # TODO: refactor after testing
-    # extract_and_collect_data_from_generated_files()
-    print(extract_and_collect_data_from_generated_files(True))
+    if len(sys.argv) <= 1:
+        path = '.'
+    else:
+        path = sys.argv[1]
+    print(json.dumps(extract_and_collect_data_from_generated_files(path, True)))

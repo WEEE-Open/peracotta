@@ -22,6 +22,7 @@ class Disk():
         self.rotation_rate = -1
         self.smart_data = False
 
+
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
 # SINCE THERE MAY BE MULTIPLE FILES
 def read_smartctl(path: str):
