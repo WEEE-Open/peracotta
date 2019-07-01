@@ -18,7 +18,7 @@ class Dimm:
 		self.capacity = -1
 		self.human_readable_capacity = ""
 		self.ram_type = ""  # DDR, DDR2, DDR3 etc.
-		self.ecc = "No"  # enum: "Yes" or "No"
+		self.ecc = "no"  # enum: "yes" or "no"
 		self.cas_latencies = ""
 		self.manufacturer_data_type = ""
 
@@ -30,26 +30,6 @@ def ignore_spaces(line: str, initial_chars_to_ignore: int):
 	relevant_part = line[initial_chars_to_ignore:]
 	return relevant_part.strip()
 
-
-# """START TEST"""
-# asdpc = 0
-# rottame = 0
-# ECC1 = 0
-# ECC2 = 0
-# _149 = 0
-# if asdpc:
-#     path = "tests/asdpc/dimms.txt"
-# elif rottame:
-#     path = "tests/rottame/dimms.txt"
-# elif ECC1:
-#     path = "tests/decode-dimms/ECC/R451-R450.txt"
-# elif ECC2:
-#     path = "tests/decode-dimms/ECC/R480-R479.txt"
-# elif _149:
-#     path = "tests/decode-dimms/non ECC/R469-R470-R471-R472.txt"
-# else:
-#     path = ""
-# """END TEST"""
 
 def read_decode_dimms(path: str):
 	# print(path)
@@ -90,7 +70,7 @@ def read_decode_dimms(path: str):
 	for i, dimm in enumerate(dimm_sections):
 		for line in dimm.splitlines():
 			if line.startswith("Fundamental Memory type"):
-				dimms[i].ram_type = line.split(" ")[-2]
+				dimms[i].ram_type = line.split(" ")[-2].lower()
 
 			if line.startswith("Maximum module speed"):
 				freq = line.split(" ")[-3:-1]
@@ -142,12 +122,11 @@ def read_decode_dimms(path: str):
 
 			if line.startswith("Module Configuration Type") and (
 					"Data Parity" in line or "Data ECC" in line or "Address/Command Parity" in line):
-				dimms[i].ecc = "Yes"
+				dimms[i].ecc = "yes"
 
 			if line.startswith("Supported CAS Latencies (tCL)"):
 				dimms[i].cas_latencies = ignore_spaces(line, len("Supported CAS Latencies (tCL)"))
 
-	# TODO: comment following lines in production code
 	# for dimm in dimms:
 	#     print("-"*25)
 	#     print(dimm.RAM_type)
