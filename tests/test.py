@@ -13,7 +13,7 @@ def test_77():
 	expect = {
 		'type': 'graphics-card',
 		'brand-manufacturer': 'SiS',
-		'brand': 'ASUSTek Computer Inc.',
+		'brand': 'ASUSTeK Computer Inc.',
 		'model': '771/671',
 		'capacity-byte': None,
 		'human_readable_capacity': ''}
