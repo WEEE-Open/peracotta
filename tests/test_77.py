@@ -2,7 +2,7 @@
 
 import pytest
 # import smartctl
-from read_dmidecode import get_baseboard, get_chassis
+from read_dmidecode import get_baseboard, get_chassis, get_connectors
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 
 filedir = '77/'
@@ -29,6 +29,26 @@ def test_77_baseboard():
 		'type': 'motherboard'
 	}
 	output = get_baseboard(filedir + 'baseboard.txt')
+
+	assert output == expect
+
+
+def test_77_connector():
+	baseboard = get_baseboard(filedir + 'baseboard.txt')
+
+	expect = {
+		'brand': 'ASUSTeK Computer INC.',
+		'model': 'P5SD2-VM',
+		'sn': 'MT721CT11114269',
+		'type': 'motherboard',
+		'usb-ports-n': 8,
+		'ethernet-ports-n': 1,
+		'mini-jack-ports-n': 3,
+		'parallel-ports-n': 1,
+		'ps2-ports-n': 2,
+		'serial-ports-n': 1,
+	}
+	output = get_connectors(filedir + 'connector.txt', baseboard)
 
 	assert output == expect
 

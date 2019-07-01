@@ -2,6 +2,16 @@
 
 import sys
 
+# TODO: read lspci to figure out if Ethernet is 100 or 1000 or whatever
+connectors_map = {
+	"PS/2": "ps2-ports-n",
+	"Access Bus (USB)": "usb-ports-n",
+	"DB-25 male": "parallel-ports-n",
+	"DB-9 male": "serial-ports-n",
+	"Mini Jack (headphones)": "mini-jack-ports-n",
+	"RJ-45": "ethernet-ports-n",  # not a real feature in T.A.R.A.L.L.O., since it's not yet known if it's 100 or 1000
+}
+
 
 class Baseboard:
 	def __init__(self):
@@ -64,7 +74,7 @@ def get_baseboard(path: str):
 	return result
 
 
-def get_connector(path: str, baseboard: Baseboard):
+def get_connectors(path: str, baseboard: dict):
 	try:
 		with open(path, 'r') as f:
 			output = f.read()
@@ -73,6 +83,8 @@ def get_connector(path: str, baseboard: Baseboard):
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
 		return
+
+	connectors = dict(zip(connectors_map.values(), [0] * len(connectors_map)))
 
 	# TODO: this part (is it needed?)
 	# port_types = []
@@ -83,8 +95,27 @@ def get_connector(path: str, baseboard: Baseboard):
 	# 		port_types.append(type[1].replace("\n", "").replace(" ", ""))
 
 	for section in output.split("\n\n"):
-		pass
+		if not section.startswith('Handle '):
+			continue
+		internal = section.split("Internal Connector Type:", 1)[1].split("\n", 1)[0].strip()
+		external = section.split("External Connector Type:", 1)[1].split("\n", 1)[0].strip()
+		if external == 'None':
+			connector = internal
+		else:
+			connector = external
 
+		if connector in connectors_map:
+			connectors[connectors_map[connector]] += 1
+		else:
+			# TODO: save them to a warning
+			print("Unknown connector: " + connector)
+
+	for connector in connectors:
+		if connectors[connector] == 0:
+			del connectors[connector]
+
+	# Dark magic: https://stackoverflow.com/a/26853961
+	return {**baseboard, **connectors}
 
 # tmp/chassis.txt
 def get_chassis(path: str):
