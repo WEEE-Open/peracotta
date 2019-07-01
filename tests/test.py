@@ -40,31 +40,34 @@ def test_asdpc():
 
 	expect = [
 		{
-			'ECC': 'no',
-			'RAM_type': 'ddr3',
+			'ram-ecc': 'no',
+			'ram-type': 'ddr3',
 			'brand': 'G Skill Intl',
-			'capacity': 8589934592,
-			'frequency': 1333000000,
+			'capacity-byte': 8589934592,
+			'frequency-hertz': 1333000000,
 			'human_readable_capacity': '8192 MB',
 			'human_readable_frequency': '1333 MHz',
 			'model': 'F3-1600C7-8GTX',
 			'serial_number': '',
-			'type': 'ram'
+			'type': 'ram',
+			'ram-timings': '10T, 9T, 8T, 7T, 6T, 5T',
 		},
 		{
-			'ECC': 'no',
-			'RAM_type': 'ddr3',
+			'ram-ecc': 'no',
+			'ram-type': 'ddr3',
 			'brand': 'G Skill Intl',
-			'capacity': 8589934592,
-			'frequency': 1333000000,
+			'capacity-byte': 8589934592,
+			'frequency-hertz': 1333000000,
 			'human_readable_capacity': '8192 MB',
 			'human_readable_frequency': '1333 MHz',
 			'model': 'F3-1600C7-8GTX',
 			'serial_number': '',
-			'type': 'ram'
+			'type': 'ram',
+			'ram-timings': '10T, 9T, 8T, 7T, 6T, 5T',
 		}
 	]
 	output = read_decode_dimms(dir + 'dimms.txt')
 
+	assert len(output) == 2, "2 RAM modules are found"
 	assert output == expect
 	# TODO: more tests
