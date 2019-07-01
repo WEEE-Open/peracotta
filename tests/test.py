@@ -7,7 +7,7 @@ from read_decode_dimms import read_decode_dimms
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 
 
-def test_77():
+def test_77_lspci():
 	filedir = '77/'
 
 	expect = {
@@ -23,8 +23,8 @@ def test_77():
 	# TODO: more tests
 
 
-def test_asdpc():
-	dir = 'asdpc/'
+def test_asdpc_lspci():
+	filedir = 'asdpc/'
 
 	expect = {
 		'type': 'graphics-card',
@@ -34,9 +34,13 @@ def test_asdpc():
 		'capacity-byte': 3221225472,
 		'human_readable_capacity': '3072 MB'
 	}
-	output = read_lspci_and_glxinfo(True, dir + 'lspci.txt', dir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo(True, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
 	assert output == expect
+
+
+def test_asdpc_ram():
+	filedir = 'asdpc/'
 
 	expect = [
 		{
@@ -66,7 +70,7 @@ def test_asdpc():
 			'ram-timings': '10T, 9T, 8T, 7T, 6T, 5T',
 		}
 	]
-	output = read_decode_dimms(dir + 'dimms.txt')
+	output = read_decode_dimms(filedir + 'dimms.txt')
 
 	assert len(output) == 2, "2 RAM modules are found"
 	assert output == expect
