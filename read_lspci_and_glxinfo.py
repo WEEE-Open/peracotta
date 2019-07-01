@@ -40,7 +40,7 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str):
                 # take the first string between [] from the first line
                 # works with NVIDIA cards
                 gpu.model = first_line.split("[")[1].split("]")[0]
-            except Exception:
+            except IndexError:
                 # there may not be an argument in between []
                 pass
 
@@ -164,9 +164,9 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
         # don't parse glxinfo because the VRAM is part of the RAM and varies
         gpu.capacity = None
         # print("The VRAM capacity could not be detected. "
-        #       "Please try looking for it on the Video Card or on the Internet. "
-        #       "The capacity value defaulted to 'None'. "
-        #       "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
+        # "Please try looking for it on the Video Card or on the Internet. "
+        # "The capacity value defaulted to 'None'. "
+        # "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
 
     # TODO: comment following lines in production code
     # print(gpu.manufacturer_brand)
