@@ -17,6 +17,7 @@ class Disk:
 		self.type = ""
 		self.brand = ""
 		self.model = ""
+		self.family = ""
 		self.wwn = ""
 		self.serial_number = ""
 		self.capacity = -1  # n of bytes
@@ -39,13 +40,24 @@ def read_smartctl(path: str):
 				with open(path + "/" + filename, 'r') as f:
 					output = f.read()
 
-				for line in output.splitlines():
-					if "Model Family" in line:
-						disk.brand = line.split("Model Family:")[1].strip()
+				data = output.split('=== START OF INFORMATION SECTION ===', 1)[1]\
+					.split('=== START OF READ SMART DATA SECTION ===', 1)[0]
 
+				# For manual inspection later on
+				disk.smart_data = '=== START OF READ SMART DATA SECTION ===' +\
+					output.split('=== START OF READ SMART DATA SECTION ===', 1)[1]
+
+				for line in data.splitlines():
+					if "Model Family" in line:
+						line = line.split("Model Family:")[1].strip()
+						if line.startswith('Western Digital'):
+							disk.brand = 'Western Digital'
+							disk.family = line.split('Western Digital', 1)[1].strip()
+						# TODO: elif for other brands
+						else:
+							disk.brand = line
 					elif "Device Model" in line:
 						disk.model = line.split("Device Model:")[1].strip()
-
 					elif "Serial Number" in line:
 						disk.serial_number = line.split("Serial Number:")[1].strip()
 
@@ -72,9 +84,10 @@ def read_smartctl(path: str):
 						else:
 							disk.type = "ssd"
 
-					elif "SMART support is" in line:
-						if "Available" in line or "Enabled" in line:
-							disk.smart_data = True
+				if disk.brand == 'Western Digital':
+					# These are useless and usually not even printed on labels and in bar codes...
+					disk.model = remove_prefix('WDC ', disk.model)
+					disk.serial_number = remove_prefix('WD-', disk.serial_number)
 
 				disks.append(disk)
 
@@ -109,6 +122,12 @@ def read_smartctl(path: str):
 		print("Cannot open file.")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
+
+
+def remove_prefix(prefix, text):
+	if text.startswith(prefix):
+		return text[len(prefix):]
+	return text
 
 
 if __name__ == '__main__':
