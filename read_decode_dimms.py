@@ -111,10 +111,9 @@ def read_decode_dimms(path: str):
 				elif dimms[i].manufacturer_data_type == "Manufacturer":
 					dimms[i].brand = ignore_spaces(line, len("Manufacturer"))
 
-			# TODO: fix that it never finds the model
-			# is part number the model?
-			if line.startswith("Part Number") and dimms[i].serial_number == "":
-				dimms[i].serial_number = ignore_spaces(line, len("Part Number"))
+			# This seems to always be the model (or at least never be the serial number)
+			if line.startswith("Part Number"):
+				dimms[i].model = ignore_spaces(line, len("Part Number"))
 
 			# part number can be overwritten by serial number if present
 			if line.startswith("Assembly Serial Number"):
@@ -124,8 +123,9 @@ def read_decode_dimms(path: str):
 					"Data Parity" in line or "Data ECC" in line or "Address/Command Parity" in line):
 				dimms[i].ecc = "yes"
 
-			if line.startswith("Supported CAS Latencies (tCL)"):
-				dimms[i].cas_latencies = ignore_spaces(line, len("Supported CAS Latencies (tCL)"))
+			# Two (or more) spaces after because there are lines like "tCL-tRCD-tRP-tRAS as ..."
+			if line.startswith("tCL-tRCD-tRP-tRAS  "):
+				dimms[i].cas_latencies = ignore_spaces(line, len("tCL-tRCD-tRP-tRAS"))
 
 	# for dimm in dimms:
 	#     print("-"*25)
