@@ -19,7 +19,7 @@ def test_lspci():
 	}
 	output = read_lspci_and_glxinfo(True, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
-	assert output == expect
+	assert expect == output
 
 
 def test_ram():
@@ -54,7 +54,7 @@ def test_ram():
 	output = read_decode_dimms(filedir + 'dimms.txt')
 
 	assert len(output) == 2, "2 RAM modules are found"
-	assert output == expect
+	assert expect == output
 
 
 def test_baseboard():
@@ -66,7 +66,7 @@ def test_baseboard():
 	}
 	output = get_baseboard(filedir + 'baseboard.txt')
 
-	assert output == expect
+	assert expect == output
 
 
 def test_connector():
@@ -82,28 +82,28 @@ def test_connector():
 		'usb-ports-n': 3,
 		'ps2-ports-n': 2,
 		'serial-ports-n': 1,
-		'warning': 'Unknown connector: None / Mini Centronics Type-14\n'
-		           'Unknown connector: None / DB-15 female\n'
-		           'Unknown connector: Other / None (J9A1 - TPM HDR / Not Specified)\n'
-		           'Unknown connector: Other / None (J9C1 - PCIE DOCKING CONN / Not Specified)\n'
-		           'Unknown connector: Other / None (J2B3 - CPU FAN / Not Specified)\n'
-		           'Unknown connector: Other / None (J6C2 - EXT HDMI / Not Specified)\n'
-		           'Unknown connector: Other / None (J3C1 - GMCH FAN / Not Specified)\n'
-		           'Unknown connector: Other / None (J1D1 - ITP / Not Specified)\n'
-		           'Unknown connector: Other / None (J9E2 - MDC INTPSR / Not Specified)\n'
-		           'Unknown connector: Other / None (J9E4 - MDC INTPSR / Not Specified)\n'
-		           'Unknown connector: Other / None (J9E3 - LPC HOT DOCKING / Not Specified)\n'
-		           'Unknown connector: Other / None (J9E1 - SCAN MATRIX / Not Specified)\n'
-		           'Unknown connector: Other / None (J9G1 - LPC SIDE BAND / Not Specified)\n'
-		           'Unknown connector: Other / None (J8F1 - UNIFIED / Not Specified)\n'
-		           'Unknown connector: Other / None (J6F1 - LVDS / Not Specified)\n'
-		           'Unknown connector: Other / None (J2F1 - LAI FAN / Not Specified)\n'
-		           'Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)\n'
-		           'Unknown connector: Other / None (J1G6 - AC JACK / Not Specified)',
+		'warning': 'Unknown connector: None / Mini Centronics Type-14 (J2A1 / TV Out)\n'
+					'Unknown connector: None / DB-15 female (J2A2B / Video)\n'
+					'Unknown connector: Other / None (J9A1 - TPM HDR / Not Specified)\n'
+					'Unknown connector: Other / None (J9C1 - PCIE DOCKING CONN / Not Specified)\n'
+					'Unknown connector: Other / None (J2B3 - CPU FAN / Not Specified)\n'
+					'Unknown connector: Other / None (J6C2 - EXT HDMI / Not Specified)\n'
+					'Unknown connector: Other / None (J3C1 - GMCH FAN / Not Specified)\n'
+					'Unknown connector: Other / None (J1D1 - ITP / Not Specified)\n'
+					'Unknown connector: Other / None (J9E2 - MDC INTPSR / Not Specified)\n'
+					'Unknown connector: Other / None (J9E4 - MDC INTPSR / Not Specified)\n'
+					'Unknown connector: Other / None (J9E3 - LPC HOT DOCKING / Not Specified)\n'
+					'Unknown connector: Other / None (J9E1 - SCAN MATRIX / Not Specified)\n'
+					'Unknown connector: Other / None (J9G1 - LPC SIDE BAND / Not Specified)\n'
+					'Unknown connector: Other / None (J8F1 - UNIFIED / Not Specified)\n'
+					'Unknown connector: Other / None (J6F1 - LVDS / Not Specified)\n'
+					'Unknown connector: Other / None (J2F1 - LAI FAN / Not Specified)\n'
+					'Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)\n'
+					'Unknown connector: Other / None (J1G6 - AC JACK / Not Specified)',
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 
-	assert output == expect
+	assert expect == output
 
 
 def test_chassis():
@@ -117,7 +117,7 @@ def test_chassis():
 	}
 	output = get_chassis(filedir + 'chassis.txt')
 
-	assert output == expect
+	assert expect == output
 
 
 def test_smartctl():
@@ -142,4 +142,4 @@ def test_smartctl():
 	]
 	output = read_smartctl(filedir)
 
-	assert output == expect
+	assert expect == output
