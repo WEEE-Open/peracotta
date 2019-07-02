@@ -31,8 +31,7 @@ def ignore_spaces(line: str, initial_chars_to_ignore: int):
 	return relevant_part.strip()
 
 
-def read_decode_dimms(path: str):
-	# print(path)
+def read_decode_dimms(path: str, interactive: bool = False):
 	try:
 		with open(path, 'r') as f:
 			output = f.read()
@@ -42,7 +41,8 @@ def read_decode_dimms(path: str):
 		exit(-1)
 		return
 
-	# print("Reading decode-dimms...")
+	if interactive:
+		print("Reading decode-dimms...")
 
 	# this optimization can crash the script if output is empty
 	# last_line = output.splitlines()[-1]
@@ -50,19 +50,14 @@ def read_decode_dimms(path: str):
 	# check based on output of decode-dimms v6250
 	if "Number of SDRAM DIMMs detected and decoded: 0" in output\
 		or "Number of SDRAM DIMMs detected and decoded: " not in output:
-		# TO USE WITH extract_data.py
-		print("decode-dimms was not able to find any RAM details")
+		if interactive:
+			print("decode-dimms was not able to find any RAM details")
 		return None
-	# exit(-1)
 
 	# split strings in 1 str array for each DIMM
 	dimm_sections = output.split("Decoding EEPROM")
 	# remove useless first part
 	del dimm_sections[0]
-	# for dimm in dimm_sections:
-	#     print(dimm)
-	#     print("END OF THIS ENTRY")
-	# exit(0)
 
 	# create list of as many dimms as there are dimm_sections
 	dimms = [Dimm() for i in range(len(dimm_sections))]
@@ -127,16 +122,6 @@ def read_decode_dimms(path: str):
 			if line.startswith("tCL-tRCD-tRP-tRAS  "):
 				dimms[i].cas_latencies = ignore_spaces(line, len("tCL-tRCD-tRP-tRAS"))
 
-	# for dimm in dimms:
-	#     print("-"*25)
-	#     print(dimm.RAM_type)
-	#     print(str(dimm.frequency))
-	#     print(str(dimm.capacity))
-	#     print(dimm.brand)
-	#     print(dimm.serial_number)
-	#     print(dimm.ECC)
-	#     print(dimm.CAS_latencies)
-
 	dimms_dicts = []
 	for dimm in dimms:
 		dimms_dicts.append({
@@ -157,4 +142,4 @@ def read_decode_dimms(path: str):
 
 
 if __name__ == '__main__':
-	read_decode_dimms(sys.argv[1])
+	read_decode_dimms(sys.argv[1], True)
