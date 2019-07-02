@@ -52,7 +52,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 		or "Number of SDRAM DIMMs detected and decoded: " not in output:
 		if interactive:
 			print("decode-dimms was not able to find any RAM details")
-		return None
+		return []
 
 	# split strings in 1 str array for each DIMM
 	dimm_sections = output.split("Decoding EEPROM")
