@@ -64,6 +64,8 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 					# if there are no numbers, e.g. "Core Processor", tmp_model is not a model number
 					if not re.search("\\d+", tmp_model):
 						tmp_model = ""
+				elif "HD Graphics" in first_line:
+					tmp_model = first_line.split("Intel Corporation ")[1].split("(", 1)[0].strip()
 				elif "[" in first_line and "]" in first_line:
 					tmp_model = first_line.split("[")[1].split("]")[0]
 				else:
@@ -71,6 +73,7 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 
 				if tmp_model != "":
 					gpu.model = tmp_model
+					gpu.reseller_brand = gpu.reseller_brand.replace(tmp_model, '').strip()
 				else:
 					gpu.model = None
 			elif part_between_square_brackets == 'SiS':

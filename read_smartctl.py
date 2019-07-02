@@ -55,6 +55,9 @@ def read_smartctl(path: str, interactive: bool = False):
 						if line.startswith('Western Digital'):
 							disk.brand = 'Western Digital'
 							disk.family = line.split('Western Digital', 1)[1].strip()
+						elif line.startswith('Samsung'):
+							disk.brand = 'Samsung'
+							disk.family = line.split('Samsung', 1)[1].strip()
 						# TODO: elif for other brands
 						else:
 							disk.brand = line
@@ -98,6 +101,7 @@ def read_smartctl(path: str, interactive: bool = False):
 					"type": "hdd",
 					"brand": disk.brand,
 					"model": disk.model,
+					"family": disk.family,
 					"wwn": disk.wwn,
 					"sn": disk.serial_number,
 					# Despite the name it's still in bytes, but with SI prefix (not power of 2), "deci" is there just to
@@ -112,6 +116,7 @@ def read_smartctl(path: str, interactive: bool = False):
 					"type": "ssd",
 					"brand": disk.brand,
 					"model": disk.model,
+					"family": disk.family,
 					"sn": disk.serial_number,
 					"capacity-byte": disk.capacity,
 					"human_readable_capacity": disk.human_readable_capacity,
