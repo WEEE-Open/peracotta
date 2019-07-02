@@ -3,10 +3,6 @@ import sys
 import os
 from math import log10, floor
 
-# if sys.argv.__len__() < 1:
-#     print("Invalid call, specify filename to read")
-#     exit(0)
-
 
 """
 Read "smartctl" output:

@@ -19,10 +19,9 @@ class VideoCard:
 		self.warning = ""
 
 
-def parse_lspci_output(gpu: VideoCard, lspci_path: str):
+def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = False):
 	try:
 		with open(lspci_path, 'r') as f:
-			print("Reading lspci -v...")
 			lspci_output = f.read()
 	except FileNotFoundError:
 		print("Cannot open file.")
@@ -86,16 +85,16 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str):
 				error = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited " \
 					"logging into the TARALLO afterwards. The information you're looking for should be in the " \
 					f"following 2 lines:\n{first_line}\n{second_line}\n"
-				# TODO: if interactive => print error
-				print(error)
+				if interactive:
+					print(error)
 				gpu.warning += error
 
 			if gpu.model is None:
 				error = "I couldn\'t find the Integrated Graphics model. The model was set to \'None\' and is to be " \
 				        "edited logging into the TARALLO afterwards. The information you\'re looking for should be in " \
 					f"the following 2 lines:\n{first_line}\n{second_line}\n"
-				# TODO: if interactive => print error
-				print(error)
+				if interactive:
+					print(error)
 				gpu.warning += error
 			break
 
@@ -103,7 +102,6 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str):
 def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
 	try:
 		with open(glxinfo_path, 'r') as f:
-			print("Reading glxinfo...")
 			glxinfo_output = f.read()
 	except FileNotFoundError:
 		print("Cannot open file.")
@@ -168,25 +166,19 @@ def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
 				gpu.warning = "Could not find dedicated video memory. Please check the value."
 
 
-def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: str):
+def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: str, interactive: bool = False):
 	gpu = VideoCard()
 	if has_dedicated:
-		parse_lspci_output(gpu, lspci_path)
+		parse_lspci_output(gpu, lspci_path, interactive)
 		parse_glxinfo_output(gpu, glxinfo_path)
 	else:  # integrated_in_mobo or integrated_in_cpu
-		parse_lspci_output(gpu, lspci_path)
+		parse_lspci_output(gpu, lspci_path, interactive)
 		# don't parse glxinfo because the VRAM is part of the RAM and varies
 		gpu.capacity = None
 		# print("The VRAM capacity could not be detected. "
 		# "Please try looking for it on the Video Card or on the Internet. "
 		# "The capacity value defaulted to 'None'. "
 		# "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
-
-	# TODO: comment following lines in production code
-	# print(gpu.manufacturer_brand)
-	# print(gpu.model)
-	# print(str(gpu.capacity))
-	# print(gpu.human_readable_capacity)
 
 	return {
 		"type": "graphics-card",
@@ -202,8 +194,8 @@ if __name__ == '__main__':
 	while True:
 		ded = input("Does this system have a dedicated GPU? y/n:\n")
 		if ded.lower() == "y":
-			read_lspci_and_glxinfo(True, sys.argv[1], sys.argv[2])
+			read_lspci_and_glxinfo(True, sys.argv[1], sys.argv[2], True)
 		elif ded.lower() == "n":
-			read_lspci_and_glxinfo(False, sys.argv[1], sys.argv[2])
+			read_lspci_and_glxinfo(False, sys.argv[1], sys.argv[2], True)
 		else:
 			print("Unexpected character.")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
 
 # TODO: read lspci to figure out if Ethernet is 100 or 1000 or whatever
 connectors_map = {
@@ -80,7 +79,7 @@ def get_baseboard(path: str):
 	return result
 
 
-def get_connectors(path: str, baseboard: dict):
+def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 	try:
 		with open(path, 'r') as f:
 			output = f.read()
@@ -124,8 +123,8 @@ def get_connectors(path: str, baseboard: dict):
 			else:
 				warning = f"Unknown connector: {internal} / {external}"
 
-			# TODO: if interactive, print
-			print(warning)
+			if interactive:
+				print(warning)
 			warnings.append(warning)
 
 	warnings = '\n'.join(warnings)
@@ -146,10 +145,6 @@ def get_dmidecoded_value(section: str, key: str) -> str:
 # tmp/chassis.txt
 def get_chassis(path: str):
 	chassis = Chassis()
-
-	# p = sp.Popen(['sudo dmidecode -t chassis'], shell=True, stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
-	# out = p.communicate()
-	# strings = str.split(str(out[0]), sep="\\n")
 
 	try:
 		with open(path, 'r') as f:
@@ -188,11 +183,20 @@ def get_chassis(path: str):
 
 
 if __name__ == '__main__':
-	while True:
-		b_or_c = input("Press b for baseboard or c for chassis:\n")
-		if b_or_c.lower() == "b":
-			get_baseboard(sys.argv[1])
-		elif b_or_c.lower() == "c":
-			get_chassis(sys.argv[1])
-		else:
-			print("Input not recognized.")
+	import argparse
+	parser = argparse.ArgumentParser(description='Parse dmidecode output')
+	parser.add_argument('-b', '--baseboard', type=str, help="Path to baseboard.txt")
+	parser.add_argument('-c', '--chassis', type=str, help="Path to chassis.txt")
+	parser.add_argument('-p', '--ports', type=str, help="Path to connector.txt (ports)")
+	args = parser.parse_args()
+	if args.ports is not None and args.baseboard is None:
+		print("Provide a baseboard.txt file to detect connectors")
+		exit(1)
+
+	if args.baseboard is not None and args.ports is None:
+		print(get_baseboard(args.baseboard))
+	if args.ports is not None:
+		bb = get_baseboard(args.baseboard)
+		print(get_connectors(args.ports, bb, True))
+	if args.chassis is not None:
+		print(get_chassis(args.chassis))
