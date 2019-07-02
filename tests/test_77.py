@@ -57,11 +57,12 @@ def test_77_connector():
 
 def test_77_chassis():
 	expect = {
-		'brand': 'ASUSTeK Computer INC.',
+		'brand': 'Chassis Manufacture',
 		'model': '',
-		'sn': 'MT721CT11114269',
+		'sn': 'Chassis Serial Number',
 		'type': 'case',
+		'motherboard-form-factor': '',
 	}
-	output = get_chassis(filedir + 'baseboard.txt')
+	output = get_chassis(filedir + 'chassis.txt')
 
 	assert output == expect

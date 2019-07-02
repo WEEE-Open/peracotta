@@ -111,10 +111,11 @@ def test_chassis():
 	expect = {
 		'brand': 'Gigabyte Technology Co., Ltd.',
 		'model': '',
-		'sn': 'To be filled by O.E.M.',
+		'sn': 'To Be Filled By O.E.M.',
 		'type': 'case',
+		'motherboard-form-factor': '',
 	}
-	output = get_chassis(filedir + 'baseboard.txt')
+	output = get_chassis(filedir + 'chassis.txt')
 
 	assert output == expect
 

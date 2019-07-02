@@ -33,6 +33,7 @@ class Chassis:
 		self.brand = ""
 		self.model = ""
 		self.serial_number = ""
+		self.form_factor = ""
 
 
 # TODO: implement read of connector.txt into Baseboard
@@ -160,9 +161,10 @@ def get_chassis(path: str):
 			chassis.brand = line.split("Manufacturer:")[1].strip()
 
 		# This is Desktop, Laptop, etc...
-		# TODO: use it for form factor? At least to set "proprietary-laptop" unless it's a desktop
-		# elif "Type" in line:
-		# chassis.model = line.split("Type:")[1].strip()
+		elif "Type: " in line:
+			ff = line.split("Type: ")[1].strip()
+			if ff == 'Laptop' or ff == 'Notebook':  # Both exist in the wild and in tests, difference unknonw
+				chassis.form_factor = 'proprietary-laptop'
 
 		elif "Serial Number" in line:
 			chassis.serial_number = line.split("Serial Number:")[1].strip()
@@ -171,7 +173,8 @@ def get_chassis(path: str):
 		"type": chassis.type,
 		"brand": chassis.brand,
 		"model": chassis.model,
-		"sn": chassis.serial_number
+		"sn": chassis.serial_number,
+		"motherboard-form-factor": chassis.form_factor,
 	}
 
 	for key, value in result.items():
