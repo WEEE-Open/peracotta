@@ -47,6 +47,10 @@ def test_77_connector():
 		'parallel-ports-n': 1,
 		'ps2-ports-n': 2,
 		'serial-ports-n': 1,
+		'ide-ports-n': 3,
+		'warning': 'Unknown connector: Other / None (CHASSIS REAR FAN / Not Specified)\n'
+		'Unknown connector: Other / None (CPU FAN / Not Specified)\n'
+		'Unknown connector: Other / None (AAFP / Not Specified)'
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

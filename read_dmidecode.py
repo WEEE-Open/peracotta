@@ -10,6 +10,12 @@ connectors_map = {
 	"DB-9 male": "serial-ports-n",
 	"Mini Jack (headphones)": "mini-jack-ports-n",
 	"RJ-45": "ethernet-ports-n",  # not a real feature in T.A.R.A.L.L.O., since it's not yet known if it's 100 or 1000
+	"On Board IDE": "ide-ports-n",
+}
+ignored_connectors = {
+	"On Board Sound Input From CD-ROM",
+	"On Board Floppy",
+	"9 Pin Dual Inline (pin 10 cut)",  # Internal USB header?
 }
 
 
@@ -94,11 +100,12 @@ def get_connectors(path: str, baseboard: dict):
 	# 	if len(type) > 1:
 	# 		port_types.append(type[1].replace("\n", "").replace(" ", ""))
 
+	warnings = []
 	for section in output.split("\n\n"):
 		if not section.startswith('Handle '):
 			continue
-		internal = section.split("Internal Connector Type:", 1)[1].split("\n", 1)[0].strip()
-		external = section.split("External Connector Type:", 1)[1].split("\n", 1)[0].strip()
+		internal = get_dmidecoded_value(section, "Internal Connector Type:")
+		external = get_dmidecoded_value(section, "External Connector Type:")
 		if external == 'None':
 			connector = internal
 		else:
@@ -106,16 +113,35 @@ def get_connectors(path: str, baseboard: dict):
 
 		if connector in connectors_map:
 			connectors[connectors_map[connector]] += 1
+		elif connector in ignored_connectors:
+			pass
+			# warnings.append(f"Ignored connector: {internal} / {external})
 		else:
-			# TODO: save them to a warning
-			print("Unknown connector: " + connector)
+			if connector == 'Other':
+				internal2 = get_dmidecoded_value(section, "Internal Reference Designator:")
+				external2 = get_dmidecoded_value(section, "External Reference Designator:")
+				warning = f"Unknown connector: {internal} / {external} ({internal2} / {external2})"
+			else:
+				warning = f"Unknown connector: {internal} / {external}"
 
+			# TODO: if interactive, print
+			print(warning)
+			warnings.append(warning)
+
+	warnings = '\n'.join(warnings)
+	connectors_clean = {}
+	# Keys to avoid changing dict size at runtime (raises an exception)
 	for connector in connectors:
-		if connectors[connector] == 0:
-			del connectors[connector]
+		if connectors[connector] > 0:
+			connectors_clean[connector] = connectors[connector]
 
 	# Dark magic: https://stackoverflow.com/a/26853961
-	return {**baseboard, **connectors}
+	return {**baseboard, **connectors_clean, **{'warning': warnings}}
+
+
+def get_dmidecoded_value(section: str, key: str) -> str:
+	return section.split(key, 1)[1].split("\n", 1)[0].strip()
+
 
 # tmp/chassis.txt
 def get_chassis(path: str):
