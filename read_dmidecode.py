@@ -10,11 +10,19 @@ connectors_map = {
 	"Mini Jack (headphones)": "mini-jack-ports-n",
 	"RJ-45": "ethernet-ports-n",  # not a real feature in T.A.R.A.L.L.O., since it's not yet known if it's 100 or 1000
 	"On Board IDE": "ide-ports-n",
+	"Mini DisplayPort": "mini-displayport-ports-n",  # This doesn't exist in T.A.R.A.L.L.O. BTW
+	"Thunderbolt": "thunderbolt-ports-n",  # And this one too
+	"HDMI": "hdmi-ports-n"
 }
 ignored_connectors = {
 	"On Board Sound Input From CD-ROM",
 	"On Board Floppy",
 	"9 Pin Dual Inline (pin 10 cut)",  # Internal USB header?
+	"Microphone",  # Internal microphone, not a connector
+	"Speaker",
+}
+extra_connectors = {
+	"MagSafe DC Power": {'power-connector': 'proprietary'},
 }
 
 
@@ -106,8 +114,16 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 			continue
 		internal = get_dmidecoded_value(section, "Internal Connector Type:")
 		external = get_dmidecoded_value(section, "External Connector Type:")
-		if external == 'None':
-			connector = internal
+		internal_des = get_dmidecoded_value(section, "Internal Reference Designator:")
+		external_des = get_dmidecoded_value(section, "External Reference Designator:")
+		if external in ('None', 'Other', 'Not Specified'):
+			if internal in ('None', 'Other', 'Not Specified'):
+				if external_des in ('None', 'Other', 'Not Specified'):
+					connector = internal_des
+				else:
+					connector = external_des
+			else:
+				connector = internal
 		else:
 			connector = external
 
@@ -115,14 +131,11 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 			connectors[connectors_map[connector]] += 1
 		elif connector in ignored_connectors:
 			pass
-			# warnings.append(f"Ignored connector: {internal} / {external})
+		elif connector in extra_connectors:
+			# Dark magic: https://stackoverflow.com/a/26853961
+			connectors = {**connectors, **(extra_connectors[connector])}
 		else:
-			if connector == 'Other':
-				internal2 = get_dmidecoded_value(section, "Internal Reference Designator:")
-				external2 = get_dmidecoded_value(section, "External Reference Designator:")
-				warning = f"Unknown connector: {internal} / {external} ({internal2} / {external2})"
-			else:
-				warning = f"Unknown connector: {internal} / {external}"
+			warning = f"Unknown connector: {internal} / {external} ({internal_des} / {external_des})"
 
 			if interactive:
 				print(warning)
@@ -132,7 +145,10 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 	connectors_clean = {}
 	# Keys to avoid changing dict size at runtime (raises an exception)
 	for connector in connectors:
-		if connectors[connector] > 0:
+		if isinstance(connectors[connector], int):
+			if connectors[connector] > 0:
+				connectors_clean[connector] = connectors[connector]
+		else:
 			connectors_clean[connector] = connectors[connector]
 
 	# Dark magic: https://stackoverflow.com/a/26853961
