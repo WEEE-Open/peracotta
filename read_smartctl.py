@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import os
+from math import log10, floor
 
 # if sys.argv.__len__() < 1:
 #     print("Invalid call, specify filename to read")
@@ -65,17 +66,15 @@ def read_smartctl(path: str):
 						disk.wwn = line.split("LU WWN Device Id:")[1].strip()
 
 					elif "User Capacity" in line:
+						# https://stackoverflow.com/a/3411435
+						num_bytes = line.split('User Capacity:')[1].split("bytes")[0].strip().replace(',', '')
+						round_digits = int(floor(log10(abs(float(num_bytes))))) - 2
+						bytes_rounded = int(round(float(num_bytes), - round_digits))
+						disk.capacity = bytes_rounded
+
 						tmp_capacity = line.split("[")[1].split("]")[0]
 						if tmp_capacity is not None:
 							disk.human_readable_capacity = tmp_capacity
-							if "GB" in tmp_capacity:
-								disk.capacity = int(tmp_capacity[:-2]) * 1024 * 1024 * 1024
-
-							elif "MB" in tmp_capacity:
-								disk.capacity = int(tmp_capacity[:-2]) * 1024 * 1024
-
-							elif "KB" in tmp_capacity.upper():
-								disk.capacity = int(tmp_capacity[:-2]) * 1024
 
 					elif "Rotation Rate" in line:
 						if "Solid State Device" not in line:
@@ -100,7 +99,9 @@ def read_smartctl(path: str):
 					"model": disk.model,
 					"wwn": disk.wwn,
 					"sn": disk.serial_number,
-					"capacity-decibyte": int(disk.capacity / 10),
+					# Despite the name it's still in bytes, but with SI prefix (not power of 2), "deci" is there just to
+					# tell some functions how to convert it to human-readable format
+					"capacity-decibyte": disk.capacity,
 					"human_readable_capacity": disk.human_readable_capacity,
 					"spin-rate-rpm": disk.rotation_rate,
 					"smart-data": disk.smart_data

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import pytest
-# import smartctl
 from read_dmidecode import get_baseboard, get_chassis, get_connectors
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 
@@ -67,5 +65,3 @@ def test_77_chassis():
 	output = get_chassis(filedir + 'baseboard.txt')
 
 	assert output == expect
-
-# TODO: more tests
