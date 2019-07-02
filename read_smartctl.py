@@ -25,7 +25,7 @@ class Disk:
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
 # SINCE THERE MAY BE MULTIPLE FILES
-def read_smartctl(path: str):
+def read_smartctl(path: str, interactive: bool = False):
 	try:
 		disks = []
 
@@ -36,6 +36,11 @@ def read_smartctl(path: str):
 
 				with open(path + "/" + filename, 'r') as f:
 					output = f.read()
+
+				if '=== START OF INFORMATION SECTION ===' not in output:
+					if interactive:
+						print(f"{filename} does not contain disk information, was it a USB stick?")
+					continue
 
 				data = output.split('=== START OF INFORMATION SECTION ===', 1)[1]\
 					.split('=== START OF READ SMART DATA SECTION ===', 1)[0]
@@ -128,4 +133,4 @@ def remove_prefix(prefix, text):
 
 
 if __name__ == '__main__':
-	print(read_smartctl(sys.argv[1]))
+	print(read_smartctl(sys.argv[1], True))
