@@ -16,7 +16,7 @@ def test_77_lspci():
 		'human_readable_capacity': ''}
 	output = read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
-	assert output == expect
+	assert expect == output
 
 
 def test_77_baseboard():
@@ -28,7 +28,7 @@ def test_77_baseboard():
 	}
 	output = get_baseboard(filedir + 'baseboard.txt')
 
-	assert output == expect
+	assert expect == output
 
 
 def test_77_connector():
@@ -52,7 +52,7 @@ def test_77_connector():
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 
-	assert output == expect
+	assert expect == output
 
 
 def test_77_chassis():
@@ -65,4 +65,4 @@ def test_77_chassis():
 	}
 	output = get_chassis(filedir + 'chassis.txt')
 
-	assert output == expect
+	assert expect == output
