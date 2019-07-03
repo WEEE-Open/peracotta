@@ -25,17 +25,44 @@ def read_lscpu(path: str):
 	cpu = CPU()
 
 	output = get_output(path)
+	tmp_freq = None
 
 	for line in output.splitlines():
 		if "Architecture" in line:
 			cpu.architecture = line.split("Architecture:")[1].strip()
+			if cpu.architecture == 'x86_64':
+				cpu.architecture = 'x86-64'
+			if cpu.architecture in ('i686', 'i586', 'i486', 'i386'):
+				cpu.architecture = 'x86-32'
 
 		elif "Model name" in line:
-			tmp = line.split("Model name:")[1].split("@")
+			tmp = line.split("Model name:")[1].rsplit("@", 1)
 			cpu.model = tmp[0].strip()
+			if len(tmp) > 1:
+				tmp_freq = tmp[1].replace('GHz', '').strip()
+			if cpu.model.startswith('Intel'):
+				# To remove "(R)", or don't if it's not there
+				cpu.model = cpu.model.split(' ', 1)[1]
+			if cpu.model.endswith('-Core Processor'):
+				cpu.model = cpu.model.rsplit(' ', 2)[0]
+
+			# Remove some more lapalissades and assorted tautologies
+			cpu.model = cpu.model \
+				.replace("(R)", ' ') \
+				.replace("(TM)", ' ') \
+				.replace("CPU", '') \
+				.replace("AMD", ' ') \
+				.strip()
+
+			while '  ' in cpu.model:
+				cpu.model = cpu.model.replace('  ', ' ')
 
 		elif "Vendor ID" in line:
 			cpu.brand = line.split("Vendor ID:")[1].strip()
+			if cpu.brand == 'GenuineIntel':
+				cpu.brand = 'Intel'
+			elif cpu.brand == 'AuthenticAMD':
+				cpu.brand = 'AMD'
 
 		elif "CPU max MHz" in line:
 			# It's formatted with "%.4f" by lscpu, at the moment
@@ -51,6 +78,9 @@ def read_lscpu(path: str):
 			cpu.n_cores = int(line.split("Core(s) per socket:")[1].strip())
 			if cpu.n_threads != -1:
 				cpu.n_threads *= cpu.n_cores
+
+	if tmp_freq is not None:
+		cpu.frequency = int(float(tmp_freq.replace(',', '.')) * 1000 * 1000 * 1000)
 
 	return {
 		"type": "cpu",
