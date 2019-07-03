@@ -83,8 +83,12 @@ def test_connector():
 		"usb-ports-n": 8,
 		"serial-ports-n": 2,
 		"ethernet-ports-n": 1,
+		'mini-jack-ports-n': 2,  # Probably wrong, but oh well...
 		"ide-ports-n": 1,
-		"warning": "Unknown connector: Other / None (SATA0 / Not Specified)\nUnknown connector: Other / None (SATA1 / Not Specified)\nUnknown connector: None / DB-25 female (Not Specified / PARALLEL)\nUnknown connector: None / Mini DIN (Not Specified / REAR LINE IN)\nUnknown connector: None / DB-15 female (Not Specified / VIDEO)\nUnknown connector: None / Mini DIN (Not Specified / REAR HEADPHONE/LINEOUT)\nUnknown connector: Other / None (CPU FAN / Not Specified)\nUnknown connector: Other / Mini DIN (FRNT AUD / FRONT HEADPHONE/LINEOUT & MIC)\nUnknown connector: Other / None (CHASSIS FAN / Not Specified)\nUnknown connector: Other / None (SPEAKER (SPKR) / Not Specified)\nUnknown connector: Other / None (PASSWORD CLEAR (PSWD) / Not Specified)\nUnknown connector: Other / None (HOOD SENSE (HSENSE) / Not Specified)\nUnknown connector: Other / None (HOOD LOCK (HLCK) / Not Specified)\nUnknown connector: Other / None (TPM SECURITY (SEC) / Not Specified)"
+		'parallel-ports-n': 1,
+		'sata-ports-n': 2,
+		'vga-ports-n': 1,
+		"warning": ""
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

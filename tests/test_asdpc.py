@@ -98,9 +98,9 @@ def test_connector():
 		'type': 'motherboard',
 		'usb-ports-n': 3,
 		'ps2-ports-n': 2,
+		'vga-ports-n': 1,
 		'serial-ports-n': 1,
 		'warning': 'Unknown connector: None / Mini Centronics Type-14 (J2A1 / TV Out)\n'
-					'Unknown connector: None / DB-15 female (J2A2B / Video)\n'
 					'Unknown connector: Other / None (J9A1 - TPM HDR / Not Specified)\n'
 					'Unknown connector: Other / None (J9C1 - PCIE DOCKING CONN / Not Specified)\n'
 					'Unknown connector: Other / None (J2B3 - CPU FAN / Not Specified)\n'
