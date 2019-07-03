@@ -6,20 +6,42 @@ connectors_map = {
 	"PS/2": "ps2-ports-n",
 	"Access Bus (USB)": "usb-ports-n",
 	"DB-25 male": "parallel-ports-n",
+	"DB-25 female": "parallel-ports-n",
 	"DB-9 male": "serial-ports-n",
+	"DB-15 female": "vga-ports-n",
 	"Mini Jack (headphones)": "mini-jack-ports-n",
 	"RJ-45": "ethernet-ports-n",  # not a real feature in T.A.R.A.L.L.O., since it's not yet known if it's 100 or 1000
 	"On Board IDE": "ide-ports-n",
 	"Mini DisplayPort": "mini-displayport-ports-n",  # This doesn't exist in T.A.R.A.L.L.O. BTW
 	"Thunderbolt": "thunderbolt-ports-n",  # And this one too
-	"HDMI": "hdmi-ports-n"
+	"HDMI": "hdmi-ports-n",
+	"SATA0": "sata-ports-n",
+	"SATA1": "sata-ports-n",
+	"SATA2": "sata-ports-n",
+	"SATA3": "sata-ports-n",
+	"SATA4": "sata-ports-n",
+	"SATA5": "sata-ports-n",
+	"SATA6": "sata-ports-n",
+	"SATA7": "sata-ports-n",
+	"On Board Sound Input From CD-ROM": None,
+	"On Board Floppy": None,
+	"CHASSIS REAR FAN": None,
+	"CHASSIS FAN": None,
+	"CPU FAN": None,
+	"9 Pin Dual Inline (pin 10 cut)": None,  # Internal USB header?
+	"Microphone": None,  # Internal microphone, not a connector
+	"Speaker": None,
+	"SPEAKER (SPKR)": None,  # Internal speaker (header)
+	"PASSWORD CLEAR (PSWD)": None,
+	"HOOD LOCK (HLCK)": None,
+	"HOOD SENSE (HSENSE)": None,
+	"TPM SECURITY (SEC)": None,
 }
-ignored_connectors = {
-	"On Board Sound Input From CD-ROM",
-	"On Board Floppy",
-	"9 Pin Dual Inline (pin 10 cut)",  # Internal USB header?
-	"Microphone",  # Internal microphone, not a connector
-	"Speaker",
+connectors_map_tuples = {
+	(None, None, None, 'REAR LINE IN'): "mini-jack-ports-n",
+	(None, None, None, 'REAR HEADPHONE/LINEOUT'): "mini-jack-ports-n",
+	(None, None, 'CPU FAN', None): None,
+	(None, None, 'FRNT AUD', None): None,  # Front audio is not part of the motherboard
 }
 extra_connectors = {
 	"MagSafe DC Power": {'power-connector': 'proprietary'},
@@ -128,18 +150,18 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 			connector = external
 
 		if connector in connectors_map:
-			connectors[connectors_map[connector]] += 1
-		elif connector in ignored_connectors:
-			pass
+			if connectors_map[connector] is not None:
+				connectors[connectors_map[connector]] += 1
 		elif connector in extra_connectors:
 			# Dark magic: https://stackoverflow.com/a/26853961
 			connectors = {**connectors, **(extra_connectors[connector])}
 		else:
-			warning = f"Unknown connector: {internal} / {external} ({internal_des} / {external_des})"
-
-			if interactive:
-				print(warning)
-			warnings.append(warning)
+			found = find_connector_from_tuple(connectors, external, external_des, internal, internal_des)
+			if not found:
+				warning = f"Unknown connector: {internal} / {external} ({internal_des} / {external_des})"
+				if interactive:
+					print(warning)
+				warnings.append(warning)
 
 	warnings = '\n'.join(warnings)
 	connectors_clean = {}
@@ -153,6 +175,24 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 
 	# Dark magic: https://stackoverflow.com/a/26853961
 	return {**baseboard, **connectors_clean, **{'warning': warnings}}
+
+
+def find_connector_from_tuple(connectors, external, external_des, internal, internal_des):
+	equal = False
+	for tup in connectors_map_tuples:
+		zipped = zip(tup, (internal, external, internal_des, external_des))
+		equal = True
+		for (mask, garbage_from_manufacturer) in list(zipped):
+			if mask is None:
+				continue
+			if mask != garbage_from_manufacturer:
+				equal = False
+				break
+		if equal:
+			if connectors_map_tuples[tup] is not None:
+				connectors[connectors_map_tuples[tup]] += 1
+				break
+	return equal
 
 
 def get_dmidecoded_value(section: str, key: str) -> str:
