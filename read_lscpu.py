@@ -50,6 +50,7 @@ def read_lscpu(path: str):
 			cpu.model = cpu.model \
 				.replace("(R)", ' ') \
 				.replace("(TM)", ' ') \
+				.replace("(tm)", ' ') \
 				.replace("CPU", '') \
 				.replace("AMD", ' ') \
 				.strip()
