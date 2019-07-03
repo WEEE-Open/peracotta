@@ -46,6 +46,8 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 			if 'Subsystem:' in second_line:
 				# The model or model family is often repeated here, but removing it automatically is complicated
 				gpu.reseller_brand = second_line.split('Subsystem: ')[1].split('[', 1)[0].strip()
+				gpu.reseller_brand = gpu.reseller_brand\
+					.replace('Integrated Graphics Controller', '')
 
 			if part_between_square_brackets is not None and (
 					"AMD" in part_between_square_brackets or "ATI" in part_between_square_brackets):
