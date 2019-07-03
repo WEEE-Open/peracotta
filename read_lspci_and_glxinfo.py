@@ -80,7 +80,14 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 				# May be written somewhere else on other models, but we have so few SiS cards that it's difficult to
 				# find more examples. Also, they haven't made any video card in the last 15 years or so.
 				gpu.manufacturer_brand = part_between_square_brackets
-				gpu.model = first_line.split(']', 1)[1].split(" PCIE ", 1)[0].strip()
+				if gpu.reseller_brand.lower() == 'silicon integrated systems':
+					gpu.reseller_brand = 'SiS'
+				gpu.model = first_line.split(']', 1)[1]
+				# These may be useful for non-integrated cards, however the example ones are all integrated
+				if " PCIE" in gpu.model:
+					gpu.model = gpu.model.split(" PCIE", 1)[0].strip()
+				elif " PCI/AGP" in gpu.model:
+					gpu.model = gpu.model.split(" PCI/AGP", 1)[0].strip()
 				if gpu.model in gpu.reseller_brand:
 					gpu.reseller_brand = gpu.reseller_brand.split(gpu.model, 1)[0].strip()
 			else:
@@ -183,14 +190,16 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
 		# "The capacity value defaulted to 'None'. "
 		# "For an integrated GPU, the VRAM may also be shared with the system RAM, so an empty value is acceptable.")
 
-	return {
+	result = {
 		"type": "graphics-card",
-		"brand-manufacturer": gpu.manufacturer_brand,
 		"brand": gpu.reseller_brand,
 		"model": gpu.model,
 		"capacity-byte": gpu.capacity,
 		"human_readable_capacity": gpu.human_readable_capacity
 	}
+	if gpu.manufacturer_brand.lower() != gpu.reseller_brand.lower():
+		result["brand-manufacturer"] = gpu.manufacturer_brand
+	return result
 
 
 if __name__ == '__main__':
