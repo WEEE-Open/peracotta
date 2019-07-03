@@ -38,8 +38,11 @@ def read_lscpu(path: str):
 		elif "Model name" in line:
 			tmp = line.split("Model name:")[1].rsplit("@", 1)
 			cpu.model = tmp[0].strip()
-			if len(tmp) > 1:
+			if '@' in line:
 				tmp_freq = tmp[1].replace('GHz', '').strip()
+			elif line.endswith('GHz'):
+				tmp_freq = line.rsplit(' ', 1)[1][:-3]
+
 			if cpu.model.startswith('Intel'):
 				# To remove "(R)", or don't if it's not there
 				cpu.model = cpu.model.split(' ', 1)[1]
