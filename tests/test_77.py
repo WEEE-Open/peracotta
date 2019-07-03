@@ -2,6 +2,7 @@
 
 from read_dmidecode import get_baseboard, get_chassis, get_connectors
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
+from read_lscpu import read_lscpu
 
 filedir = '77/'
 
@@ -17,6 +18,20 @@ def test_77_lspci():
 	output = read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
 	assert expect == output
+
+
+def test_lscpu():
+	expect = {
+		'type': 'cpu',
+		'architecture': 'x86-32',
+		'model': 'Celeron 2.80GHz',
+		'brand': 'Intel',
+		'core-n': 1,
+		'thread-n': 1,
+		'frequency-hertz': -1,
+		'human_readable_frequency': 'N/A'
+	}
+	output = read_lscpu(filedir + 'lscpu.txt')
 
 
 def test_77_baseboard():

@@ -4,6 +4,7 @@ from read_smartctl import read_smartctl
 from read_decode_dimms import read_decode_dimms
 from read_dmidecode import get_baseboard, get_chassis, get_connectors
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
+from read_lscpu import read_lscpu
 
 filedir = 'asdpc/'
 
@@ -18,6 +19,22 @@ def test_lspci():
 		'human_readable_capacity': '3072 MB'
 	}
 	output = read_lspci_and_glxinfo(True, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+
+	assert expect == output
+
+
+def test_lscpu():
+	expect = {
+		"type": "cpu",
+		"architecture": "x86-64",
+		"model": "FX-8370E",
+		"brand": "AMD",
+		"core-n": 4,
+		"thread-n": 8,
+		"frequency-hertz": 3300000000,
+		"human_readable_frequency": "N/A"
+	}
+	output = read_lscpu(filedir + 'lscpu.txt')
 
 	assert expect == output
 
