@@ -126,7 +126,7 @@ def read_smartctl(path: str, interactive: bool = False):
 		return result
 
 	except FileNotFoundError:
-		print("Cannot open file.")
+		print(f"Cannot open {path} to search for smartctl files")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
 

@@ -80,7 +80,7 @@ def get_baseboard(path: str):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print("Cannot open file.")
+		print(f"Cannot open file {path}")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
 		return
@@ -115,7 +115,7 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print("Cannot open file.")
+		print(f"Cannot open file {path}")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
 		return
@@ -207,7 +207,7 @@ def get_chassis(path: str):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print("Cannot open file.")
+		print(f"Cannot open file {path}")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
 		return

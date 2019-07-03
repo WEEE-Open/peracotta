@@ -36,7 +36,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print("Cannot open file.")
+		print(f"Cannot open file {path}")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
 		return

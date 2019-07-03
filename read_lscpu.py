@@ -103,7 +103,7 @@ def get_output(path):
 		with open(path, 'r') as f:
 			return f.read()
 	except FileNotFoundError:
-		print("Cannot open file.")
+		print(f"Cannot open file {path}")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
 

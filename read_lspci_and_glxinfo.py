@@ -24,7 +24,7 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 		with open(lspci_path, 'r') as f:
 			lspci_output = f.read()
 	except FileNotFoundError:
-		print("Cannot open file.")
+		print(f"Cannot open file {lspci_path}")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		return None
 		# exit(-1)
@@ -116,7 +116,7 @@ def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
 		with open(glxinfo_path, 'r') as f:
 			glxinfo_output = f.read()
 	except FileNotFoundError:
-		print("Cannot open file.")
+		print(f"Cannot open file {glxinfo_path}")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		return None
 		# exit(-1)
