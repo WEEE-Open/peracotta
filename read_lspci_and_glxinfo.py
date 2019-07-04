@@ -5,7 +5,6 @@ Read "lspci -v" and "glxinfo" outputs
 """
 
 import re
-import sys
 
 
 class VideoCard:
@@ -205,12 +204,12 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
 
 
 if __name__ == '__main__':
+	import argparse
 	import json
-	while True:
-		ded = input("Does this system have a dedicated GPU? y/n:\n")
-		if ded.lower() == "y":
-			print(json.dumps(read_lspci_and_glxinfo(True, sys.argv[1], sys.argv[2], True), indent=2))
-		elif ded.lower() == "n":
-			print(json.dumps(read_lspci_and_glxinfo(False, sys.argv[1], sys.argv[2], True), indent=2))
-		else:
-			print("Unexpected character.")
+	parser = argparse.ArgumentParser(description='Parse lspci/glxinfo output')
+	parser.add_argument('lspci', type=str, nargs=1, help="path to lspci output")
+	parser.add_argument('glxinfo', type=str, nargs=1, help="path to glxinfo output")
+	parser.add_argument('-d', '--dedicated', action="store_true", default=False, help="computer has dedicated GPU")
+	args = parser.parse_args()
+
+	print(json.dumps(read_lspci_and_glxinfo(args.dedicated, args.lspci[0], args.glxinfo[0]), indent=2))
