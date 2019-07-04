@@ -109,4 +109,5 @@ def get_output(path):
 
 
 if __name__ == '__main__':
-	print(read_lscpu(sys.argv[1]))
+	import json
+	print(json.dumps(read_lscpu(sys.argv[1]), indent=2))

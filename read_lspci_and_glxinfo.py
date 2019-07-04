@@ -205,11 +205,12 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
 
 
 if __name__ == '__main__':
+	import json
 	while True:
 		ded = input("Does this system have a dedicated GPU? y/n:\n")
 		if ded.lower() == "y":
-			read_lspci_and_glxinfo(True, sys.argv[1], sys.argv[2], True)
+			print(json.dumps(read_lspci_and_glxinfo(True, sys.argv[1], sys.argv[2], True), indent=2))
 		elif ded.lower() == "n":
-			read_lspci_and_glxinfo(False, sys.argv[1], sys.argv[2], True)
+			print(json.dumps(read_lspci_and_glxinfo(False, sys.argv[1], sys.argv[2], True), indent=2))
 		else:
 			print("Unexpected character.")
