@@ -20,12 +20,11 @@ class CPU:
 
 
 def read_lscpu(path: str):
-	# print("Reading lscpu...")
-
 	cpu = CPU()
 
 	output = get_output(path)
 	tmp_freq = None
+	sockets = 1
 
 	for line in output.splitlines():
 		if "Architecture:" in line:
@@ -87,10 +86,13 @@ def read_lscpu(path: str):
 			if cpu.n_threads != -1:
 				cpu.n_threads *= cpu.n_cores
 
+		elif "Socket(s):" in line:
+			sockets = int(line.split("Socket(s):")[1].strip())
+
 	if tmp_freq is not None:
 		cpu.frequency = int(float(tmp_freq.replace(',', '.')) * 1000 * 1000 * 1000)
 
-	return {
+	result = {
 		"type": "cpu",
 		"architecture": cpu.architecture,
 		"model": cpu.model,
@@ -100,6 +102,11 @@ def read_lscpu(path: str):
 		"frequency-hertz": cpu.frequency,
 		"human_readable_frequency": cpu.human_readable_frequency
 	}
+
+	if sockets > 1:
+		result = [result] * sockets
+
+	return result
 
 
 def get_output(path):
