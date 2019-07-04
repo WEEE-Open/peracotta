@@ -13,6 +13,7 @@ def test_lspci():
 	expect = {
 		"type": "graphics-card",
 		"brand": "SiS",
+		'internal-name': '',
 		"model": "65x/M650/740",
 		"capacity-byte": None,
 		"human_readable_capacity": ""

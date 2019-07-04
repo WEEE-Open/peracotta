@@ -14,6 +14,7 @@ def test_lspci():
 		'type': 'graphics-card',
 		'brand-manufacturer': 'Intel',
 		'brand': 'ASUSTeK Computer Inc.',
+		'internal-name': '',
 		'model': 'HD Graphics 515',
 		'capacity-byte': None,
 		'human_readable_capacity': ''

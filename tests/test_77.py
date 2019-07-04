@@ -12,6 +12,7 @@ def test_77_lspci():
 		'type': 'graphics-card',
 		'brand-manufacturer': 'SiS',
 		'brand': 'ASUSTeK Computer Inc.',
+		'internal-name': '',
 		'model': '771/671',
 		'capacity-byte': None,
 		'human_readable_capacity': ''}

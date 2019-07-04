@@ -12,8 +12,9 @@ filedir = 'castes-pc/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
-		"brand": "ZOTAC International (MCO) Ltd. GP106",
+		"brand": "ZOTAC International (MCO) Ltd.",
 		"model": "GeForce GTX 1060 6GB",
+		'internal-name': 'GP106',
 		"capacity-byte": 6442450944,
 		"human_readable_capacity": "6144 MB",
 		"brand-manufacturer": "Nvidia"

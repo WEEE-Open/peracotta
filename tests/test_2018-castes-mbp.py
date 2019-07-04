@@ -14,6 +14,7 @@ def test_lspci():
 		'type': 'graphics-card',
 		'brand-manufacturer': 'AMD/ATI',
 		'brand': 'Apple Inc. Radeon Pro 560X',
+		'internal-name': '',
 		'model': 'Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X',
 		'capacity-byte': 4294967296,
 		'human_readable_capacity': '4096 MB'
