@@ -66,6 +66,8 @@ def read_decode_dimms(path: str, interactive: bool = False):
 		for line in dimm.splitlines():
 			if line.startswith("Fundamental Memory type"):
 				dimms[i].ram_type = line.split(" ")[-2].lower()
+				if dimms[i].ram_type == 'unknown':
+					dimms[i].ram_type = ''
 
 			if line.startswith("Maximum module speed"):
 				freq = line.split(" ")[-3:-1]
