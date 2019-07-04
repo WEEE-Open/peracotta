@@ -55,6 +55,9 @@ def read_smartctl(path: str, interactive: bool = False):
 						if line.startswith('Western Digital'):
 							disk.brand = 'Western Digital'
 							disk.family = line.split('Western Digital', 1)[1].strip()
+						elif line.startswith('Seagate'):
+							disk.brand = 'Seagate'
+							disk.family = line.split('Seagate', 1)[1].strip()
 						elif line.startswith('Samsung'):
 							disk.brand = 'Samsung'
 							disk.family = line.split('Samsung', 1)[1].strip()
