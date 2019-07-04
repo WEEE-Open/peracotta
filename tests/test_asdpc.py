@@ -153,7 +153,7 @@ def test_smartctl():
 			'type': 'ssd',
 			'brand': 'Samsung',
 			'family': 'based SSDs',  # whatever.
-			'model': 'Samsung SSD 840 EVO 120GB',
+			'model': '840 EVO 120GB',
 			'sn': 'S1F00F00F00F00',
 			'capacity-byte': 120000000000,
 			'human_readable_capacity': '120 GB',

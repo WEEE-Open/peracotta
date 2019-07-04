@@ -28,14 +28,18 @@ def read_lscpu(path: str):
 	tmp_freq = None
 
 	for line in output.splitlines():
-		if "Architecture" in line:
-			cpu.architecture = line.split("Architecture:")[1].strip()
-			if cpu.architecture == 'x86_64':
+		if "Architecture:" in line:
+			architecture = line.split("Architecture:")[1].strip()
+			if architecture == 'x86_64':
 				cpu.architecture = 'x86-64'
-			if cpu.architecture in ('i686', 'i586', 'i486', 'i386'):
+			if architecture in ('i686', 'i586', 'i486', 'i386'):
 				cpu.architecture = 'x86-32'
-
-		elif "Model name" in line:
+		elif "CPU op-mode(s):" in line:
+			architecture = line.split("CPU op-mode(s):")[1].strip()
+			if cpu.architecture.startswith('x86'):
+				if '64-bit' in architecture:
+					cpu.architecture = 'x86-64'
+		elif "Model name:" in line:
 			tmp = line.split("Model name:")[1].rsplit("@", 1)
 			cpu.model = tmp[0].strip()
 			if '@' in line:
@@ -61,21 +65,21 @@ def read_lscpu(path: str):
 			while '  ' in cpu.model:
 				cpu.model = cpu.model.replace('  ', ' ')
 
-		elif "Vendor ID" in line:
+		elif "Vendor ID:" in line:
 			cpu.brand = line.split("Vendor ID:")[1].strip()
 			if cpu.brand == 'GenuineIntel':
 				cpu.brand = 'Intel'
 			elif cpu.brand == 'AuthenticAMD':
 				cpu.brand = 'AMD'
 
-		elif "CPU max MHz" in line:
+		elif "CPU max MHz:" in line:
 			# It's formatted with "%.4f" by lscpu, at the moment
 			# https://github.com/karelzak/util-linux/blob/master/sys-utils/lscpu.c#L1246
 			# .replace() needed because "ValueError: could not convert string to float: '3300,0000'"
 			frequency_mhz = float(line.split("CPU max MHz:")[1].strip().replace(',', '.'))
 			cpu.frequency = int(frequency_mhz * 1000 * 1000)
 
-		elif "Thread(s) per core" in line:
+		elif "Thread(s) per core:" in line:
 			cpu.n_threads = int(line.split("Thread(s) per core:")[1].strip())
 
 		elif "Core(s) per socket:" in line:

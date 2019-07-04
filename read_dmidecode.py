@@ -24,6 +24,7 @@ connectors_map = {
 	"SATA6": "sata-ports-n",
 	"SATA7": "sata-ports-n",
 	"IEEE 1394": "firewire-ports-n",
+	"RJ-11": "rj11-ports-n",
 	"On Board Sound Input From CD-ROM": None,
 	"On Board Floppy": None,
 	"CHASSIS REAR FAN": None,

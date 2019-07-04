@@ -42,7 +42,7 @@ def test_lspci_integrated():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
-		"architecture": "x86-32",
+		"architecture": "x86-64",
 		"model": "Pentium 4 2.80GHz",
 		"brand": "Intel",
 		"core-n": 1,

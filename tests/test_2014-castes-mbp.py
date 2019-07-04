@@ -97,7 +97,7 @@ def test_smartctl():
 			'type': 'ssd',
 			'brand': 'Apple',
 			'family': 'SD/SM/TS...E/F/G SSDs',
-			'model': 'APPLE SSD SM0512F',  # This should be THE MODEL and Apple adds a remark that this is an "APPLE SSD"...
+			'model': 'SM0512F',
 			'sn': 'S1K5NYCF740776',
 			'capacity-byte': 500000000000,
 			'human_readable_capacity': '500 GB',
