@@ -115,6 +115,12 @@ def read_decode_dimms(path: str, interactive: bool = False):
 			# part number can be overwritten by serial number if present
 			if line.startswith("Assembly Serial Number"):
 				dimms[i].serial_number = ignore_spaces(line, len("Assembly Serial Number"))
+				if dimms[i].serial_number.startswith('0x'):
+					try:
+						dimms[i].serial_number = str(int(dimms[i].serial_number[2:], base=16))
+					except ValueError:
+						# Ooops, this isn't an hex number after all...
+						pass
 
 			if line.startswith("Module Configuration Type") and (
 					"Data Parity" in line or "Data ECC" in line or "Address/Command Parity" in line):

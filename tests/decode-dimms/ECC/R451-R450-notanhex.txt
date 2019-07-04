@@ -1,0 +1,124 @@
+# decode-dimms version 6250 (2014-06-19 09:19:09 +0200)
+
+Memory Serial Presence Detect Decoder
+By Philip Edelbrock, Christian Zuckschwerdt, Burkart Lingner,
+Jean Delvare, Trent Piepho and others
+
+
+Decoding EEPROM: /sys/bus/i2c/drivers/eeprom/0-0050
+Guessing DIMM is in                             bank 1
+
+---=== SPD EEPROM Information ===---
+EEPROM Checksum of bytes 0-62                   OK (0x25)
+# of bytes written to SDRAM EEPROM              128
+Total number of bytes in EEPROM                 256
+Fundamental Memory type                         DDR2 SDRAM
+SPD Revision                                    1.2
+
+---=== Memory Characteristics ===---
+Maximum module speed                            666 MHz (PC2-5300)
+Size                                            2048 MB
+Banks x Rows x Columns x Bits                   8 x 14 x 10 x 72
+Ranks                                           2
+SDRAM Device Width                              8 bits
+Module Height                                   30.0 mm
+Module Type                                     UDIMM (133.25 mm)
+DRAM Package                                    Planar
+Voltage Interface Level                         SSTL 1.8V
+Module Configuration Type                       Data ECC
+Refresh Rate                                    Reduced (7.8 us) - Self Refresh
+Supported Burst Lengths                         4, 8
+tCL-tRCD-tRP-tRAS                               5-5-5-15
+Supported CAS Latencies (tCL)                   5T, 4T, 3T
+Minimum Cycle Time                              3.00 ns at CAS 5 (tCK min)
+                                                3.75 ns at CAS 4
+                                                5.00 ns at CAS 3
+Maximum Access Time                             0.45 ns at CAS 5 (tAC)
+                                                0.50 ns at CAS 4
+                                                0.60 ns at CAS 3
+Maximum Cycle Time (tCK max)                    8.00 ns
+
+---=== Timing Parameters ===---
+Address/Command Setup Time Before Clock (tIS)   0.20 ns
+Address/Command Hold Time After Clock (tIH)     0.27 ns
+Data Input Setup Time Before Strobe (tDS)       0.10 ns
+Data Input Hold Time After Strobe (tDH)         0.17 ns
+Minimum Row Precharge Delay (tRP)               15.00 ns
+Minimum Row Active to Row Active Delay (tRRD)   7.50 ns
+Minimum RAS# to CAS# Delay (tRCD)               15.00 ns
+Minimum RAS# Pulse Width (tRAS)                 45.00 ns
+Write Recovery Time (tWR)                       15.00 ns
+Minimum Write to Read CMD Delay (tWTR)          7.50 ns
+Minimum Read to Pre-charge CMD Delay (tRTP)     7.50 ns
+Minimum Active to Auto-refresh Delay (tRC)      60.00 ns
+Minimum Recovery Delay (tRFC)                   127.50 ns
+Maximum DQS to DQ Skew (tDQSQ)                  0.24 ns
+Maximum Read Data Hold Skew (tQHS)              0.34 ns
+
+---=== Manufacturing Information ===---
+Manufacturer                                    Kingston
+Manufacturing Location Code                     0x04
+Part Number                                     K
+Manufacturing Date                              2007-W43
+Assembly Serial Number                          0F00xb4r
+
+
+Decoding EEPROM: /sys/bus/i2c/drivers/eeprom/0-0052
+Guessing DIMM is in                             bank 3
+
+---=== SPD EEPROM Information ===---
+EEPROM Checksum of bytes 0-62                   OK (0x25)
+# of bytes written to SDRAM EEPROM              128
+Total number of bytes in EEPROM                 256
+Fundamental Memory type                         DDR2 SDRAM
+SPD Revision                                    1.2
+
+---=== Memory Characteristics ===---
+Maximum module speed                            666 MHz (PC2-5300)
+Size                                            2048 MB
+Banks x Rows x Columns x Bits                   8 x 14 x 10 x 72
+Ranks                                           2
+SDRAM Device Width                              8 bits
+Module Height                                   30.0 mm
+Module Type                                     UDIMM (133.25 mm)
+DRAM Package                                    Planar
+Voltage Interface Level                         SSTL 1.8V
+Module Configuration Type                       Data ECC
+Refresh Rate                                    Reduced (7.8 us) - Self Refresh
+Supported Burst Lengths                         4, 8
+tCL-tRCD-tRP-tRAS                               5-5-5-15
+Supported CAS Latencies (tCL)                   5T, 4T, 3T
+Minimum Cycle Time                              3.00 ns at CAS 5 (tCK min)
+                                                3.75 ns at CAS 4
+                                                5.00 ns at CAS 3
+Maximum Access Time                             0.45 ns at CAS 5 (tAC)
+                                                0.50 ns at CAS 4
+                                                0.60 ns at CAS 3
+Maximum Cycle Time (tCK max)                    8.00 ns
+
+---=== Timing Parameters ===---
+Address/Command Setup Time Before Clock (tIS)   0.20 ns
+Address/Command Hold Time After Clock (tIH)     0.27 ns
+Data Input Setup Time Before Strobe (tDS)       0.10 ns
+Data Input Hold Time After Strobe (tDH)         0.17 ns
+Minimum Row Precharge Delay (tRP)               15.00 ns
+Minimum Row Active to Row Active Delay (tRRD)   7.50 ns
+Minimum RAS# to CAS# Delay (tRCD)               15.00 ns
+Minimum RAS# Pulse Width (tRAS)                 45.00 ns
+Write Recovery Time (tWR)                       15.00 ns
+Minimum Write to Read CMD Delay (tWTR)          7.50 ns
+Minimum Read to Pre-charge CMD Delay (tRTP)     7.50 ns
+Minimum Active to Auto-refresh Delay (tRC)      60.00 ns
+Minimum Recovery Delay (tRFC)                   127.50 ns
+Maximum DQS to DQ Skew (tDQSQ)                  0.24 ns
+Maximum Read Data Hold Skew (tQHS)              0.34 ns
+
+---=== Manufacturing Information ===---
+Manufacturer                                    Kingston
+Manufacturing Location Code                     0x04
+Part Number                                     K
+Manufacturing Date                              2007-W43
+Assembly Serial Number                          0xCA33B3RC
+
+
+Number of SDRAM DIMMs detected and decoded: 2
