@@ -11,7 +11,6 @@ connectors_map = {
 	"DB-15 female": "vga-ports-n",
 	"Mini Jack (headphones)": "mini-jack-ports-n",
 	"RJ-45": "ethernet-ports-n",  # not a real feature in T.A.R.A.L.L.O., since it's not yet known if it's 100 or 1000
-	"On Board IDE": "ide-ports-n",
 	"Mini DisplayPort": "mini-displayport-ports-n",  # This doesn't exist in T.A.R.A.L.L.O. BTW
 	"Thunderbolt": "thunderbolt-ports-n",  # And this one too
 	"HDMI": "hdmi-ports-n",
@@ -23,6 +22,16 @@ connectors_map = {
 	"SATA5": "sata-ports-n",
 	"SATA6": "sata-ports-n",
 	"SATA7": "sata-ports-n",
+	"USB0": "usb-ports-n",
+	"USB1": "usb-ports-n",
+	"USB2": "usb-ports-n",
+	"USB3": "usb-ports-n",
+	"USB4": "usb-ports-n",
+	"USB5": "usb-ports-n",
+	"USB6": "usb-ports-n",
+	"USB7": "usb-ports-n",
+	"USB8": "usb-ports-n",
+	"LINE_IN": "mini-jack-ports-n",
 	"IEEE 1394": "firewire-ports-n",
 	"RJ-11": "rj11-ports-n",
 	"On Board Sound Input From CD-ROM": None,
@@ -32,16 +41,23 @@ connectors_map = {
 	"CPU FAN": None,
 	"FNT USB": None,
 	"FP AUD": None,
+	"ATX_PWR": None,
 	"9 Pin Dual Inline (pin 10 cut)": None,  # Internal USB header?
 	"Microphone": None,  # Internal microphone, not a connector
 	"Speaker": None,
 	"SPEAKER (SPKR)": None,  # Internal speaker (header)
+	"FP_AUDIO": None,
 	"PASSWORD CLEAR (PSWD)": None,
 	"HOOD LOCK (HLCK)": None,
 	"HOOD SENSE (HSENSE)": None,
 	"TPM SECURITY (SEC)": None,
 }
 connectors_map_tuples = {
+	("On Board IDE", None, "*IDE*", None): "ide-ports-n",
+	("On Board IDE", None, "PRIMARY*", None): "ide-ports-n",
+	("On Board IDE", None, "SECONDARY*", None): "ide-ports-n",
+	("On Board IDE", None, "SATA*", None): "sata-ports-n",
+	("On Board IDE", None, "*_SATA*", None): "sata-ports-n",  # Don't add *SATA, it matches ESATA...
 	(None, None, None, 'REAR LINE IN'): "mini-jack-ports-n",
 	(None, None, None, 'REAR HEADPHONE/LINEOUT'): "mini-jack-ports-n",
 	(None, None, '*FAN', None): None,
@@ -101,6 +117,8 @@ def get_baseboard(path: str):
 
 		elif "Serial Number:" in line:
 			mobo.serial_number = line.split("Serial Number:")[1].strip()
+			if not mobo.serial_number.endswith('O.E.M.'):
+				mobo.serial_number = mobo.serial_number.strip('.')
 
 	result = {
 		"type": mobo.type,
@@ -127,7 +145,9 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 		exit(-1)
 		return
 
-	connectors = dict(zip(connectors_map.values(), [0] * len(connectors_map)))
+	possible_connectors = set(connectors_map.values()) | set(connectors_map_tuples.values())
+	possible_connectors.remove(None)
+	connectors = dict(zip(possible_connectors, [0] * len(connectors_map)))
 
 	# TODO: this part (is it needed?)
 	# port_types = []
@@ -192,7 +212,11 @@ def find_connector_from_tuple(connectors, external, external_des, internal, inte
 		for (mask, garbage_from_manufacturer) in zipped:
 			if mask is None:
 				continue
-			if mask.endswith('*'):
+			if mask.startswith('*') and mask.endswith('*'):
+				if not mask[1:-1] in garbage_from_manufacturer:
+					equal = False
+					break
+			elif mask.endswith('*'):
 				if not garbage_from_manufacturer.startswith(mask[:-1]):
 					equal = False
 					break
@@ -239,6 +263,8 @@ def get_chassis(path: str):
 
 		elif "Serial Number" in line:
 			chassis.serial_number = line.split("Serial Number:")[1].strip()
+			if not chassis.serial_number.endswith('O.E.M.'):
+				chassis.serial_number = chassis.serial_number.strip('.')
 
 	result = {
 		"type": chassis.type,

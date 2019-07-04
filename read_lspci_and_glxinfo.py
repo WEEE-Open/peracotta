@@ -33,7 +33,7 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 
 	for section in lspci_sections:
 		if "VGA compatible controller" in section:
-			first_line = section.splitlines()[0]
+			first_line = section.splitlines()[0].split(': ', 1)[1]  # removes "VGA compatible controller:"
 			second_line = section.splitlines()[1]
 			part_between_square_brackets = None
 			try:
@@ -70,6 +70,7 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 					pieces = gpu.reseller_brand.rsplit(' ', 1)
 					gpu.reseller_brand = pieces[0]
 					gpu.internal_name = pieces[1]
+
 			# -----------------------------------------------------------------
 			# Intel
 			# -----------------------------------------------------------------
@@ -91,6 +92,20 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 					gpu.model = tmp_model
 				else:
 					gpu.model = ""
+
+			# -----------------------------------------------------------------
+			# VIA
+			# -----------------------------------------------------------------
+			elif first_line.startswith('VIA'):
+				gpu.manufacturer_brand = 'VIA'
+				gpu.model = part_between_square_brackets
+
+				tmp_model = first_line.split('[')[0]
+				i = 0
+				for i, char in enumerate('VIA Technologies, Inc. '):
+					if tmp_model[i] != char:
+						break
+				gpu.internal_name = tmp_model[i:].strip()
 
 			# -----------------------------------------------------------------
 			# SiS
@@ -128,6 +143,10 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 			else:
 				# Try to remove duplicate information
 				gpu.reseller_brand = gpu.reseller_brand.replace(gpu.model, '').strip()
+
+			if gpu.internal_name is not None:
+				# Same
+				gpu.reseller_brand = gpu.reseller_brand.replace(gpu.internal_name, '').strip()
 
 			break
 
@@ -221,8 +240,9 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
 		"capacity-byte": gpu.capacity,
 		"human_readable_capacity": gpu.human_readable_capacity.strip()
 	}
-	if gpu.manufacturer_brand.lower() != gpu.reseller_brand.lower():
-		result["brand-manufacturer"] = gpu.manufacturer_brand
+	if gpu.manufacturer_brand is not None and gpu.reseller_brand is not None:
+		if gpu.manufacturer_brand.lower() != gpu.reseller_brand.lower():
+			result["brand-manufacturer"] = gpu.manufacturer_brand
 	return result
 
 

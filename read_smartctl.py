@@ -169,6 +169,7 @@ def split_brand_and_other(line):
 		'Western Digital',
 		'Seagate',
 		'Maxtor',
+		'Hitachi',
 		'Samsung',
 		'Fujitsu',
 		'Apple',
