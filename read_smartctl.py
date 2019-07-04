@@ -25,6 +25,27 @@ class Disk:
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
 # SINCE THERE MAY BE MULTIPLE FILES
+def split_brand_and_other(line):
+	lowered = line.lower()
+
+	if lowered.startswith('western digital'):
+		brand = 'Western Digital'
+		other = line[len('western digital'):].strip()
+	elif lowered.startswith('seagate'):
+		brand = 'Seagate'
+		other = line[len('seagate'):].strip()
+	elif lowered.startswith('samsung'):
+		brand = 'Samsung'
+		other = line[len('samsung'):].strip()
+	elif lowered.startswith('apple'):
+		brand = 'Apple'
+		other = line[len('apple'):].strip()
+	# TODO: elif for other brands
+	else:
+		brand = None
+		other = line
+	return brand, other
+
 def read_smartctl(path: str, interactive: bool = False):
 	try:
 		disks = []
@@ -46,24 +67,26 @@ def read_smartctl(path: str, interactive: bool = False):
 					.split('=== START OF READ SMART DATA SECTION ===', 1)[0]
 
 				# For manual inspection later on
-				disk.smart_data = '=== START OF READ SMART DATA SECTION ===' +\
-					output.split('=== START OF READ SMART DATA SECTION ===', 1)[1]
+				if '=== START OF SMART DATA SECTION ===' in output:
+					disk.smart_data = '=== START OF SMART DATA SECTION ===' +\
+						output.split('=== START OF SMART DATA SECTION ===', 1)[1]
+				elif '=== START OF READ SMART DATA SECTION ===' in output:
+					disk.smart_data = '=== START OF READ SMART DATA SECTION ===' +\
+						output.split('=== START OF READ SMART DATA SECTION ===', 1)[1]
 
 				for line in data.splitlines():
 					if "Model Family" in line:
 						line = line.split("Model Family:")[1].strip()
-						if line.startswith('Western Digital'):
-							disk.brand = 'Western Digital'
-							disk.family = line.split('Western Digital', 1)[1].strip()
-						elif line.startswith('Seagate'):
-							disk.brand = 'Seagate'
-							disk.family = line.split('Seagate', 1)[1].strip()
-						elif line.startswith('Samsung'):
-							disk.brand = 'Samsung'
-							disk.family = line.split('Samsung', 1)[1].strip()
-						# TODO: elif for other brands
-						else:
-							disk.brand = line
+						brand, family = split_brand_and_other(line)
+						disk.family = family
+						if brand is not None:
+							disk.brand = brand
+					elif "Model Number" in line:
+						line = line.split("Model Number:")[1].strip()
+						brand, model = split_brand_and_other(line)
+						disk.model = model
+						if brand is not None:
+							disk.brand = brand
 					elif "Device Model" in line:
 						disk.model = line.split("Device Model:")[1].strip()
 					elif "Serial Number" in line:
