@@ -13,6 +13,7 @@ def test_lspci():
 	expect = {
 		'type': 'graphics-card',
 		'brand-manufacturer': 'AMD/ATI',
+		'internal-name': '',
 		'brand': 'PC Partner Limited / Sapphire Technology Tahiti PRO',
 		'model': 'Radeon HD 7950/8950 OEM / R9 280',
 		'capacity-byte': 3221225472,

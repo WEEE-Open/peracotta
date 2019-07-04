@@ -12,7 +12,8 @@ filedir = 'castes-HP-dc7600/'
 def test_lspci_dedicated():
 	expect = {
 		'type': 'graphics-card',
-		'brand': 'PC Partner Limited / Sapphire Technology G98',
+		'brand': 'PC Partner Limited / Sapphire Technology',
+		'internal-name': 'G98',
 		'model': 'GeForce G 100',
 		'capacity-byte': 536870912,  # This has 512 MB ov VRAM, but glxinfo reports 496?
 		'human_readable_capacity': '496 MB',
@@ -28,6 +29,7 @@ def test_lspci_integrated():
 		'type': 'graphics-card',
 		'brand': 'Hewlett-Packard Company',
 		'model': '82945G/GZ',
+		'internal-name': '',
 		'capacity-byte': None,
 		'human_readable_capacity': '',
 		'brand-manufacturer': 'Intel'

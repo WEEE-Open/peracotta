@@ -14,6 +14,7 @@ def test_lspci():
 		"type": "graphics-card",
 		"brand": "Microsoft Corporation",
 		"model": "HD Graphics 515",
+		'internal-name': '',
 		"capacity-byte": None,
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"

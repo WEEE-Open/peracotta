@@ -12,6 +12,7 @@ class VideoCard:
 		self.type = "graphics-card"
 		self.manufacturer_brand = ""
 		self.reseller_brand = ""
+		self.internal_name = ""
 		self.model = None
 		self.capacity = -1  # bytes
 		self.human_readable_capacity = ""
@@ -48,6 +49,9 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 				gpu.reseller_brand = gpu.reseller_brand\
 					.replace('Integrated Graphics Controller', '')
 
+			# -----------------------------------------------------------------
+			# AMD/ATI
+			# -----------------------------------------------------------------
 			if part_between_square_brackets is not None and (
 					"AMD" in part_between_square_brackets or "ATI" in part_between_square_brackets):
 				gpu.manufacturer_brand = part_between_square_brackets
@@ -55,9 +59,20 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 				gpu.model = first_line.split("[")[2].split("]")[0]
 				if "controller" in gpu.model:
 					gpu.model = section.splitlines()[1].split(" ")[-1]
+
+			# -----------------------------------------------------------------
+			# Nvidia
+			# -----------------------------------------------------------------
 			elif "NVIDIA" in first_line.upper():
 				gpu.manufacturer_brand = "Nvidia"
 				gpu.model = part_between_square_brackets
+				if gpu.reseller_brand != '':
+					pieces = gpu.reseller_brand.rsplit(' ', 1)
+					gpu.reseller_brand = pieces[0]
+					gpu.internal_name = pieces[1]
+			# -----------------------------------------------------------------
+			# Intel
+			# -----------------------------------------------------------------
 			elif "INTEL" in first_line.upper():
 				gpu.manufacturer_brand = "Intel"
 				if "Integrated Graphics" in first_line:
@@ -77,6 +92,10 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 					gpu.reseller_brand = gpu.reseller_brand.replace(tmp_model, '').strip()
 				else:
 					gpu.model = None
+
+			# -----------------------------------------------------------------
+			# SiS
+			# -----------------------------------------------------------------
 			elif part_between_square_brackets == 'SiS':
 				# May be written somewhere else on other models, but we have so few SiS cards that it's difficult to
 				# find more examples. Also, they haven't made any video card in the last 15 years or so.
@@ -195,6 +214,7 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
 		"type": "graphics-card",
 		"brand": gpu.reseller_brand,
 		"model": gpu.model,
+		"internal-name": gpu.internal_name,
 		"capacity-byte": gpu.capacity,
 		"human_readable_capacity": gpu.human_readable_capacity
 	}

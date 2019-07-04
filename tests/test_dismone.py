@@ -13,8 +13,9 @@ def test_lspci():
 	# no glxinfo :(
 	expect = {
 		"type": "graphics-card",
-		"brand": "ASUSTeK Computer Inc. GM204",
+		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce GTX 970",
+		'internal-name': 'GM204',
 		"capacity-byte": -1,
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Nvidia"

@@ -13,7 +13,8 @@ def test_lspci():
 	expect = {
 		'type': 'graphics-card',
 		'brand-manufacturer': 'Nvidia',
-		'brand': 'Apple Inc. GK107M',
+		'brand': 'Apple Inc.',
+		'internal-name': 'GK107M',
 		'model': 'GeForce GT 750M Mac Edition',
 		'capacity-byte': 2147483648,
 		'human_readable_capacity': '2048 MB'
