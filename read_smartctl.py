@@ -26,27 +26,6 @@ class Disk:
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
 # SINCE THERE MAY BE MULTIPLE FILES
-def split_brand_and_other(line):
-	lowered = line.lower()
-
-	if lowered.startswith('western digital'):
-		brand = 'Western Digital'
-		other = line[len('western digital'):].strip()
-	elif lowered.startswith('seagate'):
-		brand = 'Seagate'
-		other = line[len('seagate'):].strip()
-	elif lowered.startswith('samsung'):
-		brand = 'Samsung'
-		other = line[len('samsung'):].strip()
-	elif lowered.startswith('apple'):
-		brand = 'Apple'
-		other = line[len('apple'):].strip()
-	# TODO: elif for other brands
-	else:
-		brand = None
-		other = line
-	return brand, other
-
 def read_smartctl(path: str, interactive: bool = False):
 	try:
 		disks = []
@@ -89,11 +68,11 @@ def read_smartctl(path: str, interactive: bool = False):
 						if brand is not None:
 							disk.brand = brand
 					elif "Device Model:" in line:
-						disk.model = line.split("Device Model:")[1].strip()
-						if disk.model.startswith('Crucial_'):
-							if disk.brand == '':
-								disk.brand = 'Crucial'
-							disk.model = disk.model[len('Crucial_'):]
+						line = line.split("Device Model:")[1].strip()
+						brand, model = split_brand_and_other(line)
+						disk.model = model
+						if brand is not None:
+							disk.brand = brand
 					elif "Serial Number:" in line:
 						disk.serial_number = line.split("Serial Number:")[1].strip()
 
@@ -136,6 +115,8 @@ def read_smartctl(path: str, interactive: bool = False):
 					# These are useless and usually not even printed on labels and in bar codes...
 					disk.model = remove_prefix('WDC ', disk.model)
 					disk.serial_number = remove_prefix('WD-', disk.serial_number)
+				if disk.model.startswith('SSD '):
+					disk.model = disk.model[4:]
 
 				disks.append(disk)
 
@@ -176,6 +157,30 @@ def read_smartctl(path: str, interactive: bool = False):
 		print(f"Cannot open {path} to search for smartctl files")
 		print("Make sure to execute 'sudo ./generate_files.sh' first!")
 		exit(-1)
+
+
+def split_brand_and_other(line):
+	lowered = line.lower()
+
+	possibilities = [
+		'Western Digital',
+		'Seagate',
+		'Samsung',
+		'Fujitsu',
+		'Apple',
+		'Crucial/Micron',
+		'Crucial',
+	]
+
+	brand = None
+	other = line
+	for possible in possibilities:
+		if lowered.startswith(possible.lower()):
+			brand = possible
+			other = line[len(possible):].lstrip('_').strip()
+			break
+
+	return brand, other
 
 
 def remove_prefix(prefix, text):
