@@ -164,4 +164,5 @@ def remove_prefix(prefix, text):
 
 
 if __name__ == '__main__':
-	print(read_smartctl(sys.argv[1], True))
+	import json
+	print(json.dumps(read_smartctl(sys.argv[1], True), indent=2))

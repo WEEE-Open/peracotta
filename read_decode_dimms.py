@@ -144,4 +144,6 @@ def read_decode_dimms(path: str, interactive: bool = False):
 
 
 if __name__ == '__main__':
-	read_decode_dimms(sys.argv[1], True)
+	import json
+	result = read_decode_dimms(sys.argv[1], True)
+	print(json.dumps(result, indent=2))

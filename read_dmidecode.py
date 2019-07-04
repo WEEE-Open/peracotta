@@ -243,6 +243,7 @@ def get_chassis(path: str):
 
 if __name__ == '__main__':
 	import argparse
+	import json
 	parser = argparse.ArgumentParser(description='Parse dmidecode output')
 	parser.add_argument('-b', '--baseboard', type=str, help="Path to baseboard.txt")
 	parser.add_argument('-c', '--chassis', type=str, help="Path to chassis.txt")
@@ -253,9 +254,9 @@ if __name__ == '__main__':
 		exit(1)
 
 	if args.baseboard is not None and args.ports is None:
-		print(get_baseboard(args.baseboard))
+		print(json.dumps(get_baseboard(args.baseboard), indent=2))
 	if args.ports is not None:
 		bb = get_baseboard(args.baseboard)
-		print(get_connectors(args.ports, bb, True))
+		print(json.dumps(get_connectors(args.ports, bb, True), indent=2))
 	if args.chassis is not None:
-		print(get_chassis(args.chassis))
+		print(json.dumps(get_chassis(args.chassis), indent=2))
