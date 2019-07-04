@@ -13,7 +13,7 @@ class VideoCard:
 		self.manufacturer_brand = ""
 		self.reseller_brand = ""
 		self.internal_name = ""
-		self.model = None
+		self.model = ""
 		self.capacity = -1  # bytes
 		self.human_readable_capacity = ""
 		self.warning = ""
@@ -89,9 +89,8 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 
 				if tmp_model != "":
 					gpu.model = tmp_model
-					gpu.reseller_brand = gpu.reseller_brand.replace(tmp_model, '').strip()
 				else:
-					gpu.model = None
+					gpu.model = ""
 
 			# -----------------------------------------------------------------
 			# SiS
@@ -126,6 +125,10 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 				if interactive:
 					print(error)
 				gpu.warning += error
+			else:
+				# Try to remove duplicate information
+				gpu.reseller_brand = gpu.reseller_brand.replace(gpu.model, '').strip()
+
 			break
 
 
@@ -212,11 +215,11 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
 
 	result = {
 		"type": "graphics-card",
-		"brand": gpu.reseller_brand,
-		"model": gpu.model,
-		"internal-name": gpu.internal_name,
+		"brand": gpu.reseller_brand.strip(),
+		"model": gpu.model.strip(),
+		"internal-name": gpu.internal_name.strip(),
 		"capacity-byte": gpu.capacity,
-		"human_readable_capacity": gpu.human_readable_capacity
+		"human_readable_capacity": gpu.human_readable_capacity.strip()
 	}
 	if gpu.manufacturer_brand.lower() != gpu.reseller_brand.lower():
 		result["brand-manufacturer"] = gpu.manufacturer_brand
