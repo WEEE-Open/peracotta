@@ -17,6 +17,7 @@ class Disk:
 		self.family = ""
 		self.wwn = ""
 		self.serial_number = ""
+		self.form_factor = None
 		self.capacity = -1  # n of bytes
 		self.human_readable_capacity = ""
 		self.rotation_rate = -1
@@ -75,29 +76,47 @@ def read_smartctl(path: str, interactive: bool = False):
 						output.split('=== START OF READ SMART DATA SECTION ===', 1)[1]
 
 				for line in data.splitlines():
-					if "Model Family" in line:
+					if "Model Family:" in line:
 						line = line.split("Model Family:")[1].strip()
 						brand, family = split_brand_and_other(line)
 						disk.family = family
 						if brand is not None:
 							disk.brand = brand
-					elif "Model Number" in line:
+					elif "Model Number:" in line:
 						line = line.split("Model Number:")[1].strip()
 						brand, model = split_brand_and_other(line)
 						disk.model = model
 						if brand is not None:
 							disk.brand = brand
-					elif "Device Model" in line:
+					elif "Device Model:" in line:
 						disk.model = line.split("Device Model:")[1].strip()
-					elif "Serial Number" in line:
+						if disk.model.startswith('Crucial_'):
+							if disk.brand == '':
+								disk.brand = 'Crucial'
+							disk.model = disk.model[len('Crucial_'):]
+					elif "Serial Number:" in line:
 						disk.serial_number = line.split("Serial Number:")[1].strip()
 
-					elif "LU WWN Device Id" in line:
+					elif "LU WWN Device Id:" in line:
 						disk.wwn = line.split("LU WWN Device Id:")[1].strip()
 
-					elif "User Capacity" in line:
+					elif "Form Factor:" in line:
+						ff = line.split("Form Factor:")[1].strip()
+						# https://github.com/smartmontools/smartmontools/blob/40468930fd77d681b034941c94dc858fe2c1ef10/smartmontools/ataprint.cpp#L405
+						if ff == '3.5 inches':
+							disk.form_factor = '3.5'
+						elif ff == '2.5 inches':
+							# This is the most common height, just guessing...
+							disk.form_factor = '2.5-7mm'
+						elif ff == '1.8 inches':
+							# Still guessing...
+							disk.form_factor = '1.8-8mm'
+						elif ff == 'M.2':
+							disk.form_factor = 'm2'
+
+					elif "User Capacity:" in line:
 						# https://stackoverflow.com/a/3411435
-						num_bytes = line.split('User Capacity:')[1].split("bytes")[0].strip().replace(',', '')
+						num_bytes = line.split('User Capacity:')[1].split("bytes")[0].strip().replace(',', '').replace('.', '')
 						round_digits = int(floor(log10(abs(float(num_bytes))))) - 2
 						bytes_rounded = int(round(float(num_bytes), - round_digits))
 						disk.capacity = bytes_rounded
@@ -106,7 +125,7 @@ def read_smartctl(path: str, interactive: bool = False):
 						if tmp_capacity is not None:
 							disk.human_readable_capacity = tmp_capacity
 
-					elif "Rotation Rate" in line:
+					elif "Rotation Rate:" in line:
 						if "Solid State Device" not in line:
 							disk.rotation_rate = int(line.split("Rotation Rate:")[1].split("rpm")[0].strip())
 							disk.type = "hdd"
@@ -123,7 +142,7 @@ def read_smartctl(path: str, interactive: bool = False):
 		result = []
 		for disk in disks:
 			if disk.type == "hdd":
-				result.append({
+				this_disk = {
 					"type": "hdd",
 					"brand": disk.brand,
 					"model": disk.model,
@@ -136,9 +155,9 @@ def read_smartctl(path: str, interactive: bool = False):
 					"human_readable_capacity": disk.human_readable_capacity,
 					"spin-rate-rpm": disk.rotation_rate,
 					"smart-data": disk.smart_data
-				})
+				}
 			else:  # ssd
-				result.append({
+				this_disk = {
 					"type": "ssd",
 					"brand": disk.brand,
 					"model": disk.model,
@@ -147,8 +166,10 @@ def read_smartctl(path: str, interactive: bool = False):
 					"capacity-byte": disk.capacity,
 					"human_readable_capacity": disk.human_readable_capacity,
 					"smart-data": disk.smart_data
-				})
-
+				}
+			if disk.form_factor is not None:
+				this_disk["hdd-form-factor"] = disk.form_factor
+			result.append(this_disk)
 		return result
 
 	except FileNotFoundError:

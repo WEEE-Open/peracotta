@@ -137,6 +137,7 @@ def test_smartctl():
 			"brand": "",
 			"model": "DREVO X1 SSD",
 			"family": "",
+			"hdd-form-factor": "2.5-7mm",
 			"sn": "TX1711901797",
 			"capacity-byte": 240000000000,
 			"human_readable_capacity": "240 GB",
