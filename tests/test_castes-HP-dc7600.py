@@ -14,7 +14,7 @@ def test_lspci_dedicated():
 		'type': 'graphics-card',
 		'brand': 'PC Partner Limited / Sapphire Technology G98',
 		'model': 'GeForce G 100',
-		'capacity-byte': 520093696,
+		'capacity-byte': 536870912,  # This has 512 MB ov VRAM, but glxinfo reports 496?
 		'human_readable_capacity': '496 MB',
 		'brand-manufacturer': 'Nvidia'
 	}
