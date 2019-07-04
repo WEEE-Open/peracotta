@@ -103,9 +103,7 @@ def test_connector():
 		'warning': 'Unknown connector: None / Mini Centronics Type-14 (J2A1 / TV Out)\n'
 					'Unknown connector: Other / None (J9A1 - TPM HDR / Not Specified)\n'
 					'Unknown connector: Other / None (J9C1 - PCIE DOCKING CONN / Not Specified)\n'
-					'Unknown connector: Other / None (J2B3 - CPU FAN / Not Specified)\n'
 					'Unknown connector: Other / None (J6C2 - EXT HDMI / Not Specified)\n'
-					'Unknown connector: Other / None (J3C1 - GMCH FAN / Not Specified)\n'
 					'Unknown connector: Other / None (J1D1 - ITP / Not Specified)\n'
 					'Unknown connector: Other / None (J9E2 - MDC INTPSR / Not Specified)\n'
 					'Unknown connector: Other / None (J9E4 - MDC INTPSR / Not Specified)\n'
@@ -114,7 +112,6 @@ def test_connector():
 					'Unknown connector: Other / None (J9G1 - LPC SIDE BAND / Not Specified)\n'
 					'Unknown connector: Other / None (J8F1 - UNIFIED / Not Specified)\n'
 					'Unknown connector: Other / None (J6F1 - LVDS / Not Specified)\n'
-					'Unknown connector: Other / None (J2F1 - LAI FAN / Not Specified)\n'
 					'Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)\n'
 					'Unknown connector: Other / None (J1G6 - AC JACK / Not Specified)',
 	}

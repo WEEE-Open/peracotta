@@ -23,6 +23,7 @@ connectors_map = {
 	"SATA5": "sata-ports-n",
 	"SATA6": "sata-ports-n",
 	"SATA7": "sata-ports-n",
+	"IEEE 1394": "firewire-ports-n",
 	"On Board Sound Input From CD-ROM": None,
 	"On Board Floppy": None,
 	"CHASSIS REAR FAN": None,
@@ -40,8 +41,11 @@ connectors_map = {
 connectors_map_tuples = {
 	(None, None, None, 'REAR LINE IN'): "mini-jack-ports-n",
 	(None, None, None, 'REAR HEADPHONE/LINEOUT'): "mini-jack-ports-n",
-	(None, None, 'CPU FAN', None): None,
-	(None, None, 'FRNT AUD', None): None,  # Front audio is not part of the motherboard
+	(None, None, '*FAN', None): None,
+	(None, None, 'CHA_FAN*', None): None,
+	(None, None, 'FRNT AUD*', None): None,  # Front audio is not part of the motherboard
+	("SAS/SATA Plug Receptacle", None, "SATA*", None): "sata-ports-n",
+	("SAS/SATA Plug Receptacle", None, "*EIDE", None): "ide-ports-n",
 }
 extra_connectors = {
 	"MagSafe DC Power": {'power-connector': 'proprietary'},
@@ -180,18 +184,26 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 def find_connector_from_tuple(connectors, external, external_des, internal, internal_des):
 	equal = False
 	for tup in connectors_map_tuples:
-		zipped = zip(tup, (internal, external, internal_des, external_des))
+		zipped = list(zip(tup, (internal, external, internal_des, external_des)))
 		equal = True
-		for (mask, garbage_from_manufacturer) in list(zipped):
+		for (mask, garbage_from_manufacturer) in zipped:
 			if mask is None:
 				continue
-			if mask != garbage_from_manufacturer:
+			if mask.endswith('*'):
+				if not garbage_from_manufacturer.startswith(mask[:-1]):
+					equal = False
+					break
+			elif mask.startswith('*'):
+				if not garbage_from_manufacturer.endswith(mask[1:]):
+					equal = False
+					break
+			elif mask != garbage_from_manufacturer:
 				equal = False
 				break
 		if equal:
 			if connectors_map_tuples[tup] is not None:
 				connectors[connectors_map_tuples[tup]] += 1
-				break
+			return equal
 	return equal
 
 
