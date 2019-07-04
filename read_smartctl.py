@@ -122,7 +122,19 @@ def read_smartctl(path: str, interactive: bool = False):
 
 		result = []
 		for disk in disks:
-			if disk.type == "hdd":
+			if disk.type == "ssd":  # ssd
+				this_disk = {
+					"type": "ssd",
+					"brand": disk.brand,
+					"model": disk.model,
+					"family": disk.family,
+					"wwn": disk.wwn,
+					"sn": disk.serial_number,
+					"capacity-byte": disk.capacity,
+					"human_readable_capacity": disk.human_readable_capacity,
+					"smart-data": disk.smart_data
+				}
+			else:
 				this_disk = {
 					"type": "hdd",
 					"brand": disk.brand,
@@ -137,19 +149,10 @@ def read_smartctl(path: str, interactive: bool = False):
 					"spin-rate-rpm": disk.rotation_rate,
 					"smart-data": disk.smart_data
 				}
-			else:  # ssd
-				this_disk = {
-					"type": "ssd",
-					"brand": disk.brand,
-					"model": disk.model,
-					"family": disk.family,
-					"sn": disk.serial_number,
-					"capacity-byte": disk.capacity,
-					"human_readable_capacity": disk.human_readable_capacity,
-					"smart-data": disk.smart_data
-				}
 			if disk.form_factor is not None:
 				this_disk["hdd-form-factor"] = disk.form_factor
+			if 'SATA' in disk.family or 'SATA' in disk.model:
+				this_disk["sata-ports-n"] = 1
 			result.append(this_disk)
 		return result
 
@@ -165,6 +168,7 @@ def split_brand_and_other(line):
 	possibilities = [
 		'Western Digital',
 		'Seagate',
+		'Maxtor',
 		'Samsung',
 		'Fujitsu',
 		'Apple',

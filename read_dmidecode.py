@@ -30,6 +30,8 @@ connectors_map = {
 	"CHASSIS REAR FAN": None,
 	"CHASSIS FAN": None,
 	"CPU FAN": None,
+	"FNT USB": None,
+	"FP AUD": None,
 	"9 Pin Dual Inline (pin 10 cut)": None,  # Internal USB header?
 	"Microphone": None,  # Internal microphone, not a connector
 	"Speaker": None,
@@ -91,13 +93,13 @@ def get_baseboard(path: str):
 		return
 
 	for line in output.splitlines():
-		if "Manufacturer" in line:
+		if "Manufacturer:" in line:
 			mobo.brand = line.split("Manufacturer:")[1].strip()
 
-		elif "Product Name" in line:
+		elif "Product Name:" in line:
 			mobo.model = line.split("Product Name:")[1].strip()
 
-		elif "Serial Number" in line:
+		elif "Serial Number:" in line:
 			mobo.serial_number = line.split("Serial Number:")[1].strip()
 
 	result = {
