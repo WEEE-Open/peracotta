@@ -132,22 +132,7 @@ def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
 				exit(-1)
 				return  # To stop complaints from PyCharm
 
-			gpu.capacity = tmp_vid_mem
-
-			if tmp_vid_mem_multiplier == "GB":
-				gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vid_mem_multiplier
-				gpu.capacity *= 1024 * 1024 * 1024
-			elif tmp_vid_mem_multiplier == "MB":
-				gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vid_mem_multiplier
-				gpu.capacity *= 1024 * 1024
-			elif tmp_vid_mem_multiplier.upper() == "KB":
-				gpu.human_readable_capacity = str(tmp_vid_mem) + " " + tmp_vid_mem_multiplier
-				gpu.capacity *= 1024
-			else:
-				gpu.capacity = -1
-				# print("The VRAM capacity could not be detected. "
-				#       "Please try looking for it on the Video Card or on the Internet. "
-				#       "The detected value defaulted to -1.")
+			gpu.capacity, gpu.human_readable_capacity = convert_video_memory_size(tmp_vid_mem, tmp_vid_mem_multiplier)
 
 		if "Dedicated video memory" in line:
 
@@ -157,24 +142,39 @@ def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
 			except ValueError:
 				exit(-1)
 				return
-
-			gpu.capacity = tmp_vram
-
-			if tmp_vram_multiplier == "GB":
-				gpu.human_readable_capacity = str(tmp_vram) + " " + tmp_vram_multiplier
-				gpu.capacity *= 1024 * 1024 * 1024
-				break
-			elif tmp_vram_multiplier == "MB":
-				gpu.human_readable_capacity = str(tmp_vram) + " " + tmp_vram_multiplier
-				gpu.capacity *= 1024 * 1024
-				break
-			elif tmp_vram_multiplier.upper() == "KB":
-				gpu.human_readable_capacity = str(tmp_vram) + " " + tmp_vram_multiplier
-				gpu.capacity *= 1024
-				break
-			else:
-				gpu.capacity = -1
+			gpu.capacity, gpu.human_readable_capacity = convert_video_memory_size(tmp_vram, tmp_vram_multiplier)
+			if gpu.capacity < 0:
 				gpu.warning = "Could not find dedicated video memory. Please check the value."
+			break  # TODO: is this acceptable?
+
+	if gpu.capacity > 0:
+		# Round to the next power of 2
+		# this may be different from human readable capacity...
+		rounded = 2**(gpu.capacity - 1).bit_length()
+		one_and_half = int(rounded / 2 * 1.5)
+		# Accounts for 3 GB VRAM cards and similar
+		# Yes they do exist, try to remove this part and watch tests fail (and the card was manually verified to be 3 GB)
+		if one_and_half >= gpu.capacity:
+			gpu.capacity = one_and_half
+		else:
+			gpu.capacity = rounded
+
+
+def convert_video_memory_size(capacity, units_of_measure):
+	if units_of_measure == "GB":
+		hr_cap = str(capacity) + " " + units_of_measure
+		capacity *= 1024 * 1024 * 1024
+	elif units_of_measure == "MB":
+		hr_cap = str(capacity) + " " + units_of_measure
+		capacity *= 1024 * 1024
+	elif units_of_measure.upper() == "KB":
+		hr_cap = str(capacity) + " " + units_of_measure
+		capacity *= 1024
+	else:
+		capacity = -1
+		hr_cap = ''
+
+	return capacity, hr_cap
 
 
 def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: str, interactive: bool = False):
