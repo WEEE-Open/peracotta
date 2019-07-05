@@ -13,6 +13,7 @@ fi
 dmidecode -t baseboard > $OUTPATH/baseboard.txt
 dmidecode -t connector > $OUTPATH/connector.txt
 dmidecode -t chassis > $OUTPATH/chassis.txt
+ip link > $OUTPATH/iplink.txt
 lscpu > $OUTPATH/lscpu.txt
 lspci -v > $OUTPATH/lspci.txt
 glxinfo > $OUTPATH/glxinfo.txt
