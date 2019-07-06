@@ -2,7 +2,7 @@
 
 from read_smartctl import read_smartctl
 from read_decode_dimms import read_decode_dimms
-from read_dmidecode import get_baseboard, get_chassis, get_connectors
+from read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from read_lscpu import read_lscpu
 
@@ -81,6 +81,129 @@ def test_connector():
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 
 	assert expect == output
+
+
+def test_net_without_connectors():
+	baseboard = get_baseboard(filedir + 'baseboard.txt')
+
+	expect = {
+		"type": "motherboard",
+		"brand": "ASUSTeK Computer INC.",
+		"model": "P6T DELUXE V2",
+		"sn": "723627130020069",
+		'ethernet-ports-1000m-n': 2,
+		'mac': '00:c0:11:fe:fe:11, 00:c0:11:fe:fe:22',
+	}
+	output = get_net(filedir + 'net.txt', baseboard)
+
+	assert expect == output
+
+
+def test_net_with_connectors():
+	baseboard = get_baseboard(filedir + 'baseboard.txt')
+	baseboard = get_connectors(filedir + 'connector.txt', baseboard)
+
+	expect = {
+		"type": "motherboard",
+		"brand": "ASUSTeK Computer INC.",
+		"model": "P6T DELUXE V2",
+		"sn": "723627130020069",
+		"ps2-ports-n": 1,
+		"usb-ports-n": 7,
+		'firewire-ports-n': 3,
+		'ide-ports-n': 1,
+		'sata-ports-n': 6,
+		"mini-jack-ports-n": 7,
+		'ethernet-ports-1000m-n': 2,
+		'mac': '00:c0:11:fe:fe:11, 00:c0:11:fe:fe:22',
+		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
+			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
+			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)'
+	}
+	output = get_net(filedir + 'net.txt', baseboard)
+
+	assert expect == output
+
+
+def test_net_with_connectors_different():
+	baseboard = get_baseboard(filedir + 'baseboard.txt')
+	baseboard = get_connectors(filedir + 'connector.txt', baseboard)
+
+	expect = {
+		"type": "motherboard",
+		"brand": "ASUSTeK Computer INC.",
+		"model": "P6T DELUXE V2",
+		"sn": "723627130020069",
+		"ps2-ports-n": 1,
+		"usb-ports-n": 7,
+		'firewire-ports-n': 3,
+		'ide-ports-n': 1,
+		'sata-ports-n': 6,
+		"mini-jack-ports-n": 7,
+		'ethernet-ports-1000m-n': 1,
+		'ethernet-ports-100m-n': 1,
+		'mac': '00:c0:11:fe:fe:11, 00:c0:11:fe:fe:22',
+		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
+			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
+			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)'
+	}
+	output = get_net(filedir + 'net_different.txt', baseboard)
+
+	assert expect == output
+
+
+def test_net_with_connectors_too_few():
+	baseboard = get_baseboard(filedir + 'baseboard.txt')
+	baseboard = get_connectors(filedir + 'connector.txt', baseboard)
+
+	expect = {
+		"type": "motherboard",
+		"brand": "ASUSTeK Computer INC.",
+		"model": "P6T DELUXE V2",
+		"sn": "723627130020069",
+		"ps2-ports-n": 1,
+		"usb-ports-n": 7,
+		'firewire-ports-n': 3,
+		'ide-ports-n': 1,
+		'sata-ports-n': 6,
+		"mini-jack-ports-n": 7,
+		'ethernet-ports-1000m-n': 1,
+		'mac': '00:c0:11:fe:fe:22',
+		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
+			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
+			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)\n'
+			'BIOS reported 1 more ethernet port that was not found by the kernel'
+	}
+	output = get_net(filedir + 'net_too_few.txt', baseboard)
+
+	assert expect == output
+
+
+def test_net_with_connectors_too_many():
+	baseboard = get_baseboard(filedir + 'baseboard.txt')
+	baseboard = get_connectors(filedir + 'connector.txt', baseboard)
+
+	expect = {
+		"type": "motherboard",
+		"brand": "ASUSTeK Computer INC.",
+		"model": "P6T DELUXE V2",
+		"sn": "723627130020069",
+		"ps2-ports-n": 1,
+		"usb-ports-n": 7,
+		'firewire-ports-n': 3,
+		'ide-ports-n': 1,
+		'sata-ports-n': 6,
+		"mini-jack-ports-n": 7,
+		'ethernet-ports-1000m-n': 3,
+		'mac': '00:c0:11:fe:fe:11, 00:c0:11:fe:fe:22, 00:c0:11:fe:fe:42',
+		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
+			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
+			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)'
+	}
+	output = get_net(filedir + 'net_too_many.txt', baseboard)
+
+	assert expect == output
+
 
 
 def test_chassis():
