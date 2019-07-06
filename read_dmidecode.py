@@ -204,6 +204,70 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 	return {**baseboard, **connectors_clean, **{'warning': warnings}}
 
 
+def get_net(path: str, baseboard: dict, interactive: bool = False):
+	try:
+		with open(path, 'r') as f:
+			output = f.read()
+	except FileNotFoundError:
+		print(f"Cannot open file {path}")
+		print("Make sure to execute 'sudo ./generate_files.sh' first!")
+		exit(-1)
+		return
+
+	mergeit = {
+		"ethernet-ports-100m-n": 0,
+		"ethernet-ports-1000m-n": 0,
+		"mac": [],
+	}
+	other_devices = []
+	for line in output.split("\n"):
+		if 'u' in line:
+			# USB adapters, ignore them
+			continue
+		line = line.split(' ', 3)
+		if line[0].startswith('en'):
+			if line[2] == "1000":
+				mergeit["ethernet-ports-1000m-n"] += 1
+			elif line[2] == "100":
+				mergeit["ethernet-ports-100m-n"] += 1
+			mergeit["mac"].append(line[1])
+		if line[0].startswith('wl'):
+			other_devices.append({
+				"type": "wifi-card",
+				"mac": line[1],
+				"notes": f"Device name {line[0]}"
+			})
+
+	mergeit["mac"] = ', '.join(mergeit["mac"])
+
+	if 'ethernet-ports-n' in baseboard:
+		found_ports = mergeit["ethernet-ports-100m-n"] + mergeit["ethernet-ports-1000m-n"]
+		baseboard['ethernet-ports-n'] -= found_ports
+		if baseboard['ethernet-ports-n'] > 0:
+			if baseboard['ethernet-ports-n'] > 1:
+				message = f"\nBIOS reported {baseboard['ethernet-ports-n']} more ethernet ports that were not found by the kernel"
+			else:
+				message = f"\nBIOS reported {baseboard['ethernet-ports-n']} more ethernet port that was not found by the kernel"
+			if 'warning' in baseboard:
+				baseboard['warning'] += message
+				baseboard['warning'] = baseboard['warning'].strip()
+			else:
+				baseboard['warning'] = message.strip()
+		del baseboard['ethernet-ports-n']
+
+	if mergeit["ethernet-ports-100m-n"] <= 0:
+		del mergeit["ethernet-ports-100m-n"]
+	if mergeit["ethernet-ports-1000m-n"] <= 0:
+		del mergeit["ethernet-ports-1000m-n"]
+	if len(mergeit["mac"]) <= 0:
+		del mergeit["mac"]
+	baseboard = {**baseboard, **mergeit}
+	if len(other_devices) > 0:
+		return [baseboard] + other_devices
+	else:
+		return baseboard
+
+
 def find_connector_from_tuple(connectors, external, external_des, internal, internal_des):
 	equal = False
 	for tup in connectors_map_tuples:
@@ -289,15 +353,21 @@ if __name__ == '__main__':
 	parser.add_argument('-b', '--baseboard', type=str, help="Path to baseboard.txt")
 	parser.add_argument('-c', '--chassis', type=str, help="Path to chassis.txt")
 	parser.add_argument('-p', '--ports', type=str, help="Path to connector.txt (ports)")
+	parser.add_argument('-n', '--net', type=str, help="Path to net.txt")
 	args = parser.parse_args()
 	if args.ports is not None and args.baseboard is None:
 		print("Provide a baseboard.txt file to detect connectors")
 		exit(1)
+	if args.net is not None and args.baseboard is None:
+		print("Provide a baseboard.txt file to detect network cards")
+		exit(1)
 
-	if args.baseboard is not None and args.ports is None:
-		print(json.dumps(get_baseboard(args.baseboard), indent=2))
-	if args.ports is not None:
+	if args.baseboard is not None:
 		bb = get_baseboard(args.baseboard)
-		print(json.dumps(get_connectors(args.ports, bb, True), indent=2))
+		if args.ports is not None:
+			bb = get_connectors(args.ports, bb, True)
+		if args.net is not None:
+			bb = get_net(args.net, bb, True)
+		print(json.dumps(bb, indent=2))
 	if args.chassis is not None:
 		print(json.dumps(get_chassis(args.chassis), indent=2))
