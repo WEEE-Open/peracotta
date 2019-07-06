@@ -11,8 +11,8 @@ connectors_map = {
 	"DB-15 female": "vga-ports-n",
 	"Mini Jack (headphones)": "mini-jack-ports-n",
 	"RJ-45": "ethernet-ports-n",  # not a real feature in T.A.R.A.L.L.O., since it's not yet known if it's 100 or 1000
-	"Mini DisplayPort": "mini-displayport-ports-n",  # This doesn't exist in T.A.R.A.L.L.O. BTW
-	"Thunderbolt": "thunderbolt-ports-n",  # And this one too
+	"Mini DisplayPort": "mini-displayport-ports-n",
+	"Thunderbolt": "thunderbolt-ports-n",
 	"HDMI": "hdmi-ports-n",
 	"SATA0": "sata-ports-n",
 	"SATA1": "sata-ports-n",
@@ -65,6 +65,7 @@ connectors_map_tuples = {
 	(None, None, 'FRNT AUD*', None): None,  # Front audio is not part of the motherboard
 	("SAS/SATA Plug Receptacle", None, "SATA*", None): "sata-ports-n",
 	("SAS/SATA Plug Receptacle", None, "*EIDE", None): "ide-ports-n",
+	("SAS/SATA Plug Receptacle", None, "SAS*", None): "sas-sata-ports-n",
 }
 extra_connectors = {
 	"MagSafe DC Power": {'power-connector': 'proprietary'},

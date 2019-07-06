@@ -74,9 +74,8 @@ def test_connector():
 		'sata-ports-n': 6,
 		"mini-jack-ports-n": 7,
 		"ethernet-ports-n": 2,
-		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)'
+		'sas-sata-ports-n': 2,
+		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)'
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 
@@ -116,9 +115,8 @@ def test_net_with_connectors():
 		"mini-jack-ports-n": 7,
 		'ethernet-ports-1000m-n': 2,
 		'mac': '00:c0:11:fe:fe:11, 00:c0:11:fe:fe:22',
-		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)'
+		'sas-sata-ports-n': 2,
+		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)'
 	}
 	output = get_net(filedir + 'net.txt', baseboard)
 
@@ -143,9 +141,8 @@ def test_net_with_connectors_different():
 		'ethernet-ports-1000m-n': 1,
 		'ethernet-ports-100m-n': 1,
 		'mac': '00:c0:11:fe:fe:11, 00:c0:11:fe:fe:22',
-		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)'
+		'sas-sata-ports-n': 2,
+		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)'
 	}
 	output = get_net(filedir + 'net_different.txt', baseboard)
 
@@ -169,9 +166,8 @@ def test_net_with_connectors_too_few():
 		"mini-jack-ports-n": 7,
 		'ethernet-ports-1000m-n': 1,
 		'mac': '00:c0:11:fe:fe:22',
+		'sas-sata-ports-n': 2,
 		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)\n'
 			'BIOS reported 1 more ethernet port that was not found by the kernel'
 	}
 	output = get_net(filedir + 'net_too_few.txt', baseboard)
@@ -196,9 +192,8 @@ def test_net_with_connectors_too_many():
 		"mini-jack-ports-n": 7,
 		'ethernet-ports-1000m-n': 3,
 		'mac': '00:c0:11:fe:fe:11, 00:c0:11:fe:fe:22, 00:c0:11:fe:fe:42',
-		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS1 / Not Specified)\n'
-			'Unknown connector: SAS/SATA Plug Receptacle / None (SAS2 / Not Specified)'
+		'sas-sata-ports-n': 2,
+		'warning': 'Unknown connector: None / Other (AUDIO / AUDIO)'
 	}
 	output = get_net(filedir + 'net_too_many.txt', baseboard)
 
