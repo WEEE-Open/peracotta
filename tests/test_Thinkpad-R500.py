@@ -72,7 +72,7 @@ def test_connector():
 		"ethernet-ports-n": 1,
 		"firewire-ports-n": 1,
 		"rj11-ports-n": 1,
-		"warning": ""
+		"notes": ""
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

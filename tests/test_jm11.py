@@ -72,7 +72,7 @@ def test_connector():
 		"mini-jack-ports-n": 1,
 		"ethernet-ports-n": 1,
 		"mini-displayport-ports-n": 1,
-		"warning": "",
+		"notes": "",
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

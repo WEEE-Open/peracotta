@@ -90,7 +90,7 @@ def test_connector():
 		"ethernet-ports-n": 1,
 		"mini-jack-ports-n": 3,
 		"ide-ports-n": 2,
-		"warning": "Unknown connector: None / None (SPDIF_OUT / SPDIF_OUT)\nUnknown connector: On Board IDE / None (ESATA / Not Specified)"
+		"notes": "Unknown connector: None / None (SPDIF_OUT / SPDIF_OUT)\nUnknown connector: On Board IDE / None (ESATA / Not Specified)"
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

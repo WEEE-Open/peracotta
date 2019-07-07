@@ -202,7 +202,7 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 			connectors_clean[connector] = connectors[connector]
 
 	# Dark magic: https://stackoverflow.com/a/26853961
-	return {**baseboard, **connectors_clean, **{'warning': warnings}}
+	return {**baseboard, **connectors_clean, **{'notes': warnings}}
 
 
 def get_net(path: str, baseboard: dict, interactive: bool = False):
@@ -249,11 +249,11 @@ def get_net(path: str, baseboard: dict, interactive: bool = False):
 				message = f"\nBIOS reported {baseboard['ethernet-ports-n']} more ethernet ports that were not found by the kernel"
 			else:
 				message = f"\nBIOS reported {baseboard['ethernet-ports-n']} more ethernet port that was not found by the kernel"
-			if 'warning' in baseboard:
-				baseboard['warning'] += message
-				baseboard['warning'] = baseboard['warning'].strip()
+			if 'notes' in baseboard:
+				baseboard['notes'] += message
+				baseboard['notes'] = baseboard['notes'].strip()
 			else:
-				baseboard['warning'] = message.strip()
+				baseboard['notes'] = message.strip()
 		del baseboard['ethernet-ports-n']
 
 	if mergeit["ethernet-ports-100m-n"] <= 0:

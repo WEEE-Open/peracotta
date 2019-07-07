@@ -101,7 +101,7 @@ def test_connector():
 		'ps2-ports-n': 2,
 		'vga-ports-n': 1,
 		'serial-ports-n': 1,
-		'warning': 'Unknown connector: None / Mini Centronics Type-14 (J2A1 / TV Out)\n'
+		'notes': 'Unknown connector: None / Mini Centronics Type-14 (J2A1 / TV Out)\n'
 					'Unknown connector: Other / None (J9A1 - TPM HDR / Not Specified)\n'
 					'Unknown connector: Other / None (J9C1 - PCIE DOCKING CONN / Not Specified)\n'
 					'Unknown connector: Other / None (J6C2 - EXT HDMI / Not Specified)\n'

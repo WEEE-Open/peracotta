@@ -66,7 +66,7 @@ def test_connector():
 		"brand": "Microsoft Corporation",
 		"model": "Surface Pro 4",
 		"sn": "A01012111654643A",
-		"warning": ""
+		"notes": ""
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 
