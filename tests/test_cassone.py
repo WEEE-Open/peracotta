@@ -62,7 +62,7 @@ def test_connector():
 		"model": "MS8318E",
 		"sn": "00000000",
 		"parallel-ports-n": 1,
-		"warning": ""
+		"notes": ""
 	}
 
 	output = get_connectors(filedir + 'connector.txt', baseboard)

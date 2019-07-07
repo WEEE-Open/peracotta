@@ -71,7 +71,7 @@ def test_connector():
 		'hdmi-ports-n': 1,
 		'mini-displayport-ports-n': 2,
 		'power-connector': 'proprietary',
-		'warning': ''
+		'notes': ''
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

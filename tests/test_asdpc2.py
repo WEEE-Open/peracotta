@@ -67,7 +67,7 @@ def test_connector():
 		'brand': 'ASUSTeK COMPUTER INC.',
 		'model': 'UX305CA',
 		'sn': 'BSN12345678901234567',
-		'warning': ''
+		'notes': ''
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

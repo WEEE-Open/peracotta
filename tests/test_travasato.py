@@ -95,7 +95,7 @@ def test_connector():
 		"model": "D975XBX2",
 		"sn": "BAOB4B9001YY",
 		"ide-ports-n": 2,
-		"warning": ""
+		"notes": ""
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

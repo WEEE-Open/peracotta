@@ -97,7 +97,7 @@ def test_connector():
 		"brand": "ASRock",
 		"model": "H110M-ITX/ac",
 		"sn": "M80-69017400518",
-		"warning": ""
+		"notes": ""
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

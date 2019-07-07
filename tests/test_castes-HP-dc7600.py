@@ -90,7 +90,7 @@ def test_connector():
 		'parallel-ports-n': 1,
 		'sata-ports-n': 2,
 		'vga-ports-n': 1,
-		"warning": ""
+		"notes": ""
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 
