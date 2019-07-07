@@ -5,7 +5,7 @@ Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
 import json
 
-from read_dmidecode import get_baseboard, get_chassis, get_connectors
+from read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
 from read_lscpu import read_lscpu
 from read_decode_dimms import read_decode_dimms
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
@@ -86,13 +86,20 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 def extract_data(directory, has_dedicated_gpu, interactive):
 	mobo = get_baseboard(directory + "/baseboard.txt")
 	mobo = get_connectors(directory + "/connector.txt", mobo, interactive)
+	mobo = get_net(directory + "/connector.txt", mobo, interactive)
 	chassis = get_chassis(directory + "/chassis.txt")
 	cpu = read_lscpu(directory + "/lscpu.txt")
 	dimms = read_decode_dimms(directory + "/dimms.txt", interactive)
 	gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", interactive)
 	disks = read_smartctl(directory)
 
-	return chassis, cpu, dimms, disks, gpu, mobo
+	result = []
+	for thing in (mobo, chassis, cpu, dimms, disks, gpu, mobo):
+		if isinstance(thing, list):
+			result += thing
+		else:
+			result.append(thing)
+	return result
 
 
 if __name__ == '__main__':
@@ -109,8 +116,6 @@ if __name__ == '__main__':
 		path = args.path
 
 	if args.short:
-		for item in extract_data(path, args.gpu, False):
-			print(json.dumps(item, indent=2))
-			print("\n")
+		print(json.dumps(extract_data(path, args.gpu, False), indent=2))
 	else:
 		print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, True), indent=2))
