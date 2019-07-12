@@ -86,7 +86,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 def extract_data(directory, has_dedicated_gpu, interactive):
 	mobo = get_baseboard(directory + "/baseboard.txt")
 	mobo = get_connectors(directory + "/connector.txt", mobo, interactive)
-	mobo = get_net(directory + "/connector.txt", mobo, interactive)
+	mobo = get_net(directory + "/net.txt", mobo, interactive)
 	chassis = get_chassis(directory + "/chassis.txt")
 	cpu = read_lscpu(directory + "/lscpu.txt")
 	dimms = read_decode_dimms(directory + "/dimms.txt", interactive)
