@@ -83,14 +83,58 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 	return result, print_lspci_lines_in_dialog
 
 
-def extract_data(directory, has_dedicated_gpu, interactive):
+def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
+	if "brand-manufacturer" in gpu and len("brand-manufacturer") > 0:
+		brand = gpu["brand-manufacturer"]
+	elif "brand" in gpu and len("brand") > 0:
+		brand = gpu["brand"]
+	else:
+		brand = None
+
+	internal_name_present = len(gpu["internal-name"]) > 0
+	model_present = len(gpu["model"]) > 0
+	if model_present and internal_name_present:
+		model = f"{gpu['model']} ({gpu['internal-name']})"
+	elif model_present:
+		model = gpu['model']
+	elif internal_name_present:
+		model = gpu['internal-name']
+	else:
+		model = None
+
+	result = {}
+	if brand is not None:
+		result["integrated-graphics-brand"] = brand
+	if model is not None:
+		result["integrated-graphics-model"] = model
+	return result
+
+
+def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, interactive: bool) -> dict:
 	mobo = get_baseboard(directory + "/baseboard.txt")
+	cpu = read_lscpu(directory + "/lscpu.txt")
+	gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", interactive)
+	if not has_dedicated_gpu:
+		entries = extract_integrated_gpu_from_standalone(gpu)
+		if gpu_in_cpu:
+			if isinstance(cpu, list):
+				# Multiple processors
+				updated_cpus = []
+				for one_cpu in cpu:
+					one_cpu = {**one_cpu, **entries}
+					updated_cpus.append(one_cpu)
+				cpu = updated_cpus
+				del updated_cpus
+			else:
+				cpu = {**cpu, **entries}
+		else:
+			mobo = {**mobo, **entries}
+		gpu = []
 	mobo = get_connectors(directory + "/connector.txt", mobo, interactive)
 	mobo = get_net(directory + "/net.txt", mobo, interactive)
 	chassis = get_chassis(directory + "/chassis.txt")
-	cpu = read_lscpu(directory + "/lscpu.txt")
 	dimms = read_decode_dimms(directory + "/dimms.txt", interactive)
-	gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", interactive)
+
 	disks = read_smartctl(directory)
 
 	result = []
@@ -107,8 +151,13 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description="Get all the possible output data things")
 	parser.add_argument('-s', '--short', action="store_true", default=False, help="print shorter ouput")
 	parser.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
+	parser.add_argument('-c', '--cpu', action="store_true", default=False, help="integrated GPU is inside CPU (default to mobo)")
 	parser.add_argument('path', action="store", nargs='?', type=str, help="to directory with txt files")
 	args = parser.parse_args()
+
+	if args.cpu and args.gpu:
+		print("A dedicated GPU cannot be inside a CPU, remove -g or -c (--gpu or --cpu)")
+		exit(2)
 
 	if args.path is None:
 		path = '.'
@@ -116,6 +165,10 @@ if __name__ == '__main__':
 		path = args.path
 
 	if args.short:
-		print(json.dumps(extract_data(path, args.gpu, False), indent=2))
+		data = extract_data(path, args.gpu, args.cpu, False)
+		print(json.dumps(data, indent=2))
 	else:
+		# TODO: format stuff correctly for that case, too
+		if args.cpu:
+			print("Warning: GPU in CPU is not supported yet, here.")
 		print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, True), indent=2))
