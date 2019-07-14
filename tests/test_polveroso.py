@@ -15,11 +15,12 @@ def test_lspci():
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce 9400 GT",
 		"internal-name": "G96",
-		"capacity-byte": -1,  # Missing glxinfo...
+		"capacity-byte": None,  # Missing glxinfo...
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Nvidia"
 	}
-	output = read_lspci_and_glxinfo(True, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+	# False to ignore missing glxinfo
+	output = read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
 	assert expect == output
 

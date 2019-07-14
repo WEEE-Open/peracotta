@@ -6,6 +6,8 @@ Read "lspci -v" and "glxinfo" outputs
 
 import re
 
+from InputFileNotFoundError import InputFileNotFoundError
+
 
 class VideoCard:
 	def __init__(self):
@@ -24,10 +26,7 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 		with open(lspci_path, 'r') as f:
 			lspci_output = f.read()
 	except FileNotFoundError:
-		print(f"Cannot open file {lspci_path}")
-		print("Make sure to execute 'sudo ./generate_files.sh' first!")
-		return None
-		# exit(-1)
+		raise InputFileNotFoundError(path)
 
 	lspci_sections = lspci_output.split("\n\n")
 
@@ -156,10 +155,7 @@ def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
 		with open(glxinfo_path, 'r') as f:
 			glxinfo_output = f.read()
 	except FileNotFoundError:
-		print(f"Cannot open file {glxinfo_path}")
-		print("Make sure to execute 'sudo ./generate_files.sh' first!")
-		return None
-		# exit(-1)
+		raise InputFileNotFoundError(glxinfo_path)
 
 	for i, line in enumerate(glxinfo_output.splitlines()):
 
@@ -255,4 +251,8 @@ if __name__ == '__main__':
 	parser.add_argument('-d', '--dedicated', action="store_true", default=False, help="computer has dedicated GPU")
 	args = parser.parse_args()
 
-	print(json.dumps(read_lspci_and_glxinfo(args.dedicated, args.lspci[0], args.glxinfo[0]), indent=2))
+	try:
+		print(json.dumps(read_lspci_and_glxinfo(args.dedicated, args.lspci[0], args.glxinfo[0]), indent=2))
+	except InputFileNotFoundError as e:
+		print(str(e))
+		exit(1)

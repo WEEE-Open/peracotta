@@ -2,6 +2,8 @@
 
 import sys
 
+from InputFileNotFoundError import InputFileNotFoundError
+
 """
 Read "lscpu" output
 """
@@ -112,13 +114,16 @@ def read_lscpu(path: str):
 def get_output(path):
 	try:
 		with open(path, 'r') as f:
-			return f.read()
+			output = f.read()
 	except FileNotFoundError:
-		print(f"Cannot open file {path}")
-		print("Make sure to execute 'sudo ./generate_files.sh' first!")
-		exit(-1)
+		raise InputFileNotFoundError(path)
+	return output
 
 
 if __name__ == '__main__':
 	import json
-	print(json.dumps(read_lscpu(sys.argv[1]), indent=2))
+	try:
+		print(json.dumps(read_lscpu(sys.argv[1]), indent=2))
+	except InputFileNotFoundError as e:
+		print(str(e))
+		exit(1)
