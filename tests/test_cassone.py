@@ -27,7 +27,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
-		"architecture": "x86-32",
+		"isa": "x86-32",
 		"model": "Athlon 4",
 		"brand": "AMD",
 		"core-n": 1,

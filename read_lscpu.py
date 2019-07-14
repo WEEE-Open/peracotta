@@ -94,7 +94,7 @@ def read_lscpu(path: str):
 
 	result = {
 		"type": "cpu",
-		"architecture": cpu.architecture,
+		"isa": cpu.architecture,
 		"model": cpu.model,
 		"brand": cpu.brand,
 		"core-n": cpu.n_cores,

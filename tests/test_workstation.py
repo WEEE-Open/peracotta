@@ -28,7 +28,7 @@ def test_lscpu():
 	expect = [
 		{
 			"type": "cpu",
-			"architecture": "x86-64",
+			"isa": "x86-64",
 			"model": "Xeon 5160",
 			"brand": "Intel",
 			"core-n": 2,
@@ -38,7 +38,7 @@ def test_lscpu():
 		},
 		{
 			"type": "cpu",
-			"architecture": "x86-64",
+			"isa": "x86-64",
 			"model": "Xeon 5160",
 			"brand": "Intel",
 			"core-n": 2,
