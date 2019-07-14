@@ -161,7 +161,7 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
 	disks = read_smartctl(directory)
 
 	result = []
-	for thing in (mobo, chassis, cpu, dimms, disks, gpu, mobo):
+	for thing in (chassis, mobo, cpu, dimms, gpu, disks):
 		if isinstance(thing, list):
 			result += thing
 		else:
