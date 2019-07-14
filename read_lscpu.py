@@ -61,6 +61,11 @@ def read_lscpu(path: str):
 				.replace("(tm)", ' ') \
 				.replace("CPU", '') \
 				.replace("AMD", ' ') \
+				.replace("Dual-Core", '') \
+				.replace("Quad-Core", '') \
+				.replace("Octa-Core", '') \
+				.replace("Processor", '') \
+				.replace("processor", '') \
 				.strip()
 
 			while '  ' in cpu.model:
