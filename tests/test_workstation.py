@@ -120,7 +120,7 @@ def test_smartctl():
 			"capacity-decibyte": 996000000000,
 			"human_readable_capacity": "995 GB",
 			"spin-rate-rpm": 20000,
-			"smart-data": "=== START OF READ SMART DATA SECTION ===\nCurrent Drive Temperature:     0 C\nDrive Trip Temperature:        0 C\n\nError Counter logging not supported\n\nDevice does not support Self Test logging\nDevice does not support Background scan results logging\n"
+			"human_readable_smart_data": "=== START OF READ SMART DATA SECTION ===\nCurrent Drive Temperature:     0 C\nDrive Trip Temperature:        0 C\n\nError Counter logging not supported\n\nDevice does not support Self Test logging\nDevice does not support Background scan results logging\n"
 		}
 	]
 	output = read_smartctl(filedir)
