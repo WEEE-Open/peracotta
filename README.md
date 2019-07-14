@@ -15,17 +15,19 @@ This will create some txt files with data related to the computer.
 Point it to the directory where generate_files.sh dropped its files
 
 ```
-usage: extract_data.py [-h] [-s] [-g] [path]
+usage: extract_data.py [-h] [-s] [-g] [-c] [-i] [path]
 
 Get all the possible output data things
 
 positional arguments:
-  path         to directory with txt files
+  path               to directory with txt files
 
 optional arguments:
-  -h, --help   show this help message and exit
-  -s, --short  print shorter ouput
-  -g, --gpu    computer has dedicated GPU
+  -h, --help         show this help message and exit
+  -s, --short        print shorter ouput
+  -g, --gpu          computer has dedicated GPU
+  -c, --cpu          integrated GPU is inside CPU (default to mobo)
+  -i, --interactive  print some warning messages
 ```
 
 ## main_with_gui.py

@@ -110,20 +110,29 @@ def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
 	return result
 
 
-def remove_empty(result: list, interactive: bool = False) -> list:
+def do_cleanup(result: list, interactive: bool = False) -> list:
 	filtered = []
 
 	for item in result:
-		cleaned = {k: v for k, v in item.items() if v != ''}
-		filtered.append(cleaned)
-		if interactive:
-			removed = set(item.keys()) - set(cleaned.keys())
-			if len(removed) > 0:
-				print(f"Removed from {item['type']}: {', '.join(removed)}.")
+		cleaned_item = {}
+		removed = set()
+		for k, v in item.items():
+			if isinstance(v, str) and v == '':
+				removed.add(k)
+			elif isinstance(v, int) and v <= 0:
+				removed.add(k)
+			elif 'human_readable' in k:
+				removed.add(k)
+			else:
+				cleaned_item[k] = v
+		filtered.append(cleaned_item)
+
+		if interactive and len(removed) > 0:
+			print(f"Removed from {item['type']}: {', '.join(removed)}.")
 	return filtered
 
 
-def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, compress: bool, interactive: bool) -> dict:
+def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, cleanup: bool, interactive: bool) -> dict:
 	mobo = get_baseboard(directory + "/baseboard.txt")
 	cpu = read_lscpu(directory + "/lscpu.txt")
 	gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", interactive)
@@ -156,8 +165,8 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, comp
 			result += thing
 		else:
 			result.append(thing)
-	if compress:
-		result = remove_empty(result)
+	if cleanup:
+		result = do_cleanup(result, interactive)
 
 	return result
 
@@ -168,6 +177,7 @@ if __name__ == '__main__':
 	parser.add_argument('-s', '--short', action="store_true", default=False, help="print shorter ouput")
 	parser.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
 	parser.add_argument('-c', '--cpu', action="store_true", default=False, help="integrated GPU is inside CPU (default to mobo)")
+	parser.add_argument('-i', '--interactive', action="store_true", default=False, help="print some warning messages")
 	parser.add_argument('path', action="store", nargs='?', type=str, help="to directory with txt files")
 	args = parser.parse_args()
 
@@ -181,7 +191,7 @@ if __name__ == '__main__':
 		path = args.path
 
 	if args.short:
-		data = extract_data(path, args.gpu, args.cpu, True, False)
+		data = extract_data(path, args.gpu, args.cpu, True, args.interactive)
 		print(json.dumps(data, indent=2))
 	else:
-		print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, True), indent=2))
+		print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.interactive), indent=2))
