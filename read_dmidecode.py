@@ -2,6 +2,8 @@
 
 
 # TODO: read lspci to figure out if Ethernet is 100 or 1000 or whatever
+from InputFileNotFoundError import InputFileNotFoundError
+
 connectors_map = {
 	"PS/2": "ps2-ports-n",
 	"Access Bus (USB)": "usb-ports-n",
@@ -104,10 +106,7 @@ def get_baseboard(path: str):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print(f"Cannot open file {path}")
-		print("Make sure to execute 'sudo ./generate_files.sh' first!")
-		exit(-1)
-		return
+		raise InputFileNotFoundError(path)
 
 	for line in output.splitlines():
 		if "Manufacturer:" in line:
@@ -141,10 +140,7 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print(f"Cannot open file {path}")
-		print("Make sure to execute 'sudo ./generate_files.sh' first!")
-		exit(-1)
-		return
+		raise InputFileNotFoundError(path)
 
 	possible_connectors = set(connectors_map.values()) | set(connectors_map_tuples.values())
 	possible_connectors.remove(None)
@@ -210,10 +206,7 @@ def get_net(path: str, baseboard: dict, interactive: bool = False):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print(f"Cannot open file {path}")
-		print("Make sure to execute 'sudo ./generate_files.sh' first!")
-		exit(-1)
-		return
+		raise InputFileNotFoundError(path)
 
 	mergeit = {
 		"ethernet-ports-100m-n": 0,
@@ -311,10 +304,7 @@ def get_chassis(path: str):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print(f"Cannot open file {path}")
-		print("Make sure to execute 'sudo ./generate_files.sh' first!")
-		exit(-1)
-		return
+		raise InputFileNotFoundError(path)
 
 	for line in output.splitlines():
 		if "Manufacturer" in line:
@@ -363,12 +353,16 @@ if __name__ == '__main__':
 		print("Provide a baseboard.txt file to detect network cards")
 		exit(1)
 
-	if args.baseboard is not None:
-		bb = get_baseboard(args.baseboard)
-		if args.ports is not None:
-			bb = get_connectors(args.ports, bb, True)
-		if args.net is not None:
-			bb = get_net(args.net, bb, True)
-		print(json.dumps(bb, indent=2))
-	if args.chassis is not None:
-		print(json.dumps(get_chassis(args.chassis), indent=2))
+	try:
+		if args.baseboard is not None:
+			bb = get_baseboard(args.baseboard)
+			if args.ports is not None:
+				bb = get_connectors(args.ports, bb, True)
+			if args.net is not None:
+				bb = get_net(args.net, bb, True)
+			print(json.dumps(bb, indent=2))
+		if args.chassis is not None:
+			print(json.dumps(get_chassis(args.chassis), indent=2))
+	except InputFileNotFoundError as e:
+		print(str(e))
+		exit(1)

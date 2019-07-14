@@ -5,6 +5,7 @@ Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
 import json
 
+from InputFileNotFoundError import InputFileNotFoundError
 from read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
 from read_lscpu import read_lscpu
 from read_decode_dimms import read_decode_dimms
@@ -190,8 +191,12 @@ if __name__ == '__main__':
 	else:
 		path = args.path
 
-	if args.short:
-		data = extract_data(path, args.gpu, args.cpu, True, args.interactive)
-		print(json.dumps(data, indent=2))
-	else:
-		print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.interactive), indent=2))
+	try:
+		if args.short:
+			data = extract_data(path, args.gpu, args.cpu, True, args.interactive)
+			print(json.dumps(data, indent=2))
+		else:
+			print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.interactive), indent=2))
+	except InputFileNotFoundError as e:
+		print(str(e))
+		exit(1)

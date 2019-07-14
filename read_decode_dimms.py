@@ -6,6 +6,8 @@ Read "decode-dimms" output
 
 import sys
 
+from InputFileNotFoundError import InputFileNotFoundError
+
 
 class Dimm:
 	def __init__(self):
@@ -36,10 +38,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 		with open(path, 'r') as f:
 			output = f.read()
 	except FileNotFoundError:
-		print(f"Cannot open file {path}")
-		print("Make sure to execute 'sudo ./generate_files.sh' first!")
-		exit(-1)
-		return
+		raise InputFileNotFoundError(path)
 
 	if interactive:
 		print("Reading decode-dimms...")
@@ -151,5 +150,9 @@ def read_decode_dimms(path: str, interactive: bool = False):
 
 if __name__ == '__main__':
 	import json
-	result = read_decode_dimms(sys.argv[1], True)
-	print(json.dumps(result, indent=2))
+	try:
+		result = read_decode_dimms(sys.argv[1], True)
+		print(json.dumps(result, indent=2))
+	except InputFileNotFoundError as e:
+		print(str(e))
+		exit(1)

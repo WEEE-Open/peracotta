@@ -15,11 +15,11 @@ def test_lspci():
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce GT 610",
 		"internal-name": "GF119",
-		"capacity-byte": -1,  # Still no glxinfo :(
+		"capacity-byte": None,  # Still no glxinfo :(
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Nvidia"
 	}
-	output = read_lspci_and_glxinfo(True, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
 	assert expect == output
 
