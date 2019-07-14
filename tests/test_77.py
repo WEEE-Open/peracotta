@@ -24,7 +24,7 @@ def test_77_lspci():
 def test_lscpu():
 	expect = {
 		'type': 'cpu',
-		'architecture': 'x86-32',
+		'isa': 'x86-32',
 		'model': 'Celeron 2.80GHz',
 		'brand': 'Intel',
 		'core-n': 1,
