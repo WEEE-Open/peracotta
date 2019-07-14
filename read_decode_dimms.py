@@ -143,6 +143,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 			"ram-type": dimm.ram_type,
 			"ram-ecc": dimm.ecc,
 			"ram-timings": dimm.cas_latencies,
+			"working": 'yes',  # Indeed it is working
 		})
 
 	return dimms_dicts

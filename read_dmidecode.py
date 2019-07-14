@@ -125,6 +125,7 @@ def get_baseboard(path: str):
 		"brand": mobo.brand,
 		"model": mobo.model,
 		"sn": mobo.serial_number,
+		"working": 'yes',  # Indeed it is working
 	}
 
 	for key, value in result.items():

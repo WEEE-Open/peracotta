@@ -107,7 +107,8 @@ def read_lscpu(path: str):
 		"core-n": cpu.n_cores,
 		"thread-n": cpu.n_threads,
 		"frequency-hertz": cpu.frequency,
-		"human_readable_frequency": cpu.human_readable_frequency
+		"human_readable_frequency": cpu.human_readable_frequency,
+		"working": 'yes',  # Indeed it is working
 	}
 
 	if sockets > 1:

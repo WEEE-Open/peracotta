@@ -26,7 +26,7 @@ def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = Fals
 		with open(lspci_path, 'r') as f:
 			lspci_output = f.read()
 	except FileNotFoundError:
-		raise InputFileNotFoundError(path)
+		raise InputFileNotFoundError(lspci_path)
 
 	lspci_sections = lspci_output.split("\n\n")
 
@@ -234,7 +234,8 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
 		"model": gpu.model.strip(),
 		"internal-name": gpu.internal_name.strip(),
 		"capacity-byte": gpu.capacity,
-		"human_readable_capacity": gpu.human_readable_capacity.strip()
+		"human_readable_capacity": gpu.human_readable_capacity.strip(),
+		"working": 'yes',  # Indeed it is working
 	}
 	if gpu.manufacturer_brand is not None and gpu.reseller_brand is not None:
 		if gpu.manufacturer_brand.lower() != gpu.reseller_brand.lower():
