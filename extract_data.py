@@ -157,11 +157,14 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
 	mobo = get_net(directory + "/net.txt", mobo, interactive)
 	chassis = get_chassis(directory + "/chassis.txt")
 	dimms = read_decode_dimms(directory + "/dimms.txt", interactive)
-
+	if chassis["motherboard-form-factor"] == "proprietary-laptop":
+		psu = {"type": "external-psu"}
+	else:
+		psu = {"type": "psu"}
 	disks = read_smartctl(directory)
 
 	result = []
-	for thing in (chassis, mobo, cpu, dimms, gpu, disks):
+	for thing in (chassis, mobo, cpu, dimms, gpu, disks, psu):
 		if isinstance(thing, list):
 			result += thing
 		else:
