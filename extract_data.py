@@ -27,6 +27,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 		# empty default dictionary
 		dimms = {
 			"type": "ram",
+			"working": "yes",
 			"brand": None,
 			"model": None,
 			"serial_number": None,

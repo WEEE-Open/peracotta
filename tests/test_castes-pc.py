@@ -12,6 +12,7 @@ filedir = 'castes-pc/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ZOTAC International (MCO) Ltd.",
 		"model": "GeForce GTX 1060 6GB",
 		'internal-name': 'GP106',
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core i5-6500",
 		"brand": "Intel",
@@ -44,6 +46,7 @@ def test_ram():
 	expect = [
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Synertek",
 			"model": "Undefined",
 			"sn": "",
@@ -57,6 +60,7 @@ def test_ram():
 		},
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Synertek",
 			"model": "Undefined",
 			"sn": "",
@@ -78,6 +82,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASRock",
 		"model": "H110M-ITX/ac",
 		"sn": "M80-69017400518",
@@ -94,6 +99,7 @@ def test_connector():
 	# dropped all this garbage into the DMI information, so here we go...
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASRock",
 		"model": "H110M-ITX/ac",
 		"sn": "M80-69017400518",

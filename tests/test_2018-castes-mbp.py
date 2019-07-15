@@ -12,6 +12,7 @@ filedir = '2018-castes-mbp/'
 def test_lspci():
 	expect = {
 		'type': 'graphics-card',
+		"working": "yes",
 		'brand-manufacturer': 'AMD/ATI',
 		'brand': 'Apple Inc. Radeon Pro 560X',
 		'internal-name': '',
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core i7-8750H",
 		"brand": "Intel",
@@ -49,6 +51,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		'type': 'motherboard',
+		"working": "yes",
 		'brand': 'Apple Inc.',
 		'model': 'Mac-937A206F2EE63C01',
 		'sn': '***REMOVED***'
@@ -63,6 +66,7 @@ def test_connector():
 
 	expect = {
 		'type': 'motherboard',
+		"working": "yes",
 		'brand': 'Apple Inc.',
 		'model': 'Mac-937A206F2EE63C01',
 		'sn': '***REMOVED***',

@@ -101,6 +101,7 @@ def read_lscpu(path: str):
 
 	result = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": cpu.architecture,
 		"model": cpu.model,
 		"brand": cpu.brand,

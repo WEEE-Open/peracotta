@@ -133,6 +133,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 	for dimm in dimms:
 		dimms_dicts.append({
 			"type": "ram",
+			"working": "yes",
 			"brand": dimm.brand,
 			"model": dimm.model,
 			"sn": dimm.serial_number,

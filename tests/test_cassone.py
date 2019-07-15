@@ -12,6 +12,7 @@ filedir = 'cassone/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "SiS",
 		'internal-name': '',
 		"model": "65x/M650/740",
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-32",
 		"model": "Athlon 4",
 		"brand": "AMD",
@@ -44,6 +46,7 @@ def test_lscpu():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Matsonic",
 		"model": "MS8318E",
 		"sn": "00000000",
@@ -58,6 +61,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Matsonic",
 		"model": "MS8318E",
 		"sn": "00000000",

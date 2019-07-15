@@ -12,6 +12,7 @@ filedir = 'castes-SurfacePro4/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "Microsoft Corporation",
 		"model": "HD Graphics 515",
 		'internal-name': '',
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core m3-6Y30",
 		"brand": "Intel",
@@ -49,6 +51,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Microsoft Corporation",
 		"model": "Surface Pro 4",
 		"sn": "A01012111654643A",
@@ -63,6 +66,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Microsoft Corporation",
 		"model": "Surface Pro 4",
 		"sn": "A01012111654643A",

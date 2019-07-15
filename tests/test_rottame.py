@@ -12,6 +12,7 @@ filedir = 'rottame/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce4 MX 440SE AGP 8x",
 		"internal-name": "NV18",
@@ -28,6 +29,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Pentium D 2.66GHz",
 		"brand": "Intel",
@@ -45,6 +47,7 @@ def test_ram():
 	expect = [
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "Undefined",
 			"sn": "2972574626",
@@ -65,6 +68,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P5VDC-MX",
 		"sn": "MB-1234567890",
@@ -79,6 +83,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P5VDC-MX",
 		"sn": "MB-1234567890",

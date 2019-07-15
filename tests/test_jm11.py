@@ -13,6 +13,7 @@ def test_lspci():
 	# VGA core graphics processor core VGA processor graphics core VGA processor is the core of this laptop
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "Lenovo 3rd Gen Core processor Graphics Controller",
 		"model": "VGA controller",
 		"internal-name": "",
@@ -28,6 +29,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core i5-3210M",
 		"brand": "Intel",
@@ -50,6 +52,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "LENOVO",
 		"model": "246837G",
 		"sn": "2RTC1A0N333",
@@ -64,6 +67,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "LENOVO",
 		"model": "246837G",
 		"sn": "2RTC1A0N333",
