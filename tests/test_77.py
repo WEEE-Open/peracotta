@@ -10,6 +10,7 @@ filedir = '77/'
 def test_77_lspci():
 	expect = {
 		'type': 'graphics-card',
+		"working": "yes",
 		'brand-manufacturer': 'SiS',
 		'brand': 'ASUSTeK Computer Inc.',
 		'internal-name': '',
@@ -24,6 +25,7 @@ def test_77_lspci():
 def test_lscpu():
 	expect = {
 		'type': 'cpu',
+		"working": "yes",
 		'isa': 'x86-32',
 		'model': 'Celeron 2.80GHz',
 		'brand': 'Intel',
@@ -40,7 +42,8 @@ def test_77_baseboard():
 		'brand': 'ASUSTeK Computer INC.',
 		'model': 'P5SD2-VM',
 		'sn': 'MT721CT11114269',
-		'type': 'motherboard'
+		'type': 'motherboard',
+		"working": "yes",
 	}
 	output = get_baseboard(filedir + 'baseboard.txt')
 
@@ -55,6 +58,7 @@ def test_77_connector():
 		'model': 'P5SD2-VM',
 		'sn': 'MT721CT11114269',
 		'type': 'motherboard',
+		"working": "yes",
 		'usb-ports-n': 8,
 		'ethernet-ports-n': 1,
 		'mini-jack-ports-n': 3,

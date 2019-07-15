@@ -12,6 +12,7 @@ filedir = 'polveroso/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce 9400 GT",
 		"internal-name": "G96",
@@ -28,6 +29,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core 2 Duo E7300",
 		"brand": "Intel",
@@ -50,6 +52,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P5QL-E",
 		"sn": "MS666999ABCDEF123",
@@ -64,6 +67,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P5QL-E",
 		"sn": "MS666999ABCDEF123",

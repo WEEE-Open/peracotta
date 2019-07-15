@@ -13,6 +13,7 @@ def test_ecc_ram1():
 	expect = [
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "K",
 			"sn": "3375612524",
@@ -26,6 +27,7 @@ def test_ecc_ram1():
 		},
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "K",
 			"sn": "3392385900",
@@ -47,6 +49,7 @@ def test_ecc_ram1_not_an_hex():
 	expect = [
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "K",
 			"sn": "0F00xb4r",
@@ -60,6 +63,7 @@ def test_ecc_ram1_not_an_hex():
 		},
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "K",
 			"sn": "0xCA33B3RC",
@@ -81,6 +85,7 @@ def test_ecc_ram2():
 	expect = [
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "Undefined",
 			"sn": "2853609420",
@@ -94,6 +99,7 @@ def test_ecc_ram2():
 		},
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "Undefined",
 			"sn": "2836829644",
@@ -116,6 +122,7 @@ def test_ram1():
 	expect = [
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "SK Hynix (former Hyundai Electronics)",
 			"model": "HYMP112U64CP8-S6",
 			"sn": "16416",
@@ -129,6 +136,7 @@ def test_ram1():
 		},
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "SK Hynix (former Hyundai Electronics)",
 			"model": "HYMP112U64CP8-S6",
 			"sn": "8224",
@@ -142,6 +150,7 @@ def test_ram1():
 		},
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "SK Hynix (former Hyundai Electronics)",
 			"model": "HYMP112U64CP8-S6",
 			"sn": "12320",
@@ -155,6 +164,7 @@ def test_ram1():
 		},
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "SK Hynix (former Hyundai Electronics)",
 			"model": "HYMP112U64CP8-S6",
 			"sn": "8225",

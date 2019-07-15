@@ -12,6 +12,7 @@ filedir = 'travasato/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce GT 610",
 		"internal-name": "GF119",
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core 2 Quad Q6600",
 		"brand": "Intel",
@@ -44,6 +46,7 @@ def test_ram():
 	expect = [
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "K",
 			"sn": "3375612238",
@@ -57,6 +60,7 @@ def test_ram():
 		},
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "K",
 			"sn": "3392385358",
@@ -77,6 +81,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Intel Corporation",
 		"model": "D975XBX2",
 		"sn": "BAOB4B9001YY",
@@ -91,6 +96,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Intel Corporation",
 		"model": "D975XBX2",
 		"sn": "BAOB4B9001YY",

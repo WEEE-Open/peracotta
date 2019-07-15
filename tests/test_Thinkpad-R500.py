@@ -12,6 +12,7 @@ filedir = 'Thinkpad-R500/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "Lenovo",
 		"model": "Mobile 4 Series Chipset",
 		"internal-name": "",
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core 2 Duo P8600",
 		"brand": "Intel",
@@ -49,6 +51,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "LENOVO",
 		"model": "2718V8C",
 		"sn": "VQ1FF05G1WA",
@@ -63,6 +66,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "LENOVO",
 		"model": "2718V8C",
 		"sn": "VQ1FF05G1WA",

@@ -12,6 +12,7 @@ filedir = 'workstation/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce 9600 GT",
 		"internal-name": "G94",
@@ -29,6 +30,7 @@ def test_lscpu():
 	expect = [
 		{
 			"type": "cpu",
+		"working": "yes",
 			"isa": "x86-64",
 			"model": "Xeon 5160",
 			"brand": "Intel",
@@ -39,6 +41,7 @@ def test_lscpu():
 		},
 		{
 			"type": "cpu",
+		"working": "yes",
 			"isa": "x86-64",
 			"model": "Xeon 5160",
 			"brand": "Intel",
@@ -64,6 +67,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Dell Inc.",
 		"model": "0MY171",
 		"sn": "CN125321L404Q",
@@ -78,6 +82,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Dell Inc.",
 		"model": "0MY171",
 		"sn": "CN125321L404Q",

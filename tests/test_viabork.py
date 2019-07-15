@@ -12,6 +12,7 @@ filedir = 'viabork/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "S3 UniChrome Pro",
 		"internal-name": "P4M890",
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Pentium 4 3.00GHz",
 		"brand": "Intel",
@@ -49,6 +51,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P5V-VM-ULTRA",
 		"sn": "MB-1234567890",
@@ -63,6 +66,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P5V-VM-ULTRA",
 		"sn": "MB-1234567890",

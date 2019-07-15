@@ -12,6 +12,7 @@ filedir = 'castes-HP-dc7600/'
 def test_lspci_dedicated():
 	expect = {
 		'type': 'graphics-card',
+		"working": "yes",
 		'brand': 'PC Partner Limited / Sapphire Technology',
 		'internal-name': 'G98',
 		'model': 'GeForce G 100',
@@ -27,6 +28,7 @@ def test_lspci_dedicated():
 def test_lspci_integrated():
 	expect = {
 		'type': 'graphics-card',
+		"working": "yes",
 		'brand': 'Hewlett-Packard Company',
 		'model': '82945G/GZ',
 		'internal-name': '',
@@ -42,6 +44,7 @@ def test_lspci_integrated():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Pentium 4 2.80GHz",
 		"brand": "Intel",
@@ -64,6 +67,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Hewlett-Packard",
 		"model": "09F8h",
 		"sn": "CZC6203MC5",
@@ -78,6 +82,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "Hewlett-Packard",
 		"model": "09F8h",
 		"sn": "CZC6203MC5",

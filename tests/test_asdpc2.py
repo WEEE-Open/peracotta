@@ -12,6 +12,7 @@ filedir = 'asdpc2/'
 def test_lspci():
 	expect = {
 		'type': 'graphics-card',
+		"working": "yes",
 		'brand-manufacturer': 'Intel',
 		'brand': 'ASUSTeK Computer Inc.',
 		'internal-name': '',
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core m3-6Y30",
 		"brand": "Intel",
@@ -49,6 +51,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		'type': 'motherboard',
+		"working": "yes",
 		'brand': 'ASUSTeK COMPUTER INC.',
 		'model': 'UX305CA',
 		'sn': 'BSN12345678901234567'
@@ -64,6 +67,7 @@ def test_connector():
 	# Yep, the connector thing is empty...
 	expect = {
 		'type': 'motherboard',
+		"working": "yes",
 		'brand': 'ASUSTeK COMPUTER INC.',
 		'model': 'UX305CA',
 		'sn': 'BSN12345678901234567',

@@ -11,6 +11,7 @@ def test_lspci_dedicated1():
 	filesubdir = 'dedicated/NVIDIA6200/'
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		'internal-name': 'NV44',
 		"model": "GeForce 6200 SE TurboCache",
@@ -27,6 +28,7 @@ def test_lspci_dedicated1():
 def test_lspci_dedicated2():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		'internal-name': 'G96',
 		"model": "GeForce 9400 GT",
@@ -42,6 +44,7 @@ def test_lspci_dedicated2():
 def test_lspci_dedicated3():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		'internal-name': 'GM204',
 		"model": "GeForce GTX 970",
@@ -60,6 +63,7 @@ def test_lspci_integrated_mobo_1():
 
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce 8300",
 		"internal-name": "C77",
@@ -78,6 +82,7 @@ def test_lspci_integrated_mobo_2():
 
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "Lite-On Technology Corporation",
 		"model": "82865G",
 		"internal-name": "",
@@ -97,6 +102,7 @@ def test_lspci_integrated_mobo_3():
 
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "Intel Corporation",
 		"model": "ES1000",
 		"internal-name": "",
@@ -115,6 +121,7 @@ def test_lspci_integrated_cpu_1():
 
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "Acer Incorporated",
 		"model": "Skylake GT2 [HD Graphics 520]",
 		"internal-name": "",
@@ -134,6 +141,7 @@ def test_lspci_integrated_cpu_2():
 	# Yeeeeah, nice and detailed - not.
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "Hewlett-Packard Company Core Processor",
 		"model": "",
 		"internal-name": "",
@@ -152,6 +160,7 @@ def test_lspci_integrated_cpu_3():
 
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASRock Incorporation",
 		"model": "Xeon E3-1200 v3/4th Gen Core Processor",
 		"internal-name": "",

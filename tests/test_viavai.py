@@ -12,6 +12,7 @@ filedir = 'viavai/'
 def test_lspci():
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "Chrome 9 HC",
 		"internal-name": "CN896/VN896/P4M900",
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Celeron 2.80GHz",
 		"brand": "Intel",
@@ -44,6 +46,7 @@ def test_ram():
 	expect = [
 		{
 			"type": "ram",
+			"working": "yes",
 			"brand": "Kingston",
 			"model": "KD6502-ELG",
 			"sn": "3072778780",
@@ -64,6 +67,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P5VD2-VM",
 		"sn": "123456789000",
@@ -78,6 +82,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P5VD2-VM",
 		"sn": "123456789000",

@@ -12,6 +12,7 @@ filedir = 'asdpc/'
 def test_lspci():
 	expect = {
 		'type': 'graphics-card',
+		"working": "yes",
 		'brand-manufacturer': 'AMD/ATI',
 		'internal-name': '',
 		'brand': 'PC Partner Limited / Sapphire Technology Tahiti PRO',
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "FX-8370E",
 		"brand": "AMD",
@@ -53,6 +55,7 @@ def test_ram():
 			'model': 'F3-1600C7-8GTX',
 			'sn': '',
 			'type': 'ram',
+			"working": "yes",
 			'ram-timings': '9-9-9-24',
 		},
 		{
@@ -66,6 +69,7 @@ def test_ram():
 			'model': 'F3-1600C7-8GTX',
 			'sn': '',
 			'type': 'ram',
+			"working": "yes",
 			'ram-timings': '9-9-9-24',
 		}
 	]
@@ -80,7 +84,8 @@ def test_baseboard():
 		'brand': 'Gigabyte Technology Co., Ltd.',
 		'model': '970A-DS3P FX',
 		'sn': 'To be filled by O.E.M.',
-		'type': 'motherboard'
+		'type': 'motherboard',
+		"working": "yes",
 	}
 	output = get_baseboard(filedir + 'baseboard.txt')
 
@@ -97,6 +102,7 @@ def test_connector():
 		'model': '970A-DS3P FX',
 		'sn': 'To be filled by O.E.M.',
 		'type': 'motherboard',
+		"working": "yes",
 		'usb-ports-n': 3,
 		'ps2-ports-n': 2,
 		'vga-ports-n': 1,

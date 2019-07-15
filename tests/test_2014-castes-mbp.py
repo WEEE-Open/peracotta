@@ -12,6 +12,7 @@ filedir = '2014-castes-mbp/'
 def test_lspci():
 	expect = {
 		'type': 'graphics-card',
+		"working": "yes",
 		'brand-manufacturer': 'Nvidia',
 		'brand': 'Apple Inc.',
 		'internal-name': 'GK107M',
@@ -27,6 +28,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core i7-4980HQ",
 		"brand": "Intel",
@@ -49,6 +51,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		'type': 'motherboard',
+		"working": "yes",
 		'brand': 'Apple Inc.',
 		'model': 'Mac-2BD1B31983FE1663',
 		'sn': 'C02433601ECG3MK13'
@@ -63,6 +66,7 @@ def test_connector():
 
 	expect = {
 		'type': 'motherboard',
+		"working": "yes",
 		'brand': 'Apple Inc.',
 		'model': 'Mac-2BD1B31983FE1663',
 		'sn': 'C02433601ECG3MK13',

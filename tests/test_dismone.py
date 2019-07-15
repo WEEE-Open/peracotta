@@ -13,6 +13,7 @@ def test_lspci():
 	# no glxinfo :(
 	expect = {
 		"type": "graphics-card",
+		"working": "yes",
 		"brand": "ASUSTeK Computer Inc.",
 		"model": "GeForce GTX 970",
 		'internal-name': 'GM204',
@@ -29,6 +30,7 @@ def test_lspci():
 def test_lscpu():
 	expect = {
 		"type": "cpu",
+		"working": "yes",
 		"isa": "x86-64",
 		"model": "Core i7 930",
 		"brand": "Intel",
@@ -51,6 +53,7 @@ def test_ram():
 def test_baseboard():
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P6T DELUXE V2",
 		"sn": "723627130020069",
@@ -65,6 +68,7 @@ def test_connector():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P6T DELUXE V2",
 		"sn": "723627130020069",
@@ -88,6 +92,7 @@ def test_net_without_connectors():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P6T DELUXE V2",
 		"sn": "723627130020069",
@@ -105,6 +110,7 @@ def test_net_with_connectors():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P6T DELUXE V2",
 		"sn": "723627130020069",
@@ -130,6 +136,7 @@ def test_net_with_connectors_different():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P6T DELUXE V2",
 		"sn": "723627130020069",
@@ -156,6 +163,7 @@ def test_net_with_connectors_too_few():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P6T DELUXE V2",
 		"sn": "723627130020069",
@@ -182,6 +190,7 @@ def test_net_with_connectors_too_many():
 
 	expect = {
 		"type": "motherboard",
+		"working": "yes",
 		"brand": "ASUSTeK Computer INC.",
 		"model": "P6T DELUXE V2",
 		"sn": "723627130020069",
