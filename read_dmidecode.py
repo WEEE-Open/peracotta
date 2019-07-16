@@ -56,6 +56,7 @@ connectors_map = {
 }
 connectors_map_tuples = {
 	("On Board IDE", None, "*IDE*", None): "ide-ports-n",
+	("On Board IDE", None, None, "* IDE"): "ide-ports-n",
 	("On Board IDE", None, "PRIMARY*", None): "ide-ports-n",
 	("On Board IDE", None, "SECONDARY*", None): "ide-ports-n",
 	("On Board IDE", None, "SATA*", None): "sata-ports-n",
