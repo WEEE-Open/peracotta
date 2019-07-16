@@ -50,7 +50,7 @@ def test_ram():
 			"brand": "Kingston",
 			"model": "KD6502-ELG",
 			"sn": "3072778780",
-			"frequency-hertz": 666000000,
+			"frequency-hertz": 667000000,
 			"human_readable_frequency": "666 MHz",
 			"capacity-byte": 1073741824,
 			"human_readable_capacity": "1024 MB",
