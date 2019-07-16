@@ -80,6 +80,9 @@ def read_decode_dimms(path: str, interactive: bool = False):
 				elif "GHz" in freq[1]:
 					dimms[i].human_readable_frequency = freq[0] + " GHz"
 					dimms[i].frequency *= 1000 * 1000 * 1000
+				# The official thing is 667 MHz even if they run at 666 MHz
+				if dimms[i].frequency == 666000000:
+					dimms[i].frequency = 667000000
 
 			if line.startswith("Size"):
 				cap = line.split(" ")[-2:]
@@ -133,7 +136,6 @@ def read_decode_dimms(path: str, interactive: bool = False):
 	for dimm in dimms:
 		dimms_dicts.append({
 			"type": "ram",
-			"working": "yes",
 			"brand": dimm.brand,
 			"model": dimm.model,
 			"sn": dimm.serial_number,
