@@ -78,8 +78,9 @@ def test_connector():
 		"ethernet-ports-n": 1,
 		"ide-ports-n": 1,
 		"sata-ports-n": 6,
+		'esata-ports-n': 1,
 		"firewire-ports-n": 2,
-		"notes": "Unknown connector: None / Other (AUDIO / AUDIO)\nUnknown connector: SAS/SATA Plug Receptacle / None (ESATA / Not Specified)"
+		"notes": "Unknown connector: None / Other (AUDIO / AUDIO)"
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 

@@ -91,11 +91,12 @@ def test_connector():
 		"usb-ports-n": 8,
 		"ps2-ports-n": 2,
 		"sata-ports-n": 3,
+		"esata-ports-n": 1,
 		"vga-ports-n": 1,
 		"ethernet-ports-n": 1,
 		"mini-jack-ports-n": 3,
 		"ide-ports-n": 2,
-		"notes": "Unknown connector: None / None (SPDIF_OUT / SPDIF_OUT)\nUnknown connector: On Board IDE / None (ESATA / Not Specified)"
+		"notes": "Unknown connector: None / None (SPDIF_OUT / SPDIF_OUT)"
 	}
 	output = get_connectors(filedir + 'connector.txt', baseboard)
 
