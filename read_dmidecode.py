@@ -59,8 +59,9 @@ connectors_map_tuples = {
 	("On Board IDE", None, None, "* IDE"): "ide-ports-n",
 	("On Board IDE", None, "PRIMARY*", None): "ide-ports-n",
 	("On Board IDE", None, "SECONDARY*", None): "ide-ports-n",
+	(None, None, "*ESATA*", None): "esata-ports-n",
 	("On Board IDE", None, "SATA*", None): "sata-ports-n",
-	("On Board IDE", None, "*_SATA*", None): "sata-ports-n",  # Don't add *SATA, it matches ESATA...
+	("On Board IDE", None, "*SATA*", None): "sata-ports-n",  # Don't add *SATA, it matches ESATA...
 	(None, None, None, 'REAR LINE IN'): "mini-jack-ports-n",
 	(None, None, None, 'REAR HEADPHONE/LINEOUT'): "mini-jack-ports-n",
 	(None, None, '*FAN', None): None,
