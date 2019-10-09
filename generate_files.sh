@@ -30,8 +30,7 @@ lspci -v > "$OUTPATH/lspci.txt"
 glxinfo > "$OUTPATH/glxinfo.txt"
 DISKZ=($(lsblk -d -I 8 -o NAME -n))
 echo Found ${#DISKZ[@]} disks
-for d in "${DISKZ[@]}"
-do
+for d in "${DISKZ[@]}"; do
 	smartctl -x /dev/$d > "$OUTPATH/smartctl-dev-$d.txt"
 done
 # Already done on our custom distro, but repetita iuvant
