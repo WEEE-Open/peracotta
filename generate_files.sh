@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -eq 0 ]; then
-    echo "No path given: outputting files in working directory"
+    echo "No path given: outputting files to working directory"
     OUTPATH="."
 elif [ $# -eq 1 ]; then
     echo "Outputting files to "$1
