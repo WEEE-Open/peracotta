@@ -94,7 +94,7 @@ class Welcome(QWidget):
 
 	def generate_files(self, window: QMainWindow, has_dedicated_gpu: bool):
 		try:
-			working_directory = sp.check_output(["pwd"])[:-1].decode("ascii")
+			working_directory = os.getcwd()
 			if not os.path.isdir(working_directory + "/tmp"):
 				os.makedirs(working_directory + "/tmp")
 
