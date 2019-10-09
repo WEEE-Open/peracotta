@@ -7,7 +7,7 @@ elif [ $# -eq 1 ]; then
     echo "Outputting files to "$1
     OUTPATH=$1
 else
-    echo "Unexpected number of parameters. Usage: sudo ./generate_files.sh /optional/path/to/files"
+    echo -n "Unexpected number of parameters.\nUsage: sudo ./generate_files.sh /optional/path/to/files"
 fi
 
 dmidecode -t baseboard > "$OUTPATH/baseboard.txt"
