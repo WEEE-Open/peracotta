@@ -65,18 +65,21 @@ def read_smartctl(path: str, interactive: bool = False):
 					disk.family = family
 					if brand is not None:
 						disk.brand = brand
+						
 				elif "Model Number:" in line:
 					line = line.split("Model Number:")[1].strip()
 					brand, model = split_brand_and_other(line)
 					disk.model = model
 					if brand is not None:
 						disk.brand = brand
+
 				elif "Device Model:" in line:
 					line = line.split("Device Model:")[1].strip()
 					brand, model = split_brand_and_other(line)
 					disk.model = model
 					if brand is not None:
 						disk.brand = brand
+
 				elif "Serial Number:" in line:
 					disk.serial_number = line.split("Serial Number:")[1].strip()
 
