@@ -13,7 +13,7 @@ fi
 dmidecode -t baseboard > "$OUTPATH/baseboard.txt"
 dmidecode -t connector > "$OUTPATH/connector.txt"
 dmidecode -t chassis > "$OUTPATH/chassis.txt"
-truncate "$OUTPATH/net.txt"
+truncate -s 0 "$OUTPATH/net.txt"  # Create empty file or delete content
 NET=($(find /sys/class/net -maxdepth 1 \( -name "en*" -o -name "wl*" \) -exec basename  '{}' ';'))
 for NETDEV in "${NET[@]}"
 do
