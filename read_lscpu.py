@@ -101,7 +101,7 @@ def read_lscpu(path: str):
 
 	result = {
 		"type": "cpu",
-		"working": "yes",
+		"working": "yes", # Indeed it is working
 		"isa": cpu.architecture,
 		"model": cpu.model,
 		"brand": cpu.brand,
@@ -109,7 +109,6 @@ def read_lscpu(path: str):
 		"thread-n": cpu.n_threads,
 		"frequency-hertz": cpu.frequency,
 		"human_readable_frequency": cpu.human_readable_frequency,
-		"working": 'yes',  # Indeed it is working
 	}
 
 	if sockets > 1:
