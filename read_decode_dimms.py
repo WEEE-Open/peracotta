@@ -5,8 +5,8 @@ Read "decode-dimms" output
 """
 
 import sys
-
 from InputFileNotFoundError import InputFileNotFoundError
+from enum import Enum
 
 
 class Dimm:
@@ -20,9 +20,13 @@ class Dimm:
 		self.capacity = -1
 		self.human_readable_capacity = ""
 		self.ram_type = ""  # DDR, DDR2, DDR3 etc.
-		self.ecc = "no"  # enum: "yes" or "no"
+		self.ecc = ECC.not_available
 		self.cas_latencies = ""
 		self.manufacturer_data_type = ""
+
+class ECC(Enum):
+	available = "yes"
+	not_available = "no"
 
 
 # initial_chars_to_ignore is the length of the feature whose name the line begins with
@@ -126,7 +130,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 
 			if line.startswith("Module Configuration Type") and (
 					"Data Parity" in line or "Data ECC" in line or "Address/Command Parity" in line):
-				dimms[i].ecc = "yes"
+				dimms[i].ecc = ECC.available
 
 			# Two (or more) spaces after because there are lines like "tCL-tRCD-tRP-tRAS as ..."
 			if line.startswith("tCL-tRCD-tRP-tRAS  "):
