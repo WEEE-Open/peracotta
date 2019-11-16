@@ -11,19 +11,20 @@ from read_lscpu import read_lscpu
 from read_decode_dimms import read_decode_dimms
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from read_smartctl import read_smartctl
+from tarallo_token import TARALLO_TOKEN
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, interactive: bool = False):
 	directory = directory.rstrip('/')
 
-	chassis, cpu, dimms, disks, gpu, mobo = extract_data(directory, has_dedicated_gpu, gpu_in_cpu, False, interactive)
+	chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu, False, interactive)
 
 	# TODO: add mobo, chassis, cpu, disks checks
 
 	no_dimms_str = "decode-dimms was not able to find any RAM details"
 
 	# the None check MUST come before the others
-	if dimms is None or no_dimms_str in dimms:
+	if dimms.__len__() == 0:
 		# empty default dictionary
 		dimms = {
 			"type": "ram",
@@ -41,11 +42,11 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 		}
 
 	no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
-	                  "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
+					  "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
 	no_vram_info_str = "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which " \
-	                   "could be near the actual value. Please humans, fix this error by hand."
+					   "could be near the actual value. Please humans, fix this error by hand."
 
-	if gpu is None or (no_gpu_info_str in gpu and no_vram_info_str in gpu):
+	if gpu.__len__() == 0 or (no_gpu_info_str in gpu and no_vram_info_str in gpu):
 		gpu = {
 			"type": "graphics-card",
 			"manufacturer_brand": None,
@@ -59,9 +60,35 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 	elif no_vram_info_str in gpu and no_gpu_info_str not in gpu:
 		# TODO: check output in this case, change only VRAM field to None
 		print_lspci_lines_in_dialog = False
-
 	else:
 		print_lspci_lines_in_dialog = False
+
+	if chassis.__len__() == 0:
+		chassis = {
+			"type": "case",
+			"brand": None,
+			"model": None,
+			"serial_number": None
+		}
+	if mobo.__len__() == 0:
+		mobo = {
+		  "type": 'motherboard',
+		  "brand": None,
+		  "model": None,
+		  "serial_number": None
+		}
+
+	if cpu.__len__() == 0:
+		cpu = {
+		"type": "cpu",
+		"isa": None,
+		"model": None,
+		"brand": None,
+		"core-n": None,
+		"thread-n": None,
+		"frequency-hertz": None,
+		"human_readable_frequency": None
+		}
 
 	result = [chassis, mobo, cpu]
 
@@ -165,9 +192,10 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
 	disks = read_smartctl(directory)
 
 	result = []
+	emptyDict = {}
 	for thing in (chassis, mobo, cpu, dimms, gpu, disks, psu):
-		if isinstance(thing, list):
-			result += thing
+		if thing.__len__() == 0:
+			result.append(emptyDict)
 		else:
 			result.append(thing)
 	if cleanup:
