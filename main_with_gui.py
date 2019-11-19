@@ -1,4 +1,4 @@
-#!/usr/bin/gksu /usr/bin/python3
+#!/usr/bin/pkexec /usr/bin/python3
 
 import sys
 import os
