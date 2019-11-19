@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Dependencies on Debian:
+# pciutils i2c-tools mesa-utils smartmontools dmidecode
+
 if [ $# -eq 0 ]; then
     echo "No path given: outputting files to working directory"
     OUTPATH="."
