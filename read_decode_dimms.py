@@ -29,6 +29,7 @@ class ECC(Enum):
 	not_available = "no"
 
 
+
 # initial_chars_to_ignore is the length of the feature whose name the line begins with
 # e.g. "Fundamental Memory Type" begins with 23 characters that are not all spaces, then n spaces to ignore,
 # and finally there's the value needed, e.g. "DDR3 SDRAM"
