@@ -21,7 +21,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu, False,
                                                               interactive)
 
-    # TODO: add mobo, chassis, cpu, disks checks
 
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
@@ -111,6 +110,8 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             result.append(disk)
 
     # tuple = list(dicts), bool
+    # result= chassis,mobo ,cpu, dimms, gpu, disks
+
     return result, print_lspci_lines_in_dialog
 
 
@@ -163,7 +164,7 @@ def do_cleanup(result: list, interactive: bool = False) -> list:
     return filtered
 
 
-def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, cleanup: bool, interactive: bool) -> dict:
+def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, cleanup: bool, interactive: bool):
     mobo = get_baseboard(directory + "/baseboard.txt")
     cpu = read_lscpu(directory + "/lscpu.txt")
     gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", interactive)
@@ -217,7 +218,7 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--interactive', action="store_true", default=False, help="print some warning messages")
     parser.add_argument('path', action="store", nargs='?', type=str, help="to directory with txt files")
     args = parser.parse_args()
-
+    # TODO: check if -c and -g are compatible with -i
     if args.cpu and args.gpu:
         print("A dedicated GPU cannot be inside a CPU, remove -g or -c (--gpu or --cpu)")
         exit(2)
