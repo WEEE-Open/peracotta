@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from enum import Enum
+
 import sys
 import os
 from math import log10, floor
@@ -24,6 +26,12 @@ class Disk:
 		self.human_readable_capacity = ""
 		self.rotation_rate = -1
 		self.smart_data = False
+
+
+class SMART(Enum):
+	working = "yes"
+	not_woring = "no"
+	not_available= "can't say"
 
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
