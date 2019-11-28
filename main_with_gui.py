@@ -100,8 +100,8 @@ class Welcome(QWidget):
 
 			folder_name = "tmp"
 			path_to_gen_files_sh = working_directory + "/generate_files.sh"
-			with sp.Popen(["sudo", path_to_gen_files_sh, folder_name], shell=False) as process:
-				process.wait(timeout=10)
+			with sp.Popen(["pkexec", path_to_gen_files_sh, folder_name], shell=False) as process:
+				process.wait(timeout=60)
 			# the line below is needed in order to not close the window!
 			window.takeCentralWidget()
 			new_widget = FilesGenerated(window, has_dedicated_gpu)
