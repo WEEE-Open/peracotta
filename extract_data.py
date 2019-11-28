@@ -214,13 +214,16 @@ if __name__ == '__main__':
     # TODO: make mutually exclusive cgb
     # TODO: make necessary at least one of cgb
     parser = argparse.ArgumentParser(description="Get all the possible output data things")
-    parser.add_argument('-s', '--short', action="store_true", default=False, help="print shorter ouput")  # TODO: this is actually ready for TARALLO output
+    parser.add_argument('-l', '--long', action="store_true", default=False, help="print longer output")
     # TODO: replace long from short
     # TODO: add option to launch GUI
-    parser.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
-    parser.add_argument('-c', '--cpu', action="store_true", default=False,
-                        help="integrated GPU is inside CPU (default to mobo)")
-    parser.add_argument('-i', '--interactive', action="store_true", default=False, help="print some warning messages")
+    group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=True)
+    group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
+    group.add_argument('-c', '--cpu', action="store_true", default=False,
+                        help="GPU is integrated inside the CPU")
+    group.add_argument('-b', '--motherboard', action="store_true", default=False,
+                        help="GPU is integrated inside the motherboard")
+    parser.add_argument('-v', '--verbose', action="store_true", default=False, help="print some warning messages")
     parser.add_argument('path', action="store", nargs='?', type=str, help="to directory with txt files")
     args = parser.parse_args()
 
@@ -237,15 +240,14 @@ if __name__ == '__main__':
         path = args.path
 
     try:
-        if args.short:
-            data = extract_data(path, args.gpu, args.cpu, True, args.interactive)
+        if args.long:
+            data = extract_data(path, args.gpu, args.cpu, True, args.verbose)
             print(json.dumps(data, indent=2))
         else:
-            print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.interactive),
+            print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.verbose),
                              indent=2))
     except InputFileNotFoundError as e:
         print(str(e))
         exit(1)
 
 # TODO: -s should not have empty {}
-# TODO: -i should be called verbose
