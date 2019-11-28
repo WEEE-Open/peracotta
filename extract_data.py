@@ -226,9 +226,8 @@ if __name__ == '__main__':
     if args.path is None:
         if not os.path.isdir("tmp"):
             os.makedirs("tmp")
-            path = "tmp"
         else:
-            path = "."
+            path = "tmp"
     else:
         path = args.path
 
