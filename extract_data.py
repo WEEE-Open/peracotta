@@ -12,6 +12,7 @@ from read_decode_dimms import read_decode_dimms
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from read_smartctl import read_smartctl
 from tarallo_token import TARALLO_TOKEN
+import main_with_gui
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
@@ -209,15 +210,17 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
 if __name__ == '__main__':
     import argparse
 
-    # TODO: add option to launch GUI
     parser = argparse.ArgumentParser(description="Get all the possible output data things")
-    parser.add_argument('-l', '--long', action="store_true", default=False, help="print longer output")
-    group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=True)
-    group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
-    group.add_argument('-c', '--cpu', action="store_true", default=False,
-                        help="GPU is integrated inside the CPU")
-    group.add_argument('-b', '--motherboard', action="store_true", default=False,
-                        help="GPU is integrated inside the motherboard")
+    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=True)
+    gpu_group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
+    gpu_group.add_argument('-c', '--cpu', action="store_true", default=False,
+                           help="GPU is integrated inside the CPU")
+    gpu_group.add_argument('-b', '--motherboard', action="store_true", default=False,
+                           help="GPU is integrated inside the motherboard")
+    gui_group = parser.add_argument_group('With or without GUI').add_mutually_exclusive_group(required=False)
+    gui_group.add_argument('-l', '--long', action="store_true", default=False, help="print longer output")
+    gui_group.add_argument('-i', '--gui', action="store_true", default=False,
+                        help="launch GUI instead of using the terminal version")
     parser.add_argument('-v', '--verbose', action="store_true", default=False, help="print some warning messages")
     parser.add_argument('path', action="store", nargs='?', type=str, help="to directory with txt files")
     args = parser.parse_args()
@@ -231,6 +234,8 @@ if __name__ == '__main__':
         if args.long:
             data = extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.verbose)
             print(json.dumps(data, indent=2))
+        elif args.gui:
+            main_with_gui.main()
         else:
             data = extract_data(path, args.gpu, args.cpu, True, args.verbose)
             print(json.dumps(data, indent=2))
