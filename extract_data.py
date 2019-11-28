@@ -208,6 +208,7 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
 
 if __name__ == '__main__':
     import argparse
+    import os
 
     parser = argparse.ArgumentParser(description="Get all the possible output data things")
     parser.add_argument('-s', '--short', action="store_true", default=False, help="print shorter ouput")
@@ -223,7 +224,11 @@ if __name__ == '__main__':
         exit(2)
 
     if args.path is None:
-        path = '.'
+        if not os.path.isdir("tmp"):
+            os.makedirs("tmp")
+            path = "tmp"
+        else:
+            path = "."
     else:
         path = args.path
 
