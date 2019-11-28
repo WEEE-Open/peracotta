@@ -210,8 +210,13 @@ if __name__ == '__main__':
     import argparse
     import os
 
+    # TODO: add -b if GPU is in mobo
+    # TODO: make mutually exclusive cgb
+    # TODO: make necessary at least one of cgb
     parser = argparse.ArgumentParser(description="Get all the possible output data things")
-    parser.add_argument('-s', '--short', action="store_true", default=False, help="print shorter ouput")
+    parser.add_argument('-s', '--short', action="store_true", default=False, help="print shorter ouput")  # TODO: this is actually ready for TARALLO output
+    # TODO: replace long from short
+    # TODO: add option to launch GUI
     parser.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
     parser.add_argument('-c', '--cpu', action="store_true", default=False,
                         help="integrated GPU is inside CPU (default to mobo)")
@@ -241,3 +246,6 @@ if __name__ == '__main__':
     except InputFileNotFoundError as e:
         print(str(e))
         exit(1)
+
+# TODO: -s should not have empty {}
+# TODO: -i should be called verbose
