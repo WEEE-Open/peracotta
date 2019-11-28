@@ -208,11 +208,10 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
 
 if __name__ == '__main__':
     import argparse
-    import os
 
+    # TODO: add option to launch GUI
     parser = argparse.ArgumentParser(description="Get all the possible output data things")
     parser.add_argument('-l', '--long', action="store_true", default=False, help="print longer output")
-    # TODO: add option to launch GUI
     group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=True)
     group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
     group.add_argument('-c', '--cpu', action="store_true", default=False,
