@@ -224,20 +224,18 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.path is None:
-        if not os.path.isdir("tmp"):
-            os.makedirs("tmp")
-        else:
-            path = "tmp"
+        path = "."
     else:
         path = args.path
 
     try:
         if args.long:
-            data = extract_data(path, args.gpu, args.cpu, True, args.verbose)
+            data = extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.verbose)
             print(json.dumps(data, indent=2))
         else:
-            print(json.dumps(extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.verbose),
-                             indent=2))
+            data = extract_data(path, args.gpu, args.cpu, True, args.verbose)
+            print(json.dumps(data, indent=2))
+
     except InputFileNotFoundError as e:
         print(str(e))
         exit(1)
