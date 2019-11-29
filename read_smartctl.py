@@ -182,7 +182,7 @@ def read_smartctl(path: str, interactive: bool = False):
                 "capacity-byte": disk.capacity,
                 "human_readable_capacity": disk.human_readable_capacity,
                 # "human_readable_smart_data": disk.smart_data_long
-                "smart_data": str(disk.smart_data.value)
+                "smart-data": str(disk.smart_data.value)
             }
         else:
             this_disk = {
