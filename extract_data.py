@@ -15,11 +15,11 @@ from tarallo_token import TARALLO_TOKEN
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
-                                                  interactive: bool = False):
+                                                  gpu_in_mobo: bool, verbose: bool = False):
     directory = directory.rstrip('/')
 
-    chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu, False,
-                                                              interactive)
+    chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu, gpu_in_mobo,
+                                                              cleanup=False, verbose=verbose)
 
 
     no_dimms_str = "decode-dimms was not able to find any RAM details"
@@ -164,10 +164,11 @@ def do_cleanup(result: list, interactive: bool = False) -> list:
     return filtered
 
 
-def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, cleanup: bool, interactive: bool):
+def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gpu_in_mobo: bool, cleanup: bool,
+                 verbose: bool):
     mobo = get_baseboard(directory + "/baseboard.txt")
     cpu = read_lscpu(directory + "/lscpu.txt")
-    gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", interactive)
+    gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", verbose)
     if not has_dedicated_gpu:
         entries = extract_integrated_gpu_from_standalone(gpu)
         if gpu_in_cpu:
@@ -184,10 +185,10 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
         else:
             mobo = {**mobo, **entries}
         gpu = []
-    mobo = get_connectors(directory + "/connector.txt", mobo, interactive)
-    mobo = get_net(directory + "/net.txt", mobo, interactive)
+    mobo = get_connectors(directory + "/connector.txt", mobo, verbose)
+    mobo = get_net(directory + "/net.txt", mobo, verbose)
     chassis = get_chassis(directory + "/chassis.txt")
-    dimms = read_decode_dimms(directory + "/dimms.txt", interactive)
+    dimms = read_decode_dimms(directory + "/dimms.txt", verbose)
     if chassis["motherboard-form-factor"] == "proprietary-laptop":
         psu = {"type": "external-psu"}
     else:
@@ -202,7 +203,7 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
         else:
             result.append(thing)
     if cleanup:
-        result = do_cleanup(result, interactive)
+        result = do_cleanup(result, verbose)
 
     return result
 
@@ -232,13 +233,22 @@ if __name__ == '__main__':
 
     try:
         if args.long:
-            data = extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.verbose)
+            data = extract_and_collect_data_from_generated_files(directory=path,
+                                                                 has_dedicated_gpu=args.gpu,
+                                                                 gpu_in_cpu=args.cpu,
+                                                                 gpu_in_mobo=args.motherboard,
+                                                                 verbose=args.verbose)
             print(json.dumps(data, indent=2))
         elif args.gui:
             import main_with_gui
             main_with_gui.main()
         else:
-            data = extract_data(path, args.gpu, args.cpu, True, args.verbose)
+            data = extract_data(directory=path,
+                                has_dedicated_gpu=args.gpu,
+                                gpu_in_cpu=args.cpu,
+                                gpu_in_mobo=args.motherboard,
+                                cleanup=True,
+                                verbose=args.verbose)
             print(json.dumps(data, indent=2))
 
     except InputFileNotFoundError as e:
