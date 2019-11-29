@@ -142,7 +142,7 @@ def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
     return result
 
 
-def do_cleanup(result: list, interactive: bool = False) -> list:
+def do_cleanup(result: list, verbose: bool = False) -> list:
     filtered = []
 
     for item in result:
@@ -159,7 +159,7 @@ def do_cleanup(result: list, interactive: bool = False) -> list:
                 cleaned_item[k] = v
         filtered.append(cleaned_item)
 
-        if interactive and len(removed) > 0:
+        if verbose and len(removed) > 0:
             print(f"Removed from {item['type']}: {', '.join(removed)}.")
     return filtered
 
