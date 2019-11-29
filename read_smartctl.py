@@ -35,9 +35,6 @@ class SMART(Enum):
     old = "old"  # TODO: ask @quel_tale what the heck is this
 
 
-#
-
-
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
 # SINCE THERE MAY BE MULTIPLE FILES
 def read_smartctl(path: str, interactive: bool = False):
@@ -185,7 +182,7 @@ def read_smartctl(path: str, interactive: bool = False):
                 "capacity-byte": disk.capacity,
                 "human_readable_capacity": disk.human_readable_capacity,
                 # "human_readable_smart_data": disk.smart_data_long
-                "smart_data": disk.smart_data
+                "smart_data": str(disk.smart_data)
             }
         else:
             this_disk = {
