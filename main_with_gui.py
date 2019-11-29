@@ -97,8 +97,6 @@ class Welcome(QWidget):
 			working_directory = os.getcwd()
 			if not os.path.isdir(os.path.join(working_directory, "tmp")):
 				os.makedirs(os.path.join(working_directory, "tmp"))
-			# PAY ATTENTION DO NOT use path.join(working_directory,"/tmp"), bc the slash makes join function
-			# return a path like /tmp and not the whole working_dir+tmp
 
 			folder_name = "tmp"
 			path_to_gen_files_sh = working_directory + "/generate_files.sh"
