@@ -198,20 +198,17 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gpu_
     result = []
     empty_dict = {}
     for component in (chassis, mobo, cpu, dimms, gpu, disks, psu):
-        if component.__len__() == 0:
-            result.append(empty_dict)
+        if isinstance(component, list):
+            if component.__len__() == 0:
+                result.append(empty_dict)
+                continue
+            for item in component:
+                result.append(item)
         else:
             result.append(component)
 
     if cleanup:
-        result_tmp = []
-        for component in result:
-            if isinstance(component, list):
-                for item in component:
-                    result_tmp.append(item)
-            else:
-                result_tmp.append(component)
-        result = do_cleanup(result_tmp, verbose)
+        result = do_cleanup(result, verbose)
 
     return result
 
