@@ -39,4 +39,4 @@ done
 # Already done on our custom distro, but repetita iuvant
 modprobe at24
 modprobe eeprom
-decode-dimms &> $OUTPATH/dimms.txt
+decode-dimms &> "$OUTPATH/dimms.txt"
