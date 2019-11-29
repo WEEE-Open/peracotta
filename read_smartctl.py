@@ -182,7 +182,7 @@ def read_smartctl(path: str, interactive: bool = False):
                 "capacity-byte": disk.capacity,
                 "human_readable_capacity": disk.human_readable_capacity,
                 # "human_readable_smart_data": disk.smart_data_long
-                "smart_data": str(disk.smart_data)
+                "smart_data": str(disk.smart_data.value)
             }
         else:
             this_disk = {
@@ -198,7 +198,7 @@ def read_smartctl(path: str, interactive: bool = False):
                 "human_readable_capacity": disk.human_readable_capacity,
                 "spin-rate-rpm": disk.rotation_rate,
                 # "human_readable_smart_data": disk.smart_data.long
-                "smart_data": str(disk.smart_data)
+                "smart_data": str(disk.smart_data.value)
             }
         if disk.form_factor is not None:
             this_disk["hdd-form-factor"] = disk.form_factor
