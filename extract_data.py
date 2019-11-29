@@ -12,7 +12,6 @@ from read_decode_dimms import read_decode_dimms
 from read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from read_smartctl import read_smartctl
 from tarallo_token import TARALLO_TOKEN
-import main_with_gui
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
@@ -235,6 +234,7 @@ if __name__ == '__main__':
             data = extract_and_collect_data_from_generated_files(path, args.gpu, args.cpu, args.verbose)
             print(json.dumps(data, indent=2))
         elif args.gui:
+            import main_with_gui
             main_with_gui.main()
         else:
             data = extract_data(path, args.gpu, args.cpu, True, args.verbose)
