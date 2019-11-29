@@ -84,7 +84,7 @@ class Welcome(QWidget):
 			else:
 				# noinspection PyCallByClass
 				confirm = QMessageBox.question(self, "Confirm",
-					"Do you confirm this system has not an integrated GPU?",
+					"Do you confirm this system has an integrated GPU?",
 					QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 				if confirm == QMessageBox.Yes:
 					self.generate_files(window, has_dedicated_gpu=False)
