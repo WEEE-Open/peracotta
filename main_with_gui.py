@@ -95,11 +95,12 @@ class Welcome(QWidget):
 	def generate_files(self, window: QMainWindow, has_dedicated_gpu: bool):
 		try:
 			working_directory = os.getcwd()
-			if not os.path.isdir(working_directory + "/tmp"):
-				os.makedirs(working_directory + "/tmp")
+			if not os.path.isdir(os.path.join(working_directory, "tmp")):
+				os.makedirs(os.path.join(working_directory, "tmp"))
 
 			folder_name = "tmp"
 			path_to_gen_files_sh = working_directory + "/generate_files.sh"
+      # TODO: test pkexec
 			with sp.Popen(["pkexec", path_to_gen_files_sh, folder_name], shell=False) as process:
 				process.wait(timeout=60)
 			# the line below is needed in order to not close the window!
@@ -151,9 +152,8 @@ class FilesGenerated(QWidget):
 
 	def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool):
 		try:
-			system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files('.',
-				False,  # TODO: support this
-				has_dedicated_gpu)
+			system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files('tmp',
+				has_dedicated_gpu, False)  # TODO: support this
 			print(system_info)
 			window.takeCentralWidget()
 
@@ -254,7 +254,7 @@ class VerifyExtractedData(QWidget):
 class VerifyExtractedDataScrollable(QScrollArea):
 	def __init__(self, window: QMainWindow, system_info):
 		super().__init__()
-		self.the_widget = VerifyExtractedData(window, system_info)
+		self.the_widget: VerifyExtractedData = VerifyExtractedData(window, system_info)
 		self.init_ui(window, self.the_widget, system_info)
 
 	def init_ui(self, window: QMainWindow, the_widget: VerifyExtractedData, system_info):
