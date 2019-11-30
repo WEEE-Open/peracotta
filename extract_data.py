@@ -161,6 +161,10 @@ def do_cleanup(result: list, verbose: bool = False) -> list:
 
         if verbose and len(removed) > 0:
             print(f"Removed from {item['type']}: {', '.join(removed)}.")
+
+    # remove empty dicts
+    filtered[:] = [item for item in filtered if item != {}]
+
     return filtered
 
 
