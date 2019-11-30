@@ -15,12 +15,11 @@ from tarallo_token import TARALLO_TOKEN
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
-                                                  gpu_in_mobo: bool, verbose: bool = False):
+                                                  verbose: bool = False):
     directory = directory.rstrip('/')
 
-    chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu, gpu_in_mobo,
+    chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
                                                               cleanup=False, verbose=verbose, unpack=False)
-
 
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
@@ -165,7 +164,7 @@ def do_cleanup(result: list, verbose: bool = False) -> list:
     return filtered
 
 
-def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gpu_in_mobo: bool, cleanup: bool,
+def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, cleanup: bool,
                  verbose: bool, unpack: bool = True):
     mobo = get_baseboard(directory + "/baseboard.txt")
     cpu = read_lscpu(directory + "/lscpu.txt")
@@ -235,7 +234,7 @@ if __name__ == '__main__':
     gui_group = parser.add_argument_group('With or without GUI').add_mutually_exclusive_group(required=False)
     gui_group.add_argument('-l', '--long', action="store_true", default=False, help="print longer output")
     gui_group.add_argument('-i', '--gui', action="store_true", default=False,
-                        help="launch GUI instead of using the terminal version")
+                           help="launch GUI instead of using the terminal version")
     parser.add_argument('-v', '--verbose', action="store_true", default=False, help="print some warning messages")
     parser.add_argument('path', action="store", nargs='?', type=str, help="to directory with txt files")
     args = parser.parse_args()
@@ -250,17 +249,16 @@ if __name__ == '__main__':
             data = extract_and_collect_data_from_generated_files(directory=path,
                                                                  has_dedicated_gpu=args.gpu,
                                                                  gpu_in_cpu=args.cpu,
-                                                                 gpu_in_mobo=args.motherboard,
                                                                  verbose=args.verbose)
             print(json.dumps(data, indent=2))
         elif args.gui:
             import main_with_gui
+
             main_with_gui.main()
         else:
             data = extract_data(directory=path,
                                 has_dedicated_gpu=args.gpu,
                                 gpu_in_cpu=args.cpu,
-                                gpu_in_mobo=args.motherboard,
                                 cleanup=True,
                                 verbose=args.verbose)
             print(json.dumps(data, indent=2))
@@ -268,4 +266,3 @@ if __name__ == '__main__':
     except InputFileNotFoundError as e:
         print(str(e))
         exit(1)
-
