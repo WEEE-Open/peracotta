@@ -142,6 +142,7 @@ def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
     return result
 
 
+# remove default/not found and human_readable values from TARALLO-ready JSON
 def do_cleanup(result: list, verbose: bool = False) -> list:
     filtered = []
 
