@@ -19,7 +19,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     directory = directory.rstrip('/')
 
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu, gpu_in_mobo,
-                                                              cleanup=False, verbose=verbose)
+                                                              cleanup=False, verbose=verbose, unpack=False)
 
 
     no_dimms_str = "decode-dimms was not able to find any RAM details"
@@ -165,7 +165,7 @@ def do_cleanup(result: list, verbose: bool = False) -> list:
 
 
 def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gpu_in_mobo: bool, cleanup: bool,
-                 verbose: bool):
+                 verbose: bool, unpack: bool = True):
     mobo = get_baseboard(directory + "/baseboard.txt")
     cpu = read_lscpu(directory + "/lscpu.txt")
     gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", verbose)
@@ -198,14 +198,22 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gpu_
     result = []
     empty_dict = {}
     for component in (chassis, mobo, cpu, dimms, gpu, disks, psu):
-        if isinstance(component, list):
+        # return JSON ready for TARALLO
+        if unpack:
+            if isinstance(component, list):
+                if component.__len__() == 0:
+                    result.append(empty_dict)
+                    continue
+                for item in component:
+                    result.append(item)
+            else:
+                result.append(component)
+        # return list of lists of dicts to use in extract_and_collect_data_from_generated_files() for long output
+        else:
             if component.__len__() == 0:
                 result.append(empty_dict)
-                continue
-            for item in component:
-                result.append(item)
-        else:
-            result.append(component)
+            else:
+                result.append(component)
 
     if cleanup:
         result = do_cleanup(result, verbose)
