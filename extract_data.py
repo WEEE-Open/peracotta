@@ -244,7 +244,9 @@ if __name__ == '__main__':
     gui_group.add_argument('-i', '--gui', action="store_true", default=False,
                            help="launch GUI instead of using the terminal version")
     parser.add_argument('-v', '--verbose', action="store_true", default=False, help="print some warning messages")
-    parser.add_argument('path', action="store", nargs='?', type=str, help="to directory with txt files")
+    parser.add_argument('path', action="store", nargs='?', type=str, help="path to directory with txt files generated "
+                                                                          "by generate_files.sh - defaults to current "
+                                                                          "directory")
     args = parser.parse_args()
 
     if args.path is None:
