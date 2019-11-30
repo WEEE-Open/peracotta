@@ -230,13 +230,13 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Parse the files generated with generate_files.sh and "
                                                  "get all the possible info out of them")
-    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=True)
+    gpu_group = parser.add_argument_group('GPU Location (one argument required)').add_mutually_exclusive_group(required=True)
     gpu_group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
     gpu_group.add_argument('-c', '--cpu', action="store_true", default=False,
                            help="GPU is integrated inside the CPU")
     gpu_group.add_argument('-b', '--motherboard', action="store_true", default=False,
                            help="GPU is integrated inside the motherboard")
-    gui_group = parser.add_argument_group('With or without GUI').add_mutually_exclusive_group(required=False)
+    gui_group = parser.add_argument_group('With or without GUI (one argument optional)').add_mutually_exclusive_group(required=False)
     gui_group.add_argument('-s', '--short', action="store_true", default=True,
                            help="enabled by default, this is the option you want if you want to copy-paste this "
                                 "output into the TARALLO 'Bulk Add' page")
