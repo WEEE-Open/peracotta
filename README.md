@@ -4,7 +4,20 @@
 
 Script to gather hardware data and update [T.A.R.A.L.L.O.](weee-open/tarallo) automatically.
 
-Use `pipenv shell` to get a virtual environment and run the scripts.
+## How to run
+
+Clone this repo:  
+`git clone https://github.com/weee-open/peracotta`  
+Make a virtual environment in the directory of the repo:  
+`cd peracotta`    
+`python3 -m venv venv`  
+Activate it:  
+`source venv/bin/activate`  
+Install the requirements in the virtual environment:  
+`pip install -r requirements.txt`  
+Use it.  
+When you're done, exit the virtualenv with `deactivate` 
+or simply close the terminal you were using.
 
 ## generate_files.sh
 
