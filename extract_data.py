@@ -228,7 +228,8 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description="Get all the possible output data things")
+    parser = argparse.ArgumentParser(description="Parse the files generated with generate_files.sh and "
+                                                 "get all the possible info out of them")
     gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=True)
     gpu_group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
     gpu_group.add_argument('-c', '--cpu', action="store_true", default=False,
@@ -236,6 +237,9 @@ if __name__ == '__main__':
     gpu_group.add_argument('-b', '--motherboard', action="store_true", default=False,
                            help="GPU is integrated inside the motherboard")
     gui_group = parser.add_argument_group('With or without GUI').add_mutually_exclusive_group(required=False)
+    gui_group.add_argument('-s', '--short', action="store_true", default=True,
+                           help="enabled by default, this is the option you want if you want to copy-paste this "
+                                "output into the TARALLO 'Bulk Add' page")
     gui_group.add_argument('-l', '--long', action="store_true", default=False, help="print longer output")
     gui_group.add_argument('-i', '--gui', action="store_true", default=False,
                            help="launch GUI instead of using the terminal version")
