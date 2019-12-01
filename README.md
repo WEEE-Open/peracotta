@@ -29,6 +29,10 @@ This will create some txt files with data related to the computer, that will be 
 `extract_data.py`. The hard work is powered by the many `read_X.py` scripts, which are the actual 
 parsers.
 
+Install dependencies on Debian-based distributions (Debian, Ubuntu, Xubuntu, etc):  
+`sudo apt install pciutils i2c-tools mesa-utils smartmontools dmidecode`  
+These are the actual programs that generate the files that we parse.
+
 ## extract_data.py
 
 Point it to the directory where generate_files.sh dropped its files
