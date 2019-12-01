@@ -35,7 +35,15 @@ These are the actual programs that generate the files that we parse.
 
 ## extract_data.py
 
-Point it to the directory where generate_files.sh dropped its files
+You can pass as the path argument the directory where generate_files.sh dropped its files. By default (i.e. if you don't give any arguments 
+to `generate_files.sh`) it will output the files in the current directory. Since this may clutter the working directory 
+with txt files, it's best to make a new directory (e.g. `mkdir tmp`) and pass it to the file generator (e.g. `generate_files.sh tmp`).
+You can then pass this path to this script so that it knows where to find the txt files (e.g. `./extract_data.py -g tmp`).  
+This is done automatically by the GUI version.  
+  
+You can find the usage below, but keep in mind that the two most important arguments are:
+- the path to the txt files (if none given, it will default to the current directory)
+- `-g | -c | -b`: one of these is required to tell the script where the GPU (or graphics card if it's not integrated) is located
 
 ```
 usage: extract_data.py [-h] (-g | -c | -b) [-s | -l | -i] [-v] [path]
