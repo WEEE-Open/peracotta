@@ -19,6 +19,10 @@ Use it.
 When you're done, exit the virtualenv with `deactivate` 
 or simply close the terminal you were using.
 
+For developers, if requirements change:  
+- install the correct version of the requirements (e.g. a new library or a new version of an already installed library)  
+- with the virtual environment activated, run `pip freeze > requirements.txt`  
+
 ## generate_files.sh
 
 This will create some txt files with data related to the computer, that will be parsed by launching 
