@@ -67,7 +67,7 @@ def read_smartctl(path: str, interactive: bool = False):
                 disk.smart_data_long = '=== START OF READ SMART DATA SECTION ===' + \
                                        output.split('=== START OF READ SMART DATA SECTION ===', 1)[1]
 
-            if disk.smart_data_long != SMART.not_available.value:
+            if disk.smart_data_long != SMART.not_available:
                 status = "not supported"
                 for line in disk.smart_data_long.splitlines():
                     if "SMART overall-health" in line:
