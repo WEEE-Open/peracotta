@@ -24,8 +24,8 @@ class Disk:
         self.capacity = -1  # n of bytes
         self.human_readable_capacity = ""
         self.rotation_rate = -1
-        self.smart_data_long = None
-        self.smart_data = None
+        self.smart_data_long = SMART.not_available
+        self.smart_data = SMART.not_available
 
 
 class SMART(Enum):
@@ -67,8 +67,8 @@ def read_smartctl(path: str, interactive: bool = False):
                 disk.smart_data_long = '=== START OF READ SMART DATA SECTION ===' + \
                                        output.split('=== START OF READ SMART DATA SECTION ===', 1)[1]
 
-            if disk.smart_data_long is not None:
-                status = None
+            if disk.smart_data_long != SMART.not_available.value:
+                status = "not supported"
                 for line in disk.smart_data_long.splitlines():
                     if "SMART overall-health" in line:
                         status = line.split(":")[1].strip()
@@ -99,6 +99,7 @@ def read_smartctl(path: str, interactive: bool = False):
                                 # you need to enable smart capabilities
                                 print("you need to enable smart capabilities on disk")
                                 disk.smart_data = SMART.not_available
+
             for line in data.splitlines():
                 if "Model Family:" in line:
                     line = line.split("Model Family:")[1].strip()
@@ -182,7 +183,7 @@ def read_smartctl(path: str, interactive: bool = False):
                 "capacity-byte": disk.capacity,
                 "human_readable_capacity": disk.human_readable_capacity,
                 # "human_readable_smart_data": disk.smart_data_long
-                "smart-data": str(disk.smart_data.value)
+                "smart-data": disk.smart_data.value
             }
         else:
             this_disk = {
@@ -198,7 +199,7 @@ def read_smartctl(path: str, interactive: bool = False):
                 "human_readable_capacity": disk.human_readable_capacity,
                 "spin-rate-rpm": disk.rotation_rate,
                 # "human_readable_smart_data": disk.smart_data.long
-                "smart-data": str(disk.smart_data.value)
+                "smart-data": disk.smart_data.value
             }
         if disk.form_factor is not None:
             this_disk["hdd-form-factor"] = disk.form_factor
