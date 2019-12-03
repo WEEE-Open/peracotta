@@ -126,5 +126,6 @@ while : ; do
     fi
   else
     run_extract_data
+    break
   fi
 done
