@@ -35,7 +35,6 @@ function run_extract_data {
   ./extract_data.py -$gpu_location "$OUTPUT_PATH"
 }
 
-gpu_location=""
 
 # parse arguments
 # unknown_args=()
@@ -43,10 +42,12 @@ while [[ $# -gt 0 ]]; do
   arg="$1"
   case $arg in
     -h|--help)
+    echo $gpu_location
     print_usage
     exit 0
     ;;
     -p|--path)
+    echo $gpu_location
     if [ -n "$2" ]; then
       OUTPUT_PATH="$2"
     else
@@ -55,21 +56,25 @@ while [[ $# -gt 0 ]]; do
     shift 2
     ;;
     -c|--cpu)
+    echo $gpu_location
     check_mutually_exclusive_args
     gpu_location="c"
     shift
     ;;
     -g|--gpu)
+    echo $gpu_location
     check_mutually_exclusive_args
     gpu_location="g"
     shift
     ;;
     -b|--motherboard)
+    echo $gpu_location
     check_mutually_exclusive_args
     gpu_location="b"
     shift
     ;;
     *)
+    echo $gpu_location
     echo "Unkwown option '$1'. See usage:"
     print_usage
     exit 0
