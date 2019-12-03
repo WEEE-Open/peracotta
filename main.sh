@@ -124,4 +124,5 @@ while : ; do
     fi
   else
     run_extract_data
+  fi
 done
