@@ -42,9 +42,7 @@ fi
 
 sudo ./generate_files.sh $OUTPUT_PATH
 
-# evaluates to while true but slightly faster
-while :
-do
+while true; do
   echo "Where is the GPU in your PC? c/g/b"
   echo "c for integrated in CPU"
   echo "g for discrete graphics card"
