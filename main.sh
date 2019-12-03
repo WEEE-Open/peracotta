@@ -11,6 +11,7 @@ function print_usage {
 }
 
 function check_mutually_exclusive_args {
+  # absolutely do not remove double quotes: they're needed for the variable expansion
   if [ -n "$gpu_location" ]; then
     echo "Only one GPU location can be given at a time, meaning you can't pass 2 or more of the following arguments:"
     echo "-c|--cpu -g|--gpu -b|--motherboard"
