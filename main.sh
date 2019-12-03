@@ -2,12 +2,15 @@
 
 function print_usage {
     echo "Use -h or --help to show this help."
-    echo "Usage: $0 <optional path_to_generate_files_to>"
+    echo "Usage: $0 <optional path_to_generate_files_to> [-c|--cpu | -g|--gpu | -b|--motherboard]"
     echo ""
-    echo "If no argument is given, then this script will "
-    echo "interactively guide you to run the PERACOTTA "
-    echo "data gathering package."
-    exit 0
+    echo "If no argument is given, then this script will interactively guide you to "
+    echo "run the PERACOTTA data gathering package."
+    echo ""
+    echo "Alternatively, you can choose to pass either the path to the directory where you want the "
+    echo "files to be generated, the gpu location, or both."
+    echo "In this case, the script will only become interactive when needed, and it won't ask you anything "
+    echo "if you pass both the path and the gpu location."
 }
 
 function print_gpu_prompt {
@@ -24,8 +27,37 @@ function run_extract_data {
   echo "into the 'Bulk Add' page of the TARALLO, "
   echo "from '[' to ']':"
   echo ""
-  ./extract_data.py -$ans $OUTPUT_PATH
+  ./extract_data.py -$gpu_location "$OUTPUT_PATH"
 }
+
+# unknown_args=()
+while [[ $# -gt 0 ]]; do
+  arg="$1"
+  case $arg in
+    -h|--help)
+    print_usage
+    exit 0
+    ;;
+    -c|--cpu)
+    gpu_location="c"
+    shift
+    ;;
+    -g|--gpu)
+    gpu_location="g"
+    shift
+    ;;
+    -b|--motherboard)
+    gpu_location="b"
+    shift
+    ;;
+    *)
+    print_usage
+    exit 0
+    # unknown_args+=("$1") # save it in an array for later
+    # shift # past argument
+    ;;
+  esac
+done
 
 if [ $# -eq 1 ]; then
   if [ $1 = "-h" -o $1 = "--help" ]; then
@@ -61,18 +93,22 @@ sudo ./generate_files.sh $OUTPUT_PATH
 
 # evaluates to while true but slightly faster
 while : ; do
-  print_gpu_prompt
-  read ans
-  if [ $ans = "c" ]; then
-    run_extract_data
-    break
-  elif [ $ans = "g" ]; then
-    run_extract_data
-    break
-  elif [ $ans = "b" ]; then
-    run_extract_data
-    break
+  # if gpu_location is not given as a parameter ask the user
+  if [ -z $gpu_location ]; then
+    print_gpu_prompt
+    read gpu_location
+    if [ $gpu_location = "c" ]; then
+      run_extract_data
+      break
+    elif [ $gpu_location = "g" ]; then
+      run_extract_data
+      break
+    elif [ $gpu_location = "b" ]; then
+      run_extract_data
+      break
+    else
+      echo "I didn't get it, sorry."
+    fi
   else
-    echo "I didn't get it, sorry."
-  fi
+    run_extract_data
 done
