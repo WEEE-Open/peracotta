@@ -35,6 +35,9 @@ function run_extract_data {
   ./extract_data.py -$gpu_location "$OUTPUT_PATH"
 }
 
+gpu_location=""
+
+# parse arguments
 # unknown_args=()
 while [[ $# -gt 0 ]]; do
   arg="$1"
@@ -44,9 +47,12 @@ while [[ $# -gt 0 ]]; do
     exit 0
     ;;
     -p|--path)
-    OUTPUT_PATH="$2"
-    shift
-    shift
+    if [ -n "$2" ]; then
+      OUTPUT_PATH="$2"
+    else
+      echo "Empty path given. Script will ask you the path."
+    fi
+    shift 2
     ;;
     -c|--cpu)
     check_mutually_exclusive_args
