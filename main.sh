@@ -12,6 +12,7 @@ function print_usage {
 
 function check_mutually_exclusive_args {
   if [ -n $gpu_location ]; then
+    echo "GPU: "$gpu_location
     echo "Only one GPU location can be given at a time, meaning you can't pass 2 or more of the following arguments:"
     echo "-c|--cpu -g|--gpu -b|--motherboard"
     echo "See usage:"
@@ -47,7 +48,6 @@ while [[ $# -gt 0 ]]; do
     exit 0
     ;;
     -p|--path)
-    echo $gpu_location
     if [ -n "$2" ]; then
       OUTPUT_PATH="$2"
     else
@@ -56,25 +56,21 @@ while [[ $# -gt 0 ]]; do
     shift 2
     ;;
     -c|--cpu)
-    echo $gpu_location
     check_mutually_exclusive_args
     gpu_location="c"
     shift
     ;;
     -g|--gpu)
-    echo $gpu_location
     check_mutually_exclusive_args
     gpu_location="g"
     shift
     ;;
     -b|--motherboard)
-    echo $gpu_location
     check_mutually_exclusive_args
     gpu_location="b"
     shift
     ;;
     *)
-    echo $gpu_location
     echo "Unkwown option '$1'. See usage:"
     print_usage
     exit 0
