@@ -44,18 +44,22 @@ sudo ./generate_files.sh $OUTPUT_PATH
 
 # evaluates to while true
 while : ; do
+  echo ""
   echo "Where is the GPU in your PC? c/g/b"
   echo "c for integrated in CPU"
   echo "g for discrete graphics card"
   echo "b for integrated in motherboard"
   read ans
   if [ $ans = "c" ]; then
+    echo ""
     ./extract_data.py -c $OUTPUT_PATH
     break
   elif [ $ans = "g" ]; then
+    echo ""
     ./extract_data.py -g $OUTPUT_PATH
     break
   elif [ $ans = "b" ]; then
+    echo ""
     ./extract_data.py -b $OUTPUT_PATH
     break
   else
