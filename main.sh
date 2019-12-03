@@ -10,6 +10,23 @@ function print_usage {
     exit 0
 }
 
+function print_gpu_prompt {
+  echo ""
+  echo "Where is the GPU in your PC? c/g/b"
+  echo "c for integrated in CPU"
+  echo "g for discrete graphics card"
+  echo "b for integrated in motherboard"
+}
+
+function run_extract_data {
+  echo ""
+  echo "The following output can be copy-pasted "
+  echo "into the 'Bulk Add' page of the TARALLO, "
+  echo "from '[' to ']':"
+  echo ""
+  ./extract_data.py -$ans $OUTPUT_PATH
+}
+
 if [ $# -eq 1 ]; then
   if [ $1 = "-h" -o $1 = "--help" ]; then
     print_usage
@@ -42,25 +59,18 @@ fi
 
 sudo ./generate_files.sh $OUTPUT_PATH
 
-# evaluates to while true
+# evaluates to while true but slightly faster
 while : ; do
-  echo ""
-  echo "Where is the GPU in your PC? c/g/b"
-  echo "c for integrated in CPU"
-  echo "g for discrete graphics card"
-  echo "b for integrated in motherboard"
+  print_gpu_prompt
   read ans
   if [ $ans = "c" ]; then
-    echo ""
-    ./extract_data.py -c $OUTPUT_PATH
+    run_extract_data
     break
   elif [ $ans = "g" ]; then
-    echo ""
-    ./extract_data.py -g $OUTPUT_PATH
+    run_extract_data
     break
   elif [ $ans = "b" ]; then
-    echo ""
-    ./extract_data.py -b $OUTPUT_PATH
+    run_extract_data
     break
   else
     echo "I didn't get it, sorry."
