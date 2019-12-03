@@ -2,7 +2,7 @@
 
 function print_usage {
     echo "Use -h or --help to show this help."
-    echo "Usage: $0 <optional path_to_generate_files_to> [-c|--cpu | -g|--gpu | -b|--motherboard]"
+    echo "Usage: $0 [-p|--path <optional path to generate files to>] [-c|--cpu | -g|--gpu | -b|--motherboard]"
     echo ""
     echo "If no argument is given, then this script will interactively guide you to "
     echo "run the PERACOTTA data gathering package."
@@ -38,6 +38,11 @@ while [[ $# -gt 0 ]]; do
     print_usage
     exit 0
     ;;
+    -p|--path)
+    OUTPUT_PATH="$2"
+    shift
+    shift
+    ;;
     -c|--cpu)
     gpu_location="c"
     shift
@@ -51,6 +56,7 @@ while [[ $# -gt 0 ]]; do
     shift
     ;;
     *)
+    echo "Unkwown option $1. See usage:"
     print_usage
     exit 0
     # unknown_args+=("$1") # save it in an array for later
@@ -59,13 +65,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [ $# -eq 1 ]; then
-  if [ $1 = "-h" -o $1 = "--help" ]; then
-    print_usage
-  else
-    OUTPUT_PATH=$1
-  fi
-else
+if [ -z $OUTPUT_PATH ]; then
   if [ -d tmp ]; then
     echo "Overwrite existing files in tmp dir? y/N"
     read ans_tmp
