@@ -39,37 +39,37 @@ function run_extract_data {
 while [[ $# -gt 0 ]]; do
   arg="$1"
   case $arg in
-  -h|--help)
-  print_usage
-  exit 0
-  ;;
-  -p|--path)
-  OUTPUT_PATH="$2"
-  shift
-  shift
-  ;;
-  -c|--cpu)
-  check_mutually_exclusive_args
-  gpu_location="c"
-  shift
-  ;;
-  -g|--gpu)
-  check_mutually_exclusive_args
-  gpu_location="g"
-  shift
-  ;;
-  -b|--motherboard)
-  check_mutually_exclusive_args
-  gpu_location="b"
-  shift
-  ;;
-  *)
-  echo "Unkwown option '$1'. See usage:"
-  print_usage
-  exit 0
-  # unknown_args+=("$1") # save it in an array for later
-  # shift # past argument
-  ;;
+    -h|--help)
+    print_usage
+    exit 0
+    ;;
+    -p|--path)
+    OUTPUT_PATH="$2"
+    shift
+    shift
+    ;;
+    -c|--cpu)
+    check_mutually_exclusive_args
+    gpu_location="c"
+    shift
+    ;;
+    -g|--gpu)
+    check_mutually_exclusive_args
+    gpu_location="g"
+    shift
+    ;;
+    -b|--motherboard)
+    check_mutually_exclusive_args
+    gpu_location="b"
+    shift
+    ;;
+    *)
+    echo "Unkwown option '$1'. See usage:"
+    print_usage
+    exit 0
+    # unknown_args+=("$1") # save it in an array for later
+    # shift # past argument
+    ;;
   esac
 done
 
