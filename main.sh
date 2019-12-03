@@ -11,8 +11,7 @@ function print_usage {
 }
 
 function check_mutually_exclusive_args {
-  if [ -n $gpu_location ]; then
-    echo "GPU: "$gpu_location
+  if [ -n "$gpu_location" ]; then
     echo "Only one GPU location can be given at a time, meaning you can't pass 2 or more of the following arguments:"
     echo "-c|--cpu -g|--gpu -b|--motherboard"
     echo "See usage:"
