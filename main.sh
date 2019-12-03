@@ -49,7 +49,7 @@ while : ; do
   echo "g for discrete graphics card"
   echo "b for integrated in motherboard"
   read ans
-  if [ $ans = "c"]; then
+  if [ $ans = "c" ]; then
     ./extract_data.py -c $OUTPUT_PATH
     break
   elif [ $ans = "g" ]; then
