@@ -20,6 +20,7 @@ function check_mutually_exclusive_args {
     echo "See usage:"
     print_usage
     exit 0
+  fi
 }
 
 function print_gpu_prompt {
