@@ -46,7 +46,7 @@ if you pass both the path and the gpu location.
 ```
 ### main_with_gui.py
 
-This script is interactive, so you'll just need to run it with `./main_with_gui.py`.
+This script is interactive, so you'll just need to run it with `./main_with_gui.py`.  
 The GUI is also available from `extract_data.py` with the `-i` or `--gui` option.
 
 ## Underlying scripts run by main.sh and main_with_gui.py
