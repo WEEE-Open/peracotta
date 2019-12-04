@@ -6,11 +6,11 @@ Collect data from all the 'read...' scripts and returns it as a list of dicts
 import json
 
 from InputFileNotFoundError import InputFileNotFoundError
-from read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
-from read_lscpu import read_lscpu
-from read_decode_dimms import read_decode_dimms
-from read_lspci_and_glxinfo import read_lspci_and_glxinfo
-from read_smartctl import read_smartctl
+from parsers.read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
+from parsers.read_lscpu import read_lscpu
+from parsers.read_decode_dimms import read_decode_dimms
+from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
+from parsers.read_smartctl import read_smartctl
 from tarallo_token import TARALLO_TOKEN
 
 
