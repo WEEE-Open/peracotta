@@ -21,7 +21,7 @@ class Window(QMainWindow):
 		self.setCentralWidget(welcome_widget)
 
 		self.setWindowTitle("P.E.R.A.C.O.T.T.A.")
-		self.setWindowIcon(QIcon("pear_emoji.png"))
+		self.setWindowIcon(QIcon(os.path.join("data", "pear_emoji.png")))
 
 		self.show()
 
