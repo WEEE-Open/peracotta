@@ -102,6 +102,11 @@ With or without GUI (one argument optional):
   -i, --gui          launch GUI instead of using the terminal version
 ```
 
-### read_X.py
+### parsers
 
 There are many read_something.py scripts: these are used internally by the other scripts. They can also be launched from the command line. They can also be imported as libraries.
+
+### data
+
+This is the GUI icon.  
+Yes, it's a pear emoji. 🍐
