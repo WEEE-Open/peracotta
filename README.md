@@ -23,7 +23,35 @@ For developers, if requirements change:
 - install the correct version of the requirements (e.g. a new library or a new version of an already installed library)  
 - with the virtual environment activated, run `pip freeze > requirements.txt`  
 
-## generate_files.sh
+## main.sh and main_with_gui.py
+
+These are the scripts you run directly from the terminal. Quite obviously, `main_with_gui.py` presents a graphical interface, but at the time being, if you just have to copy-paste the JSON output from the terminal into the 'Bulk Add' TARALLO page, `main.sh` is the one for you.
+
+### main.sh
+
+This script basically runs `sudo ./generate_files.sh` and `./extract_data.py`, but it does so in an interactive manner, so 
+you can either pass it the arguments, or it will ask you for them nicely.
+
+```
+Use -h or --help to show this help.
+Usage: ./main.sh [-p|--path <optional path to generate files to>] [-c|--cpu | -g|--gpu | -b|--motherboard]
+
+If no argument is given, then this script will interactively guide you to run the PERACOTTA data 
+gathering package.
+
+Alternatively, you can choose to pass either the path to the directory where you want the files 
+to be generated, the gpu location, or both.
+In this case, the script will only become interactive when needed, and it won't ask you anything 
+if you pass both the path and the gpu location.
+```
+### main_with_gui.py
+
+This script is interactive, so you'll just need to run it with `./main_with_gui.py`.
+The GUI is also available from `extract_data.py` with the `-i` or `--gui` option.
+
+## Underlying scripts run by main.sh and main_with_gui.py
+
+### generate_files.sh
 
 This will create some txt files with data related to the computer, that will be parsed by launching 
 `extract_data.py`. The hard work is powered by the many `read_X.py` scripts, which are the actual 
@@ -33,7 +61,9 @@ Install dependencies on Debian-based distributions (Debian, Ubuntu, Xubuntu, etc
 `sudo apt install pciutils i2c-tools mesa-utils smartmontools dmidecode`  
 These are the actual programs that generate the files that we parse.
 
-## extract_data.py
+### extract_data.py
+
+#### Note: You can run this script after running `sudo ./generate_files.sh`, but it's quicker and easier if you just run `./main.sh`. No `sudo` required.
 
 You can pass as the path argument the directory where generate_files.sh dropped its files. By default (i.e. if you don't give any arguments 
 to `generate_files.sh`) it will output the files in the current directory. Since this may clutter the working directory 
@@ -72,11 +102,6 @@ With or without GUI (one argument optional):
   -i, --gui          launch GUI instead of using the terminal version
 ```
 
-## main_with_gui.py
-
-Launch it, there's a GUI. It looks cool.  
-The GUI is also available from `extract_data.py` with the `-i` or `--gui` option.
-
-## read_X.py
+### read_X.py
 
 There are many read_something.py scripts: these are used internally by the other scripts. They can also be launched from the command line. They can also be imported as libraries.
