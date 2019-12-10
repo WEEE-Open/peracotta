@@ -4,8 +4,7 @@ import os
 
 # in annotate key path to generate_files.sh
 # this should be saved as /usr/share/polkit-1/actions/generate_files_pkexec.policy
-dotpolicy_content = """
-<?xml version="1.0" encoding="UTF-8"?>
+dotpolicy_content = """ <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE policyconfig PUBLIC
  "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
@@ -31,8 +30,7 @@ local_path_to_dotpolicy = "./generate_files_pkexec.policy"
 
 # path to generate_files.sh in between dquotes
 # this should be saved as ./generate_files.pkexec
-dotpkexec_content = """
-#!/bin/sh
+dotpkexec_content = """#!/bin/sh
 pkexec "" "$@"
 """
 path_to_dotpkexec = "./generate_files.pkexec"
