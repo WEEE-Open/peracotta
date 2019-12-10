@@ -71,4 +71,4 @@ def make_dotfiles(path_to_generate_files_sh: str):
 
 
 if __name__ == '__main__':
-    make_dotfiles("/Users/Caste/PycharmProjects/WEEEOpen/peracotta/generate_files.sh")
+    make_dotfiles("./generate_files.sh")
