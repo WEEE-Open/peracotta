@@ -102,7 +102,7 @@ class Welcome(QWidget):
 			folder_name = "tmp"
 			path_to_gen_files_sh = working_directory + "/generate_files.sh"
 			make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
-			with sp.Popen(["./generate_files.pkexec", folder_name], shell=False) as process:
+			with sp.Popen(["./generate_files.pkexec", working_directory+folder_name], shell=False) as process:
 				process.wait(timeout=60)
 			# the line below is needed in order to not close the window!
 			window.takeCentralWidget()
