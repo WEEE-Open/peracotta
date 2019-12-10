@@ -27,6 +27,7 @@ dotpolicy_content = """
 </policyconfig>
 """
 path_to_dotpolicy = "/usr/share/polkit-1/actions/generate_files_pkexec.policy"
+local_path_to_dotpolicy = "./generate_files_pkexec.policy"
 
 # path to generate_files.sh in between dquotes
 # this should be saved as ./generate_files.pkexec
@@ -56,8 +57,10 @@ def make_dotfiles(path_to_generate_files_sh: str):
     # print(dotpkexec_with_path)
 
     if not os.path.isfile(path_to_dotpolicy):
-        with open(path_to_dotpolicy, 'w') as f:
+        with open(local_path_to_dotpolicy, 'w') as f:
             f.write(dotpolicy_with_path)
+            print("I need root permission to move the file just this one time.")
+            os.system("sudo mv " + local_path_to_dotpolicy + " " + path_to_dotpolicy)
             print(path_to_dotpolicy, "was created!")
     else:
         print(path_to_dotpolicy, "already existed.")
