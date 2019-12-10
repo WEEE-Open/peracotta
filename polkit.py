@@ -68,6 +68,7 @@ def make_dotfiles(path_to_generate_files_sh: str):
     if not os.path.isfile(path_to_dotpkexec):
         with open(path_to_dotpkexec, 'w') as f:
             f.write(dotpkexec_with_path)
+            os.chmod(path_to_dotpkexec, 0o776)  # octal is needed
             print(path_to_dotpkexec, "was created!")
     else:
         print(path_to_dotpkexec, "already existed.")
