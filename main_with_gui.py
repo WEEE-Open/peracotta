@@ -272,7 +272,7 @@ def main():
 
 	# set SUPERIOR dark theme
 	app.setStyle('Fusion')
-        palette = QPalette()
+	palette = QPalette()
 	palette.setColor(QPalette.Window, QColor(53, 53, 53))
 	palette.setColor(QPalette.WindowText, Qt.white)
 	palette.setColor(QPalette.Base, QColor(15, 15, 15))
