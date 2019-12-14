@@ -205,7 +205,7 @@ class VerifyExtractedData(QWidget):
 		# a button to copy data to the clipboard
 		clipboard_button = QPushButton("Json")
 		v_box.addWidget(clipboard_button, alignment=Qt.AlignCenter)
-		clipboard_button.setStyleSheet("background-color: blue")
+		clipboard_button.setStyleSheet("background-color: #006699")
 
 		# if system_info is empty
 		if not system_info:
