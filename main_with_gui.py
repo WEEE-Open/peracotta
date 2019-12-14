@@ -213,7 +213,7 @@ class VerifyExtractedData(QWidget):
 		# go to the website - button
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
-		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", "127.0.0.1:8080"]))
+		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", "tarallo.weeeopen.it"]))
 
 		h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
 		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
