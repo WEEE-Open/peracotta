@@ -196,7 +196,7 @@ class VerifyExtractedData(QWidget):
 	def __init__(self, window: QMainWindow, system_info):
 		# noinspection PyArgumentList
 		super().__init__()
-		self.init_ui(window, system_info)
+		self.init_ui(window.showMaximized(), system_info)
 
 	def init_ui(self, window: QMainWindow, system_info):
 
