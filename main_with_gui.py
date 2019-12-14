@@ -3,7 +3,6 @@
 import sys
 import os
 import subprocess as sp
-from PyQt5.Qt import QClipboard
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
 	QMessageBox, QScrollArea
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
@@ -207,7 +206,7 @@ class VerifyExtractedData(QWidget):
 		self.clipboard_button = QPushButton("Copy to clipboard")
 		v_box.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
 		self.clipboard_button.setStyleSheet("background-color: #006699")
-		self.clipboard_button.clicked.connect( lambda: QApplication.clipboard().setText(system_info) )
+		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(' '.join(str(s) for s in system_info)))
 
 		# if system_info is empty
 		if not system_info:
