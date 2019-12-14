@@ -3,6 +3,7 @@
 import sys
 import os
 import subprocess as sp
+from PyQt5.Qt import QClipboard
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
 	QMessageBox, QScrollArea
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
@@ -202,10 +203,11 @@ class VerifyExtractedData(QWidget):
 
 		v_box = QVBoxLayout()
 
-		# a button to copy data to the clipboard
-		clipboard_button = QPushButton("Json")
-		v_box.addWidget(clipboard_button, alignment=Qt.AlignCenter)
-		clipboard_button.setStyleSheet("background-color: #006699")
+		# copy to the clipboard
+		self.clipboard_button = QPushButton("Copy to clipboard")
+		v_box.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
+		self.clipboard_button.setStyleSheet("background-color: #006699")
+		self.clipboard_button.clicked.connect( lambda: QApplication.clipboard().setText(system_info) )
 
 		# if system_info is empty
 		if not system_info:
