@@ -201,16 +201,18 @@ class VerifyExtractedData(QWidget):
 	def init_ui(self, window: QMainWindow, system_info):
 
 		v_box = QVBoxLayout()
-
-		# this layout contains clipboard and website button
 		h_buttons = QHBoxLayout()
+
+		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
 
 		# copy to the clipboard - button
 		self.clipboard_button = QPushButton("Copy to clipboard")
-		self.clipboard_button.setStyleSheet("background-color: #006699")
+		self.clipboard_button.setStyleSheet(button_style)
 		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(' '.join(str(s) for s in system_info)))
 		# go to the website - button
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
+		self.website_button.setStyleSheet(button_style)
+		self.website_button.clicked.connect(lambda: sp.Popen(["firefox"]))
 
 		h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
 		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
