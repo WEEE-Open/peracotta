@@ -209,10 +209,11 @@ class VerifyExtractedData(QWidget):
 		self.clipboard_button = QPushButton("Copy to clipboard")
 		self.clipboard_button.setStyleSheet(button_style)
 		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(' '.join(str(s) for s in system_info)))
+		self.clipboard_button.clicked.connect(lambda: QMessageBox.question(self, "Done", "Copied into clipboard", QMessageBox.Ok, QMessageBox.Ok))
 		# go to the website - button
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
-		self.website_button.clicked.connect(lambda: sp.Popen(["firefox"]))
+		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", "127.0.0.1:8080"]))
 
 		h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
 		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
