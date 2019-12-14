@@ -202,11 +202,20 @@ class VerifyExtractedData(QWidget):
 
 		v_box = QVBoxLayout()
 
-		# copy to the clipboard
+		# this layout contains clipboard and website button
+		h_buttons = QHBoxLayout()
+
+		# copy to the clipboard - button
 		self.clipboard_button = QPushButton("Copy to clipboard")
-		v_box.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
 		self.clipboard_button.setStyleSheet("background-color: #006699")
 		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(' '.join(str(s) for s in system_info)))
+		# go to the website - button
+		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
+
+		h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
+		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
+
+		v_box.addLayout(h_buttons)
 
 		# if system_info is empty
 		if not system_info:
