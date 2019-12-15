@@ -224,6 +224,7 @@ class VerifyExtractedData(QWidget):
 		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", "tarallo.weeeopen.it"]))
 
 		h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
+		h_buttons.addWidget(self.json_button, alignment=Qt.AlignCenter)
 		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
 
 		v_box.addLayout(h_buttons)
