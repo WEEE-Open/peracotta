@@ -225,7 +225,9 @@ class VerifyExtractedData(QWidget):
 		h_buttons.addWidget(self.json_button, alignment=Qt.AlignCenter)
 		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
 
+		v_box.addSpacing(20)
 		v_box.addLayout(h_buttons)
+		v_box.addSpacing(20)
 
 		# if system_info is empty
 		if not system_info:
@@ -304,7 +306,7 @@ class PlainTextWidget(QWidget):
 		plain_text.document().setPlainText(' '.join(str(s) for s in system_info))
 		plain_text.setStyleSheet("background-color:#333333; color:#bbbbbb")
 		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
-		# prevent from resizing
+		# prevent from resizing too much
 
 		back_button = QPushButton("Go back")
 		back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
