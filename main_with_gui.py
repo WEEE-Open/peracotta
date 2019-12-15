@@ -217,7 +217,6 @@ class VerifyExtractedData(QWidget):
 		self.json_button = QPushButton("Proceed to JSON")
 		self.json_button.setStyleSheet(button_style)
 		self.json_button.clicked.connect(lambda: self.display_plaintext_data(window, data_as_string))
-
 		# go to the website - button
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
@@ -279,8 +278,11 @@ class VerifyExtractedData(QWidget):
 		self.setLayout(v_box)
 
 	def display_plaintext_data(self, window:QMainWindow, data_as_string):
+		if window.isMaximized():
+			window.showNormal()
 		window.takeCentralWidget()
 		new_widget = QPlainTextEdit()
+		new_widget.setStyleSheet("background-color:#333340; color:#ddaaff")
 		new_widget.document().setPlainText(data_as_string)
 		window.setCentralWidget(new_widget)
 
