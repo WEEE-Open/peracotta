@@ -191,7 +191,6 @@ class FilesGenerated(QWidget):
 #
 #         self.show()
 
-
 class VerifyExtractedData(QWidget):
 	def __init__(self, window: QMainWindow, system_info):
 		# noinspection PyArgumentList
@@ -216,7 +215,7 @@ class VerifyExtractedData(QWidget):
 		# proceed to the json - button
 		self.json_button = QPushButton("Proceed to JSON")
 		self.json_button.setStyleSheet(button_style)
-		self.json_button.clicked.connect(lambda: self.display_plaintext_data(window, data_as_string))
+		self.json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
 		# go to the website - button
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
@@ -277,14 +276,13 @@ class VerifyExtractedData(QWidget):
 
 		self.setLayout(v_box)
 
-	def display_plaintext_data(self, window:QMainWindow, data_as_string):
+	def display_plaintext_data(self, window:QMainWindow, system_info):
 		if window.isMaximized():
 			window.showNormal()
 		window.takeCentralWidget()
-		new_widget = QPlainTextEdit()
-		new_widget.setStyleSheet("background-color:#333340; color:#ddaaff")
-		new_widget.document().setPlainText(data_as_string)
-		window.setCentralWidget(new_widget)
+		plaintext_widget = PlainTextWidget(window, system_info)
+		window.setCentralWidget(plaintext_widget)
+
 
 class VerifyExtractedDataScrollable(QScrollArea):
 	def __init__(self, window: QMainWindow, system_info):
@@ -298,6 +296,24 @@ class VerifyExtractedDataScrollable(QScrollArea):
 		scroll_area.setWidgetResizable(True)
 
 
+class PlainTextWidget(QWidget):
+	def __init__(self, window:QMainWindow, system_info):
+		super.__init__()
+		v_box = QVBoxLayout()
+
+		plain_text = QPlainTextEdit()
+		plain_text.document().setPlainText(' '.join(str(s) for s in system_info))
+		plain_text.setStyleSheet("background-color:#333333; color:#aaaaaa")
+		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
+		# prevent from resizing
+
+		back_button = QPushButton("Go back")
+
+		v_box.addWidget(plain_text)
+		v_box.addWidget(back_button, alignment=Qt.AlignCenter)
+		self.setLayout(v_box)
+
+
 def main():
 	app = QApplication(sys.argv)
 
@@ -309,7 +325,7 @@ def main():
 	palette.setColor(QPalette.Base, QColor(15, 15, 15))
 	palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
 	palette.setColor(QPalette.ToolTipBase, Qt.white)
-	palette.setColor(QPalette.ToolTipText, Qt.white)		#TODO connect to new widget
+	palette.setColor(QPalette.ToolTipText, Qt.white)
 
 	palette.setColor(QPalette.Text, Qt.white)
 	palette.setColor(QPalette.Button, QColor(53, 53, 53))
