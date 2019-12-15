@@ -298,9 +298,8 @@ class VerifyExtractedDataScrollable(QScrollArea):
 
 class PlainTextWidget(QWidget):
 	def __init__(self, window:QMainWindow, system_info):
-		super.__init__()
+		super().__init__()
 		v_box = QVBoxLayout()
-
 		plain_text = QPlainTextEdit()
 		plain_text.document().setPlainText(' '.join(str(s) for s in system_info))
 		plain_text.setStyleSheet("background-color:#333333; color:#aaaaaa")
