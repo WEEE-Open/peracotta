@@ -302,16 +302,21 @@ class PlainTextWidget(QWidget):
 		v_box = QVBoxLayout()
 		plain_text = QPlainTextEdit()
 		plain_text.document().setPlainText(' '.join(str(s) for s in system_info))
-		plain_text.setStyleSheet("background-color:#333333; color:#aaaaaa")
+		plain_text.setStyleSheet("background-color:#333333; color:#bbbbbb")
 		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
 		# prevent from resizing
 
 		back_button = QPushButton("Go back")
+		back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
 
 		v_box.addWidget(plain_text)
 		v_box.addWidget(back_button, alignment=Qt.AlignCenter)
 		self.setLayout(v_box)
 
+	def restore_previous_window(self, window:QMainWindow, system_info):
+		window.takeCentralWidget()
+		extracted_data_scrollable = VerifyExtractedDataScrollable(window, system_info)
+		window.setCentralWidget(extracted_data_scrollable)
 
 def main():
 	app = QApplication(sys.argv)
