@@ -4,7 +4,7 @@ import sys
 import os
 import subprocess as sp
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-	QMessageBox, QScrollArea
+	QMessageBox, QScrollArea, QPlainTextEdit
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt
 from extract_data import extract_and_collect_data_from_generated_files
@@ -196,7 +196,8 @@ class VerifyExtractedData(QWidget):
 	def __init__(self, window: QMainWindow, system_info):
 		# noinspection PyArgumentList
 		super().__init__()
-		self.init_ui(window.showMaximized(), system_info)
+		window.showMaximized()
+		self.init_ui(window, system_info)
 
 	def init_ui(self, window: QMainWindow, system_info):
 
@@ -205,11 +206,18 @@ class VerifyExtractedData(QWidget):
 
 		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
 
+		data_as_string = ' '.join(str(s) for s in system_info)
+
 		# copy to the clipboard - button
 		self.clipboard_button = QPushButton("Copy to clipboard")
 		self.clipboard_button.setStyleSheet(button_style)
-		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(' '.join(str(s) for s in system_info)))
+		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(data_as_string))
 		self.clipboard_button.clicked.connect(lambda: QMessageBox.question(self, "Done", "Copied into clipboard", QMessageBox.Ok, QMessageBox.Ok))
+		# proceed to the json - button
+		self.json_button = QPushButton("Proceed to JSON")
+		self.json_button.setStyleSheet(button_style)
+		self.json_button.clicked.connect(lambda: self.display_plaintext_data(window, data_as_string))
+
 		# go to the website - button
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
@@ -269,6 +277,11 @@ class VerifyExtractedData(QWidget):
 
 		self.setLayout(v_box)
 
+	def display_plaintext_data(self, window:QMainWindow, data_as_string):
+		window.takeCentralWidget()
+		new_widget = QPlainTextEdit()
+		new_widget.document().setPlainText(data_as_string)
+		window.setCentralWidget(new_widget)
 
 class VerifyExtractedDataScrollable(QScrollArea):
 	def __init__(self, window: QMainWindow, system_info):
@@ -293,7 +306,8 @@ def main():
 	palette.setColor(QPalette.Base, QColor(15, 15, 15))
 	palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
 	palette.setColor(QPalette.ToolTipBase, Qt.white)
-	palette.setColor(QPalette.ToolTipText, Qt.white)
+	palette.setColor(QPalette.ToolTipText, Qt.white)		#TODO connect to new widget
+
 	palette.setColor(QPalette.Text, Qt.white)
 	palette.setColor(QPalette.Button, QColor(53, 53, 53))
 	palette.setColor(QPalette.ButtonText, Qt.white)
