@@ -201,32 +201,16 @@ class VerifyExtractedData(QWidget):
 	def init_ui(self, window: QMainWindow, system_info):
 
 		v_box = QVBoxLayout()
-		h_buttons = QHBoxLayout()
+		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; \
+						padding-top:5px; padding-bottom:5px;"
 
-		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
-
-		data_as_string = ' '.join(str(s) for s in system_info)
-
-		# copy to the clipboard - button
-		self.clipboard_button = QPushButton("Copy to clipboard")
-		self.clipboard_button.setStyleSheet(button_style)
-		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(data_as_string))
-		self.clipboard_button.clicked.connect(lambda: QMessageBox.question(self, "Done", "Copied into clipboard", QMessageBox.Ok, QMessageBox.Ok))
 		# proceed to the json - button
-		self.json_button = QPushButton("Proceed to JSON")
-		self.json_button.setStyleSheet(button_style)
-		self.json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
-		# go to the website - button
-		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
-		self.website_button.setStyleSheet(button_style)
-		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", "tarallo.weeeopen.it"]))
-
-		h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
-		h_buttons.addWidget(self.json_button, alignment=Qt.AlignCenter)
-		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
+		json_button = QPushButton("Proceed to JSON")
+		json_button.setStyleSheet(button_style)
+		json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
 
 		v_box.addSpacing(20)
-		v_box.addLayout(h_buttons)
+		v_box.addWidget(json_button, alignment=Qt.AlignCenter)
 		v_box.addSpacing(20)
 
 		# if system_info is empty
@@ -302,6 +286,20 @@ class PlainTextWidget(QWidget):
 	def __init__(self, window:QMainWindow, system_info):
 		super().__init__()
 		v_box = QVBoxLayout()
+		h_buttons = QHBoxLayout()
+
+		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
+		data_as_string = ' '.join(str(s) for s in system_info)
+
+		self.clipboard_button = QPushButton("Copy to clipboard")
+		self.clipboard_button.setStyleSheet(button_style)
+		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(data_as_string))
+
+		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
+		self.website_button.setStyleSheet(button_style)
+		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", "tarallo.weeeopen.it"]))
+		# TODO: don't hardcode it
+
 		plain_text = QPlainTextEdit()
 		plain_text.document().setPlainText(' '.join(str(s) for s in system_info))
 		plain_text.setStyleSheet("background-color:#333333; color:#bbbbbb")
@@ -311,6 +309,10 @@ class PlainTextWidget(QWidget):
 		back_button = QPushButton("Go back")
 		back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
 
+		h_buttons.addWidget(self.clipboard_button)
+		h_buttons.addWidget(self.website_button)
+
+		v_box.addLayout(h_buttons)
 		v_box.addWidget(plain_text)
 		v_box.addWidget(back_button, alignment=Qt.AlignCenter)
 		self.setLayout(v_box)
