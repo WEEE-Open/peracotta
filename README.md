@@ -25,7 +25,7 @@ For developers, if requirements change:
 
 ## main.sh and main_with_gui.py
 
-These are the scripts you run directly from the terminal. Quite obviously, `main_with_gui.py` presents a graphical interface, but at the time being, if you just have to copy-paste the JSON output from the terminal into the 'Bulk Add' TARALLO page, `main.sh` is the one for you.
+These are the scripts you run directly from the terminal. Quite obviously, `main_with_gui.py` presents a graphical interface, and `main.sh` runs in the terminal.
 
 ### main.sh
 
@@ -46,7 +46,7 @@ if you pass both the path and the gpu location.
 ```
 ### main_with_gui.py
 
-This script is interactive, so you'll just need to run it with `./main_with_gui.py`.  
+This script is interactive, so you'll just need to run it with `./main_with_gui.py`. It does everything the terminal based version does, with the addition of a nice GUI.  
 The GUI is also available from `extract_data.py` with the `-i` or `--gui` option.
 
 ## Underlying scripts run by main.sh and main_with_gui.py
