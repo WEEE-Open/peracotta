@@ -3,8 +3,10 @@
 import sys
 import os
 import subprocess as sp
+import json
+import base64
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-	QMessageBox, QScrollArea
+	QMessageBox, QScrollArea, QPlainTextEdit
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt
 from extract_data import extract_and_collect_data_from_generated_files
@@ -191,16 +193,27 @@ class FilesGenerated(QWidget):
 #
 #         self.show()
 
-
 class VerifyExtractedData(QWidget):
 	def __init__(self, window: QMainWindow, system_info):
 		# noinspection PyArgumentList
 		super().__init__()
+		window.showMaximized()
 		self.init_ui(window, system_info)
 
 	def init_ui(self, window: QMainWindow, system_info):
 
 		v_box = QVBoxLayout()
+		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; \
+						padding-top:5px; padding-bottom:5px;"
+
+		# proceed to the json - button
+		json_button = QPushButton("Proceed to JSON")
+		json_button.setStyleSheet(button_style)
+		json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
+
+		v_box.addSpacing(20)
+		v_box.addWidget(json_button, alignment=Qt.AlignCenter)
+		v_box.addSpacing(20)
 
 		# if system_info is empty
 		if not system_info:
@@ -251,6 +264,11 @@ class VerifyExtractedData(QWidget):
 
 		self.setLayout(v_box)
 
+	def display_plaintext_data(self, window:QMainWindow, system_info):
+		window.takeCentralWidget()
+		plaintext_widget = PlainTextWidget(window, system_info)
+		window.setCentralWidget(plaintext_widget)
+
 
 class VerifyExtractedDataScrollable(QScrollArea):
 	def __init__(self, window: QMainWindow, system_info):
@@ -264,6 +282,47 @@ class VerifyExtractedDataScrollable(QScrollArea):
 		scroll_area.setWidgetResizable(True)
 
 
+class PlainTextWidget(QWidget):
+	def __init__(self, window:QMainWindow, system_info):
+		super().__init__()
+		v_box = QVBoxLayout()
+		h_buttons = QHBoxLayout()
+
+		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
+		copy_pastable_json = json.dumps(system_info, indent=2)
+		website_link = str(base64.b64decode("aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="), "utf-8")
+
+		self.clipboard_button = QPushButton("Copy to clipboard")
+		self.clipboard_button.setStyleSheet(button_style)
+		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
+
+		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
+		self.website_button.setStyleSheet(button_style)
+		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", website_link]))
+
+		plain_text = QPlainTextEdit()
+		plain_text.document().setPlainText(copy_pastable_json)
+		plain_text.setStyleSheet("background-color:#333333; color:#bbbbbb")
+		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
+		plain_text.setReadOnly(True)
+		# prevent from resizing too much
+
+		back_button = QPushButton("Go back")
+		back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
+
+		h_buttons.addWidget(self.clipboard_button)
+		h_buttons.addWidget(self.website_button)
+
+		v_box.addLayout(h_buttons)
+		v_box.addWidget(plain_text)
+		v_box.addWidget(back_button, alignment=Qt.AlignCenter)
+		self.setLayout(v_box)
+
+	def restore_previous_window(self, window:QMainWindow, system_info):
+		window.takeCentralWidget()
+		extracted_data_scrollable = VerifyExtractedDataScrollable(window, system_info)
+		window.setCentralWidget(extracted_data_scrollable)
+
 def main():
 	app = QApplication(sys.argv)
 
@@ -276,6 +335,7 @@ def main():
 	palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
 	palette.setColor(QPalette.ToolTipBase, Qt.white)
 	palette.setColor(QPalette.ToolTipText, Qt.white)
+
 	palette.setColor(QPalette.Text, Qt.white)
 	palette.setColor(QPalette.Button, QColor(53, 53, 53))
 	palette.setColor(QPalette.ButtonText, Qt.white)
