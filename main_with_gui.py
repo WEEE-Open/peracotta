@@ -4,6 +4,7 @@ import sys
 import os
 import subprocess as sp
 import json
+import base64
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
 	QMessageBox, QScrollArea, QPlainTextEdit
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
@@ -289,6 +290,7 @@ class PlainTextWidget(QWidget):
 
 		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
 		copy_pastable_json = json.dumps(system_info, indent=2)
+		website_link = str(base64.b64decode("aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="), "utf-8")
 
 		self.clipboard_button = QPushButton("Copy to clipboard")
 		self.clipboard_button.setStyleSheet(button_style)
@@ -296,8 +298,7 @@ class PlainTextWidget(QWidget):
 
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
-		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", "tarallo.weeeopen.it"]))
-		# TODO: don't hardcode it
+		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", website_link]))
 
 		plain_text = QPlainTextEdit()
 		plain_text.document().setPlainText(copy_pastable_json)
