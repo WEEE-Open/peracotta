@@ -3,6 +3,7 @@
 import sys
 import os
 import subprocess as sp
+import json
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
 	QMessageBox, QScrollArea, QPlainTextEdit
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
@@ -263,8 +264,6 @@ class VerifyExtractedData(QWidget):
 		self.setLayout(v_box)
 
 	def display_plaintext_data(self, window:QMainWindow, system_info):
-		if window.isMaximized():
-			window.showNormal()
 		window.takeCentralWidget()
 		plaintext_widget = PlainTextWidget(window, system_info)
 		window.setCentralWidget(plaintext_widget)
@@ -289,11 +288,11 @@ class PlainTextWidget(QWidget):
 		h_buttons = QHBoxLayout()
 
 		button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
-		data_as_string = ' '.join(str(s) for s in system_info)
+		copy_pastable_json = json.dumps(system_info, indent=2)
 
 		self.clipboard_button = QPushButton("Copy to clipboard")
 		self.clipboard_button.setStyleSheet(button_style)
-		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(data_as_string))
+		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
 
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
@@ -301,7 +300,7 @@ class PlainTextWidget(QWidget):
 		# TODO: don't hardcode it
 
 		plain_text = QPlainTextEdit()
-		plain_text.document().setPlainText(' '.join(str(s) for s in system_info))
+		plain_text.document().setPlainText(copy_pastable_json)
 		plain_text.setStyleSheet("background-color:#333333; color:#bbbbbb")
 		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
 		# prevent from resizing too much
