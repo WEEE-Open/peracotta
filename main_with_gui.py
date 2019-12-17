@@ -303,6 +303,7 @@ class PlainTextWidget(QWidget):
 		plain_text.document().setPlainText(copy_pastable_json)
 		plain_text.setStyleSheet("background-color:#333333; color:#bbbbbb")
 		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
+		plain_text.setReadOnly(True)
 		# prevent from resizing too much
 
 		back_button = QPushButton("Go back")
