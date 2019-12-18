@@ -310,8 +310,8 @@ class PlainTextWidget(QWidget):
 		back_button = QPushButton("Go back")
 		back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
 
-		h_buttons.addWidget(self.clipboard_button)
-		h_buttons.addWidget(self.website_button)
+		h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
+		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
 
 		v_box.addLayout(h_buttons)
 		v_box.addWidget(plain_text)
