@@ -8,7 +8,7 @@ import base64
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
 	QMessageBox, QScrollArea, QPlainTextEdit
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
 from polkit import make_dotfiles
 
@@ -343,11 +343,17 @@ class Notification(QLabel):
 		self.init_ui(text)
 
 	def init_ui(self, text):
+		self.animation = QPropertyAnimation(self, b"windowOpacity")
+		self.animation.setDuration(1000)
+		self.animation.setStartValue(1.0)
+		self.animation.setEndValue(0.0)
+		self.animation.finished.connect(self.close)
 		self.setFixedSize(200,70)
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.setStyleSheet("background-color:#000")
-		self.setWindowOpacity(0.5)
+		# self.setWindowOpacity(0.5)
 		self.setAlignment(Qt.AlignCenter)
+		self.animation.start()
 
 def main():
 	app = QApplication(sys.argv)
