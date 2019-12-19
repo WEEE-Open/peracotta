@@ -13,6 +13,11 @@ from extract_data import extract_and_collect_data_from_generated_files
 from polkit import make_dotfiles
 
 
+# should be None in production
+# should be set to "tests/<machine_to_test>" when testing
+DEBUG_DIR = None
+
+
 class Window(QMainWindow):
 	def __init__(self):
 		# noinspection PyArgumentList
@@ -155,7 +160,11 @@ class FilesGenerated(QWidget):
 
 	def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool):
 		try:
-			system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files('tmp',
+			if DEBUG_DIR:
+				files_dir = DEBUG_DIR
+			else:
+				files_dir = "tmp"
+			system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files(files_dir,
 				has_dedicated_gpu, False)  # TODO: support this
 			print(system_info)
 			window.takeCentralWidget()
