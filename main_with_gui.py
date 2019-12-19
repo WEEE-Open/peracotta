@@ -330,7 +330,7 @@ class PlainTextWidget(QWidget):
 
 class Notification(QLabel):
 	def __init__(self,text):
-		super().__init__()
+		super().__init__(text)
 		self.init_ui(text)
 
 	def init_ui(self, text):
