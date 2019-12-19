@@ -70,6 +70,8 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "model": None,
             "serial_number": None
         }
+
+    wifi_cards = None
     if mobo.__len__() == 0:
         mobo = {
             "type": 'motherboard',
@@ -77,6 +79,12 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "model": None,
             "serial_number": None
         }
+    # in this case it contains wifi cards
+    elif mobo.__len__() >= 2:
+        wifi_cards = []
+        for wifi_card in mobo[1:]:
+            wifi_cards.append(wifi_card)
+        mobo = mobo[0]
 
     if cpu.__len__() == 0:
         cpu = {
@@ -91,6 +99,8 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         }
 
     result = [chassis, mobo, cpu]
+    if wifi_cards:
+        result += wifi_cards
 
     if isinstance(dimms, dict):
         # otherwise it will append every key-value pair of the dict
