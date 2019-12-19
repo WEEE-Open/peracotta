@@ -336,6 +336,7 @@ class PlainTextWidget(QWidget):
 	def spawn_notification(self, text):
 		self.notification = Notification(text)
 		self.notification.show()
+		self.notification.animate()
 
 class Notification(QLabel):
 	def __init__(self,text):
@@ -344,15 +345,16 @@ class Notification(QLabel):
 
 	def init_ui(self, text):
 		self.animation = QPropertyAnimation(self, b"windowOpacity")
-		self.animation.setDuration(1000)
+		self.animation.setDuration(2500)
 		self.animation.setStartValue(1.0)
 		self.animation.setEndValue(0.0)
 		self.animation.finished.connect(self.close)
 		self.setFixedSize(200,70)
 		self.setWindowFlags(Qt.FramelessWindowHint)
 		self.setStyleSheet("background-color:#000")
-		# self.setWindowOpacity(0.5)
 		self.setAlignment(Qt.AlignCenter)
+
+	def animate(self):
 		self.animation.start()
 
 def main():
