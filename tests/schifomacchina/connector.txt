@@ -1,0 +1,4 @@
+# dmidecode 3.1
+Getting SMBIOS data from sysfs.
+SMBIOS 2.7 present.
+
