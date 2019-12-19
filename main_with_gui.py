@@ -345,13 +345,13 @@ class Notification(QLabel):
 
 	def init_ui(self, text):
 		self.animation = QPropertyAnimation(self, b"windowOpacity")
-		self.animation.setDuration(2500)
+		self.animation.setDuration(1800)
 		self.animation.setStartValue(1.0)
 		self.animation.setEndValue(0.0)
 		self.animation.finished.connect(self.close)
 		self.setFixedSize(200,70)
 		self.setWindowFlags(Qt.FramelessWindowHint)
-		self.setStyleSheet("background-color:#000")
+		self.setStyleSheet("background-color:#111")
 		self.setAlignment(Qt.AlignCenter)
 
 	def animate(self):
