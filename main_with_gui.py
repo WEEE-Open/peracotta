@@ -295,6 +295,7 @@ class PlainTextWidget(QWidget):
 		self.clipboard_button = QPushButton("Copy to clipboard")
 		self.clipboard_button.setStyleSheet(button_style)
 		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
+		self.clipboard_button.clicked.connect(lambda: self.spawn_notification("copied into clipboard"))
 
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
@@ -303,8 +304,8 @@ class PlainTextWidget(QWidget):
 		plain_text = QPlainTextEdit()
 		plain_text.document().setPlainText(copy_pastable_json)
 		plain_text.setStyleSheet("background-color:#333333; color:#bbbbbb")
-		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
 		plain_text.setReadOnly(True)
+		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
 		# prevent from resizing too much
 
 		back_button = QPushButton("Go back")
@@ -322,6 +323,22 @@ class PlainTextWidget(QWidget):
 		window.takeCentralWidget()
 		extracted_data_scrollable = VerifyExtractedDataScrollable(window, system_info)
 		window.setCentralWidget(extracted_data_scrollable)
+
+	def spawn_notification(self, text):
+		self.notification = Notification(text)
+		self.notification.show()
+
+class Notification(QLabel):
+	def __init__(self,text):
+		super().__init__()
+		self.init_ui(text)
+
+	def init_ui(self, text):
+		self.setFixedSize(200,70)
+		self.setWindowFlags(Qt.FramelessWindowHint)
+		self.setStyleSheet("background-color:#000")
+		self.setWindowOpacity(0.5)
+		self.setAlignment(Qt.AlignCenter)
 
 def main():
 	app = QApplication(sys.argv)
