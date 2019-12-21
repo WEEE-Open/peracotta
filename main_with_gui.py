@@ -8,7 +8,7 @@ import base64
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
 	QMessageBox, QScrollArea, QPlainTextEdit
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
 from polkit import make_dotfiles
 
@@ -304,6 +304,7 @@ class PlainTextWidget(QWidget):
 		self.clipboard_button = QPushButton("Copy to clipboard")
 		self.clipboard_button.setStyleSheet(button_style)
 		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
+		self.clipboard_button.clicked.connect(lambda: self.spawn_notification("copied into clipboard"))
 
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
@@ -312,15 +313,15 @@ class PlainTextWidget(QWidget):
 		plain_text = QPlainTextEdit()
 		plain_text.document().setPlainText(copy_pastable_json)
 		plain_text.setStyleSheet("background-color:#333333; color:#bbbbbb")
-		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
 		plain_text.setReadOnly(True)
+		plain_text.setMinimumSize(plain_text.width(), plain_text.height())
 		# prevent from resizing too much
 
 		back_button = QPushButton("Go back")
 		back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
 
-		h_buttons.addWidget(self.clipboard_button)
-		h_buttons.addWidget(self.website_button)
+		h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
+		h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
 
 		v_box.addLayout(h_buttons)
 		v_box.addWidget(plain_text)
@@ -331,6 +332,30 @@ class PlainTextWidget(QWidget):
 		window.takeCentralWidget()
 		extracted_data_scrollable = VerifyExtractedDataScrollable(window, system_info)
 		window.setCentralWidget(extracted_data_scrollable)
+
+	def spawn_notification(self, text):
+		self.notification = Notification(text)
+		self.notification.show()
+		self.notification.animate()
+
+class Notification(QLabel):
+	def __init__(self,text):
+		super().__init__(text)
+		self.init_ui(text)
+
+	def init_ui(self, text):
+		self.animation = QPropertyAnimation(self, b"windowOpacity")
+		self.animation.setDuration(1800)
+		self.animation.setStartValue(1.0)
+		self.animation.setEndValue(0.0)
+		self.animation.finished.connect(self.close)
+		self.setFixedSize(200,70)
+		self.setWindowFlags(Qt.FramelessWindowHint)
+		self.setStyleSheet("background-color:#111")
+		self.setAlignment(Qt.AlignCenter)
+
+	def animate(self):
+		self.animation.start()
 
 def main():
 	app = QApplication(sys.argv)
