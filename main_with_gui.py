@@ -56,9 +56,34 @@ class Welcome(QWidget):
 		# noinspection PyUnresolvedReferences
 		self.generate_files_button.clicked.connect(lambda: self.prompt_has_dedicated_gpu(window))
 
+		self.load_previous_files_button = QPushButton("Load previous generated files")
+
+		# by default it's enabled, but if a file doesn't exist it's disabled
+		style_disabled = "background-color:#666677; color:#444444"
+
+		files = ["baseboard.txt", "chassis.txt", "connector.txt", "dimms.txt", "glxinfo.txt",\
+				 "lscpu.txt", "lspci.txt", "net.txt", "smartctl-dev-sda.txt"]
+
+		print (os.path.join(os.getcwd(), "tmp"))
+		cwd = os.getcwd()
+		if not os.path.isdir(os.path.join(cwd, "tmp")):
+			# if tmp does not exist then the files surely weren't generated
+			self.load_previous_files_button.setStyleSheet(style_disabled)
+			self.load_previous_files_button.setEnabled(False)
+		else:
+			# if tmp does exist, check if the files exist inside it
+			for f in files:
+				if not os.path.isfile(os.path.join(cwd, "tmp/" + f)):
+					# if one of the expected files doesn't exist then the button
+					# 'load previous generated files' is disabled
+					self.load_previous_files_button.setStyleSheet(style_disabled)
+					self.load_previous_files_button.setEnabled(False)
+
 		h_box = QHBoxLayout()
 		h_box.addStretch()
 		h_box.addWidget(self.generate_files_button, alignment=Qt.AlignCenter)
+		h_box.addStretch()
+		h_box.addWidget(self.load_previous_files_button, alignment=Qt.AlignCenter)
 		h_box.addStretch()
 
 		v_box = QVBoxLayout()
@@ -304,7 +329,7 @@ class PlainTextWidget(QWidget):
 		self.clipboard_button = QPushButton("Copy to clipboard")
 		self.clipboard_button.setStyleSheet(button_style)
 		self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
-		self.clipboard_button.clicked.connect(lambda: self.spawn_notification("copied into clipboard"))
+		self.clipboard_button.clicked.connect(lambda: self.spawn_notification("Copied to clipboard"))
 
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
@@ -369,6 +394,7 @@ def main():
 	palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
 	palette.setColor(QPalette.ToolTipBase, Qt.white)
 	palette.setColor(QPalette.ToolTipText, Qt.white)
+
 
 	palette.setColor(QPalette.Text, Qt.white)
 	palette.setColor(QPalette.Button, QColor(53, 53, 53))
