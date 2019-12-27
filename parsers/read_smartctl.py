@@ -179,6 +179,8 @@ def read_smartctl(path: str, interactive: bool = False):
 
             if 'SATA' in disk.family or 'SATA' in disk.model:
                 disk.port = PORT.sata
+            if 'SATA Version is:' in output:
+                disk.port = PORT.sata
 
             disks.append(disk)
 
