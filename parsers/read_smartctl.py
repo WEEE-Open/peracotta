@@ -24,6 +24,7 @@ class Disk:
         self.capacity = -1  # n of bytes
         self.human_readable_capacity = ""
         self.rotation_rate = -1
+        self.port = PORT.unknown
         self.smart_data_long = SMART.not_available
         self.smart_data = SMART.not_available
 
@@ -32,7 +33,16 @@ class SMART(Enum):
     working = "ok"
     fail = "fail"
     not_available = "not_available"
-    old = "old"  # TODO: ask @quel_tale what the heck is this
+    old = "old"  # this means "il disco funziona, ma ha quantità inumane di ore di funzionamento alle spalle (perché stava in un server), non sta ancora morendo ma non facciamoci affidamento"
+    # TODO: find a way to apply "old" when needed
+
+
+class PORT(Enum):
+    unknown = "unknown"
+    sata = "sata-ports-n"
+    ide = "ide-ports-n"
+    miniide = "mini-ide-ports-n"
+    # TODO: add more, if they can even be detected
 
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
@@ -60,45 +70,44 @@ def read_smartctl(path: str, interactive: bool = False):
                 .split('=== START OF READ SMART DATA SECTION ===', 1)[0]
 
             # For manual inspection later on
-            if '=== START OF SMART DATA SECTION ===' in output:
-                disk.smart_data_long = '=== START OF SMART DATA SECTION ===' + \
-                                       output.split('=== START OF SMART DATA SECTION ===', 1)[1]
-            elif '=== START OF READ SMART DATA SECTION ===' in output:
-                disk.smart_data_long = '=== START OF READ SMART DATA SECTION ===' + \
-                                       output.split('=== START OF READ SMART DATA SECTION ===', 1)[1]
+            if 'Vendor Specific SMART Attributes with Thresholds:' in output:
+                disk.smart_data_long = 'Vendor Specific SMART Attributes with Thresholds:' + output.split('Vendor Specific SMART Attributes with Thresholds:', 1)[1].split('\n\n', 1)[0]
+            elif 'SMART/Health Information' in output:
+                disk.smart_data_long = 'SMART/Health Information' + output.split('SMART/Health Information', 1)[1].split('\n\n', 1)[0]
 
-            if disk.smart_data_long != SMART.not_available:
-                status = "not supported"
-                for line in disk.smart_data_long.splitlines():
-                    if "SMART overall-health" in line:
-                        status = line.split(":")[1].strip()
-                    elif "Device does not support Self Test logging" in line:
-                        status = "not supported"
+            status = "not supported"
+            for line in output.splitlines():
+                if "SMART overall-health" in line:
+                    status = line.split(":")[1].strip()
+                elif "Device does not support Self Test logging" in line:
+                    status = "not supported"
 
-                if status == "PASSED":
-                    # the disk is working fine
-                    disk.smart_data = SMART.working
+            if status == "PASSED":
+                # the disk is working fine
+                disk.smart_data = SMART.working
 
-                elif status == "FAILED!":
-                    # the disk is not working fine
-                    disk.smart_data = SMART.fail
+            elif status == "FAILED!":
+                # the disk is not working fine
+                disk.smart_data = SMART.fail
 
-                elif status == "UNKNOWN!":
-                    # the connection timed out, there could be different reasons
-                    disk.smart_data = SMART.not_available
+            elif status == "UNKNOWN!":
+                # the connection timed out, there could be different reasons
+                disk.smart_data = SMART.not_available
 
-                elif status == "not supported":
-                    # the smart data need to be switched on or the smart capability is not supported
-                    for line in data.splitlines():
-                        if "SMART support is:" in line:
-                            line = line.split("SMART support is:")[1].strip()
-                            if "device lacks SMART capability" in line:
-                                # disk doesn't support smart capabilities
-                                disk.smart_data = SMART.old
-                            elif "device has SMART capability" in line:
-                                # you need to enable smart capabilities
-                                print("you need to enable smart capabilities on disk")
-                                disk.smart_data = SMART.not_available
+            # TODO: throw a catastrophic fatal error of death if a disk has SMART disabled (can be enabled and disabled with smartctl to test and view the exact error message)
+
+            elif status == "not supported":
+                # the smart data need to be switched on or the smart capability is not supported
+                for line in data.splitlines():
+                    if "SMART support is:" in line:
+                        line = line.split("SMART support is:")[1].strip()
+                        if "device lacks SMART capability" in line:
+                            # disk doesn't support smart capabilities
+                            disk.smart_data = SMART.not_available
+                        elif "device has SMART capability" in line:
+                            # you need to enable smart capabilities
+                            print("you need to enable smart capabilities on disk")
+                            disk.smart_data = SMART.not_available
 
             for line in data.splitlines():
                 if "Model Family:" in line:
@@ -168,6 +177,9 @@ def read_smartctl(path: str, interactive: bool = False):
             if disk.model.startswith('SSD '):
                 disk.model = disk.model[4:]
 
+            if 'SATA' in disk.family or 'SATA' in disk.model:
+                disk.port = PORT.sata
+
             disks.append(disk)
 
     result = []
@@ -182,9 +194,10 @@ def read_smartctl(path: str, interactive: bool = False):
                 "sn": disk.serial_number,
                 "capacity-byte": disk.capacity,
                 "human_readable_capacity": disk.human_readable_capacity,
-                # "human_readable_smart_data": disk.smart_data_long
                 "smart-data": disk.smart_data.value
             }
+            if disk.smart_data_long is not SMART.not_available:
+                this_disk['notes'] = disk.smart_data_long
         else:
             this_disk = {
                 "type": "hdd",
@@ -198,13 +211,15 @@ def read_smartctl(path: str, interactive: bool = False):
                 "capacity-decibyte": disk.capacity,
                 "human_readable_capacity": disk.human_readable_capacity,
                 "spin-rate-rpm": disk.rotation_rate,
-                # "human_readable_smart_data": disk.smart_data.long
                 "smart-data": disk.smart_data.value
             }
         if disk.form_factor is not None:
             this_disk["hdd-form-factor"] = disk.form_factor
-        if 'SATA' in disk.family or 'SATA' in disk.model:
-            this_disk["sata-ports-n"] = 1
+        if disk.port != PORT.unknown:
+            # Disks usually have 1 port (be it SATA or IDE or SCSI or other)
+            this_disk[disk.port.value] = 1
+        if disk.smart_data_long is not SMART.not_available:
+            this_disk['notes'] = disk.smart_data_long
         result.append(this_disk)
     return result
 
@@ -217,11 +232,13 @@ def split_brand_and_other(line):
         'Seagate',
         'Maxtor',
         'Hitachi',
+        'Toshiba',
         'Samsung',
         'Fujitsu',
         'Apple',
         'Crucial/Micron',
         'Crucial',
+        'LiteOn',
     ]
 
     brand = None
