@@ -19,9 +19,16 @@ Use it.
 When you're done, exit the virtualenv with `deactivate` 
 or simply close the terminal you were using.
 
-For developers, if requirements change:  
+### How to develop
+
+Same as before, until the `pip install` part. The correct command is:    
+`pip install -r requirements-dev.txt`  
+
+This will allow you to run tests: `pytest -vv tests`
+
+If requirements change:  
 - install the correct version of the requirements (e.g. a new library or a new version of an already installed library)  
-- with the virtual environment activated, run `pip freeze > requirements.txt`  
+- with the virtual environment activated, run `pip freeze > requirements-dev.txt` and *manually* edit the file (add the `-r requirements.txt` line and remove non-dev requirements)
 
 ## main.sh and main_with_gui.py
 
