@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from read_dmidecode import get_baseboard, get_chassis, get_connectors
-from read_lspci_and_glxinfo import read_lspci_and_glxinfo
-from read_lscpu import read_lscpu
+from parsers import read_dmidecode
+from parsers import read_lspci_and_glxinfo
+from parsers import read_lscpu
 
 filedir = 'glxinfo+lspci/'
 
@@ -20,9 +20,9 @@ def test_lspci_dedicated1():
 		"brand-manufacturer": "Nvidia"
 	}
 
-	output = read_lspci_and_glxinfo(True, filedir + filesubdir + 'lspci.txt', filedir + filesubdir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, filedir + filesubdir + 'lspci.txt', filedir + filesubdir + 'glxinfo.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lspci_dedicated2():
@@ -36,9 +36,9 @@ def test_lspci_dedicated2():
 		"human_readable_capacity": "1013 MB",
 		"brand-manufacturer": "Nvidia"
 	}
-	output = read_lspci_and_glxinfo(True, filedir + 'dedicated/lspci-9400GT.txt', filedir + 'dedicated/glxinfo-9400GT.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, filedir + 'dedicated/lspci-9400GT.txt', filedir + 'dedicated/glxinfo-9400GT.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lspci_dedicated3():
@@ -52,9 +52,9 @@ def test_lspci_dedicated3():
 		"human_readable_capacity": "4096 MB",
 		"brand-manufacturer": "Nvidia"
 	}
-	output = read_lspci_and_glxinfo(True, filedir + 'dedicated/lspci-gtx-970.txt', filedir + 'dedicated/glxinfo-gtx-970.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, filedir + 'dedicated/lspci-gtx-970.txt', filedir + 'dedicated/glxinfo-gtx-970.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lspci_integrated_mobo_1():
@@ -71,9 +71,9 @@ def test_lspci_integrated_mobo_1():
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Nvidia"
 	}
-	output = read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci-{file}.txt', filedir + filesubdir + f'/glxinfo-{file}.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci-{file}.txt', filedir + filesubdir + f'/glxinfo-{file}.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lspci_integrated_mobo_2():
@@ -90,10 +90,10 @@ def test_lspci_integrated_mobo_2():
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
-	output = read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci-{file}.txt',
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci-{file}.txt',
 	                                      filedir + filesubdir + f'/glxinfo-{file}.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lspci_integrated_mobo_3():
@@ -110,10 +110,10 @@ def test_lspci_integrated_mobo_3():
 		"human_readable_capacity": "",
 		"brand-manufacturer": "AMD/ATI"
 	}
-	output = read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci-{file}.txt',
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci-{file}.txt',
 	                                      filedir + filesubdir + f'/glxinfo-{file}.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lspci_integrated_cpu_1():
@@ -129,10 +129,10 @@ def test_lspci_integrated_cpu_1():
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
-	output = read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci.txt',
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci.txt',
 	                                      filedir + filesubdir + f'/glxinfo.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lspci_integrated_cpu_2():
@@ -149,10 +149,10 @@ def test_lspci_integrated_cpu_2():
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
-	output = read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci.txt',
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci.txt',
 	                                      filedir + filesubdir + f'/glxinfo.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lspci_integrated_cpu_3():
@@ -168,7 +168,7 @@ def test_lspci_integrated_cpu_3():
 		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
-	output = read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci.txt',
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + filesubdir + f'/lspci.txt',
 	                                      filedir + filesubdir + f'/glxinfo.txt')
 
-	assert expect == output
+	assert output == expect

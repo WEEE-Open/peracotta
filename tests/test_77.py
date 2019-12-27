@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from read_dmidecode import get_baseboard, get_chassis, get_connectors
-from read_lspci_and_glxinfo import read_lspci_and_glxinfo
-from read_lscpu import read_lscpu
+from parsers import read_dmidecode
+from parsers import read_lspci_and_glxinfo
+from parsers import read_lscpu
 
 filedir = '77/'
 
@@ -17,9 +17,9 @@ def test_77_lspci():
 		'model': '771/671',
 		'capacity-byte': None,
 		'human_readable_capacity': ''}
-	output = read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lscpu():
@@ -34,7 +34,7 @@ def test_lscpu():
 		'frequency-hertz': -1,
 		'human_readable_frequency': 'N/A'
 	}
-	output = read_lscpu(filedir + 'lscpu.txt')
+	output = read_lscpu.read_lscpu(filedir + 'lscpu.txt')
 
 
 def test_77_baseboard():
@@ -45,13 +45,13 @@ def test_77_baseboard():
 		'type': 'motherboard',
 		"working": "yes",
 	}
-	output = get_baseboard(filedir + 'baseboard.txt')
+	output = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_77_connector():
-	baseboard = get_baseboard(filedir + 'baseboard.txt')
+	baseboard = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
 
 	expect = {
 		'brand': 'ASUSTeK Computer INC.',
@@ -69,9 +69,9 @@ def test_77_connector():
 		'sata-ports-n': 2,
 		'notes': 'Unknown connector: Other / None (AAFP / Not Specified)'
 	}
-	output = get_connectors(filedir + 'connector.txt', baseboard)
+	output = read_dmidecode.get_connectors(filedir + 'connector.txt', baseboard)
 
-	assert expect == output
+	assert output == expect
 
 
 def test_77_chassis():
@@ -82,6 +82,6 @@ def test_77_chassis():
 		'type': 'case',
 		'motherboard-form-factor': '',
 	}
-	output = get_chassis(filedir + 'chassis.txt')
+	output = read_dmidecode.get_chassis(filedir + 'chassis.txt')
 
-	assert expect == output
+	assert output == expect

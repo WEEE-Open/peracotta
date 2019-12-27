@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from read_smartctl import read_smartctl
-from read_decode_dimms import read_decode_dimms
-from read_dmidecode import get_baseboard, get_chassis, get_connectors
-from read_lspci_and_glxinfo import read_lspci_and_glxinfo
-from read_lscpu import read_lscpu
+from parsers import read_smartctl
+from parsers import read_decode_dimms
+from parsers import read_dmidecode
+from parsers import read_lspci_and_glxinfo
+from parsers import read_lscpu
 
 filedir = 'workstation/'
 
@@ -21,9 +21,9 @@ def test_lspci():
 		"brand-manufacturer": "Nvidia"
 	}
 	# False to ignore missing glxinfo
-	output = read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lscpu():
@@ -51,15 +51,15 @@ def test_lscpu():
 			"human_readable_frequency": "N/A"
 		}
 	]
-	output = read_lscpu(filedir + 'lscpu.txt')
+	output = read_lscpu.read_lscpu(filedir + 'lscpu.txt')
 
 	assert isinstance(expect, list)
 	assert len(expect) == 2
-	assert expect == output
+	assert output == expect
 
 
 def test_ram():
-	output = read_decode_dimms(filedir + 'dimms.txt')
+	output = read_decode_dimms.read_decode_dimms(filedir + 'dimms.txt')
 
 	assert len(output) == 0
 
@@ -72,13 +72,13 @@ def test_baseboard():
 		"model": "0MY171",
 		"sn": "CN125321L404Q",
 	}
-	output = get_baseboard(filedir + 'baseboard.txt')
+	output = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_connector():
-	baseboard = get_baseboard(filedir + 'baseboard.txt')
+	baseboard = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
 
 	expect = {
 		"type": "motherboard",
@@ -95,9 +95,9 @@ def test_connector():
 		"ethernet-ports-n": 1,
 		"notes": ""
 	}
-	output = get_connectors(filedir + 'connector.txt', baseboard)
+	output = read_dmidecode.get_connectors(filedir + 'connector.txt', baseboard)
 
-	assert expect == output
+	assert output == expect
 
 
 def test_chassis():
@@ -108,9 +108,9 @@ def test_chassis():
 		"sn": "5ASDL3L",
 		"motherboard-form-factor": ""
 	}
-	output = get_chassis(filedir + 'chassis.txt')
+	output = read_dmidecode.get_chassis(filedir + 'chassis.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_smartctl():
@@ -126,9 +126,9 @@ def test_smartctl():
 			"capacity-decibyte": 996000000000,
 			"human_readable_capacity": "995 GB",
 			"spin-rate-rpm": 20000,
-			"human_readable_smart_data": "=== START OF READ SMART DATA SECTION ===\nCurrent Drive Temperature:     0 C\nDrive Trip Temperature:        0 C\n\nError Counter logging not supported\n\nDevice does not support Self Test logging\nDevice does not support Background scan results logging\n"
+			"smart-data": "not_available",
 		}
 	]
-	output = read_smartctl(filedir)
+	output = read_smartctl.read_smartctl(filedir)
 
-	assert expect == output
+	assert output == expect

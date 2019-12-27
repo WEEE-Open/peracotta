@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from read_smartctl import read_smartctl
-from read_decode_dimms import read_decode_dimms
-from read_dmidecode import get_baseboard, get_chassis, get_connectors
-from read_lspci_and_glxinfo import read_lspci_and_glxinfo
-from read_lscpu import read_lscpu
+from parsers import read_smartctl
+from parsers import read_decode_dimms
+from parsers import read_dmidecode
+from parsers import read_lspci_and_glxinfo
+from parsers import read_lscpu
 
 filedir = 'cassone/'
 
@@ -20,9 +20,9 @@ def test_lspci():
 		"human_readable_capacity": ""
 	}
 
-	output = read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_lscpu():
@@ -38,9 +38,9 @@ def test_lscpu():
 		"human_readable_frequency": "N/A"
 	}
 
-	output = read_lscpu(filedir + 'lscpu.txt')
+	output = read_lscpu.read_lscpu(filedir + 'lscpu.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_baseboard():
@@ -51,13 +51,13 @@ def test_baseboard():
 		"model": "MS8318E",
 		"sn": "00000000",
 	}
-	output = get_baseboard(filedir + 'baseboard.txt')
+	output = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_connector():
-	baseboard = get_baseboard(filedir + 'baseboard.txt')
+	baseboard = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
 
 	expect = {
 		"type": "motherboard",
@@ -69,9 +69,9 @@ def test_connector():
 		"notes": ""
 	}
 
-	output = get_connectors(filedir + 'connector.txt', baseboard)
+	output = read_dmidecode.get_connectors(filedir + 'connector.txt', baseboard)
 
-	assert expect == output
+	assert output == expect
 
 
 def test_chassis():
@@ -83,12 +83,12 @@ def test_chassis():
 		"motherboard-form-factor": ""
 	}
 
-	output = get_chassis(filedir + 'chassis.txt')
+	output = read_dmidecode.get_chassis(filedir + 'chassis.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_smartctl():
-	output = read_smartctl(filedir)
+	output = read_smartctl.read_smartctl(filedir)
 
 	assert 0 == len(output)

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from read_smartctl import read_smartctl
-from read_decode_dimms import read_decode_dimms
-from read_dmidecode import get_baseboard, get_chassis, get_connectors
-from read_lspci_and_glxinfo import read_lspci_and_glxinfo
-from read_lscpu import read_lscpu
+from parsers import read_smartctl
+from parsers import read_decode_dimms
+from parsers import read_dmidecode
+from parsers import read_lspci_and_glxinfo
+from parsers import read_lscpu
 
 filedir = 'decode-dimms/'
 
@@ -40,9 +40,9 @@ def test_ecc_ram1():
 			"ram-timings": "5-5-5-15"
 		}
 	]
-	output = read_decode_dimms(filedir + 'ECC/R451-R450.txt')
+	output = read_decode_dimms.read_decode_dimms(filedir + 'ECC/R451-R450.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_ecc_ram1_not_an_hex():
@@ -76,9 +76,9 @@ def test_ecc_ram1_not_an_hex():
 			"ram-timings": "5-5-5-15"
 		}
 	]
-	output = read_decode_dimms(filedir + 'ECC/R451-R450-notanhex.txt')
+	output = read_decode_dimms.read_decode_dimms(filedir + 'ECC/R451-R450-notanhex.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_ecc_ram2():
@@ -113,9 +113,9 @@ def test_ecc_ram2():
 		}
 
 	]
-	output = read_decode_dimms(filedir + 'ECC/R480-R479.txt')
+	output = read_decode_dimms.read_decode_dimms(filedir + 'ECC/R480-R479.txt')
 
-	assert expect == output
+	assert output == expect
 
 
 def test_ram1():
@@ -177,6 +177,6 @@ def test_ram1():
 			"ram-timings": "6-6-6-18"
 		}
 	]
-	output = read_decode_dimms(filedir + 'non ECC/R469-R470-R471-R472.txt')
+	output = read_decode_dimms.read_decode_dimms(filedir + 'non ECC/R469-R470-R471-R472.txt')
 
-	assert expect == output
+	assert output == expect
