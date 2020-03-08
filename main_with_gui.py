@@ -333,7 +333,7 @@ class PlainTextWidget(QWidget):
 
 		self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
 		self.website_button.setStyleSheet(button_style)
-		self.website_button.clicked.connect(lambda: sp.Popen(["firefox", website_link]))
+		self.website_button.clicked.connect(lambda: sp.Popen(["xdg-open", website_link]))
 
 		plain_text = QPlainTextEdit()
 		plain_text.document().setPlainText(copy_pastable_json)
