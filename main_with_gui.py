@@ -137,7 +137,8 @@ class Welcome(QWidget):
             make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
             with sp.Popen(["./generate_files.pkexec", os.path.join(working_directory, folder_name)], shell=False) as process:
                 process.wait(timeout=60)
-            f = open(folder_name + "/has_dedicated_gpu.txt", "w")
+            # the information concerning the gpu location is saved inside has_dedicated_gpu.txt
+            f = open(os.path.join(folder_name, "has_dedicated_gpu.txt"), "w")
             f.write(str(has_dedicated_gpu))
             f.close()
             # the line below is needed in order to not close the window!
