@@ -171,9 +171,8 @@ class Welcome(QWidget):
 
 	def load_previously_generated_files(self, window:QMainWindow):
 		# if this is called the files surely exist (if not, the button was disabled)
-		f = open(os.path.join(os.getcwd(), "tmp", "has_dedicated_gpu.txt"))
-		has_dedicated_gpu = bool(f.read())
-		f.close()
+		with open(os.path.join(os.getcwd(), "tmp", "has_dedicated_gpu.txt")) as f:
+			has_dedicated_gpu = bool(f.read())
 		window.takeCentralWidget()
 		new_widget = FilesGenerated(window, has_dedicated_gpu)
 		window.setCentralWidget(new_widget)
