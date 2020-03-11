@@ -175,8 +175,6 @@ class Welcome(QWidget):
 		has_dedicated_gpu = bool(f.read())
 		f.close()
 		window.takeCentralWidget()
-		f.close()
-		window.takeCentralWidget()
 		new_widget = FilesGenerated(window, has_dedicated_gpu)
 		window.setCentralWidget(new_widget)
 
