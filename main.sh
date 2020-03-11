@@ -34,7 +34,7 @@ function run_extract_data {
   echo "The following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':"
   echo ""
   ./extract_data.py -$gpu_location "$OUTPUT_PATH" | tee copy_this_to_tarallo.json
-  echo "You can also transfer the generated JSON file copy_this_to_tarallo.json on your PC with 'scp weee@<this_PC's_IP>:/home/weee/peracotta/copy_this_to_tarallo.json .'"
+  echo "You can also transfer the generated JSON file copy_this_to_tarallo.json to your PC with 'scp copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal."
   echo ""
 }
 
