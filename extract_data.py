@@ -271,10 +271,11 @@ if __name__ == '__main__':
                                                                  gpu_in_cpu=args.cpu,
                                                                  verbose=args.verbose)
             print(json.dumps(data, indent=2))
+
         elif args.gui:
             import main_with_gui
-
             main_with_gui.main()
+
         else:
             data = extract_data(directory=path,
                                 has_dedicated_gpu=args.gpu,
