@@ -12,6 +12,16 @@ function print_usage {
   echo "In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location."
 }
 
+function check_required_files {
+  required_files=()
+  while read line; do
+    required_files+=(line)
+  done < required_files.txt
+
+  for file in tmp; do
+
+}
+
 function check_mutually_exclusive_args {
   # absolutely do not remove double quotes: they're needed for the variable expansion
   if [ -n "$gpu_location" ]; then
@@ -40,6 +50,32 @@ function run_extract_data {
   echo ""
 }
 
+function call_run_extract_data_with_gpu_location {
+  # evaluates to while true but slightly faster
+  while : ; do
+    # if gpu_location is not given as a parameter ask the user
+    if [ -z $gpu_location ]; then
+      print_gpu_prompt
+      read gpu_location
+      if [ $gpu_location = "c" ]; then
+        run_extract_data
+        break
+      elif [ $gpu_location = "g" ]; then
+        run_extract_data
+        break
+      elif [ $gpu_location = "b" ]; then
+        run_extract_data
+        break
+      else
+        echo "I didn't get it, sorry."
+      fi
+    else
+      run_extract_data
+      break
+    fi
+  done
+}
+
 
 # parse arguments
 # unknown_args=()
@@ -49,6 +85,10 @@ while [[ $# -gt 0 ]]; do
     -h|--help)
     echo $gpu_location
     print_usage
+    exit 0
+    ;;
+    -f|--files)
+    check_required_files
     exit 0
     ;;
     -p|--path)
@@ -111,26 +151,4 @@ fi
 
 sudo ./generate_files.sh $OUTPUT_PATH
 
-# evaluates to while true but slightly faster
-while : ; do
-  # if gpu_location is not given as a parameter ask the user
-  if [ -z $gpu_location ]; then
-    print_gpu_prompt
-    read gpu_location
-    if [ $gpu_location = "c" ]; then
-      run_extract_data
-      break
-    elif [ $gpu_location = "g" ]; then
-      run_extract_data
-      break
-    elif [ $gpu_location = "b" ]; then
-      run_extract_data
-      break
-    else
-      echo "I didn't get it, sorry."
-    fi
-  else
-    run_extract_data
-    break
-  fi
-done
+call_run_extract_data_with_gpu_location
