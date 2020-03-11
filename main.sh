@@ -2,9 +2,11 @@
 
 function print_usage {
   echo "Use -h or --help to show this help."
-  echo "Usage: $0 [-p|--path <optional path to generate files to>] [-c|--cpu | -g|--gpu | -b|--motherboard]"
+  echo "Usage: $0 (-f|--files | [-p|--path <optional path to generate files to>] [-c|--cpu | -g|--gpu | -b|--motherboard])"
   echo ""
   echo "If no argument is given, then this script will interactively guide you to run the PERACOTTA data gathering package."
+  echo ""
+  echo "When using -f or --files, this script will skip the generation step and it will print out the content of previously generated files, if all required files are found in the tmp directory."
   echo ""
   echo "Alternatively, you can choose to pass either the path to the directory where you want the files to be generated, the gpu location, or both."
   echo "In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location."
