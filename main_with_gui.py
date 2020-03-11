@@ -223,22 +223,6 @@ class FilesGenerated(QWidget):
 			# noinspection PyArgumentList
 			QMessageBox.critical(self, "WTF2", "Have a look at the extent of your huge fuck-up:\n" + str(e))
 
-# class ScrollableWindow(QMainWindow):
-#     def __init__(self):
-#         super().__init__()
-#
-#         self.scroll_area = QScrollArea(self)
-#         self.scroll_area.setWidgetResizable(True)
-#         self.scroll_area_widget_contents = QWidget(self.scroll_area)
-#         self.scroll_area_widget_contents.setGeometry(QRect(25, 25, 380, 247))
-#         self.scroll_area.setWidget(self.scroll_area_widget_contents)
-#
-#         self.v_box = QVBoxLayout(self)
-#         self.v_box.addWidget(self.scroll_area)
-#
-#         self.v_box_scroll = QVBoxLayout(self.scroll_area_widget_contents)
-#
-#         self.show()
 
 class VerifyExtractedData(QWidget):
 	def __init__(self, window: QMainWindow, system_info):
