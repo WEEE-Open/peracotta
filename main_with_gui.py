@@ -144,9 +144,8 @@ class Welcome(QWidget):
 			with sp.Popen(["./generate_files.pkexec", os.path.join(working_directory, folder_name)], shell=False) as process:
 				process.wait(timeout=60)
 			# the information concerning the gpu location is saved in has_dedicated_gpu.txt
-			f = open(os.path.join(folder_name, "has_dedicated_gpu.txt"), "w")
-			f.write(str(has_dedicated_gpu))
-			f.close
+			with open(os.path.join(folder_name, "has_dedicated_gpu.txt"), "w") as f:
+				f.write(str(has_dedicated_gpu))
 			# the line below is needed in order to not close the window!
 			window.takeCentralWidget()
 			new_widget = FilesGenerated(window, has_dedicated_gpu)
