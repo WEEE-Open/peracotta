@@ -56,41 +56,34 @@ class Welcome(QWidget):
 		# noinspection PyUnresolvedReferences
 		self.generate_files_button.clicked.connect(lambda: self.prompt_has_dedicated_gpu(window))
 
-		self.load_previously_generated_files_button = QPushButton("Load previously generated files")
-		self.load_previously_generated_files_button.clicked.connect(lambda: self.load_previously_generated_files(window))
-		# by default it's enabled, if a file doesn't exist it's disabled
+		self.load_previous_files_button = QPushButton("Load previous generated files")
+
+		# by default it's enabled, but if a file doesn't exist it's disabled
 		style_disabled = "background-color:#666677; color:#444444"
 
-		expected_files = ["baseboard.txt", "chassis.txt", "connector.txt", "dimms.txt", "glxinfo.txt",\
-				 "lscpu.txt", "lspci.txt", "net.txt", "smartctl-dev", "has_dedicated_gpu.txt"]
+		files = ["baseboard.txt", "chassis.txt", "connector.txt", "dimms.txt", "glxinfo.txt",\
+				 "lscpu.txt", "lspci.txt", "net.txt", "smartctl-dev-sda.txt"]
 
+		print (os.path.join(os.getcwd(), "tmp"))
 		cwd = os.getcwd()
-		tmp_path = os.path.join(cwd, "tmp")
-		if not os.path.isdir(tmp_path):
+		if not os.path.isdir(os.path.join(cwd, "tmp")):
 			# if tmp does not exist then the files surely weren't generated
-			self.load_previously_generated_files_button.setStyleSheet(style_disabled)
-			self.load_previously_generated_files_button.setEnabled(False)
+			self.load_previous_files_button.setStyleSheet(style_disabled)
+			self.load_previous_files_button.setEnabled(False)
 		else:
-			# if tmp does exist
-			button_enabled = False
-			# for each file in tmp/, check if its name is in expected_files
-			for existing_file in os.listdir(tmp_path):
-				if existing_file not in expected_files:
-					for expected_file in expected_files:
-						# check if the existing_file name contains one of the expected_file names
-						# (this is because smartctl could create output files with different names according
-						# to the disk names, for example smartctl-dev-sda or smartctl-dev-nvme0p1)
-						if expected_file in existing_file:
-							button_enabled = True
-			if(not button_enabled):
-				self.load_previously_generated_files_button.setStyleSheet(style_disabled)
-				self.load_previously_generated_files_button.setEnabled(False)
+			# if tmp does exist, check if the files exist inside it
+			for f in files:
+				if not os.path.isfile(os.path.join(cwd, "tmp/" + f)):
+					# if one of the expected files doesn't exist then the button
+					# 'load previous generated files' is disabled
+					self.load_previous_files_button.setStyleSheet(style_disabled)
+					self.load_previous_files_button.setEnabled(False)
 
 		h_box = QHBoxLayout()
 		h_box.addStretch()
 		h_box.addWidget(self.generate_files_button, alignment=Qt.AlignCenter)
 		h_box.addStretch()
-		h_box.addWidget(self.load_previously_generated_files_button, alignment=Qt.AlignCenter)
+		h_box.addWidget(self.load_previous_files_button, alignment=Qt.AlignCenter)
 		h_box.addStretch()
 
 		v_box = QVBoxLayout()
@@ -143,10 +136,6 @@ class Welcome(QWidget):
 			make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
 			with sp.Popen(["./generate_files.pkexec", os.path.join(working_directory, folder_name)], shell=False) as process:
 				process.wait(timeout=60)
-			# the information concerning the gpu location is saved inside has_dedicated_gpu.txt
-			f = open(os.path.join(folder_name, "has_dedicated_gpu.txt"), "w")
-			f.write(str(has_dedicated_gpu))
-			f.close()
 			# the line below is needed in order to not close the window!
 			window.takeCentralWidget()
 			new_widget = FilesGenerated(window, has_dedicated_gpu)
@@ -168,15 +157,8 @@ class Welcome(QWidget):
 			# noinspection PyCallByClass
 			# noinspection PyArgumentList
 			QMessageBox.critical(self, "WTF1", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+			print(e)
 
-	def load_previously_generated_files(self, window:QMainWindow):
-		# if this function is called, then the file surely exists (if the file won't exist the button was disabled)
-		f = open(os.path.join(os.getcwd(), "tmp", "has_dedicated_gpu.txt"))
-		has_dedicated_gpu = bool(f.read())
-		f.close()
-		window.takeCentralWidget()
-		new_widget = FilesGenerated(window, has_dedicated_gpu)
-		window.setCentralWidget(new_widget)
 
 class FilesGenerated(QWidget):
 	def __init__(self, window: QMainWindow, has_dedicated_gpu: bool):
@@ -209,6 +191,7 @@ class FilesGenerated(QWidget):
 				files_dir = "tmp"
 			system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files(files_dir,
 				has_dedicated_gpu, False)  # TODO: support this
+			print(system_info)
 			window.takeCentralWidget()
 
 			# new_window = ScrollableWindow()
@@ -224,6 +207,7 @@ class FilesGenerated(QWidget):
 			# noinspection PyCallByClass
 			# noinspection PyArgumentList
 			QMessageBox.critical(self, "WTF2", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+			print(e)
 
 
 # class ScrollableWindow(QMainWindow):
