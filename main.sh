@@ -15,23 +15,27 @@ function print_usage {
 function check_required_files {
   required_files=()
   while read line; do
-    required_files+=("$line")
+    required_files+=("tmp/$line")
   done < required_files.txt
 
-  for file in tmp; do
+  for file in tmp/*; do
     if [[ ! " ${required_files[@]} " =~ " ${file} " ]]; then
-      echo "Missing file: $file . Please re-run this script without the -f or --files option."
-      exit -1
+      if [[ ! "$file" == tmp/smartctl-dev* ]]; then
+        echo "Missing file: $file"
+        echo "Please re-run this script without the -f or --files option."
+        exit -1
+      fi
     fi
   done
 
-  gpu_location="$(cat has_dedicated_gpu.txt)"
-  if [[ "$gpu_location" = "False" ]]; then
+  gpu_location_bool="$(cat tmp/has_dedicated_gpu.txt)"
+  if [[ "$gpu_location_bool" = "False" ]]; then
     gpu_location="c"
-  elif [[ "$gpu_location" = "True" ]]; then
+  elif [[ "$gpu_location_bool" = "True" ]]; then
     gpu_location="g"
   else
-    echo "Invalid gpu_location in has_dedicated_gpu.txt - expecting either True or False. Please re-run this script without the -f or --files option."
+    echo "Invalid gpu_location in has_dedicated_gpu.txt - expecting either True or False."
+    echo "Please re-run this script without the -f or --files option."
     exit -1
   fi
 }
@@ -103,6 +107,7 @@ while [[ $# -gt 0 ]]; do
     ;;
     -f|--files)
     check_required_files
+    OUTPUT_PATH="tmp"
     call_run_extract_data_with_gpu_location
     exit 0
     ;;
