@@ -343,12 +343,14 @@ def get_chassis(path: str):
 if __name__ == '__main__':
 	import argparse
 	import json
+
 	parser = argparse.ArgumentParser(description='Parse dmidecode output')
 	parser.add_argument('-b', '--baseboard', type=str, help="Path to baseboard.txt")
 	parser.add_argument('-c', '--chassis', type=str, help="Path to chassis.txt")
 	parser.add_argument('-p', '--ports', type=str, help="Path to connector.txt (ports)")
 	parser.add_argument('-n', '--net', type=str, help="Path to net.txt")
 	args = parser.parse_args()
+
 	if args.ports is not None and args.baseboard is None:
 		print("Provide a baseboard.txt file to detect connectors")
 		exit(1)
@@ -366,6 +368,7 @@ if __name__ == '__main__':
 			print(json.dumps(bb, indent=2))
 		if args.chassis is not None:
 			print(json.dumps(get_chassis(args.chassis), indent=2))
+
 	except InputFileNotFoundError as e:
 		print(str(e))
 		exit(1)
