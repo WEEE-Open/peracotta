@@ -61,8 +61,10 @@ class Welcome(QWidget):
 		#by default it's enabled, if one of the expected files does not exist it's disabled
 		style_disabled = "background-color:#666677; color:#444444"
 
-		expected_files = ["baseboard.txt", "chassis.txt", "connector.txt", "dimms.txt", "glxinfo.txt",\
-				 "lscpu.txt", "lspci.txt", "net.txt", "smartctl-dev", "has_dedicated_gpu.txt"]
+		expected_files = []
+		with open('required_files.txt', 'r') as f:
+			for line in f.readlines():
+				expected_files.append(line)
 
 		cwd = os.getcwd()
 		tmp_path = os.path.join(cwd, "tmp")
