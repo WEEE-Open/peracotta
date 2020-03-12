@@ -2,7 +2,9 @@
 
 function print_usage {
   echo "Use -h or --help to show this help."
-  echo "Usage: $0 (-f|--files | [-p|--path <optional path to generate files to>] [-c|--cpu | -g|--gpu | -b|--motherboard])"
+  echo "Usage (either the first line or the second one):"
+  echo "$0 -f|--files <optional path to generate files to>"
+  echo "$0  [-p|--path <optional path to generate files to>] [-c|--cpu | -g|--gpu | -b|--motherboard]"
   echo ""
   echo "If no argument is given, then this script will interactively guide you to run the PERACOTTA data gathering package."
   echo ""
