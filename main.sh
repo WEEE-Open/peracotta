@@ -109,7 +109,11 @@ while [[ $# -gt 0 ]]; do
     ;;
     -f|--files)
     check_required_files
-    OUTPUT_PATH="tmp"
+    if [ -n "$2" ]; then
+      OUTPUT_PATH="$2"
+    else
+      OUTPUT_PATH="tmp"
+    fi
     call_run_extract_data_with_gpu_location
     exit 0
     ;;
