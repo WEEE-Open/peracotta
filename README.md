@@ -54,15 +54,16 @@ you can either pass it the arguments, or it will ask you for them nicely.
 
 ```
 Use -h or --help to show this help.
-Usage: ./main.sh [-p|--path <optional path to generate files to>] [-c|--cpu | -g|--gpu | -b|--motherboard]
+Usage (either the first line or the second one):
+./main.sh -f|--files <optional path where previously generated files are stored>
+./main.sh [-p|--path <optional path to generate files to>] [-c|--cpu | -g|--gpu | -b|--motherboard]
 
-If no argument is given, then this script will interactively guide you to run the PERACOTTA data 
-gathering package.
+If no argument is given, then this script will interactively guide you to run the PERACOTTA data gathering package.
+Alternatively, you can choose to pass either the path to the directory where you want the files to be generated, the gpu location, or both.
+In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location.
 
-Alternatively, you can choose to pass either the path to the directory where you want the files 
-to be generated, the gpu location, or both.
-In this case, the script will only become interactive when needed, and it won't ask you anything 
-if you pass both the path and the gpu location.
+When using -f or --files, this script will skip the generation step and it will print out the content of previously generated files, if all required files are found in the given directory (tmp by default).
+
 ```
 ### main_with_gui.py
 
