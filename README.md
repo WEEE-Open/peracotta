@@ -4,6 +4,17 @@
 
 Script to gather hardware data and update [T.A.R.A.L.L.O.](weee-open/tarallo) automatically.
 
+## Common usage
+
+You can have 2 use cases:
+- a very old PC, that even struggles with showing the Desktop Environment
+- a newer PC, which runs mostly fine even with graphical applications (like the DE, a browser, etc.)
+
+In the first case, you want to use `main.sh`. This is a CLI Bash script that does almost everything the GUI does, but it's not as easy to use.  
+In the second case, you want to use `main_with_gui.py`. This is the script which launches the GUI, and it's slightly easier to use than the CLI version.  
+
+In both cases, please refer to the _How to run_ and _main.sh and main_with_gui.py_ sections.
+
 ## How to run
 
 Clone this repo:  
