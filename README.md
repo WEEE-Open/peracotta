@@ -21,6 +21,8 @@ Clone this repo:
 `git clone https://github.com/weee-open/peracotta`  
 Make a virtual environment in the directory of the repo:  
 `cd peracotta`    
+
+If you want to use the GUI, the following additional steps are needed:  
 `python3 -m venv venv`  
 Activate it:  
 `source venv/bin/activate`  
