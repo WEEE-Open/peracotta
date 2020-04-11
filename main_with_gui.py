@@ -178,6 +178,7 @@ class Welcome(QWidget):
 		new_widget = FilesGenerated(window, has_dedicated_gpu)
 		window.setCentralWidget(new_widget)
 
+
 class FilesGenerated(QWidget):
 	def __init__(self, window: QMainWindow, has_dedicated_gpu: bool):
 		# noinspection PyArgumentList
@@ -297,7 +298,7 @@ class VerifyExtractedData(QWidget):
 
 		self.setLayout(v_box)
 
-	def display_plaintext_data(self, window:QMainWindow, system_info):
+	def display_plaintext_data(self, window: QMainWindow, system_info):
 		window.takeCentralWidget()
 		plaintext_widget = PlainTextWidget(window, system_info)
 		window.setCentralWidget(plaintext_widget)
@@ -362,6 +363,7 @@ class PlainTextWidget(QWidget):
 		self.notification.show()
 		self.notification.animate()
 
+
 class Notification(QLabel):
 	def __init__(self,text):
 		super().__init__(text)
@@ -380,6 +382,7 @@ class Notification(QLabel):
 
 	def animate(self):
 		self.animation.start()
+
 
 def main():
 	app = QApplication(sys.argv)
