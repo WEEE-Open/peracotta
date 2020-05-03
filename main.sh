@@ -97,7 +97,7 @@ function call_run_extract_data_with_gpu_location {
 }
 
 function open_default_browser {
-  web_link=$(base64 -d "aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg==")
+  web_link=$(echo "aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg==" | base64 --decode)
   echo "Do you want to open the Bulk Add page on TARALLO in the default browser? y/N"
   read ans
   if [ $ans = "y" -o $ans = "Y" ]; then
