@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo apt install pciutils i2c-tools mesa-utils smartmontools dmidecode
+sudo apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode
