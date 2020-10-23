@@ -6,7 +6,7 @@ from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
 
-filedir = 'castes-HP-dc7600/'
+filedir = 'tests/castes-HP-dc7600/'
 
 
 def test_lspci_dedicated():

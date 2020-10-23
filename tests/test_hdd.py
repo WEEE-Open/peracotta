@@ -2,7 +2,7 @@
 
 from parsers import read_smartctl
 
-filedir = 'hdd/'
+filedir = 'tests/hdd/'
 
 
 def test_smartctl():
