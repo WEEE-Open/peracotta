@@ -17,16 +17,15 @@ function print_usage {
 function check_required_files {
   required_files=()
   while read line; do
-    required_files+=("tmp/$line")
+    required_files+=("$OUTPUT_PATH/$line")
   done < required_files.txt
+  # required_files.txt has to have an empty line at the end for the code above to work
 
-  for file in tmp/*; do
-    if [[ ! " ${required_files[@]} " =~ " ${file} " ]]; then
-      if [[ ! "$file" == tmp/smartctl-dev* ]]; then
+  for file in ${required_files[@]}; do
+    if [ ! -f "$file" ]; then
         echo "Missing file: $file"
         echo "Please re-run this script without the -f or --files option."
         exit -1
-      fi
     fi
   done
 
@@ -117,12 +116,12 @@ while [[ $# -gt 0 ]]; do
     exit 0
     ;;
     -f|--files)
-    check_required_files
     if [ -n "$2" ]; then
       OUTPUT_PATH="$2"
     else
       OUTPUT_PATH="tmp"
     fi
+    check_required_files
     call_run_extract_data_with_gpu_location
     exit 0
     ;;
