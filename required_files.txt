@@ -1,10 +1,11 @@
 baseboard.txt
 chassis.txt
 connector.txt
+dmesg.txt
 dimms.txt
 glxinfo.txt
 lscpu.txt
 lspci.txt
 net.txt
-smartctl-dev
+smartctl-dev*
 has_dedicated_gpu.txt
