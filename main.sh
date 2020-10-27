@@ -29,7 +29,7 @@ function check_required_files {
     fi
   done
 
-  gpu_location_bool="$(cat tmp/has_dedicated_gpu.txt)"
+  gpu_location_bool="$(cat $OUTPUT_PATH/has_dedicated_gpu.txt)"
   if [[ "$gpu_location_bool" = "False" ]]; then
     gpu_location="c"
   elif [[ "$gpu_location_bool" = "True" ]]; then
