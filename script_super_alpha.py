@@ -18,9 +18,20 @@ def norm(ex, li):
                 normalized = name
     return (normalized, candidates)
 
+
+def create_csv(out: dict):
+    f = open("../final.csv", "w")
+    f.write("Old Value;Normalized form\n")
+    for k in out.keys():
+        for v in out[k]:
+            f.write(v+';'+k+'\n')
+    f.close()
+
 if __name__ == '__main__':
-    f = open("../brands", "r")
+    f = open("brands.txt", "r")
     li = list(f)
+    for i in range(0,len(li)):
+        li[i] = li[i].replace('\n', '')
     double = li
     f.close()
     output = {}
@@ -31,6 +42,4 @@ if __name__ == '__main__':
                 if el in double:
                     double.remove(el)
             output[normalized] = associated
-    f = open('../final', "w")
-    f.write(str(output))
-    f.close()
+    create_csv(output)
