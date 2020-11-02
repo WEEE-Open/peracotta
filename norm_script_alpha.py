@@ -1,9 +1,9 @@
 from fuzzywuzzy import process
 
-def get_normalized(el: str, li: list):
-    reading = process.extractBests(el, li, score_cutoff=75)
-    candidates = [el]
-    best_n = el
+def get_normalized(starting_name: str, names_coll: list):
+    reading = process.extractBests(starting_name, names_coll, score_cutoff=75)
+    candidates = [starting_name]
+    best_n = starting_name
     max_n = len(reading)
 
     while reading != []:
@@ -18,17 +18,17 @@ def get_normalized(el: str, li: list):
 
 
 def write_csv(out: dict):
-    f = open("n_alpha.csv", "w")
-    f.write("Old;Normalized\n")
-    for k in out.keys():
-        for n in out[k]:
-            f.write(n+';'+k+'\n')
+    with open("n_alpha.csv", "w") as f:
+        f.write("Old;Normalized\n")
+        for norm_form in out.keys():
+            for brand in out[norm_form]:
+                f.write(f"{brand};{norm_form}\n")
+
 
 if __name__ == "__main__":
-    f = open("brands.txt", "r")
-    li = list(f)
-    f.close()
-    for i in range(0, len(li)):
+    with open("brands.txt", "r") as f:
+        li = list(f)
+    for i in range(len(li)):
         li[i] = li[i].replace('\n', '')
     double = li
     output = {}
