@@ -64,8 +64,8 @@ function run_extract_data {
   echo ""
   echo "The following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':"
   echo ""
-  ./extract_data.py -$gpu_location "$OUTPUT_PATH" | tee copy_this_to_tarallo.json
-  echo "You can also transfer the generated JSON file copy_this_to_tarallo.json to your PC with 'scp copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal."
+  ./extract_data.py -$gpu_location "$OUTPUT_PATH" | tee "$OUTPUT_PATH"/copy_this_to_tarallo.json
+  echo "You can also transfer the generated JSON file $OUTPUT_PATH/copy_this_to_tarallo.json to your PC with 'scp $OUTPUT_PATH/copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal."
   echo ""
 }
 
@@ -183,7 +183,11 @@ if [ -z "$OUTPUT_PATH" ]; then
   fi
 fi
 
-sudo ./generate_files.sh $OUTPUT_PATH
+if [ "$EUID" -ne 0 ]; then
+  sudo ./generate_files.sh $OUTPUT_PATH
+else
+  ./generate_files.sh $OUTPUT_PATH
+fi
 
 call_run_extract_data_with_gpu_location
 
