@@ -99,7 +99,7 @@ function open_default_browser {
   web_link=$(echo "aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg==" | base64 --decode)
   echo "Do you want to open the Bulk Add page on TARALLO in the default browser? y/N"
   read ans
-  if [ $ans = "y" -o $ans = "Y" ]; then
+  if [ "$ans" = "y" ] || [ "$ans" = "Y" ]; then
     xdg-open "$web_link"
   fi
 }
@@ -159,17 +159,17 @@ while [[ $# -gt 0 ]]; do
 done
 
 # if output path is not passed as argument ask the user
-if [ -z $OUTPUT_PATH ]; then
+if [ -z "$OUTPUT_PATH" ]; then
   if [ -d tmp ]; then
     echo "Overwrite existing files in tmp dir? y/N"
     read ans_tmp
-    if [ $ans_tmp = "y" -o $ans_tmp = "Y" ]; then
+    if [ "$ans_tmp" = "y" ] || [ "$ans_tmp" = "Y" ]; then
       echo "Overwriting..."
       OUTPUT_PATH="tmp"
     else
       echo "Output files to working directory? y/N"
       read ans_wd
-      if [ $ans_wd = "y" -o $ans_wd = "Y" ]; then
+      if [ "$ans_wd" = "y" ] || [ "$ans_wd" = "Y" ]; then
         echo "Outputting files to working directory..."
         OUTPUT_PATH="."
       else
