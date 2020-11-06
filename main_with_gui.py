@@ -17,6 +17,7 @@ from enum import Enum
 # should be set to "tests/<machine_to_test>" when testing
 DEBUG_DIR = None
 
+gpu_loc_file = "gpu_location.txt"
 
 class GPU(Enum):
 	int_mobo = "mobo"
@@ -163,7 +164,7 @@ class Welcome(QWidget):
 			with sp.Popen(["./generate_files.pkexec", os.path.join(working_directory, folder_name)], shell=False) as process:
 				process.wait(timeout=60)
 			# the information concerning the gpu location is saved in gpu_location
-			with open(os.path.join(folder_name, "gpu_location.txt"), "w") as f:
+			with open(os.path.join(folder_name, gpu_loc_file), "w") as f:
 				f.write(gpu_loc.value)
 			# the line below is needed in order to not close the window!
 			window.takeCentralWidget()
@@ -189,7 +190,7 @@ class Welcome(QWidget):
 
 	def load_previously_generated_files(self, window:QMainWindow):
 		# if this is called the files surely exist (if not, the button was disabled)
-		with open(os.path.join(os.getcwd(), "tmp", "gpu_loc.txt")) as f:
+		with open(os.path.join(os.getcwd(), "tmp", gpu_loc_file)) as f:
 			gpu_loc = GPU(f.read())
 		window.takeCentralWidget()
 		new_widget = FilesGenerated(window, gpu_loc)
@@ -235,7 +236,7 @@ class FilesGenerated(QWidget):
 			else:
 				files_dir = "tmp"
 			system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files(files_dir,
-				has_dedicated_gpu, gpu_in_cpu)  # TODO: support this
+				has_dedicated_gpu, gpu_in_cpu)
 			window.takeCentralWidget()
 
 			# new_window = ScrollableWindow()
