@@ -11,12 +11,18 @@ from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
 from polkit import make_dotfiles
-
+from enum import Enum
 
 # should be None in production
 # should be set to "tests/<machine_to_test>" when testing
 DEBUG_DIR = None
 
+gpu_loc_file = "gpu_location.txt"
+
+class GPU(Enum):
+	int_mobo = "mobo"
+	int_cpu = "cpu"
+	dec_gpu = "gpu"
 
 class Window(QMainWindow):
 	def __init__(self):
@@ -54,7 +60,7 @@ class Welcome(QWidget):
 
 		self.generate_files_button = QPushButton("Generate Files")
 		# noinspection PyUnresolvedReferences
-		self.generate_files_button.clicked.connect(lambda: self.prompt_has_dedicated_gpu(window))
+		self.generate_files_button.clicked.connect(lambda: self.prompt_gpu_location(window))
 
 		self.load_previously_generated_files_button = QPushButton("Load previously generated files")
 		self.load_previously_generated_files_button.clicked.connect(lambda: self.load_previously_generated_files(window))
@@ -105,36 +111,48 @@ class Welcome(QWidget):
 
 		self.setLayout(v_box)
 
-	def prompt_has_dedicated_gpu(self, window: QMainWindow):
+	def prompt_gpu_location(self, window: QMainWindow):
 		# TODO: allow NO as an answer
 		while True:
 			# noinspection PyCallByClass
-			answer = QMessageBox.question(self,
-				"Discrete GPU",
-				"Does this system have a dedicated video card?",
-				QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-			if answer == QMessageBox.Yes:
-				# noinspection PyCallByClass
+			answer = QMessageBox(self)
+			answer.setWindowTitle("Discrete GPU")
+			answer.setText("Where is this system's GPU located?")
+			btncpu = answer.addButton("Integrated in the CPU", QMessageBox.YesRole)
+			btnmobo = answer.addButton("Integrated in the motherboard", QMessageBox.AcceptRole)
+			btngpu = answer.addButton("Dedicated graphics card", QMessageBox.NoRole)
+			answer.exec_()
+			if answer.clickedButton() == btncpu:
+				#noinspection PyCallByClass
 				confirm = QMessageBox.question(self, "Confirm",
-					"Do you confirm this system has a dedicated video card?",
+					"Do you confirm this system has the GPU integrated in the CPU?",
 					QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 				if confirm == QMessageBox.Yes:
-					self.generate_files(window, has_dedicated_gpu=True)
+					self.generate_files(window, gpu_loc=GPU.int_cpu)
+					break
+				else:
+					continue
+			elif answer.clickedButton() == btnmobo:
+				# noinspection PyCallByClass
+				confirm = QMessageBox.question(self, "Confirm",
+					"Do you confirm this system has the GPU integrated in the motherboard?",
+					QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+				if confirm == QMessageBox.Yes:
+					self.generate_files(window, gpu_loc=GPU.int_mobo)
 					break
 				else:
 					continue
 			else:
-				# noinspection PyCallByClass
 				confirm = QMessageBox.question(self, "Confirm",
-					"Do you confirm this system has an integrated GPU?",
+					"Do you confirm this system has a dedicated GPU?",
 					QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 				if confirm == QMessageBox.Yes:
-					self.generate_files(window, has_dedicated_gpu=False)
+					self.generate_files(window, gpu_loc=GPU.dec_gpu)
 					break
 				else:
 					continue
 
-	def generate_files(self, window: QMainWindow, has_dedicated_gpu: bool):
+	def generate_files(self, window: QMainWindow, gpu_loc: GPU):
 		try:
 			working_directory = os.getcwd()
 			if not os.path.isdir(os.path.join(working_directory, "tmp")):
@@ -145,12 +163,12 @@ class Welcome(QWidget):
 			make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
 			with sp.Popen(["./generate_files.pkexec", os.path.join(working_directory, folder_name)], shell=False) as process:
 				process.wait(timeout=60)
-			# the information concerning the gpu location is saved in has_dedicated_gpu.txt
-			with open(os.path.join(folder_name, "has_dedicated_gpu.txt"), "w") as f:
-				f.write(str(has_dedicated_gpu))
+			# the information concerning the gpu location is saved in gpu_location
+			with open(os.path.join(folder_name, gpu_loc_file), "w") as f:
+				f.write(gpu_loc.value)
 			# the line below is needed in order to not close the window!
 			window.takeCentralWidget()
-			new_widget = FilesGenerated(window, has_dedicated_gpu)
+			new_widget = FilesGenerated(window, gpu_loc)
 			window.setCentralWidget(new_widget)
 
 		except sp.CalledProcessError as err:
@@ -172,23 +190,32 @@ class Welcome(QWidget):
 
 	def load_previously_generated_files(self, window:QMainWindow):
 		# if this is called the files surely exist (if not, the button was disabled)
-		with open(os.path.join(os.getcwd(), "tmp", "has_dedicated_gpu.txt")) as f:
-			has_dedicated_gpu = bool(f.read())
+		with open(os.path.join(os.getcwd(), "tmp", gpu_loc_file)) as f:
+			gpu_loc = GPU(f.read())
 		window.takeCentralWidget()
-		new_widget = FilesGenerated(window, has_dedicated_gpu)
+		new_widget = FilesGenerated(window, gpu_loc)
 		window.setCentralWidget(new_widget)
 
 
 class FilesGenerated(QWidget):
-	def __init__(self, window: QMainWindow, has_dedicated_gpu: bool):
+	def __init__(self, window: QMainWindow, gpu_loc: GPU):
 		# noinspection PyArgumentList
 		super().__init__()
 		self.label = QLabel(
 			"Everything went fine. Click the button below if you want to proceed with the data extraction.\n"
 			"You will be able to review the data after this process.")
 		self.extract_data_button = QPushButton("Extract data from output files")
+		if gpu_loc == GPU.int_mobo:
+			has_dedicated_gpu=False
+			gpu_in_cpu=False
+		elif gpu_loc == GPU.int_cpu:
+			has_dedicated_gpu = False
+			gpu_in_cpu = True
+		elif gpu_loc == GPU.dec_gpu:
+			has_dedicated_gpu = True
+			gpu_in_cpu = False
 		self.extract_data_button.clicked.connect(
-			lambda: self.extract_data_from_generated_files(window, has_dedicated_gpu))
+			lambda: self.extract_data_from_generated_files(window, has_dedicated_gpu, gpu_in_cpu))
 
 		h_box = QHBoxLayout()
 		h_box.addStretch()
@@ -202,14 +229,14 @@ class FilesGenerated(QWidget):
 
 		self.setLayout(v_box)
 
-	def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool):
+	def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool, gpu_in_cpu: bool):
 		try:
 			if DEBUG_DIR:
 				files_dir = DEBUG_DIR
 			else:
 				files_dir = "tmp"
 			system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files(files_dir,
-				has_dedicated_gpu, False)  # TODO: support this
+				has_dedicated_gpu, gpu_in_cpu)
 			window.takeCentralWidget()
 
 			# new_window = ScrollableWindow()
