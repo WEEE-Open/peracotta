@@ -29,13 +29,15 @@ function check_required_files {
     fi
   done
 
-  gpu_location_bool="$(cat $OUTPUT_PATH/has_dedicated_gpu.txt)"
-  if [[ "$gpu_location_bool" = "False" ]]; then
+  gpu_location_str="$(cat $OUTPUT_PATH/gpu_location.txt)"
+  if [[ "$gpu_location_str" = "mobo" ]]; then
+    gpu_location="b"
+  elif [[ "$gpu_location_str" = "cpu" ]]; then
     gpu_location="c"
-  elif [[ "$gpu_location_bool" = "True" ]]; then
+  elif [[ "$gpu_location_str" = "gpu" ]]; then
     gpu_location="g"
   else
-    echo "Invalid gpu_location in has_dedicated_gpu.txt - expecting either True or False."
+    echo "Invalid gpu_location in gpu_location.txt - expecting 'b', 'c' or 'g'."
     echo "Please re-run this script without the -f or --files option."
     exit -1
   fi
