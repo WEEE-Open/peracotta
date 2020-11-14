@@ -13,6 +13,9 @@ from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from parsers.read_smartctl import read_smartctl
 from tarallo_token import TARALLO_TOKEN
 
+def remove_item_keys(keys_list, ex_dict): #don't like this method
+    return ex_dict
+
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
                                                   verbose: bool = False):
@@ -100,51 +103,54 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     #TODO: normalization
     #TODO: check of keys for item
     #TODO: set new_format
+    item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
+                      "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
+                      "sn", "software", "surface-scan", "working", "wwn"]
     products = [chassis, mobo, cpu, gpu, psu]
     #setting mobo dict
-    new_mobo = {"features": mobo, "contents": []}
+    new_mobo = {"features": remove_item_keys(item_keys, mobo), "contents": []}
 
     #mount the cpu
-    new_mobo["contents"].append({"features": cpu})
+    new_mobo["contents"].append({"features": remove_item_keys(item_keys, cpu)})
 
     #adding some ram
     if isinstance(dimms, list):
         products += dimms
         for dimm in dimms:
-            new_mobo["contents"].append({"features": dimm})
+            new_mobo["contents"].append({"features": remove_item_keys(item_keys, dimm)})
     else:
-        new_mobo["contents"].append({"features": dimms}) #thanks to line 27 I know there's something, but it's not necessary.
         products.append(dimms)
+        new_mobo["contents"].append({"features": remove_item_keys(item_keys, dimms)}) #thanks to line 27 I know there's something, but it's not necessary.
+
 
     # mount disks
     if isinstance(disks, list):
         products += disks
         for disk in disks:
-            new_mobo["contents"].append({"features": disk})
+            new_mobo["contents"].append({"features": remove_item_keys(item_keys, disk)})
     elif isinstance(disks, dict) and disks.__len__() != 0:
-        new_mobo["contents"].append({"features": disks})
         products.append(disks)
+        new_mobo["contents"].append({"features": remove_item_keys(item_keys, disks)})
+
 
     #put gpu (still check if necessary 'null' format), assuming only one because was the same as before
-    new_mobo["contents"].append({"features": gpu})
+    new_mobo["contents"].append({"features": remove_item_keys(item_keys, gpu)})
 
     #get wifi cards
     if wifi_cards:
         products += wifi_cards
         for wifi_card in wifi_cards:
-            new_mobo["contents"].append({"features": wifi_card})
+            new_mobo["contents"].append({"features": remove_item_keys(item_keys, wifi_card)})
 
     #mounting psu (do I put in mobo or chassis?)
-    new_mobo["contents"].append({"features": psu})
+    new_mobo["contents"].append({"features": remove_item_keys(item_keys, psu)})
 
     #finally get the item
     result = [{"type": "I", "features": chassis, "contents": new_mobo}]
-    removable_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
-                      "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
-                      "sn", "software", "surface-scan", "working", "wwn"]
+
     #fix the product type
     for product in products:
-        for k in removable_keys:
+        for k in item_keys:
             product.pop(k, None)
         to_res = {"type": "P"}
         upper_values = ("brand", product.pop("brand", None)), ("model", product.pop("model", None)), ("variant", product.pop("variant", None))
