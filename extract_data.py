@@ -139,6 +139,21 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     #finally get the item
     result = [{"type": "I", "features": chassis, "contents": new_mobo}]
+    removable_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
+                      "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
+                      "sn", "software", "surface-scan", "working", "wwn"]
+    #fix the product type
+    for product in products:
+        for k in removable_keys:
+            product.pop(k, None)
+        to_res = {"type": "P"}
+        upper_values = ("brand", product.pop("brand", None)), ("model", product.pop("model", None)), ("variant", product.pop("variant", None))
+        for up in upper_values:
+            (k, v) = up
+            if v is not None:
+                to_res[k] = v
+        to_res["features"] = product
+        result.append(to_res)
 
     # tuple = list(dicts), bool
     # result= chassis,mobo ,cpu, dimms, gpu, disks
