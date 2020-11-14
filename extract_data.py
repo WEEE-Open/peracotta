@@ -97,31 +97,52 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "frequency-hertz": None,
             "human_readable_frequency": None
         }
+    #TODO: normalization
+    #TODO: check of keys for item
+    #TODO: set new_format
+    products = [chassis, mobo, cpu, gpu, psu]
+    #setting mobo dict
+    new_mobo = {"features": mobo, "contents": []}
 
-    result = [chassis, mobo, cpu]
-    if wifi_cards:
-        result += wifi_cards
+    #mount the cpu
+    new_mobo["contents"].append({"features": cpu})
 
-    if isinstance(dimms, dict):
-        # otherwise it will append every key-value pair of the dict
-        result.append(dimms)
-    else:
+    #adding some ram
+    if isinstance(dimms, list):
+        products += dimms
         for dimm in dimms:
-            result.append(dimm)
-
-    # assuming there is only 1 graphics card in the system
-    result.append(gpu)
-
-    if isinstance(disks, dict):
-        result.append(disks)
+            new_mobo["contents"].append({"features": dimm})
     else:
+        new_mobo["contents"].append({"features": dimms}) #thanks to line 27 I know there's something, but it's not necessary.
+        products.append(dimms)
+
+    # mount disks
+    if isinstance(disks, list):
+        products += disks
         for disk in disks:
-            result.append(disk)
+            new_mobo["contents"].append({"features": disk})
+    elif isinstance(disks, dict) and disks.__len__() != 0:
+        new_mobo["contents"].append({"features": disks})
+        products.append(disks)
+
+    #put gpu (still check if necessary 'null' format), assuming only one because was the same as before
+    new_mobo["contents"].append({"features": gpu})
+
+    #get wifi cards
+    if wifi_cards:
+        products += wifi_cards
+        for wifi_card in wifi_cards:
+            new_mobo["contents"].append({"features": wifi_card})
+
+    #mounting psu (do I put in mobo or chassis?)
+    new_mobo["contents"].append({"features": psu})
+
+    #finally get the item
+    result = [{"type": "I", "features": chassis, "contents": new_mobo}]
 
     # tuple = list(dicts), bool
     # result= chassis,mobo ,cpu, dimms, gpu, disks
-
-    return result, print_lspci_lines_in_dialog
+    return result#, print_lspci_lines_in_dialog
 
 
 def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
