@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Build the Docker image
-      run: docker build . --file Dockerfile.run --tag ${{secrets.DOCKER_REGISTRY}}/peracotta:latest
+      run: docker build . --file Dockerfile --tag ${{secrets.DOCKER_REGISTRY}}/peracotta:latest
 
     - name: Push the Docker Image to our custom registry
       run: | 
