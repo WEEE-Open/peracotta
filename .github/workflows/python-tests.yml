@@ -18,12 +18,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Tests with Python version ${{ matrix.python-version }}
+      - name: Set up Python version ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
-      - run: |
-          pip install -r requirements-dev.txt
-          pytest -vv tests
+      
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+        
+      - name: Run tests
+        run: pytest -vv tests
 
