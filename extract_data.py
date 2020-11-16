@@ -13,8 +13,19 @@ from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from parsers.read_smartctl import read_smartctl
 from tarallo_token import TARALLO_TOKEN
 
-def remove_item_keys(keys_list, ex_dict): #don't like this method
-    return ex_dict
+
+def brand_normalization(item_list):
+    names = {}
+    with open("normalized.csv", "r") as f:
+        f.readline()
+        txt = list(f)
+        while txt != []:
+            (k, v) = txt.pop().split(";")
+            names[k] = v
+    for item in item_list:
+        if "brand" in item.keys():
+            if item["brand"] in names.keys():
+                item["brand"] = names[item["brand"]]
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
@@ -23,7 +34,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
                                                               cleanup=False, verbose=verbose, unpack=False)
-
+                                                            #human readable solo nella gui
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
     # the None check MUST come before the others
@@ -106,59 +117,55 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
                       "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
                       "sn", "software", "surface-scan", "working", "wwn"]
+    bmv = ["brand", "model", "variant"]
+
     products = [chassis, mobo, cpu, gpu, psu]
     #setting mobo dict
-    new_mobo = {"features": remove_item_keys(item_keys, mobo), "contents": []}
+    new_mobo = {"features": {k: v for k, v in mobo.items() if k in bmv+item_keys}, "contents": []}
 
     #mount the cpu
-    new_mobo["contents"].append({"features": remove_item_keys(item_keys, cpu)})
+    new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
 
     #adding some ram
     if isinstance(dimms, list):
         products += dimms
         for dimm in dimms:
-            new_mobo["contents"].append({"features": remove_item_keys(item_keys, dimm)})
+            new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in bmv+item_keys}})
     else:
         products.append(dimms)
-        new_mobo["contents"].append({"features": remove_item_keys(item_keys, dimms)}) #thanks to line 27 I know there's something, but it's not necessary.
+        new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in bmv+item_keys}}) #thanks to line 27 I know there's something, but it's not necessary.
 
 
     # mount disks
     if isinstance(disks, list):
         products += disks
         for disk in disks:
-            new_mobo["contents"].append({"features": remove_item_keys(item_keys, disk)})
+            new_mobo["contents"].append({"features": {k: v for k, v in disk.items() if k in bmv+item_keys}})
     elif isinstance(disks, dict) and disks.__len__() != 0:
         products.append(disks)
-        new_mobo["contents"].append({"features": remove_item_keys(item_keys, disks)})
+        new_mobo["contents"].append({"features": {k: v for k, v in disks.items() if k in bmv+item_keys}})
 
 
     #put gpu (still check if necessary 'null' format), assuming only one because was the same as before
-    new_mobo["contents"].append({"features": remove_item_keys(item_keys, gpu)})
+    new_mobo["contents"].append({"features": {k: v for k, v in gpu.items() if k in bmv+item_keys}})
 
     #get wifi cards
     if wifi_cards:
         products += wifi_cards
         for wifi_card in wifi_cards:
-            new_mobo["contents"].append({"features": remove_item_keys(item_keys, wifi_card)})
+            new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in bmv+item_keys}})
 
     #mounting psu (do I put in mobo or chassis?)
-    new_mobo["contents"].append({"features": remove_item_keys(item_keys, psu)})
+    new_mobo["contents"].append({"features": {k: v for k, v in psu.items() if k in bmv+item_keys}})
 
     #finally get the item
-    result = [{"type": "I", "features": chassis, "contents": new_mobo}]
+    result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys}, "contents": new_mobo}]
 
     #fix the product type
     for product in products:
-        for k in item_keys:
-            product.pop(k, None)
-        to_res = {"type": "P"}
-        upper_values = ("brand", product.pop("brand", None)), ("model", product.pop("model", None)), ("variant", product.pop("variant", None))
-        for up in upper_values:
-            (k, v) = up
-            if v is not None:
-                to_res[k] = v
-        to_res["features"] = product
+        #create the dictionaries
+        to_res = dict({"type": "P"}, **{k: product.pop(k) for k in set(product.keys()) if k in bmv})
+        to_res["features"] = {k: v for k, v in product.items() if k not in item_keys}
         result.append(to_res)
 
     # tuple = list(dicts), bool
