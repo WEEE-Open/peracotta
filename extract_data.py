@@ -100,7 +100,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             wifi_cards.append(wifi_card)
         mobo = mobo[0]
 
-    if cpu.__len__() == 0:
+    """if cpu.__len__() == 0:
         cpu = {
             "type": "cpu",
             "isa": None,
@@ -110,14 +110,28 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "thread-n": None,
             "frequency-hertz": None,
             "human_readable_frequency": None
-        }
-    #TODO: normalization
-    #TODO: check of keys for item
-    #TODO: set new_format
+        }"""
+    def normalize_brands(coll_dict): #probably better in extract data function
+        names = {}
+        with open("normalized.csv", "r") as f:
+            while True:
+                line = f.readline()
+                if line == "":
+                    break
+                k, v = line.split(";", 2)[0:2]
+                names[k] = v
+        for p_dict in coll_dict:
+            if "brand" in p_dict.keys():
+                if p_dict["brand"] in names.keys():
+                    p_dict["brand"] = names[p_dict["brand"]]
+
+
     item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
                       "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
                       "sn", "software", "surface-scan", "working", "wwn"]
     bmv = ["brand", "model", "variant"]
+
+    normalize_brands([chassis, mobo, cpu, gpu, psu]+dimms+wifi_cards+disks)
 
     products = [chassis, mobo, cpu, gpu, psu]
     #setting mobo dict
@@ -159,12 +173,13 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     new_mobo["contents"].append({"features": {k: v for k, v in psu.items() if k in bmv+item_keys}})
 
     #finally get the item
-    result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys}, "contents": new_mobo}]
+    result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys}, "contents": [new_mobo]}]
 
     #fix the product type
     for product in products:
         #create the dictionaries
-        to_res = dict({"type": "P"}, **{k: product.pop(k) for k in set(product.keys()) if k in bmv})
+        to_res = {k: product.pop(k) for k in bmv if k in product.keys()}
+        to_res["type"] = "P"
         to_res["features"] = {k: v for k, v in product.items() if k not in item_keys}
         result.append(to_res)
 
@@ -326,11 +341,10 @@ if __name__ == '__main__':
             main_with_gui.main()
 
         else:
-            data = extract_data(directory=path,
-                                has_dedicated_gpu=args.gpu,
-                                gpu_in_cpu=args.cpu,
-                                cleanup=True,
-                                verbose=args.verbose)
+            data = extract_and_collect_data_from_generated_files(directory=path,
+                                                                 has_dedicated_gpu=args.gpu,
+                                                                 gpu_in_cpu=args.cpu,
+                                                                 verbose=args.verbose)
             print(json.dumps(data, indent=2))
 
     except InputFileNotFoundError as e:
