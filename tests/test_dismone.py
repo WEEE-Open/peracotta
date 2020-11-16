@@ -6,7 +6,7 @@ from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
 
-filedir = 'dismone/'
+filedir = 'tests/dismone/'
 
 
 def test_lspci():
