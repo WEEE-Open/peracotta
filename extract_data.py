@@ -23,7 +23,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
     # the None check MUST come before the others
-    if dimms.__len__() == 0:
+    """if dimms.__len__() == 0:
         # empty default dictionary
         dimms = {
             "type": "ram",
@@ -38,14 +38,14 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "RAM_type": None,
             "ECC": None
             # "CAS_latencies": None # feature missing from TARALLO
-        }
+        }"""
 
     no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
                       "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
     no_vram_info_str = "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which " \
                        "could be near the actual value. Please humans, fix this error by hand."
 
-    if gpu.__len__() == 0 or (no_gpu_info_str in gpu and no_vram_info_str in gpu):
+    """if gpu.__len__() == 0 or (no_gpu_info_str in gpu and no_vram_info_str in gpu):
         gpu = {
             "type": "graphics-card",
             "manufacturer_brand": None,
@@ -61,7 +61,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         print_lspci_lines_in_dialog = False
     else:
         print_lspci_lines_in_dialog = False
-
+    """
     if chassis.__len__() == 0:
         chassis = {
             "type": "case",
@@ -85,7 +85,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             wifi_cards.append(wifi_card)
         mobo = mobo[0]
 
-    if cpu.__len__() == 0:
+    """if cpu.__len__() == 0:
         cpu = {
             "type": "cpu",
             "isa": None,
@@ -96,7 +96,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "frequency-hertz": None,
             "human_readable_frequency": None
         }
-
+    """
     def normalize_brands(coll_dict):
         names = {}
         with open("normalized.csv", "r") as f:
@@ -111,7 +111,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
                 if p_dict["brand"] in names.keys():
                     p_dict["brand"] = names[p_dict["brand"]]
 
-
     item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
                       "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
                       "sn", "software", "surface-scan", "working", "wwn"]
@@ -119,51 +118,55 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     normalize_brands([chassis, mobo, cpu, gpu, psu]+dimms+wifi_cards+disks)
 
-    products = [chassis, mobo, cpu, gpu, psu]
-    #setting mobo dict
+    products = [chassis, mobo]
+# setting mobo dict
     new_mobo = {"features": {k: v for k, v in mobo.items() if k in bmv+item_keys}, "contents": []}
-
-    #mount the cpu
-    new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
-
-    #adding some ram
+# mount the cpu
+    if cpu.__len__() != 0:
+        products.append(cpu)
+        new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
+# adding some ram
     if isinstance(dimms, list):
         products += dimms
         for dimm in dimms:
             new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in bmv+item_keys}})
-    else:
+    elif dimms.__len__() != 0:
         products.append(dimms)
         new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in bmv+item_keys}})
 
 
-    # mount disks
+# mount disks
     if isinstance(disks, list):
         products += disks
         for disk in disks:
             new_mobo["contents"].append({"features": {k: v for k, v in disk.items() if k in bmv+item_keys}})
-    elif isinstance(disks, dict) and disks.__len__() != 0:
+    elif isinstance(disks, dict) and disks != 0:
         products.append(disks)
         new_mobo["contents"].append({"features": {k: v for k, v in disks.items() if k in bmv+item_keys}})
 
 
-    #put gpu (still check if necessary 'null' format), assuming only one because was the same as before
-    new_mobo["contents"].append({"features": {k: v for k, v in gpu.items() if k in bmv+item_keys}})
+# put gpu (still check if necessary 'null' format), assuming only one because was the same as before
+    if gpu.__len__() != 0:
+        products.append(gpu)
+        new_mobo["contents"].append({"features": {k: v for k, v in gpu.items() if k in bmv+item_keys}})
 
-    #get wifi cards
-    if wifi_cards:
+# get wifi cards
+    if wifi_cards and len(wifi_cards) > 0:
         products += wifi_cards
         for wifi_card in wifi_cards:
             new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in bmv+item_keys}})
 
-    #mounting psu (do I put in mobo or chassis?)
-    new_mobo["contents"].append({"features": {k: v for k, v in psu.items() if k in bmv+item_keys}})
+# mounting psu
+    if psu.__len__() != 0:
+        products.append(psu)
+        new_mobo["contents"].append({"features": {k: v for k, v in psu.items() if k in bmv+item_keys}})
 
-    #finally get the item
+#finally get the item
     result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys}, "contents": [new_mobo]}]
 
-    #fix the product type
+#fix the product type
     for product in products:
-        #create the dictionaries
+#   create the dictionaries
         to_res = {k: product.pop(k) for k in bmv if k in product.keys()}
         to_res["type"] = "P"
         to_res["features"] = {k: v for k, v in product.items() if k not in item_keys}
