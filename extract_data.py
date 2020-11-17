@@ -14,27 +14,12 @@ from parsers.read_smartctl import read_smartctl
 from tarallo_token import TARALLO_TOKEN
 
 
-def brand_normalization(item_list):
-    names = {}
-    with open("normalized.csv", "r") as f:
-        f.readline()
-        txt = list(f)
-        while txt != []:
-            (k, v) = txt.pop().split(";")
-            names[k] = v
-    for item in item_list:
-        if "brand" in item.keys():
-            if item["brand"] in names.keys():
-                item["brand"] = names[item["brand"]]
-
-
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
-                                                  verbose: bool = False):
+                                                  verbose: bool = False, cleanup: bool = False):
     directory = directory.rstrip('/')
 
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
-                                                              cleanup=False, verbose=verbose, unpack=False)
-                                                            #human readable solo nella gui
+                                                              cleanup=cleanup, verbose=verbose, unpack=False)
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
     # the None check MUST come before the others
@@ -100,7 +85,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             wifi_cards.append(wifi_card)
         mobo = mobo[0]
 
-    """if cpu.__len__() == 0:
+    if cpu.__len__() == 0:
         cpu = {
             "type": "cpu",
             "isa": None,
@@ -110,8 +95,9 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "thread-n": None,
             "frequency-hertz": None,
             "human_readable_frequency": None
-        }"""
-    def normalize_brands(coll_dict): #probably better in extract data function
+        }
+
+    def normalize_brands(coll_dict):
         names = {}
         with open("normalized.csv", "r") as f:
             while True:
@@ -147,7 +133,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in bmv+item_keys}})
     else:
         products.append(dimms)
-        new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in bmv+item_keys}}) #thanks to line 27 I know there's something, but it's not necessary.
+        new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in bmv+item_keys}})
 
 
     # mount disks
@@ -220,25 +206,39 @@ def do_cleanup(result: list, verbose: bool = False) -> list:
     filtered = []
 
     for item in result:
-        cleaned_item = {}
         removed = set()
-        for k, v in item.items():
-            if isinstance(v, str) and v == '':
-                removed.add(k)
-            elif isinstance(v, int) and v <= 0:
-                removed.add(k)
-            elif 'human_readable' in k:
-                removed.add(k)
-            else:
-                cleaned_item[k] = v
+        if isinstance(item, list):
+            cleaned_item = []
+            for s_item in item:
+                cleaned_s_item = {}
+                for k, v in s_item.items():
+                    if isinstance(v, str) and v == '':
+                        removed.add(k)
+                    elif isinstance(v, int) and v <= 0:
+                        removed.add(k)
+                    elif 'human_readable' in k:
+                        removed.add(k)
+                    else:
+                        cleaned_s_item[k] = v
+                cleaned_item.append(cleaned_s_item)
+        else:
+            cleaned_item = {}
+            for k, v in item.items():
+                if isinstance(v, str) and v == '':
+                    removed.add(k)
+                elif isinstance(v, int) and v <= 0:
+                    removed.add(k)
+                elif 'human_readable' in k:
+                    removed.add(k)
+                else:
+                    cleaned_item[k] = v
         filtered.append(cleaned_item)
 
         if verbose and len(removed) > 0:
             print(f"Removed from {item['type']}: {', '.join(removed)}.")
 
     # remove empty dicts
-    filtered[:] = [item for item in filtered if item != {}]
-
+    #filtered[:] = [item for item in filtered """if item != {}"""]
     return filtered
 
 
@@ -333,7 +333,8 @@ if __name__ == '__main__':
             data = extract_and_collect_data_from_generated_files(directory=path,
                                                                  has_dedicated_gpu=args.gpu,
                                                                  gpu_in_cpu=args.cpu,
-                                                                 verbose=args.verbose)
+                                                                 verbose=args.verbose,
+                                                                 cleanup=True)
             print(json.dumps(data, indent=2))
 
         elif args.gui:
@@ -342,9 +343,10 @@ if __name__ == '__main__':
 
         else:
             data = extract_and_collect_data_from_generated_files(directory=path,
-                                                                 has_dedicated_gpu=args.gpu,
-                                                                 gpu_in_cpu=args.cpu,
-                                                                 verbose=args.verbose)
+                                                        has_dedicated_gpu=args.gpu,
+                                                        gpu_in_cpu=args.cpu,
+                                                        verbose=args.verbose,
+                                                        cleanup=True)
             print(json.dumps(data, indent=2))
 
     except InputFileNotFoundError as e:
