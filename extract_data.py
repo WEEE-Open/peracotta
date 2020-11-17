@@ -100,10 +100,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     def normalize_brands(coll_dict):
         names = {}
         with open("normalized.csv", "r") as f:
-            while True:
-                line = f.readline()
-                if line == "":
-                    break
+            for line in f.readlines():
                 k, v = line.split(";", 2)[0:2]
                 names[k] = v
         for p_dict in coll_dict:
@@ -116,24 +113,33 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
                       "sn", "software", "surface-scan", "working", "wwn"]
     bmv = ["brand", "model", "variant"]
 
-    normalize_brands([chassis, mobo, cpu, gpu, psu]+dimms+wifi_cards+disks)
+# search for a normalized form of brands for each component
+    comp_wrap = []
+    for component in (chassis, mobo, cpu, dimms, gpu, disks, psu):
+        if isinstance(component, list):
+            comp_wrap += component
+        else:
+            comp_wrap.append(component)
+    normalize_brands(comp_wrap)
 
     products = [chassis, mobo]
 # setting mobo dict
-    new_mobo = {"features": {k: v for k, v in mobo.items() if k in bmv+item_keys}, "contents": []}
+    new_mobo = {"features": {k: v for k, v in mobo.items() if k in bmv+item_keys},
+                "contents": []}
+
 # mount the cpu
-    if cpu.__len__() != 0:
+    if len(cpu) != 0:
         products.append(cpu)
         new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
+
 # adding some ram
     if isinstance(dimms, list):
         products += dimms
         for dimm in dimms:
             new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in bmv+item_keys}})
-    elif dimms.__len__() != 0:
+    elif len(dimms) > 0:
         products.append(dimms)
         new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in bmv+item_keys}})
-
 
 # mount disks
     if isinstance(disks, list):
@@ -144,9 +150,8 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         products.append(disks)
         new_mobo["contents"].append({"features": {k: v for k, v in disks.items() if k in bmv+item_keys}})
 
-
 # put gpu (still check if necessary 'null' format), assuming only one because was the same as before
-    if gpu.__len__() != 0:
+    if len(gpu) > 0:
         products.append(gpu)
         new_mobo["contents"].append({"features": {k: v for k, v in gpu.items() if k in bmv+item_keys}})
 
@@ -157,12 +162,13 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in bmv+item_keys}})
 
 # mounting psu
-    if psu.__len__() != 0:
+    if len(psu) > 0:
         products.append(psu)
         new_mobo["contents"].append({"features": {k: v for k, v in psu.items() if k in bmv+item_keys}})
 
 #finally get the item
-    result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys}, "contents": [new_mobo]}]
+    result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys},
+               "contents": [new_mobo]}]
 
 #fix the product type
     for product in products:
@@ -346,10 +352,10 @@ if __name__ == '__main__':
 
         else:
             data = extract_and_collect_data_from_generated_files(directory=path,
-                                                        has_dedicated_gpu=args.gpu,
-                                                        gpu_in_cpu=args.cpu,
-                                                        verbose=args.verbose,
-                                                        cleanup=True)
+                                                                 has_dedicated_gpu=args.gpu,
+                                                                 gpu_in_cpu=args.cpu,
+                                                                 verbose=args.verbose,
+                                                                 cleanup=True)
             print(json.dumps(data, indent=2))
 
     except InputFileNotFoundError as e:
