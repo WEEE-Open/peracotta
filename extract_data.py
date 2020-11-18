@@ -15,16 +15,15 @@ from tarallo_token import TARALLO_TOKEN
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
-                                                  verbose: bool = False):
+                                                  verbose: bool = False, cleanup: bool = False):
     directory = directory.rstrip('/')
 
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
-                                                              cleanup=False, verbose=verbose, unpack=False)
-
+                                                              cleanup=cleanup, verbose=verbose, unpack=False)
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
     # the None check MUST come before the others
-    if dimms.__len__() == 0:
+    """if dimms.__len__() == 0:
         # empty default dictionary
         dimms = {
             "type": "ram",
@@ -39,14 +38,14 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "RAM_type": None,
             "ECC": None
             # "CAS_latencies": None # feature missing from TARALLO
-        }
+        }"""
 
     no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
                       "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
     no_vram_info_str = "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which " \
                        "could be near the actual value. Please humans, fix this error by hand."
 
-    if gpu.__len__() == 0 or (no_gpu_info_str in gpu and no_vram_info_str in gpu):
+    """if gpu.__len__() == 0 or (no_gpu_info_str in gpu and no_vram_info_str in gpu):
         gpu = {
             "type": "graphics-card",
             "manufacturer_brand": None,
@@ -62,7 +61,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         print_lspci_lines_in_dialog = False
     else:
         print_lspci_lines_in_dialog = False
-
+    """
     if chassis.__len__() == 0:
         chassis = {
             "type": "case",
@@ -86,7 +85,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             wifi_cards.append(wifi_card)
         mobo = mobo[0]
 
-    if cpu.__len__() == 0:
+    """if cpu.__len__() == 0:
         cpu = {
             "type": "cpu",
             "isa": None,
@@ -97,31 +96,91 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             "frequency-hertz": None,
             "human_readable_frequency": None
         }
+    """
+    def normalize_brands(coll_dict):
+        names = {}
+        with open("normalized.csv", "r") as f:
+            for line in f.readlines():
+                k, v = line.split(";", 2)[0:2]
+                names[k] = v
+        for p_dict in coll_dict:
+            if "brand" in p_dict.keys():
+                if p_dict["brand"] in names.keys():
+                    p_dict["brand"] = names[p_dict["brand"]]
 
-    result = [chassis, mobo, cpu]
-    if wifi_cards:
-        result += wifi_cards
+    item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
+                      "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
+                      "sn", "software", "surface-scan", "working", "wwn"]
+    bmv = ["brand", "model", "variant"]
 
-    if isinstance(dimms, dict):
-        # otherwise it will append every key-value pair of the dict
-        result.append(dimms)
-    else:
+# search for a normalized form of brands for each component
+    comp_wrap = []
+    for component in (chassis, mobo, cpu, dimms, gpu, disks, psu):
+        if isinstance(component, list):
+            comp_wrap += component
+        else:
+            comp_wrap.append(component)
+    normalize_brands(comp_wrap)
+
+    products = [chassis, mobo]
+# setting mobo dict
+    new_mobo = {"features": {k: v for k, v in mobo.items() if k in bmv+item_keys},
+                "contents": []}
+
+# mount the cpu
+    if len(cpu) != 0:
+        products.append(cpu)
+        new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
+
+# adding some ram
+    if isinstance(dimms, list):
+        products += dimms
         for dimm in dimms:
-            result.append(dimm)
+            new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in bmv+item_keys}})
+    elif len(dimms) > 0:
+        products.append(dimms)
+        new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in bmv+item_keys}})
 
-    # assuming there is only 1 graphics card in the system
-    result.append(gpu)
-
-    if isinstance(disks, dict):
-        result.append(disks)
-    else:
+# mount disks
+    if isinstance(disks, list):
+        products += disks
         for disk in disks:
-            result.append(disk)
+            new_mobo["contents"].append({"features": {k: v for k, v in disk.items() if k in bmv+item_keys}})
+    elif isinstance(disks, dict) and disks != 0:
+        products.append(disks)
+        new_mobo["contents"].append({"features": {k: v for k, v in disks.items() if k in bmv+item_keys}})
+
+# put gpu (still check if necessary 'null' format), assuming only one because was the same as before
+    if len(gpu) > 0:
+        products.append(gpu)
+        new_mobo["contents"].append({"features": {k: v for k, v in gpu.items() if k in bmv+item_keys}})
+
+# get wifi cards
+    if wifi_cards and len(wifi_cards) > 0:
+        products += wifi_cards
+        for wifi_card in wifi_cards:
+            new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in bmv+item_keys}})
+
+# mounting psu
+    if len(psu) > 0:
+        products.append(psu)
+        new_mobo["contents"].append({"features": {k: v for k, v in psu.items() if k in bmv+item_keys}})
+
+#finally get the item
+    result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys},
+               "contents": [new_mobo]}]
+
+#fix the product type
+    for product in products:
+#   create the dictionaries
+        to_res = {k: product.pop(k) for k in bmv if k in product.keys()}
+        to_res["type"] = "P"
+        to_res["features"] = {k: v for k, v in product.items() if k not in item_keys}
+        result.append(to_res)
 
     # tuple = list(dicts), bool
     # result= chassis,mobo ,cpu, dimms, gpu, disks
-
-    return result, print_lspci_lines_in_dialog
+    return result#, print_lspci_lines_in_dialog
 
 
 def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
@@ -156,25 +215,39 @@ def do_cleanup(result: list, verbose: bool = False) -> list:
     filtered = []
 
     for item in result:
-        cleaned_item = {}
         removed = set()
-        for k, v in item.items():
-            if isinstance(v, str) and v == '':
-                removed.add(k)
-            elif isinstance(v, int) and v <= 0:
-                removed.add(k)
-            elif 'human_readable' in k:
-                removed.add(k)
-            else:
-                cleaned_item[k] = v
+        if isinstance(item, list):
+            cleaned_item = []
+            for s_item in item:
+                cleaned_s_item = {}
+                for k, v in s_item.items():
+                    if isinstance(v, str) and v == '':
+                        removed.add(k)
+                    elif isinstance(v, int) and v <= 0:
+                        removed.add(k)
+                    elif 'human_readable' in k:
+                        removed.add(k)
+                    else:
+                        cleaned_s_item[k] = v
+                cleaned_item.append(cleaned_s_item)
+        else:
+            cleaned_item = {}
+            for k, v in item.items():
+                if isinstance(v, str) and v == '':
+                    removed.add(k)
+                elif isinstance(v, int) and v <= 0:
+                    removed.add(k)
+                elif 'human_readable' in k:
+                    removed.add(k)
+                else:
+                    cleaned_item[k] = v
         filtered.append(cleaned_item)
 
         if verbose and len(removed) > 0:
             print(f"Removed from {item['type']}: {', '.join(removed)}.")
 
     # remove empty dicts
-    filtered[:] = [item for item in filtered if item != {}]
-
+    #filtered[:] = [item for item in filtered """if item != {}"""]
     return filtered
 
 
@@ -269,7 +342,8 @@ if __name__ == '__main__':
             data = extract_and_collect_data_from_generated_files(directory=path,
                                                                  has_dedicated_gpu=args.gpu,
                                                                  gpu_in_cpu=args.cpu,
-                                                                 verbose=args.verbose)
+                                                                 verbose=args.verbose,
+                                                                 cleanup=True)
             print(json.dumps(data, indent=2))
 
         elif args.gui:
@@ -277,11 +351,11 @@ if __name__ == '__main__':
             main_with_gui.main()
 
         else:
-            data = extract_data(directory=path,
-                                has_dedicated_gpu=args.gpu,
-                                gpu_in_cpu=args.cpu,
-                                cleanup=True,
-                                verbose=args.verbose)
+            data = extract_and_collect_data_from_generated_files(directory=path,
+                                                                 has_dedicated_gpu=args.gpu,
+                                                                 gpu_in_cpu=args.cpu,
+                                                                 verbose=args.verbose,
+                                                                 cleanup=True)
             print(json.dumps(data, indent=2))
 
     except InputFileNotFoundError as e:
