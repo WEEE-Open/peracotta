@@ -4,7 +4,7 @@ connector.txt
 dimms.txt
 dmesg.txt
 glxinfo.txt
-has_dedicated_gpu.txt
+gpu_location.txt
 lscpu.txt
 lspci.txt
 net.txt
