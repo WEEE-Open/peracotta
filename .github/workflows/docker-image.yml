@@ -12,7 +12,7 @@ jobs:
 
   build-and-push:
 
-    if: secrets.DOCKER_REGISTRY != ''
+    if: github.repository == 'WEEE-Open/peracotta'
 
     runs-on: ubuntu-latest
 
