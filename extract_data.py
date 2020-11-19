@@ -23,45 +23,11 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     no_dimms_str = "decode-dimms was not able to find any RAM details"
 
     # the None check MUST come before the others
-    """if dimms.__len__() == 0:
-        # empty default dictionary
-        dimms = {
-            "type": "ram",
-            "working": "yes",
-            "brand": None,
-            "model": None,
-            "serial_number": None,
-            "frequency": None,
-            "human_readable_frequency": None,
-            "capacity": None,
-            "human_readable_capacity": None,
-            "RAM_type": None,
-            "ECC": None
-            # "CAS_latencies": None # feature missing from TARALLO
-        }"""
 
     no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
                       "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
     no_vram_info_str = "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which " \
                        "could be near the actual value. Please humans, fix this error by hand."
-
-    """if gpu.__len__() == 0 or (no_gpu_info_str in gpu and no_vram_info_str in gpu):
-        gpu = {
-            "type": "graphics-card",
-            "manufacturer_brand": None,
-            "reseller_brand": None,
-            "model": None,
-            "capacity": None,
-            "human_readable_capacity": None
-        }
-        print_lspci_lines_in_dialog = True
-
-    elif no_vram_info_str in gpu and no_gpu_info_str not in gpu:
-        # TODO: check output in this case, change only VRAM field to None
-        print_lspci_lines_in_dialog = False
-    else:
-        print_lspci_lines_in_dialog = False
-    """
     if chassis.__len__() == 0:
         chassis = {
             "type": "case",
@@ -85,18 +51,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             wifi_cards.append(wifi_card)
         mobo = mobo[0]
 
-    """if cpu.__len__() == 0:
-        cpu = {
-            "type": "cpu",
-            "isa": None,
-            "model": None,
-            "brand": None,
-            "core-n": None,
-            "thread-n": None,
-            "frequency-hertz": None,
-            "human_readable_frequency": None
-        }
-    """
     def normalize_brands(coll_dict):
         names = {}
         with open("normalized.csv", "r") as f:
@@ -180,7 +134,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     # tuple = list(dicts), bool
     # result= chassis,mobo ,cpu, dimms, gpu, disks
-    return result#, print_lspci_lines_in_dialog
+    return result
 
 
 def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
@@ -217,19 +171,7 @@ def do_cleanup(result: list, verbose: bool = False) -> list:
     for item in result:
         removed = set()
         if isinstance(item, list):
-            cleaned_item = []
-            for s_item in item:
-                cleaned_s_item = {}
-                for k, v in s_item.items():
-                    if isinstance(v, str) and v == '':
-                        removed.add(k)
-                    elif isinstance(v, int) and v <= 0:
-                        removed.add(k)
-                    elif 'human_readable' in k:
-                        removed.add(k)
-                    else:
-                        cleaned_s_item[k] = v
-                cleaned_item.append(cleaned_s_item)
+            cleaned_item = do_cleanup(item, verbose)
         else:
             cleaned_item = {}
             for k, v in item.items():
@@ -320,10 +262,6 @@ if __name__ == '__main__':
     gpu_group.add_argument('-b', '--motherboard', action="store_true", default=False,
                            help="GPU is integrated inside the motherboard")
     gui_group = parser.add_argument_group('With or without GUI (one argument optional)').add_mutually_exclusive_group(required=False)
-    gui_group.add_argument('-s', '--short', action="store_true", default=True,
-                           help="enabled by default, this is the option you want if you want to copy-paste this "
-                                "output into the TARALLO 'Bulk Add' page")
-    gui_group.add_argument('-l', '--long', action="store_true", default=False, help="print longer output")
     gui_group.add_argument('-i', '--gui', action="store_true", default=False,
                            help="launch GUI instead of using the terminal version")
     parser.add_argument('-v', '--verbose', action="store_true", default=False, help="print some warning messages")
@@ -338,15 +276,7 @@ if __name__ == '__main__':
         path = args.path
 
     try:
-        if args.long:
-            data = extract_and_collect_data_from_generated_files(directory=path,
-                                                                 has_dedicated_gpu=args.gpu,
-                                                                 gpu_in_cpu=args.cpu,
-                                                                 verbose=args.verbose,
-                                                                 cleanup=True)
-            print(json.dumps(data, indent=2))
-
-        elif args.gui:
+        if args.gui:
             import main_with_gui
             main_with_gui.main()
 
