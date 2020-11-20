@@ -20,7 +20,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
                                                               cleanup=cleanup, verbose=verbose, unpack=False)
-    no_dimms_str = "decode-dimms was not able to find any RAM details"
 
     # the None check MUST come before the others
 
@@ -118,11 +117,11 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 # mounting psu
     if len(psu) > 0:
         products.append(psu)
-        new_mobo["contents"].append({"features": {k: v for k, v in psu.items() if k in bmv+item_keys}})
+        psu = {"features": {k: v for k, v in psu.items() if k in bmv+item_keys}}
 
 #finally get the item
     result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys},
-               "contents": [new_mobo]}]
+               "contents": [new_mobo, psu]}]
 
 #fix the product type
     for product in products:
