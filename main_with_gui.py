@@ -235,7 +235,7 @@ class FilesGenerated(QWidget):
 				files_dir = DEBUG_DIR
 			else:
 				files_dir = "tmp"
-			system_info, print_lspci_lines_in_dialog = extract_and_collect_data_from_generated_files(files_dir,
+			system_info = extract_and_collect_data_from_generated_files(files_dir,
 				has_dedicated_gpu, gpu_in_cpu)
 			window.takeCentralWidget()
 
