@@ -50,7 +50,7 @@ class PORT(Enum):
 def read_smartctl(path: str, interactive: bool = False):
     disks = []
 
-    for filename in os.listdir(path):
+    for filename in sorted(os.listdir(path)):
         if "smartctl-dev-" in filename:
 
             disk = Disk()
