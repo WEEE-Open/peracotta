@@ -158,7 +158,7 @@ class Welcome(QWidget):
 			check_dep = check_dep[0]
 			if check_dep == 1:
 				buttonReply = QMessageBox.question(self, 'Install dependencies',
-												   "There aren't all the dependencies needed; do you want to install them?",
+												   "You need to install some packages in order for the peracotta to work. Do you want to install them?",
 												   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 				if buttonReply == QMessageBox.Yes:
 					sp.call([sys.executable, "check_dependencies.sh"])
