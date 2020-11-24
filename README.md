@@ -96,8 +96,8 @@ You can find the usage below, but keep in mind that the two most important argum
 - the path to the txt files (if none given, it will default to the current directory)
 - `-g | -c | -b`: one of these is required to tell the script where the GPU (or graphics card if it's not integrated) is located
 
-```
-usage: extract_data.py [-h] (-g | -c | -b) [-s | -l | -i] [-v] [path]
+```bash
+usage: extract_data.py [-h] (-g | -c | -b) [-i] [-v] [path]
 
 Parse the files generated with generate_files.sh and get all the possible info
 out of them
@@ -116,10 +116,6 @@ GPU Location (one argument required):
   -b, --motherboard  GPU is integrated inside the motherboard
 
 With or without GUI (one argument optional):
-  -s, --short        enabled by default, this is the option you want if you
-                     want to copy-paste this output into the TARALLO 'Bulk
-                     Add' page
-  -l, --long         print longer output
   -i, --gui          launch GUI instead of using the terminal version
 ```
 
