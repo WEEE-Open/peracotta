@@ -186,7 +186,7 @@ if [ -z "$OUTPUT_PATH" ]; then
 fi
 
 if ! command -v pciutils i2c-tools mesa-utils smartmontools dmidecode >/dev/null 2>&1; then
-  echo "There aren't all the dependencies needed. Do you want to install them? y/N"
+  echo "You need to install some packages in order for the peracotta to work. Do you want to install them? y/N"
   read ans_tmp
   if [ "$ans_tmp" = "y" ] || [ "$ans_tmp" = "Y" ]; then
     if [ "$EUID" -ne 0 ]; then
