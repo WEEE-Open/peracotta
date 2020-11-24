@@ -185,7 +185,7 @@ if [ -z "$OUTPUT_PATH" ]; then
   fi
 fi
 
-if ! command -v pciutils i2c-tools mesa-utils smartmontools dmidecode >/dev/null 2>&1; then
+if [[ ! ./check_dependencies.sh ]]; then
   echo "You need to install some packages in order for the peracotta to work. Do you want to install them? y/N"
   read ans_tmp
   if [ "$ans_tmp" = "y" ] || [ "$ans_tmp" = "Y" ]; then
