@@ -9,11 +9,7 @@ on:
     - 'LICENSE'
 
 jobs:
-
   build-and-push:
-
-    if: github.repository == 'WEEE-Open/peracotta'
-
     runs-on: ubuntu-latest
 
     steps:
