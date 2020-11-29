@@ -8,9 +8,15 @@ if [ $# -eq 0 ]; then
     OUTPATH="."
 elif [ $# -eq 1 ]; then
     echo "Outputting files to "$1
+    mkdir -p -- "$1"
+    if [ ! $# -eq 0 ]; then
+    	echo "Failed to create or access output directory"
+    	exit 1
+    fi
     OUTPATH=$1
 else
     echo -n "Unexpected number of parameters.\nUsage: sudo ./generate_files.sh /optional/path/to/files"
+    exit 1
 fi
 
 dmidecode -t baseboard > "$OUTPATH/baseboard.txt"
