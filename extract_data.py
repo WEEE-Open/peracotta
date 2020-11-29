@@ -49,6 +49,17 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         for wifi_card in mobo[1:]:
             wifi_cards.append(wifi_card)
         mobo = mobo[0]
+    def is_a_product(component: dict):
+        #check if brand and model exist
+        if "brand" not in component.keys() or "model" not in component.keys():
+            return False
+        #check if brand or model has a not valid value
+        candidates = [component["brand"].lower(), component["model"].lower()]
+        for candidate in candidates:
+            if isinstance(candidate, str) and (candidate == "" or candidate == "null" or candidate == "unknown" or candidate == "undefined"):
+                return False
+        return True
+
 
     def normalize_brands(coll_dict):
         names = {}
@@ -75,54 +86,88 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             comp_wrap.append(component)
     normalize_brands(comp_wrap)
 
-    products = [chassis, mobo]
+    products = []
     # setting mobo dict
-    new_mobo = {"features": {k: v for k, v in mobo.items() if k in bmv+item_keys},
+    if is_a_product(mobo):
+        products.append(mobo)
+        new_mobo = {"features": {k: v for k, v in mobo.items() if k in bmv+item_keys},
                 "contents": []}
+    else:
+        new_mobo = {"features": mobo, "contents": []}
 
     # mount the cpu
     if len(cpu) != 0:
-        products.append(cpu)
-        new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
+        if is_a_product(cpu):
+            products.append(cpu)
+            new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
+        else:
+            new_mobo["contents"].append({"features": cpu})
 
     # adding some ram
     if isinstance(dimms, list):
-        products += dimms
         for dimm in dimms:
-            new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in bmv+item_keys}})
+            if is_a_product(dimm):
+                products.append(dimm)
+                new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in bmv+item_keys}})
+            else:
+                new_mobo["contents"].append({"features": dimm})
+
     elif len(dimms) > 0:
-        products.append(dimms)
-        new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in bmv+item_keys}})
+        if is_a_product(dimms):
+            products.append(dimms)
+            new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in bmv+item_keys}})
+        else:
+            new_mobo["contents"].append({"features": dimms})
 
     # mount disks
     if isinstance(disks, list):
-        products += disks
         for disk in disks:
-            new_mobo["contents"].append({"features": {k: v for k, v in disk.items() if k in bmv+item_keys}})
+            if is_a_product(disk):
+                products.append(disk)
+                new_mobo["contents"].append({"features": {k: v for k, v in disk.items() if k in bmv+item_keys}})
+            else:
+                new_mobo["contents"].append({"features": disk})
+
     elif isinstance(disks, dict) and disks != 0:
-        products.append(disks)
-        new_mobo["contents"].append({"features": {k: v for k, v in disks.items() if k in bmv+item_keys}})
+        if is_a_product(disks):
+            products.append(disks)
+            new_mobo["contents"].append({"features": {k: v for k, v in disks.items() if k in bmv+item_keys}})
+        else:
+            new_mobo["contents"].append({"features": disks})
 
     # put gpu (still check if necessary 'null' format), assuming only one because was the same as before
     if len(gpu) > 0:
-        products.append(gpu)
-        new_mobo["contents"].append({"features": {k: v for k, v in gpu.items() if k in bmv+item_keys}})
+        if is_a_product(gpu):
+            products.append(gpu)
+            new_mobo["contents"].append({"features": {k: v for k, v in gpu.items() if k in bmv+item_keys}})
+        else:
+            new_mobo["contents"].append({"features": gpu})
 
     # get wifi cards
     if wifi_cards and len(wifi_cards) > 0:
-        products += wifi_cards
         for wifi_card in wifi_cards:
-            new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in bmv+item_keys}})
+            if is_a_product(wifi_card):
+                products.append(wifi_card)
+                new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in bmv+item_keys}})
+            else:
+                new_mobo["contents"].append({"features": wifi_card})
 
     # mounting psu
     if len(psu) > 0:
-        products.append(psu)
-        psu = {"features": {k: v for k, v in psu.items() if k in bmv+item_keys}}
+        if is_a_product(psu):
+            products.append(psu)
+            psu = {"features": {k: v for k, v in psu.items() if k in bmv+item_keys}}
+        else:
+            psu = {"features": psu}
 
     #finally get the item
-    result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys},
-               "contents": [new_mobo, psu]}]
-
+    if is_a_product(chassis):
+        products.append(chassis)
+        result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys},
+                   "contents": [new_mobo, psu]}]
+    else:
+        result = [{"type": "I", "features": chassis,
+                   "contents": [new_mobo, psu]}]
     #fix the product type
     for product in products:
         #   create the dictionaries
