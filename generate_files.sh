@@ -9,7 +9,7 @@ if [ $# -eq 0 ]; then
 elif [ $# -eq 1 ]; then
     echo "Outputting files to "$1
     mkdir -p -- "$1"
-    if [ ! $# -eq 0 ]; then
+    if ! $?; then
     	echo "Failed to create or access output directory"
     	exit 1
     fi
