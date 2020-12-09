@@ -154,17 +154,21 @@ class Welcome(QWidget):
 
 	def generate_files(self, window: QMainWindow, gpu_loc: GPU):
 		try:
-			check_dep = sp.getstatusoutput([sys.executable, 'check_dependencies.sh'])
-			check_dep = check_dep[0]
+			working_directory = os.getcwd()
+			cmd = working_directory + "/check_dependencies.sh"
+			check_dep, _ = sp.getstatusoutput(cmd)
 			if check_dep == 1:
 				buttonReply = QMessageBox.question(self, 'Install dependencies',
 												   "You need to install some packages in order for the peracotta to work. Do you want to install them?",
 												   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 				if buttonReply == QMessageBox.Yes:
-					sp.call([sys.executable, "check_dependencies.sh"])
+					working_directory = os.getcwd()
+					with sp.Popen(["pkexec", os.path.join(working_directory, "install_dependencies_all.sh")],
+								  shell=False) as process:
+						process.wait(timeout=60)
 				else:
 					exit(-1)
-			working_directory = os.getcwd()
+
 			if not os.path.isdir(os.path.join(working_directory, "tmp")):
 				os.makedirs(os.path.join(working_directory, "tmp"))
 
