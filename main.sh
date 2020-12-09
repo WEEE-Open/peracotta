@@ -185,7 +185,8 @@ if [ -z "$OUTPUT_PATH" ]; then
   fi
 fi
 
-if [[ ! ./check_dependencies.sh ]]; then
+./check_dependencies.sh
+if [[ $? -eq 1 ]]; then
   echo "You need to install some packages in order for the peracotta to work. Do you want to install them? y/N"
   read ans_tmp
   if [ "$ans_tmp" = "y" ] || [ "$ans_tmp" = "Y" ]; then
