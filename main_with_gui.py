@@ -40,6 +40,8 @@ class Window(QMainWindow):
 		self.show()
 
 
+
+
 class Welcome(QWidget):
 	def __init__(self, window: QMainWindow):
 		# noinspection PyArgumentList
@@ -111,8 +113,25 @@ class Welcome(QWidget):
 
 		self.setLayout(v_box)
 
+	def check_install_dependencies(self):
+		working_directory = os.getcwd()
+		cmd = working_directory + "/check_dependencies.sh"
+		check_dep, _ = sp.getstatusoutput(cmd)
+		if check_dep == 1:
+			buttonReply = QMessageBox.question(self, 'Install dependencies',
+											   "You need to install some packages in order for the peracotta to work. Do you want to install them?",
+											   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+			if buttonReply == QMessageBox.Yes:
+				working_directory = os.getcwd()
+				with sp.Popen(["pkexec", os.path.join(working_directory, "install_dependencies_all.sh")],
+							  shell=False) as process:
+					process.wait(timeout=60)
+			else:
+				exit(-1)
+
 	def prompt_gpu_location(self, window: QMainWindow):
 		# TODO: allow NO as an answer
+		self.check_install_dependencies()
 		while True:
 			# noinspection PyCallByClass
 			answer = QMessageBox(self)
@@ -155,20 +174,6 @@ class Welcome(QWidget):
 	def generate_files(self, window: QMainWindow, gpu_loc: GPU):
 		try:
 			working_directory = os.getcwd()
-			cmd = working_directory + "/check_dependencies.sh"
-			check_dep, _ = sp.getstatusoutput(cmd)
-			if check_dep == 1:
-				buttonReply = QMessageBox.question(self, 'Install dependencies',
-												   "You need to install some packages in order for the peracotta to work. Do you want to install them?",
-												   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-				if buttonReply == QMessageBox.Yes:
-					working_directory = os.getcwd()
-					with sp.Popen(["pkexec", os.path.join(working_directory, "install_dependencies_all.sh")],
-								  shell=False) as process:
-						process.wait(timeout=60)
-				else:
-					exit(-1)
-
 			if not os.path.isdir(os.path.join(working_directory, "tmp")):
 				os.makedirs(os.path.join(working_directory, "tmp"))
 
