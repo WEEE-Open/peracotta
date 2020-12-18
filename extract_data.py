@@ -76,7 +76,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
                       "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
-                      "sn", "software", "surface-scan", "working", "wwn"]
+                      "sn", "software", "surface-scan", "type", "working", "wwn"]
     bmv = ["brand", "model", "variant"]
 
     # search for a normalized form of brands for each component
