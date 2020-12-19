@@ -10,8 +10,7 @@ def is_product(component: dict):
     # check if brand or model has a not valid value
     candidates = [component["brand"].lower(), component["model"].lower()]
     for candidate in candidates:
-        if isinstance(candidate, str) and (
-                candidate == "" or candidate == "null" or candidate == "unknown" or candidate == "undefined"):
+        if isinstance(candidate, str) and candidate not in ("", "null", "unknown", "undefined"):
             return False
     # if all conditions are False, the product should be added
     return True
@@ -26,19 +25,14 @@ for fold in set(test_folders):
 @pytest.fixture(scope="module", params=test_folders)
 def res(request):
     path = f"tests/{request.param}"
-    with open(path+"/gpu_location.txt", "r") as f:
+    with open(os.path.join(path, "gpu_location.txt"), "r") as f:
         gpu_flag = f.readline()
     has_dedicated_gpu = False
     gpu_in_cpu = False
-    if gpu_flag == "mobo":
-        has_dedicated_gpu = False
-        gpu_in_cpu = False
-    elif gpu_flag == "cpu":
-        has_dedicated_gpu = False
+    if gpu_flag == "cpu":
         gpu_in_cpu = True
     elif gpu_flag == "gpu":
         has_dedicated_gpu = True
-        gpu_in_cpu = False
     return get_result(directory=path, has_dedicated_gpu=has_dedicated_gpu, gpu_in_cpu=gpu_in_cpu, cleanup=True)
 
 
@@ -49,7 +43,7 @@ def test_type_check(res):
     for comp in res[1:]:
         assert comp["type"] == "P"
         for name in (comp["brand"].lower(), comp["model"].lower()):
-            assert name != "" and name != "null" and name != "undefined" and name != "unknown"
+            assert name not in ("", "null", "undefined", "unknown")
 
 
 def test_has_chassis_and_mobo(res):
@@ -65,7 +59,7 @@ bmv = ["brand", "model", "variant"]
 
 
 def explore_item(param):
-    assert ("features" in param) and isinstance(param["features"], dict)
+    assert isinstance(param["features"], dict) and ("features" in param.keys())
     for k in param["features"].keys():
         if k == "type" and param["features"]["type"] == "I":
             pass
@@ -74,6 +68,7 @@ def explore_item(param):
             assert k in (item_keys+bmv)
 
     if "contents" in param.keys():
+        assert isinstance(param["contents"], list)
         for new_param in param["contents"]:
             explore_item(new_param)
 
@@ -91,13 +86,16 @@ def test_check_item_keys(res):
 def explore_cleanup(param):
     if isinstance(param, list):
         for p in param:
+            assert isinstance(p, dict)
             explore_cleanup(p)
 
     elif isinstance(param, dict):
         for k, v in param.items():
             if k == "features":
+                assert isinstance(param["features"], dict)
                 explore_cleanup(param["features"])
             elif k == "contents":
+                assert isinstance(param["contents"], list)
                 explore_cleanup(param["contents"])
             else:
                 assert ("human_readable" not in k)
@@ -108,4 +106,5 @@ def explore_cleanup(param):
 
 
 def test_cleanup(res):
+    assert isinstance(res, list)
     explore_cleanup(res)
