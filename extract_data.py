@@ -98,11 +98,20 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     # mount the cpu
     if len(cpu) != 0:
-        if is_product(cpu):
-            products.append(cpu)
-            new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
+        if isinstance(cpu, list):
+            for one_cpu in cpu:
+                if is_product(one_cpu):
+                    products.append(one_cpu)
+                    new_mobo["contents"].append({"features": {k: v for k, v in one_cpu.items() if k in bmv+item_keys}})
+                else:
+                    new_mobo["contents"].append({"features": one_cpu})
         else:
-            new_mobo["contents"].append({"features": cpu})
+            if is_product(cpu):
+                products.append(cpu)
+                new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv + item_keys}})
+            else:
+                new_mobo["contents"].append({"features": cpu})
+
 
     # adding some ram
     if isinstance(dimms, list):
