@@ -1,5 +1,4 @@
 from extract_data import extract_and_collect_data_from_generated_files as get_result
-
 import os
 import pytest
 
@@ -72,3 +71,26 @@ def test_check_product_keys(res):
 
 def test_check_item_keys(res):
 	explore_item(res[0])
+
+def explore_cleanup(param):
+	if isinstance(param, list):
+		for p in param:
+			explore_cleanup(p)
+
+	elif isinstance(param, dict):
+		for k, v in param.items():
+			if k == "features":
+				explore_cleanup(param["features"])
+			elif k == "contents":
+				explore_cleanup(param["contents"])
+			else:
+				assert ("human_readable" not in k)
+				if isinstance(v, str):
+					assert v != ""
+				elif isinstance(v, int):
+					assert v > 0
+
+
+def test_cleanup(res):
+	explore_cleanup(res)
+
