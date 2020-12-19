@@ -20,7 +20,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
                                                               cleanup=cleanup, verbose=verbose, unpack=False)
-
     # the None check MUST come before the others
 
     no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
