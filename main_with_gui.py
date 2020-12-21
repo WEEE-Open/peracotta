@@ -24,6 +24,7 @@ class GPU(Enum):
 	int_cpu = "cpu"
 	dec_gpu = "gpu"
 
+
 class Window(QMainWindow):
 	def __init__(self):
 		# noinspection PyArgumentList
@@ -38,8 +39,6 @@ class Window(QMainWindow):
 		self.setWindowIcon(QIcon(os.path.join("data", "pear_emoji.png")))
 
 		self.show()
-
-
 
 
 class Welcome(QWidget):
@@ -113,7 +112,7 @@ class Welcome(QWidget):
 
 		self.setLayout(v_box)
 
-	def check_install_dependencies(self):
+	def check_install_dependencies(self, window: QMainWindow):
 		working_directory = os.getcwd()
 		cmd = working_directory + "/check_dependencies.sh"
 		check_dep, _ = sp.getstatusoutput(cmd)
@@ -122,16 +121,19 @@ class Welcome(QWidget):
 											   "You need to install some packages in order for the peracotta to work. Do you want to install them?",
 											   QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 			if buttonReply == QMessageBox.Yes:
+				p = sp.Popen([sys.executable, 'Installing.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
 				working_directory = os.getcwd()
 				with sp.Popen(["pkexec", os.path.join(working_directory, "install_dependencies_all.sh")],
 							  shell=False) as process:
-					process.wait(timeout=60)
+					process.wait(timeout=80)
 			else:
 				exit(-1)
+		if check_dep == 1 and buttonReply == QMessageBox.Yes:
+			p.terminate()
 
 	def prompt_gpu_location(self, window: QMainWindow):
 		# TODO: allow NO as an answer
-		self.check_install_dependencies()
+		self.check_install_dependencies(window)
 		while True:
 			# noinspection PyCallByClass
 			answer = QMessageBox(self)
