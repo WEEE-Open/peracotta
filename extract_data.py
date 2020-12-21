@@ -20,7 +20,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
                                                               cleanup=cleanup, verbose=verbose, unpack=False)
-
     # the None check MUST come before the others
 
     no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
@@ -76,7 +75,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
                       "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
-                      "sn", "software", "surface-scan", "working", "wwn"]
+                      "sn", "software", "surface-scan", "type", "working", "wwn"]
     bmv = ["brand", "model", "variant"]
 
     # search for a normalized form of brands for each component
@@ -99,11 +98,20 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
 
     # mount the cpu
     if len(cpu) != 0:
-        if is_product(cpu):
-            products.append(cpu)
-            new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv+item_keys}})
+        if isinstance(cpu, list):
+            for one_cpu in cpu:
+                if is_product(one_cpu):
+                    products.append(one_cpu)
+                    new_mobo["contents"].append({"features": {k: v for k, v in one_cpu.items() if k in bmv+item_keys}})
+                else:
+                    new_mobo["contents"].append({"features": one_cpu})
         else:
-            new_mobo["contents"].append({"features": cpu})
+            if is_product(cpu):
+                products.append(cpu)
+                new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in bmv + item_keys}})
+            else:
+                new_mobo["contents"].append({"features": cpu})
+
 
     # adding some ram
     if isinstance(dimms, list):
