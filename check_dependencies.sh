@@ -1,9 +1,6 @@
 #!/bin/bash
-
+# apt remove may leave some config files which can lead to dpkg detect an uninstalled package as installed
+# apt purge works
 dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode &> /dev/null
 
-if [ $? -eq 0 ]; then
-  exit 0
-else
-  exit 1
-fi
+exit $?
