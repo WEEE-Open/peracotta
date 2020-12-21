@@ -1,4 +1,6 @@
 import os
+import subprocess
+import shlex
 
 # launch script with: ./generate_files.pkexec /path/to/tmp
 
@@ -58,7 +60,7 @@ def make_dotfiles(path_to_generate_files_sh: str):
         with open(local_path_to_dotpolicy, 'w') as f:
             f.write(dotpolicy_with_path)
             print("I need root permissions to move the file just this one time.")
-            os.system("sudo mv " + local_path_to_dotpolicy + " " + path_to_dotpolicy)
+            os.system("x-terminal-emulator -e sudo mv " + local_path_to_dotpolicy + " " + path_to_dotpolicy)
             print(path_to_dotpolicy, "was created!")
     else:
         print(path_to_dotpolicy, "already existed.")
