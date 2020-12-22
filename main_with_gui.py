@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton,
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
-from polkit import make_dotfiles
+#from polkit import make_dotfiles
 from enum import Enum
 
 # should be None in production
@@ -178,10 +178,12 @@ class Welcome(QWidget):
 			working_directory = os.getcwd()
 			if not os.path.isdir(os.path.join(working_directory, "tmp")):
 				os.makedirs(os.path.join(working_directory, "tmp"))
-
 			folder_name = "tmp"
-			path_to_gen_files_sh = working_directory + "/generate_files.sh"
-			make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
+
+			path = working_directory + "/polkit.py"
+			p = sp.Popen([sys.executable, path], stdout=sp.PIPE, stderr=sp.STDOUT)
+			p.wait()
+
 			with sp.Popen(["./generate_files.pkexec", os.path.join(working_directory, folder_name)], shell=False) as process:
 				process.wait(timeout=60)
 			# the information concerning the gpu location is saved in gpu_location
