@@ -159,7 +159,7 @@ class Welcome(QWidget):
 				os.makedirs(os.path.join(working_directory, "tmp"))
 
 			folder_name = "tmp"
-			path_to_gen_files_sh = working_directory + "/generate_files.sh"
+			path_to_gen_files_sh = os.path.join(working_directory,"generate_files.sh") 
 			make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
 			with sp.Popen(["./generate_files.pkexec", os.path.join(working_directory, folder_name)], shell=False) as process:
 				process.wait(timeout=60)

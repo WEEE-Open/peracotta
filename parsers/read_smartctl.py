@@ -56,7 +56,7 @@ def read_smartctl(path: str, interactive: bool = False):
             disk = Disk()
 
             try:
-                with open(path + "/" + filename, 'r') as f:
+                with open(os.path.join(path,filename), 'r') as f:
                     output = f.read()
             except FileNotFoundError:
                 raise InputFileNotFoundError(path)
