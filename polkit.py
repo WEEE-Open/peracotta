@@ -1,7 +1,6 @@
 import os
-import time
-import subprocess
-import shlex
+from time import sleep
+
 
 # launch script with: ./generate_files.pkexec /path/to/tmp
 
@@ -60,10 +59,10 @@ def make_dotfiles(path_to_generate_files_sh: str):
     if not os.path.isfile(path_to_dotpolicy):
         with open(local_path_to_dotpolicy, 'w') as f:
             f.write(dotpolicy_with_path)
-            print("I need root permissions to move the file just this one time.")
-            os.system("x-terminal-emulator -e sudo mv " + local_path_to_dotpolicy + " " + path_to_dotpolicy)
+            os.system("x-terminal-emulator -e echo 'I need root permissions to move the file just this one time.' && "
+                      "sudo mv " + local_path_to_dotpolicy + " " + path_to_dotpolicy)
             while not os.path.exists(path_to_dotpolicy):
-                time.sleep(0.1)
+                sleep(0.1)
             print(path_to_dotpolicy, "was created!")
     else:
         print(path_to_dotpolicy, "already existed.")
