@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 
 from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
