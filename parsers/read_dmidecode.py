@@ -223,10 +223,14 @@ def get_net(path: str, baseboard: dict, interactive: bool = False):
 			continue
 		line = line.split(' ', 3)
 		if line[0].startswith('en'):
-			if line[2] == "1000":
+			if len(line) <= 2:
+				print(f"Warning: cannot detect speed for Ethernet port {line[0]}, is it unconnected?")
+			elif line[2] == "1000":
 				mergeit["ethernet-ports-1000m-n"] += 1
 			elif line[2] == "100":
 				mergeit["ethernet-ports-100m-n"] += 1
+			else:
+				print(f"Warning: unknown speed for Ethernet port {line[0]}: {line[2]}")
 			mergeit["mac"].append(line[1])
 		if line[0].startswith('wl'):
 			other_devices.append({
