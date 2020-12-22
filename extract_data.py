@@ -15,11 +15,11 @@ from tarallo_token import TARALLO_TOKEN
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
-                                                  verbose: bool = False, cleanup: bool = False):
+                                                  verbose: bool = False, gui: bool = True):
     directory = directory.rstrip('/')
 
     chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
-                                                              cleanup=cleanup, verbose=verbose, unpack=False)
+                                                              gui=gui, verbose=verbose, unpack=False)
     # the None check MUST come before the others
 
     no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
@@ -219,13 +219,13 @@ def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
 
 
 # remove default/not found and human_readable values from TARALLO-ready JSON
-def do_cleanup(result: list, verbose: bool = False) -> list:
+def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
     filtered = []
 
     for item in result:
         removed = set()
         if isinstance(item, list):
-            cleaned_item = do_cleanup(item, verbose)
+            cleaned_item = do_cleanup(item, gui, verbose)
         else:
             cleaned_item = {}
             for k, v in item.items():
@@ -233,7 +233,7 @@ def do_cleanup(result: list, verbose: bool = False) -> list:
                     removed.add(k)
                 elif isinstance(v, int) and v <= 0:
                     removed.add(k)
-                elif 'human_readable' in k:
+                elif gui is False and 'human_readable' in k:
                     removed.add(k)
                 else:
                     cleaned_item[k] = v
@@ -247,7 +247,7 @@ def do_cleanup(result: list, verbose: bool = False) -> list:
     return filtered
 
 
-def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, cleanup: bool,
+def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui: bool,
                  verbose: bool, unpack: bool = True):
     mobo = get_baseboard(directory + "/baseboard.txt")
     cpu = read_lscpu(directory + "/lscpu.txt")
@@ -298,8 +298,7 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, clea
             else:
                 result.append(component)
 
-    if cleanup:
-        result = do_cleanup(result, verbose)
+        result = do_cleanup(result, gui, verbose)
 
     return result
 
@@ -339,7 +338,7 @@ if __name__ == '__main__':
                                                                  has_dedicated_gpu=args.gpu,
                                                                  gpu_in_cpu=args.cpu,
                                                                  verbose=args.verbose,
-                                                                 cleanup=True)
+                                                                 gui=False)
             print(json.dumps(data, indent=2))
 
     except InputFileNotFoundError as e:
