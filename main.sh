@@ -185,6 +185,22 @@ if [ -z "$OUTPUT_PATH" ]; then
   fi
 fi
 
+./check_dependencies.sh
+if [[ $? -eq 1 ]]; then
+  echo "You need to install some packages in order for the peracotta to work. Do you want to install them? y/N"
+  read ans_tmp
+  if [ "$ans_tmp" = "y" ] || [ "$ans_tmp" = "Y" ]; then
+    if [ "$EUID" -ne 0 ]; then
+      sudo ./install_dependencies_all.sh $OUTPUT_PATH
+    else
+      ./install_dependencies_all.sh $OUTPUT_PATH
+    fi
+  else
+    echo "Quitting..."
+    exit -1
+  fi
+fi
+
 if [ "$EUID" -ne 0 ]; then
   sudo ./generate_files.sh $OUTPUT_PATH
 else
