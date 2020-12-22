@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 
 from parsers import read_smartctl
 from parsers import read_decode_dimms
@@ -20,7 +21,7 @@ def test_lspci():
 		'capacity-byte': 3221225472,
 		'human_readable_capacity': '3072 MB'
 	}
-	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
 
 	assert output == expect
 
@@ -37,7 +38,7 @@ def test_lscpu():
 		"frequency-hertz": 3300000000,
 		"human_readable_frequency": "N/A"
 	}
-	output = read_lscpu.read_lscpu(filedir + 'lscpu.txt')
+	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
 	assert output == expect
 
@@ -73,7 +74,7 @@ def test_ram():
 			'ram-timings': '9-9-9-24',
 		}
 	]
-	output = read_decode_dimms.read_decode_dimms(filedir + 'dimms.txt')
+	output = read_decode_dimms.read_decode_dimms(os.path.join(filedir, 'dimms.txt'))
 
 	assert len(output) == 2, "2 RAM modules are found"
 	assert output == expect
@@ -87,13 +88,13 @@ def test_baseboard():
 		'type': 'motherboard',
 		"working": "yes",
 	}
-	output = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
+	output = read_dmidecode.get_baseboard(os.path.join(filedir, 'baseboard.txt'))
 
 	assert output == expect
 
 
 def test_connector():
-	baseboard = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
+	baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, 'baseboard.txt'))
 
 	# This is entirely wrong and is not reflected by any means from reality and the real motherboard, but the manufacturer
 	# dropped all this garbage into the DMI information, so here we go...
@@ -122,7 +123,7 @@ def test_connector():
 					'Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)\n'
 					'Unknown connector: Other / None (J1G6 - AC JACK / Not Specified)',
 	}
-	output = read_dmidecode.get_connectors(filedir + 'connector.txt', baseboard)
+	output = read_dmidecode.get_connectors(os.path.join(filedir, 'connector.txt'), baseboard)
 
 	assert output == expect
 
@@ -136,7 +137,7 @@ def test_chassis():
 		'type': 'case',
 		'motherboard-form-factor': '',
 	}
-	output = read_dmidecode.get_chassis(filedir + 'chassis.txt')
+	output = read_dmidecode.get_chassis(os.path.join(filedir, 'chassis.txt'))
 
 	assert output == expect
 
