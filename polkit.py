@@ -1,4 +1,5 @@
 import os
+import time
 import subprocess
 import shlex
 
@@ -61,6 +62,8 @@ def make_dotfiles(path_to_generate_files_sh: str):
             f.write(dotpolicy_with_path)
             print("I need root permissions to move the file just this one time.")
             os.system("x-terminal-emulator -e sudo mv " + local_path_to_dotpolicy + " " + path_to_dotpolicy)
+            while not os.path.exists(path_to_dotpolicy):
+                time.sleep(0.1)
             print(path_to_dotpolicy, "was created!")
     else:
         print(path_to_dotpolicy, "already existed.")
@@ -76,4 +79,11 @@ def make_dotfiles(path_to_generate_files_sh: str):
 
 
 if __name__ == '__main__':
-    make_dotfiles("./generate_files.sh")
+    working_directory = os.getcwd()
+    if not os.path.isdir(os.path.join(working_directory, "tmp")):
+        os.makedirs(os.path.join(working_directory, "tmp"))
+
+    folder_name = "tmp"
+    path_to_gen_files_sh = working_directory + "/generate_files.sh"
+    print(path_to_gen_files_sh)
+    make_dotfiles(path_to_generate_files_sh = path_to_gen_files_sh)
