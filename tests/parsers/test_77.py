@@ -3,6 +3,7 @@
 from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
+import os
 
 filedir = 'tests/77/'
 
@@ -17,7 +18,7 @@ def test_77_lspci():
 		'model': '771/671',
 		'capacity-byte': None,
 		'human_readable_capacity': ''}
-	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
 
 	assert output == expect
 
@@ -34,8 +35,9 @@ def test_lscpu():
 		'frequency-hertz': -1,
 		'human_readable_frequency': 'N/A'
 	}
-	output = read_lscpu.read_lscpu(filedir + 'lscpu.txt')
+	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
+	assert output == expect
 
 def test_77_baseboard():
 	expect = {
@@ -45,13 +47,13 @@ def test_77_baseboard():
 		'type': 'motherboard',
 		"working": "yes",
 	}
-	output = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
+	output = read_dmidecode.get_baseboard(os.path.join(filedir, 'baseboard.txt'))
 
 	assert output == expect
 
 
 def test_77_connector():
-	baseboard = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
+	baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, 'baseboard.txt'))
 
 	expect = {
 		'brand': 'ASUSTeK Computer INC.',
@@ -69,7 +71,7 @@ def test_77_connector():
 		'sata-ports-n': 2,
 		'notes': 'Unknown connector: Other / None (AAFP / Not Specified)'
 	}
-	output = read_dmidecode.get_connectors(filedir + 'connector.txt', baseboard)
+	output = read_dmidecode.get_connectors(os.path.join(filedir, 'connector.txt'), baseboard)
 
 	assert output == expect
 
@@ -82,6 +84,6 @@ def test_77_chassis():
 		'type': 'case',
 		'motherboard-form-factor': '',
 	}
-	output = read_dmidecode.get_chassis(filedir + 'chassis.txt')
+	output = read_dmidecode.get_chassis(os.path.join(filedir, 'chassis.txt'))
 
 	assert output == expect
