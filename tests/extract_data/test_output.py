@@ -10,7 +10,7 @@ def is_product(component: dict):
     # check if brand or model has a not valid value
     candidates = [component["brand"].lower(), component["model"].lower()]
     for candidate in candidates:
-        if isinstance(candidate, str) and candidate in ("", "null", "unknown", "undefined"):
+        if isinstance(candidate, str) and candidate in ("", "null", "unknown", "undefined", "no enclosure"):
             return False
     # if all conditions are False, the product should be added
     return True
@@ -33,7 +33,7 @@ def res(request):
         gpu_in_cpu = True
     elif gpu_flag == "gpu":
         has_dedicated_gpu = True
-    return get_result(directory=path, has_dedicated_gpu=has_dedicated_gpu, gpu_in_cpu=gpu_in_cpu, cleanup=True)
+    return get_result(directory=path, has_dedicated_gpu=has_dedicated_gpu, gpu_in_cpu=gpu_in_cpu, gui=False)
 
 
 # checks about peracotta's output
