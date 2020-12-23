@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 
 from parsers import read_smartctl
 from parsers import read_decode_dimms
@@ -20,7 +21,7 @@ def test_lspci():
 		"human_readable_capacity": "",
 		"brand-manufacturer": "VIA"
 	}
-	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, filedir + 'lspci.txt', filedir + 'glxinfo.txt')
+	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
 
 	assert output == expect
 
@@ -37,13 +38,13 @@ def test_lscpu():
 		"frequency-hertz": 3000000000,
 		"human_readable_frequency": "N/A"
 	}
-	output = read_lscpu.read_lscpu(filedir + 'lscpu.txt')
+	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
 	assert output == expect
 
 
 def test_ram():
-	output = read_decode_dimms.read_decode_dimms(filedir + 'dimms.txt')
+	output = read_decode_dimms.read_decode_dimms(os.path.join(filedir, 'dimms.txt'))
 
 	assert len(output) == 0
 
@@ -56,13 +57,13 @@ def test_baseboard():
 		"model": "P5V-VM-ULTRA",
 		"sn": "MB-1234567890",
 	}
-	output = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
+	output = read_dmidecode.get_baseboard(os.path.join(filedir, 'baseboard.txt'))
 
 	assert output == expect
 
 
 def test_connector():
-	baseboard = read_dmidecode.get_baseboard(filedir + 'baseboard.txt')
+	baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, 'baseboard.txt'))
 
 	expect = {
 		"type": "motherboard",
@@ -79,7 +80,7 @@ def test_connector():
 		"ide-ports-n": 2,
 		"notes": ""
 	}
-	output = read_dmidecode.get_connectors(filedir + 'connector.txt', baseboard)
+	output = read_dmidecode.get_connectors(os.path.join(filedir, 'connector.txt'), baseboard)
 
 	assert output == expect
 
@@ -92,7 +93,7 @@ def test_chassis():
 		"sn": "Chassis Serial Number",
 		"motherboard-form-factor": ""
 	}
-	output = read_dmidecode.get_chassis(filedir + 'chassis.txt')
+	output = read_dmidecode.get_chassis(os.path.join(filedir, 'chassis.txt'))
 
 	assert output == expect
 
