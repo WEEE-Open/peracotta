@@ -32,12 +32,12 @@ def test_lscpu():
 		'brand': 'Intel',
 		'core-n': 1,
 		'thread-n': 1,
-		'frequency-hertz': -1,
+		'frequency-hertz': 2800000000,
 		'human_readable_frequency': 'N/A'
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
-	#assert output == expect
+	assert output == expect
 
 def test_77_baseboard():
 	expect = {
