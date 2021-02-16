@@ -54,8 +54,8 @@ def test_has_chassis_and_mobo(res):
 
 item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
              "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
-             "sn", "software", "surface-scan", "type", "working", "wwn"]
-bmv = ["brand", "model", "variant"]
+             "sn", "software", "surface-scan", "working", "wwn"]
+both = ["brand", "model", "variant", "type"]
 
 
 def explore_item(param):
@@ -65,7 +65,7 @@ def explore_item(param):
             pass
         # if is not a product (no brand or model) all the keys are in item
         elif is_product(param["features"]):
-            assert k in (item_keys+bmv)
+            assert k in (item_keys + both)
 
     if "contents" in param.keys():
         assert isinstance(param["contents"], list)
@@ -76,7 +76,7 @@ def explore_item(param):
 def test_check_product_keys(res):
     for product in res[1:]:
         for k in product["features"].keys():
-            assert k not in item_keys
+            assert k not in item_keys or k == "type"
 
 
 def test_check_item_keys(res):
