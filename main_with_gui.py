@@ -11,6 +11,7 @@ from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
 from enum import Enum
+import ast
 
 # should be None in production
 # should be set to "tests/<machine_to_test>" when testing
@@ -322,33 +323,56 @@ class VerifyExtractedData(QWidget):
 
             for feature in component.items():
                 if feature[0] != "type":
-                    h_box = QHBoxLayout()
-
-                    # the single dict entry is converted to a tuple
-                    name = QLabel(str(feature[0]))
-                    if feature[1] != "":
-                        # skip not human readable frequency and capacity
-                        if feature[0] == "frequency-hertz" or feature[0] == "capacity-byte":
-                            continue
-                        elif feature[0] == "human_readable_frequency":
-                            name = QLabel("frequency")
-                        elif feature[0] == "human_readable_capacity":
-                            name = QLabel("capacity")
-                        desc = QLabel(str(feature[1]))
+                    if feature[0] == 'features':
+                        self.print_features(v_box,str(feature[1]),0)
+                    elif feature[0] == 'contents':
+                        self.print_contents(v_box,str(feature[1]))
                     else:
-                        desc = QLabel("missing feature")
-                        name.setStyleSheet("color: yellow")
-                        desc.setStyleSheet("color: yellow")
-
-                    h_box.addWidget(name, alignment=Qt.AlignCenter)
-                    h_box.addStretch()
-                    h_box.addWidget(desc, alignment=Qt.AlignCenter)
-
-                    v_box.addLayout(h_box)
-
+                        self.print_data(v_box,feature[0], feature[1], 0)
             v_box.addSpacing(15)
-
         self.setLayout(v_box)
+
+    def print_contents(self,v_box,feature):
+        h_box = QHBoxLayout()
+        h_box.addWidget(QLabel("contents"), alignment=Qt.AlignLeft)
+        v_box.addLayout(h_box)
+        cont = ast.literal_eval(feature)
+        for space,element in enumerate(cont):
+            key = list(element.keys())
+            for k in key:
+                if k == 'features':
+                    self.print_features(v_box,str(element[k]),space+1)
+                else:
+                    self.print_contents(v_box,str(element[k]))
+
+    def print_features(self,v_box,feature,space):
+        h_box = QHBoxLayout()
+        string = '         '*(space)+"features"
+        h_box.addWidget(QLabel(string), alignment=Qt.AlignLeft)
+        v_box.addLayout(h_box)
+        data_dict = ast.literal_eval(feature)
+        for key, value in data_dict.items():
+            self.print_data(v_box, key, value, space+1)
+
+    def print_data(self,v_box, key, value, space):
+        h_box = QHBoxLayout()
+        name = '         '*space+ str(key)
+        if value != "":
+            # skip not human readable frequency and capacity
+            if key == "human_readable_frequency":
+                name = '         '*space+"frequency"
+            elif key == "human_readable_capacity":
+                name = '         '*space+"capacity"
+            desc = str(value)
+        else:
+            desc = "missing feature"
+            #color = "color: yellow"
+
+        line = QLabel(name+'                  '+desc)
+        h_box.addWidget(line, alignment=Qt.AlignLeft)
+
+        v_box.addLayout(h_box)
+
 
     def display_plaintext_data(self, window: QMainWindow, system_info):
         window.takeCentralWidget()
