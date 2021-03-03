@@ -6,7 +6,7 @@ import subprocess as sp
 import json
 import base64
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-    QMessageBox, QScrollArea, QPlainTextEdit
+    QMessageBox, QScrollArea, QPlainTextEdit, QTableWidget,QTableWidgetItem
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
@@ -314,65 +314,87 @@ class VerifyExtractedData(QWidget):
                 prev_type = system_info[i - 1]["type"]
 
             if component["type"] != prev_type or i == 0:
-                title = QLabel(component["type"].upper())
+
+                if component['type'] == 'I':
+                    title = QLabel('ITEM')
+                else:
+                    title = QLabel('PRODUCT')
                 # noinspection PyArgumentList
                 title.setFont(QFont("futura", pointSize=16, italic=False))
                 if i != 0:
                     v_box.addSpacing(10)
                 v_box.addWidget(title, alignment=Qt.AlignCenter)
-
+            list_pr = []
             for feature in component.items():
                 if feature[0] != "type":
                     if feature[0] == 'features':
-                        self.print_features(v_box,str(feature[1]),0)
+                        self.list_features(list_pr,str(feature[1]),0)
                     elif feature[0] == 'contents':
-                        self.print_contents(v_box,str(feature[1]))
+                        self.list_contents(list_pr,str(feature[1]),0)
                     else:
-                        self.print_data(v_box,feature[0], feature[1], 0)
+                        self.list_data(list_pr,feature[0], feature[1], 0)
+            self.print_list(v_box,list_pr)
             v_box.addSpacing(15)
         self.setLayout(v_box)
 
-    def print_contents(self,v_box,feature):
+    def print_list(self,v_box,list_pr):
         h_box = QHBoxLayout()
-        h_box.addWidget(QLabel("contents"), alignment=Qt.AlignLeft)
+        numrows = len(list_pr)
+        numcols = 0
+        for row in list_pr:
+            if numcols < len(row):
+                numcols = len(row)
+        tableWidget = QTableWidget()
+        tableWidget.setRowCount(numrows)
+        tableWidget.setColumnCount(numcols)
+        for i in range(numrows):
+            for j,element in enumerate(list_pr[i]):
+                tableWidget.setItem(i,j,QTableWidgetItem(list_pr[i][j]))
+        h_box.addWidget(tableWidget)
         v_box.addLayout(h_box)
+
+
+    def list_contents(self,list_pr,feature,space):
         cont = ast.literal_eval(feature)
-        for space,element in enumerate(cont):
+        for s, element in enumerate(cont):
+            spazio = s + space + 1
             key = list(element.keys())
             for k in key:
                 if k == 'features':
-                    self.print_features(v_box,str(element[k]),space+1)
+                    self.list_features(list_pr, str(element[k]), spazio)
                 else:
-                    self.print_contents(v_box,str(element[k]))
+                    self.list_contents(list_pr, str(element[k]), spazio)
 
-    def print_features(self,v_box,feature,space):
-        h_box = QHBoxLayout()
-        string = '         '*(space)+"features"
-        h_box.addWidget(QLabel(string), alignment=Qt.AlignLeft)
-        v_box.addLayout(h_box)
+    def list_features(self,list_pr,feature,space):
         data_dict = ast.literal_eval(feature)
         for key, value in data_dict.items():
-            self.print_data(v_box, key, value, space+1)
+            self.list_data(list_pr, key, value, space + 1)
 
-    def print_data(self,v_box, key, value, space):
-        h_box = QHBoxLayout()
-        name = '         '*space+ str(key)
-        if value != "":
-            # skip not human readable frequency and capacity
-            if key == "human_readable_frequency":
-                name = '         '*space+"frequency"
-            elif key == "human_readable_capacity":
-                name = '         '*space+"capacity"
-            desc = str(value)
+    def list_data(self,list_pr, key, value, space):
+        line = []
+        if key == 'type':
+            name = value.upper()
+            desc = ''
+            space -=1
         else:
-            desc = "missing feature"
-            #color = "color: yellow"
+            name = key
+            if value != "":
+                # skip not human readable frequency and capacity
+                if key == "human_readable_frequency":
+                    name = "frequency"
+                elif key == "human_readable_capacity":
+                    name = "capacity"
+                desc = str(value)
+            else:
+                desc = "missing feature"
+                # color = "color: yellow"
 
-        line = QLabel(name+'                  '+desc)
-        h_box.addWidget(line, alignment=Qt.AlignLeft)
+        for i in range (space):
+            line.append(' ')
+        line.append(name)
+        line.append(desc)
 
-        v_box.addLayout(h_box)
-
+        list_pr.append(line)
 
     def display_plaintext_data(self, window: QMainWindow, system_info):
         window.takeCentralWidget()
