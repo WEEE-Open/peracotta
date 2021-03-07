@@ -88,6 +88,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     normalize_brands(comp_wrap)
 
     products = []
+
     # setting mobo dict
     if is_product(mobo):
         products.append(mobo)
@@ -95,6 +96,22 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
                 "contents": []}
     else:
         new_mobo = {"features": mobo, "contents": []}
+
+    # mounting psu
+    if len(psu) > 0:
+        if is_product(psu):
+            products.append(psu)
+            psu = {"features": {k: v for k, v in psu.items() if k in bmv+item_keys}}
+        else:
+            psu = {"features": psu}
+
+    #finally get the item
+    if is_product(chassis):
+        products.append(chassis)
+        result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys},
+                   "contents": [new_mobo, psu]}]
+    else:
+        result = [{"type": "I", "features": chassis, "contents": [new_mobo, psu]}]
 
     # mount the cpu
     if len(cpu) != 0:
@@ -134,16 +151,16 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         for disk in disks:
             if is_product(disk):
                 products.append(disk)
-                new_mobo["contents"].append({"features": {k: v for k, v in disk.items() if k in bmv+item_keys}})
+                result[0]["contents"].append({"features": {k: v for k, v in disk.items() if k in bmv+item_keys}})
             else:
-                new_mobo["contents"].append({"features": disk})
+                result[0]["contents"].append({"features": disk})
 
     elif isinstance(disks, dict) and disks != 0:
         if is_product(disks):
             products.append(disks)
-            new_mobo["contents"].append({"features": {k: v for k, v in disks.items() if k in bmv+item_keys}})
+            result[0]["contents"].append({"features": {k: v for k, v in disks.items() if k in bmv+item_keys}})
         else:
-            new_mobo["contents"].append({"features": disks})
+            result[0]["contents"].append({"features": disks})
 
     # put gpu (still check if necessary 'null' format), assuming only one because was the same as before
     if len(gpu) > 0:
@@ -162,22 +179,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             else:
                 new_mobo["contents"].append({"features": wifi_card})
 
-    # mounting psu
-    if len(psu) > 0:
-        if is_product(psu):
-            products.append(psu)
-            psu = {"features": {k: v for k, v in psu.items() if k in bmv+item_keys}}
-        else:
-            psu = {"features": psu}
-
-    #finally get the item
-    if is_product(chassis):
-        products.append(chassis)
-        result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in bmv+item_keys},
-                   "contents": [new_mobo, psu]}]
-    else:
-        result = [{"type": "I", "features": chassis,
-                   "contents": [new_mobo, psu]}]
     #fix the product type
     for product in products:
         #   create the dictionaries
