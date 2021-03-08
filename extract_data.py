@@ -108,10 +108,12 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     #finally get the item
     if is_product(chassis):
         products.append(chassis)
-        result = [{"type": "I", "features": {k: v for k, v in chassis.items() if k in both+item_keys},
-                   "contents": [new_mobo, psu]}]
+        new_chassis = {"type": "I", "features": {k: v for k, v in chassis.items() if k in both+item_keys},
+                   "contents": [new_mobo, psu]}
     else:
-        result = [{"type": "I", "features": chassis, "contents": [new_mobo, psu]}]
+        new_chassis = {"type": "I", "features": chassis, "contents": [new_mobo, psu]}
+
+    result = [new_chassis]
 
     # mount the cpu
     if len(cpu) != 0:
@@ -151,16 +153,16 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         for disk in disks:
             if is_product(disk):
                 products.append(disk)
-                result[0]["contents"].append({"features": {k: v for k, v in disk.items() if k in both+item_keys}})
+                new_chassis["contents"].append({"features": {k: v for k, v in disk.items() if k in both+item_keys}})
             else:
-                result[0]["contents"].append({"features": disk})
+                new_chassis["contents"].append({"features": disk})
 
     elif isinstance(disks, dict) and disks != 0:
         if is_product(disks):
             products.append(disks)
-            result[0]["contents"].append({"features": {k: v for k, v in disks.items() if k in both+item_keys}})
+            new_chassis["contents"].append({"features": {k: v for k, v in disks.items() if k in both+item_keys}})
         else:
-            result[0]["contents"].append({"features": disks})
+            new_chassis["contents"].append({"features": disks})
 
     # put gpu (still check if necessary 'null' format), assuming only one because was the same as before
     if len(gpu) > 0:
