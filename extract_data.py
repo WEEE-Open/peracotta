@@ -306,6 +306,27 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui:
 
     return result
 
+def get_gpu(args):
+    while True not in (args.gpu, args.cpu, args.motherboard):
+        print("\nWhere is GPU in your PC? c/g/b\n",
+              "c for integrated in CPU\n",
+              "g for discrete graphics card\n",
+              "b for integrated in the motherboard\n")
+        gpu_flag = input("Insert your choice: ")
+        if gpu_flag == 'c':
+            args.cpu = True
+        elif gpu_flag == 'g':
+            args.gpu = True
+        elif gpu_flag == 'b':
+            args.motherboard = True
+    return args.cpu, args.gpu, args.motherboard
+
+
+def print_output(output, path):
+    print("\nThe following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':\n")
+    print(output)
+    print(f"You can also transfer the generated JSON file $OUTPUT_PATH/copy_this_to_tarallo.json to your PC with 'scp {path}/copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal.")
+
 
 if __name__ == '__main__':
     import argparse
@@ -318,7 +339,7 @@ if __name__ == '__main__':
                                      )
     parser.add_argument('-f', '--files', action='store', default=None, required=False,
                         help="retrieve previously generated files from a given path")
-    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=True)
+    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=False)
     gpu_group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
     gpu_group.add_argument('-c', '--cpu', action="store_true", default=False,
                            help="GPU is integrated inside the CPU")
@@ -335,13 +356,13 @@ if __name__ == '__main__':
     if args.gui:
         import main_with_gui
         main_with_gui.main()
-
+        
     elif args.files is not None:
         # if -f flag is added, most of the other flags doesn't mean anything
         if args.path is not None:
             print("If the files already exist what should I store?")
             exit(-1)
-
+        args.cpu, args.gpu, args.motherboard = get_gpu(args) #TODO: not object oriented enough
         path = os.path.join(os.getcwd(), args.files)
         try:
             data = extract_and_collect_data_from_generated_files(directory=path,
@@ -349,8 +370,35 @@ if __name__ == '__main__':
                                                                  gpu_in_cpu=args.cpu,
                                                                  verbose=args.verbose,
                                                                  gui=False)
-            print(json.dumps(data, indent=2))
+            print_output(json.dumps(data, indent=2), path)
         except InputFileNotFoundError as e:
             print(str(e))
             exit(1)
+
+    else:
+        if args.path is None:
+            path = os.path.join(os.getcwd(), "tmp")
+            if os.path.isdir(path):
+                sel = input("Overwrite existing files in tmp dir? y/N ").lower()
+                if sel == 'y':
+                    print("Overwriting...")
+                else:
+                    sel = input("Output files to working directory? y/N ").lower()
+                    if sel == 'y':
+                        path = os.getcwd()
+                        print("Outputting files to working directory...")
+                    else:
+                        print("Quitting...")
+                        exit(-1)
+            else:
+                os.mkdir(path)
+
+        else:
+            path = os.path.join(os.getcwd(), args.path)
+            if os.path.isdir(path):
+                print("Wrong path: can't create a directory with this name, existing already")
+                exit(-2)
+            os.mkdir(path)
+
+
 
