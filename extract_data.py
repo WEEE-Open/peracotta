@@ -4,6 +4,7 @@
 Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
 import json
+import os
 
 from InputFileNotFoundError import InputFileNotFoundError
 from parsers.read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
@@ -315,9 +316,9 @@ if __name__ == '__main__':
                                             "Alternatively, you can choose to pass either the path to the directory where you want the files to be generated, the gpu location, or both."
                                             "In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location."
                                      )
-    parser.add_argument('files', '-f', '--files', action='store', default='-tmp/', required=False,
+    parser.add_argument('-f', '--files', action='store', default=None, required=False,
                         help="retrieve previously generated files from a given path")
-    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=False)
+    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=True)
     gpu_group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
     gpu_group.add_argument('-c', '--cpu', action="store_true", default=False,
                            help="GPU is integrated inside the CPU")
@@ -330,27 +331,26 @@ if __name__ == '__main__':
     parser.add_argument('path', action="store", nargs='?', type=str, help="optional path where generated files are stored")
 
     args = parser.parse_args()
-    #TODO: add destination path of the result as in main.sh
-    print(args.files)
-    """
-    if args.path is None:
-        path = "."
-    else:
-        path = args.path
 
-    try:
-        if args.gui:
-            import main_with_gui
-            main_with_gui.main()
+    if args.gui:
+        import main_with_gui
+        main_with_gui.main()
 
-        else:
+    elif args.files is not None:
+        # if -f flag is added, most of the other flags doesn't mean anything
+        if args.path is not None:
+            print("If the files already exist what should I store?")
+            exit(-1)
+
+        path = os.path.join(os.getcwd(), args.files)
+        try:
             data = extract_and_collect_data_from_generated_files(directory=path,
                                                                  has_dedicated_gpu=args.gpu,
                                                                  gpu_in_cpu=args.cpu,
                                                                  verbose=args.verbose,
                                                                  gui=False)
             print(json.dumps(data, indent=2))
+        except InputFileNotFoundError as e:
+            print(str(e))
+            exit(1)
 
-    except InputFileNotFoundError as e:
-        print(str(e))
-        exit(1)"""
