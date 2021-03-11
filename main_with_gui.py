@@ -361,33 +361,11 @@ class VerifyExtractedData(QWidget):
 
         self.setLayout(v_box)
 
-    '''def print_list(self,v_box,list_pr):
-        h_box = QHBoxLayout()
-        tableWidget = QTableWidget()
-        numrows = len(list_pr)
-        numcols = 0
-        for row in list_pr:
-            if numcols < len(row):
-                numcols = len(row)
-
-        tableWidget.setShowGrid(False)
-        tableWidget.verticalHeader().setVisible(False)
-        tableWidget.horizontalHeader().setVisible(False)
-
-
-        tableWidget.setRowCount(numrows)
-        tableWidget.setColumnCount(numcols)
-        for i in range(numrows):
-            for j,element in enumerate(list_pr[i]):
-                tableWidget.setItem(i,j,QTableWidgetItem(list_pr[i][j]))
-        h_box.addWidget(tableWidget)
-        v_box.addLayout(h_box)'''
 
 
     def list_contents(self,feature,parent):
         cont = ast.literal_eval(feature)
         for s, element in enumerate(cont):
-            #if 'features' in element:
             self.list_element(element, parent)
 
     def list_element(self, element, parent):
@@ -408,9 +386,6 @@ class VerifyExtractedData(QWidget):
             self.list_data( key, value,parent)
 
     def list_data(self, key, value,parent):
-        #if key == 'type':
-            #return
-        #else:
         name = key
         if value != "":
             # skip not human readable frequency and capacity
@@ -425,12 +400,6 @@ class VerifyExtractedData(QWidget):
         child_item = [QStandardItem(name), QStandardItem(desc)]
         parent.appendRow(child_item)
 
-        '''for i in range ():
-            line.append(' ')
-        line.append(name)
-        line.append(desc)
-
-        list_pr.append(line)'''
 
     def display_plaintext_data(self, window: QMainWindow, system_info):
         window.takeCentralWidget()
