@@ -6,8 +6,8 @@ import subprocess as sp
 import json
 import base64
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-    QMessageBox, QScrollArea, QPlainTextEdit, QTableWidget,QTableWidgetItem
-from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
+    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView
+from PyQt5.QtGui import QFont, QIcon, QPalette, QColor,QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
 from enum import Enum
@@ -298,6 +298,7 @@ class VerifyExtractedData(QWidget):
         json_button.setStyleSheet(button_style)
         json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
 
+
         v_box.addSpacing(20)
         v_box.addWidget(json_button, alignment=Qt.AlignCenter)
         v_box.addSpacing(20)
@@ -314,7 +315,6 @@ class VerifyExtractedData(QWidget):
                 prev_type = system_info[i - 1]["type"]
 
             if component["type"] != prev_type or i == 0:
-
                 if component['type'] == 'I':
                     title = QLabel('ITEM')
                 else:
@@ -324,77 +324,113 @@ class VerifyExtractedData(QWidget):
                 if i != 0:
                     v_box.addSpacing(10)
                 v_box.addWidget(title, alignment=Qt.AlignCenter)
-            list_pr = []
-            for feature in component.items():
-                if feature[0] != "type":
-                    if feature[0] == 'features':
-                        self.list_features(list_pr,str(feature[1]),0)
-                    elif feature[0] == 'contents':
-                        self.list_contents(list_pr,str(feature[1]),0)
-                    else:
-                        self.list_data(list_pr,feature[0], feature[1], 0)
-            self.print_list(v_box,list_pr)
+
+
+            #unico product e item sx product dx
+            #qhboxlayout con due widget aventi qvboxlayout con dentro le robe <-
+            #fare qsplitter con due qvboxlayout
+            #oppure qgrid
+
+            #
+
+            tree = QTreeView()
+            root_model = QStandardItemModel()
+            root_model.setHorizontalHeaderLabels(['Name','Value'])
+            tree.setModel(root_model)
+
+            parent = root_model.invisibleRootItem()
+            h_box = QHBoxLayout()
+            if component['type'] == 'I':
+                self.list_element(component,parent)
+            else:
+                for feature in component.items():
+                    if feature[0] != "type":
+                        if feature[0] == 'features':
+                            self.list_features(str(feature[1]),parent)
+                        elif feature[0] == 'contents':
+                            self.list_contents(str(feature[1]),parent)
+                        else:
+                            self.list_data(feature[0], feature[1],parent)
+
+            tree.expandAll()
+
+            h_box.addWidget(tree)
+            tree.resizeColumnToContents(0)
+            v_box.addLayout(h_box)
             v_box.addSpacing(15)
+
         self.setLayout(v_box)
 
-    def print_list(self,v_box,list_pr):
+    '''def print_list(self,v_box,list_pr):
         h_box = QHBoxLayout()
+        tableWidget = QTableWidget()
         numrows = len(list_pr)
         numcols = 0
         for row in list_pr:
             if numcols < len(row):
                 numcols = len(row)
-        tableWidget = QTableWidget()
+
+        tableWidget.setShowGrid(False)
+        tableWidget.verticalHeader().setVisible(False)
+        tableWidget.horizontalHeader().setVisible(False)
+
+
         tableWidget.setRowCount(numrows)
         tableWidget.setColumnCount(numcols)
         for i in range(numrows):
             for j,element in enumerate(list_pr[i]):
                 tableWidget.setItem(i,j,QTableWidgetItem(list_pr[i][j]))
         h_box.addWidget(tableWidget)
-        v_box.addLayout(h_box)
+        v_box.addLayout(h_box)'''
 
 
-    def list_contents(self,list_pr,feature,space):
+    def list_contents(self,feature,parent):
         cont = ast.literal_eval(feature)
         for s, element in enumerate(cont):
-            spazio = s + space + 1
-            key = list(element.keys())
-            for k in key:
-                if k == 'features':
-                    self.list_features(list_pr, str(element[k]), spazio)
-                else:
-                    self.list_contents(list_pr, str(element[k]), spazio)
+            #if 'features' in element:
+            self.list_element(element, parent)
 
-    def list_features(self,list_pr,feature,space):
+    def list_element(self, element, parent):
+        name = element['features'].pop('type', '_').upper()
+        parent.appendRow([QStandardItem(name), QStandardItem('')])
+        new_parent = parent.child(parent.rowCount() - 1)
+        key = list(element.keys())
+        for k in key:
+            if k == 'features':
+                self.list_features(str(element[k]), new_parent)
+            elif k=='contents':
+                self.list_contents(str(element[k]), new_parent)
+
+
+    def list_features(self,feature,parent):
         data_dict = ast.literal_eval(feature)
         for key, value in data_dict.items():
-            self.list_data(list_pr, key, value, space + 1)
+            self.list_data( key, value,parent)
 
-    def list_data(self,list_pr, key, value, space):
-        line = []
-        if key == 'type':
-            name = value.upper()
-            desc = ''
-            space -=1
+    def list_data(self, key, value,parent):
+        #if key == 'type':
+            #return
+        #else:
+        name = key
+        if value != "":
+            # skip not human readable frequency and capacity
+            if key == "human_readable_frequency":
+                name = "frequency"
+            elif key == "human_readable_capacity":
+                name = "capacity"
+            desc = str(value)
         else:
-            name = key
-            if value != "":
-                # skip not human readable frequency and capacity
-                if key == "human_readable_frequency":
-                    name = "frequency"
-                elif key == "human_readable_capacity":
-                    name = "capacity"
-                desc = str(value)
-            else:
-                desc = "missing feature"
-                # color = "color: yellow"
+            desc = "missing feature"
 
-        for i in range (space):
+        child_item = [QStandardItem(name), QStandardItem(desc)]
+        parent.appendRow(child_item)
+
+        '''for i in range ():
             line.append(' ')
         line.append(name)
         line.append(desc)
 
-        list_pr.append(line)
+        list_pr.append(line)'''
 
     def display_plaintext_data(self, window: QMainWindow, system_info):
         window.takeCentralWidget()
