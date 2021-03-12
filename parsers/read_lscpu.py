@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+from dataclasses import dataclass
 
 from InputFileNotFoundError import InputFileNotFoundError
 
@@ -9,16 +10,16 @@ Read "lscpu" output
 """
 
 
+@dataclass
 class CPU:
-	def __init__(self):
-		self.type = "cpu"
-		self.architecture = ""
-		self.model = ""
-		self.brand = ""
-		self.n_cores = -1  # core-n on TARALLO
-		self.n_threads = -1  # thread-n on TARALLO
-		self.frequency = -1
-		self.human_readable_frequency = "N/A"  # TODO: calculate it or remove it
+	type = "cpu"
+	architecture = ""
+	model = ""
+	brand = ""
+	n_cores = -1  # core-n on TARALLO
+	n_threads = -1  # thread-n on TARALLO
+	frequency = -1
+	human_readable_frequency = "N/A"
 
 
 def read_lscpu(path: str):
@@ -99,9 +100,28 @@ def read_lscpu(path: str):
 	if tmp_freq is not None:
 		cpu.frequency = int(float(tmp_freq.replace(',', '.')) * 1000 * 1000 * 1000)
 
+	def get_human_readable_cpu_frequency_value(div: int):
+		significant_part = cpu.frequency / div
+		if significant_part == int(significant_part) or significant_part >= 10:
+			return f"{int(significant_part)}"
+		return f"{significant_part :.2f}"
+
+	if 1 <= cpu.frequency < 1_000:
+		unit = "Hz"
+		cpu.human_readable_frequency = f"{cpu.frequency} {unit}"
+	elif 1_000 <= cpu.frequency < 1_000_000:
+		unit = "KHz"
+		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000)} {unit}"
+	elif 1_000_000 <= cpu.frequency < 1_000_000_000:
+		unit = "MHz"
+		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000_000)} {unit}"
+	elif 1_000_000_000 <= cpu.frequency < 1_000_000_000_000:
+		unit = "GHz"
+		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000_000_000)} {unit}"
+
 	result = {
 		"type": "cpu",
-		"working": "yes", # Indeed it is working
+		"working": "yes",  # Indeed it is working
 		"isa": cpu.architecture,
 		"model": cpu.model,
 		"brand": cpu.brand,
