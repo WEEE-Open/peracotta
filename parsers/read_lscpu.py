@@ -100,18 +100,24 @@ def read_lscpu(path: str):
 	if tmp_freq is not None:
 		cpu.frequency = int(float(tmp_freq.replace(',', '.')) * 1000 * 1000 * 1000)
 
+	def get_human_readable_cpu_frequency_value(div: int):
+		significant_part = cpu.frequency / div
+		if isinstance(significant_part, int) or significant_part >= 10:
+			return f"{int(significant_part)}"
+		return f"{significant_part :.2}"
+
 	if 1 <= cpu.frequency < 1_000:
 		unit = "Hz"
 		cpu.human_readable_frequency = f"{cpu.frequency} {unit}"
 	elif 1_000 <= cpu.frequency < 1_000_000:
 		unit = "KHz"
-		cpu.human_readable_frequency = f"{cpu.frequency / 1_000 :.2} {unit}"
+		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000)} {unit}"
 	elif 1_000_000 <= cpu.frequency < 1_000_000_000:
 		unit = "MHz"
-		cpu.human_readable_frequency = f"{cpu.frequency / 1_000_000 :.2} {unit}"
+		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000_000)} {unit}"
 	elif 1_000_000_000 <= cpu.frequency < 1_000_000_000_000:
 		unit = "GHz"
-		cpu.human_readable_frequency = f"{cpu.frequency / 1_000_000_000 :.2} {unit}"
+		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000_000_000)} {unit}"
 
 	result = {
 		"type": "cpu",
