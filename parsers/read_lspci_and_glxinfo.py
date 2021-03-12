@@ -5,20 +5,21 @@ Read "lspci -v" and "glxinfo" outputs
 """
 
 import re
+from dataclasses import dataclass
 
 from InputFileNotFoundError import InputFileNotFoundError
 
 
+@dataclass
 class VideoCard:
-	def __init__(self):
-		self.type = "graphics-card"
-		self.manufacturer_brand = ""
-		self.reseller_brand = ""
-		self.internal_name = ""
-		self.model = ""
-		self.capacity = -1  # bytes
-		self.human_readable_capacity = ""
-		self.warning = ""
+	type = "graphics-card"
+	manufacturer_brand = ""
+	reseller_brand = ""
+	internal_name = ""
+	model = ""
+	capacity = -1  # bytes
+	human_readable_capacity = ""
+	warning = ""
 
 
 def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = False):
