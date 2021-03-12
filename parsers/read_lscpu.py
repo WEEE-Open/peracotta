@@ -102,7 +102,7 @@ def read_lscpu(path: str):
 
 	def get_human_readable_cpu_frequency_value(div: int):
 		significant_part = cpu.frequency / div
-		if isinstance(significant_part, int) or significant_part >= 10:
+		if significant_part == int(significant_part) or significant_part >= 10:
 			return f"{int(significant_part)}"
 		return f"{significant_part :.2f}"
 
