@@ -29,7 +29,7 @@ jobs:
 
       - name: Install dataclasses on Python 3.6
         run: pip install dataclasses
-        if: python-version == '3.6'
+        if: ${{ matrix.python-version }} == '3.6'
 
       - name: Run tests
         run: pytest -vv tests
