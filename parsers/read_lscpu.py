@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+from dataclasses import dataclass
 
 from InputFileNotFoundError import InputFileNotFoundError
 
@@ -9,16 +10,16 @@ Read "lscpu" output
 """
 
 
+@dataclass
 class CPU:
-	def __init__(self):
-		self.type = "cpu"
-		self.architecture = ""
-		self.model = ""
-		self.brand = ""
-		self.n_cores = -1  # core-n on TARALLO
-		self.n_threads = -1  # thread-n on TARALLO
-		self.frequency = -1
-		self.human_readable_frequency = "N/A"  # TODO: calculate it or remove it
+	type = "cpu"
+	architecture = ""
+	model = ""
+	brand = ""
+	n_cores = -1  # core-n on TARALLO
+	n_threads = -1  # thread-n on TARALLO
+	frequency = -1
+	human_readable_frequency = "N/A"  # TODO: calculate it or remove it
 
 
 def read_lscpu(path: str):
