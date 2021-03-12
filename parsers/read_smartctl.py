@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from enum import Enum
+from dataclasses import dataclass
 
 import sys
 import os
@@ -10,23 +11,6 @@ from InputFileNotFoundError import InputFileNotFoundError
 """
 Read "smartctl" output:
 """
-
-
-class Disk:
-    def __init__(self):
-        self.type = ""
-        self.brand = ""
-        self.model = ""
-        self.family = ""
-        self.wwn = ""
-        self.serial_number = ""
-        self.form_factor = None
-        self.capacity = -1  # n of bytes
-        self.human_readable_capacity = ""
-        self.rotation_rate = -1
-        self.port = PORT.unknown
-        self.smart_data_long = SMART.not_available
-        self.smart_data = SMART.not_available
 
 
 class SMART(Enum):
@@ -43,6 +27,23 @@ class PORT(Enum):
     ide = "ide-ports-n"
     miniide = "mini-ide-ports-n"
     # TODO: add more, if they can even be detected
+
+
+@dataclass
+class Disk:
+    type = ""
+    brand = ""
+    model = ""
+    family = ""
+    wwn = ""
+    serial_number = ""
+    form_factor = None
+    capacity = -1  # n of bytes
+    human_readable_capacity = ""
+    rotation_rate = -1
+    port = PORT.unknown
+    smart_data_long = SMART.not_available
+    smart_data = SMART.not_available
 
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
