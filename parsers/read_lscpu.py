@@ -100,7 +100,7 @@ def read_lscpu(path: str):
 	if tmp_freq is not None:
 		cpu.frequency = int(float(tmp_freq.replace(',', '.')) * 1000 * 1000 * 1000)
 
-	if cpu.frequency < 1_000:
+	if 1 <= cpu.frequency < 1_000:
 		unit = "Hz"
 		cpu.human_readable_frequency = f"{cpu.frequency} {unit}"
 	elif 1_000 <= cpu.frequency < 1_000_000:
