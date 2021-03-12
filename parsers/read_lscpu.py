@@ -19,7 +19,7 @@ class CPU:
 	n_cores = -1  # core-n on TARALLO
 	n_threads = -1  # thread-n on TARALLO
 	frequency = -1
-	human_readable_frequency = "N/A"  # TODO: calculate it or remove it
+	human_readable_frequency = "N/A"
 
 
 def read_lscpu(path: str):
@@ -100,9 +100,22 @@ def read_lscpu(path: str):
 	if tmp_freq is not None:
 		cpu.frequency = int(float(tmp_freq.replace(',', '.')) * 1000 * 1000 * 1000)
 
+	if cpu.frequency < 1_000:
+		unit = "Hz"
+		cpu.human_readable_frequency = f"{cpu.frequency} {unit}"
+	elif 1_000 <= cpu.frequency < 1_000_000:
+		unit = "KHz"
+		cpu.human_readable_frequency = f"{cpu.frequency / 1_000 :.2} {unit}"
+	elif 1_000_000 <= cpu.frequency < 1_000_000_000:
+		unit = "MHz"
+		cpu.human_readable_frequency = f"{cpu.frequency / 1_000_000 :.2} {unit}"
+	elif 1_000_000_000 <= cpu.frequency < 1_000_000_000_000:
+		unit = "GHz"
+		cpu.human_readable_frequency = f"{cpu.frequency / 1_000_000_000 :.2} {unit}"
+
 	result = {
 		"type": "cpu",
-		"working": "yes", # Indeed it is working
+		"working": "yes",  # Indeed it is working
 		"isa": cpu.architecture,
 		"model": cpu.model,
 		"brand": cpu.brand,
