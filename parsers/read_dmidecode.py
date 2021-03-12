@@ -3,6 +3,7 @@
 
 # TODO: read lspci to figure out if Ethernet is 100 or 1000 or whatever
 from InputFileNotFoundError import InputFileNotFoundError
+from dataclasses import dataclass
 
 connectors_map = {
 	"PS/2": "ps2-ports-n",
@@ -76,22 +77,22 @@ extra_connectors = {
 }
 
 
+@dataclass
 class Baseboard:
-	def __init__(self):
-		self.type = "motherboard"
-		self.brand = ""
-		self.model = ""
-		self.serial_number = ""
-		# self.form_factor = "" # not detected by dmidecode
+	type = "motherboard"
+	brand = ""
+	model = ""
+	serial_number = ""
+	# form_factor = "" # not detected by dmidecode
 
 
+@dataclass
 class Chassis:
-	def __init__(self):
-		self.type = "case"
-		self.brand = ""
-		self.model = ""
-		self.serial_number = ""
-		self.form_factor = ""
+	type = "case"
+	brand = ""
+	model = ""
+	serial_number = ""
+	form_factor = ""
 
 
 # TODO: implement read of connector.txt into Baseboard
