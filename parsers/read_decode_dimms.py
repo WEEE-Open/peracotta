@@ -7,26 +7,28 @@ Read "decode-dimms" output
 import sys
 from InputFileNotFoundError import InputFileNotFoundError
 from enum import Enum
+from dataclasses import dataclass
 
-
-class Dimm:
-	def __init__(self):
-		self.type = "ram"
-		self.brand = ""
-		self.model = ""
-		self.serial_number = ""
-		self.frequency = -1
-		self.human_readable_frequency = ""
-		self.capacity = -1
-		self.human_readable_capacity = ""
-		self.ram_type = ""  # DDR, DDR2, DDR3 etc.
-		self.ecc = ECC.not_available
-		self.cas_latencies = ""
-		self.manufacturer_data_type = ""
 
 class ECC(Enum):
 	available = "yes"
 	not_available = "no"
+
+
+@dataclass
+class Dimm:
+	type = "ram"
+	brand = ""
+	model = ""
+	serial_number = ""
+	frequency = -1
+	human_readable_frequency = ""
+	capacity = -1
+	human_readable_capacity = ""
+	ram_type = ""  # DDR, DDR2, DDR3 etc.
+	ecc = ECC.not_available
+	cas_latencies = ""
+	manufacturer_data_type = ""
 
 
 # initial_chars_to_ignore is the length of the feature whose name the line begins with
@@ -63,7 +65,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 	del dimm_sections[0]
 
 	# create list of as many dimms as there are dimm_sections
-	dimms = [Dimm() for i in range(len(dimm_sections))]
+	dimms = [Dimm() for _ in range(len(dimm_sections))]
 
 	for i, dimm in enumerate(dimm_sections):
 		for line in dimm.splitlines():
