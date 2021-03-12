@@ -104,7 +104,7 @@ def read_lscpu(path: str):
 		significant_part = cpu.frequency / div
 		if isinstance(significant_part, int) or significant_part >= 10:
 			return f"{int(significant_part)}"
-		return f"{significant_part :.2}"
+		return f"{significant_part :.2f}"
 
 	if 1 <= cpu.frequency < 1_000:
 		unit = "Hz"
