@@ -36,7 +36,7 @@ def test_lscpu():
 		"core-n": 2,
 		"thread-n": 4,
 		"frequency-hertz": 900000000,
-		"human_readable_frequency": "N/A"
+		"human_readable_frequency": "900 MHz"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
