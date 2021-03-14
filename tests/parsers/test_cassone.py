@@ -18,7 +18,6 @@ def test_lspci():
 		'internal-name': '',
 		"model": "65x/M650/740",
 		"capacity-byte": None,
-		"human_readable_capacity": ""
 	}
 
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 1,
 		"thread-n": 1,
 		"frequency-hertz": -1,
-		"human_readable_frequency": "N/A"
 	}
 
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))

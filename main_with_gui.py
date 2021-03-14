@@ -327,13 +327,6 @@ class VerifyExtractedData(QWidget):
                     # the single dict entry is converted to a tuple
                     name = QLabel(str(feature[0]))
                     if feature[1] != "":
-                        # skip not human readable frequency and capacity
-                        if feature[0] == "frequency-hertz" or feature[0] == "capacity-byte":
-                            continue
-                        elif feature[0] == "human_readable_frequency":
-                            name = QLabel("frequency")
-                        elif feature[0] == "human_readable_capacity":
-                            name = QLabel("capacity")
                         desc = QLabel(str(feature[1]))
                     else:
                         desc = QLabel("missing feature")

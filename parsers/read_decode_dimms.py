@@ -22,9 +22,7 @@ class Dimm:
 	model = ""
 	serial_number = ""
 	frequency = -1
-	human_readable_frequency = ""
 	capacity = -1
-	human_readable_capacity = ""
 	ram_type = ""  # DDR, DDR2, DDR3 etc.
 	ecc = ECC.not_available
 	cas_latencies = ""
@@ -78,13 +76,10 @@ def read_decode_dimms(path: str, interactive: bool = False):
 				freq = line.split(" ")[-3:-1]
 				dimms[i].frequency = int(freq[0])
 				if "KHz" in freq[1] or "kHz" in freq[1]:
-					dimms[i].human_readable_frequency = freq[0] + " KHz"
 					dimms[i].frequency *= 1000
 				elif "MHz" in freq[1]:
-					dimms[i].human_readable_frequency = freq[0] + " MHz"
 					dimms[i].frequency *= 1000 * 1000
 				elif "GHz" in freq[1]:
-					dimms[i].human_readable_frequency = freq[0] + " GHz"
 					dimms[i].frequency *= 1000 * 1000 * 1000
 				# The official thing is 667 MHz even if they run at 666 MHz
 				if dimms[i].frequency == 666000000:
@@ -94,13 +89,10 @@ def read_decode_dimms(path: str, interactive: bool = False):
 				cap = line.split(" ")[-2:]
 				dimms[i].capacity = int(cap[0])
 				if "KB" in cap[1] or "kB" in cap[1]:
-					dimms[i].human_readable_capacity = cap[0] + " KB"
 					dimms[i].capacity *= 1024
 				elif "MB" in cap[1]:
-					dimms[i].human_readable_capacity = cap[0] + " MB"
 					dimms[i].capacity *= 1024 * 1024
 				elif "GB" in cap[1]:
-					dimms[i].human_readable_capacity = cap[0] + " GB"
 					dimms[i].capacity *= 1024 * 1024 * 1024
 
 			# alternatives to "Manufacturer" are "DRAM Manufacturer" and "Module Manufacturer"
@@ -146,9 +138,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 			"model": dimm.model,
 			"sn": dimm.serial_number,
 			"frequency-hertz": dimm.frequency,
-			"human_readable_frequency": dimm.human_readable_frequency,
 			"capacity-byte": dimm.capacity,
-			"human_readable_capacity": dimm.human_readable_capacity,
 			"ram-type": dimm.ram_type,
 			"ram-ecc": str(dimm.ecc.value),
 			"ram-timings": dimm.cas_latencies,
