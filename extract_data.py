@@ -5,6 +5,7 @@ Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
 import json
 import os
+import regex
 
 from InputFileNotFoundError import InputFileNotFoundError
 from parsers.read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
@@ -328,6 +329,55 @@ def print_output(output, path):
     print(f"You can also transfer the generated JSON file $OUTPUT_PATH/copy_this_to_tarallo.json to your PC with 'scp {path}/copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal.")
 
 
+def run_extract_data(path, args):
+    try:
+        data = extract_and_collect_data_from_generated_files(directory=path,
+                                                             has_dedicated_gpu=args.gpu,
+                                                             gpu_in_cpu=args.cpu,
+                                                             verbose=args.verbose,
+                                                             gui=False)
+        print_output(json.dumps(data, indent=2), path)
+    except InputFileNotFoundError as e:
+        print(str(e))
+        exit(1)
+
+def check_required_files(path): #very bad writing
+    file_in_dir = os.listdir(path)
+    with open("required_files.txt", "r") as f:
+        while True:
+            file = f.readline().rstrip()
+            if file is None or file == '':
+                break
+            found = 0
+            for ex in file_in_dir:
+                if found == 1:
+                    break
+                res = regex.findall(file, ex)
+                if res is not []:
+                    found += 1
+            if found == 0:
+                print(f"Missing file {file}\nPlease re-run this script without the -f or --files option.")
+                exit(-1)
+
+
+def check_and_install_dependencies():
+    install_cmd = "apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode < /dev/null"
+    #exit_value = os.system("dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode \&> /dev/null")
+    exit_value = os.system("./check_dependencies.sh")
+    if exit_value == 1:
+        ans = input("You need to install some packages in order for the peracotta to work. Do you want to install them? y/N ").lower()
+        if ans == 'y':
+            if os.geteuid() != 0:
+                #TODO: why path is needed in main.sh and why is not working without scripts
+                #os.system(f"sudo {install_cmd}")
+                os.system("./install_dependencies_all.sh")
+            else:
+                os.system(f"/bin/bash/ -c {install_cmd}")
+        else:
+            print("Quitting...")
+            exit(-1)
+
+
 if __name__ == '__main__':
     import argparse
 
@@ -364,16 +414,8 @@ if __name__ == '__main__':
             exit(-1)
         args.cpu, args.gpu, args.motherboard = get_gpu(args) #TODO: not object oriented enough
         path = os.path.join(os.getcwd(), args.files)
-        try:
-            data = extract_and_collect_data_from_generated_files(directory=path,
-                                                                 has_dedicated_gpu=args.gpu,
-                                                                 gpu_in_cpu=args.cpu,
-                                                                 verbose=args.verbose,
-                                                                 gui=False)
-            print_output(json.dumps(data, indent=2), path)
-        except InputFileNotFoundError as e:
-            print(str(e))
-            exit(1)
+        check_required_files(path)
+        run_extract_data(path, args)
 
     else:
         if args.path is None:
@@ -399,6 +441,14 @@ if __name__ == '__main__':
                 print("Wrong path: can't create a directory with this name, existing already")
                 exit(-2)
             os.mkdir(path)
+        check_and_install_dependencies()
+        # now that I have a dest folder, I generate files
+        if os.geteuid() != 0:
+            os.system(f"sudo ./generate_files.sh {path}")
+        else:
+            os.system(f"./generate_files.sh {path}")
 
-
+        # file generated, extract data next
+        args.cpu, args.gpu, args.motherboard = get_gpu(args) #TODO: not object oriented enough
+        run_extract_data(path, args)
 
