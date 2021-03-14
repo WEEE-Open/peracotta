@@ -20,8 +20,8 @@ def _name_to_unit(name):
 		'inch': 'in.',
 		'gram': 'g',
 	}
-	if pieces.last() in units:
-		return units[pieces.last()]
+	if pieces[-1] in units:
+		return units[pieces[-1]]
 	else:
 		return None
 
@@ -30,7 +30,7 @@ def _print_value(unit, value):
 	if unit == 'n':
 		return str(value)
 	elif unit == 'rpm' or unit == 'mm' or unit == 'in.':
-		return f"{value} {unit}"
+		return f"{_format_value(value)} {unit}"
 	elif unit == 'byte':
 		return _append_unit(value, 'B', 1024)
 	else:
@@ -45,7 +45,11 @@ def _append_unit(value, unit, base_unit=1000):
 	i = ''
 	if prefix > 0 and base_unit == 1024:
 		i = 'i'
-	return f"{value} {_prefix_to_printable(prefix, base_unit == 1024)}{i}{unit}"
+	return f"{_format_value(value)} {_prefix_to_printable(prefix, base_unit == 1024)}{i}{unit}"
+
+
+def _format_value(value: float):
+	return f"{value:g}"
 
 
 def _prefix_to_printable(places, big_k=False):
