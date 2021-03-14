@@ -5,6 +5,7 @@ import os
 import subprocess as sp
 import json
 import base64
+import prettyprinter
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
     QMessageBox, QScrollArea, QPlainTextEdit
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
@@ -327,7 +328,7 @@ class VerifyExtractedData(QWidget):
                     # the single dict entry is converted to a tuple
                     name = QLabel(str(feature[0]))
                     if feature[1] != "":
-                        desc = QLabel(str(feature[1]))
+                        desc = QLabel(str(prettyprinter.print_feature(feature[0], feature[1])))
                     else:
                         desc = QLabel("missing feature")
                         name.setStyleSheet("color: yellow")
