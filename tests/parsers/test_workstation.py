@@ -18,7 +18,6 @@ def test_lspci():
 		"model": "GeForce 9600 GT",
 		"internal-name": "G94",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Nvidia"
 	}
 	# False to ignore missing glxinfo
@@ -31,25 +30,23 @@ def test_lscpu():
 	expect = [
 		{
 			"type": "cpu",
-		"working": "yes",
+			"working": "yes",
 			"isa": "x86-64",
 			"model": "Xeon 5160",
 			"brand": "Intel",
 			"core-n": 2,
 			"thread-n": 2,
 			"frequency-hertz": 3000000000,
-			"human_readable_frequency": "3 GHz"
 		},
 		{
 			"type": "cpu",
-		"working": "yes",
+			"working": "yes",
 			"isa": "x86-64",
 			"model": "Xeon 5160",
 			"brand": "Intel",
 			"core-n": 2,
 			"thread-n": 2,
 			"frequency-hertz": 3000000000,
-			"human_readable_frequency": "3 GHz"
 		}
 	]
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
@@ -125,7 +122,6 @@ def test_smartctl():
 			"wwn": "",
 			"sn": "",
 			"capacity-decibyte": 996000000000,
-			"human_readable_capacity": "995 GB",
 			"spin-rate-rpm": 20000,
 			"smart-data": "not_available",
 		}

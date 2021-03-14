@@ -17,7 +17,6 @@ def test_lspci_dedicated1():
 		'internal-name': 'NV44',
 		"model": "GeForce 6200 SE TurboCache",
 		"capacity-byte": 67108864,  # 64 MB
-		"human_readable_capacity": "53 MB",  # This is reported by glxinfo
 		"brand-manufacturer": "Nvidia"
 	}
 
@@ -34,7 +33,6 @@ def test_lspci_dedicated2():
 		'internal-name': 'G96',
 		"model": "GeForce 9400 GT",
 		"capacity-byte": 1073741824,
-		"human_readable_capacity": "1013 MB",
 		"brand-manufacturer": "Nvidia"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, os.path.join(filedir, 'dedicated/lspci-9400GT.txt'), os.path.join(filedir, 'dedicated/glxinfo-9400GT.txt'))
@@ -50,7 +48,6 @@ def test_lspci_dedicated3():
 		'internal-name': 'GM204',
 		"model": "GeForce GTX 970",
 		"capacity-byte": 4294967296,
-		"human_readable_capacity": "4096 MB",
 		"brand-manufacturer": "Nvidia"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, os.path.join(filedir, 'dedicated/lspci-gtx-970.txt'), os.path.join(filedir, 'dedicated/glxinfo-gtx-970.txt'))
@@ -69,7 +66,6 @@ def test_lspci_integrated_mobo_1():
 		"model": "GeForce 8300",
 		"internal-name": "C77",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Nvidia"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(os.path.join(filedir, filesubdir), f'lspci-{file}.txt'), os.path.join(os.path.join(filedir, filesubdir), f'/glxinfo-{file}.txt'))
@@ -88,7 +84,6 @@ def test_lspci_integrated_mobo_2():
 		"model": "82865G",
 		"internal-name": "",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(os.path.join(filedir, filesubdir), f'lspci-{file}.txt'), os.path.join(os.path.join(filedir, filesubdir), f'/glxinfo-{file}.txt'))
@@ -107,7 +102,6 @@ def test_lspci_integrated_mobo_3():
 		"model": "ES1000",
 		"internal-name": "",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "AMD/ATI"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(os.path.join(filedir, filesubdir), f'lspci-{file}.txt'), os.path.join(os.path.join(filedir, filesubdir), f'/glxinfo-{file}.txt'))
@@ -125,7 +119,6 @@ def test_lspci_integrated_cpu_1():
 		"model": "Skylake GT2 [HD Graphics 520]",
 		"internal-name": "",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(os.path.join(filedir, filesubdir), 'lspci.txt'),
@@ -145,7 +138,6 @@ def test_lspci_integrated_cpu_2():
 		"model": "",
 		"internal-name": "",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(os.path.join(filedir, filesubdir), 'lspci.txt'),
@@ -164,7 +156,6 @@ def test_lspci_integrated_cpu_3():
 		"model": "Xeon E3-1200 v3/4th Gen Core Processor",
 		"internal-name": "",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(os.path.join(filedir, filesubdir), 'lspci.txt'),
