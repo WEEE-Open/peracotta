@@ -18,7 +18,6 @@ def test_lspci():
 		"model": "GeForce GTX 1060 6GB",
 		'internal-name': 'GP106',
 		"capacity-byte": 6442450944,
-		"human_readable_capacity": "6144 MB",
 		"brand-manufacturer": "Nvidia"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 4,
 		"thread-n": 4,
 		"frequency-hertz": 3200000000,
-		"human_readable_frequency": "3.20 GHz"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
@@ -52,9 +50,7 @@ def test_ram():
 			"model": "Undefined",
 			"sn": "",
 			"frequency-hertz": -1,
-			"human_readable_frequency": "",
 			"capacity-byte": -1,
-			"human_readable_capacity": "",
 			"ram-type": "",
 			"ram-ecc": "no",
 			"ram-timings": ""
@@ -66,9 +62,7 @@ def test_ram():
 			"model": "Undefined",
 			"sn": "",
 			"frequency-hertz": -1,
-			"human_readable_frequency": "",
 			"capacity-byte": -1,
-			"human_readable_capacity": "",
 			"ram-type": "",
 			"ram-ecc": "no",
 			"ram-timings": ""
@@ -136,7 +130,6 @@ def test_smartctl():
 			"sn": "TX1711901797",
 			'wwn': '0 000000 000000000',  # Nice
 			"capacity-byte": 240000000000,
-			"human_readable_capacity": "240 GB",
 			"smart-data": "ok",
 			'sata-ports-n': 1,
 			'notes': "Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  1 Raw_Read_Error_Rate     -O--CK   100   100   050    -    0\n  5 Reallocated_Sector_Ct   -O--CK   100   100   050    -    52\n  9 Power_On_Hours          -O--CK   100   100   050    -    1668\n 12 Power_Cycle_Count       -O--CK   100   100   050    -    829\n160 Unknown_Attribute       -O--CK   100   100   050    -    19\n161 Unknown_Attribute       PO--CK   100   100   050    -    35\n163 Unknown_Attribute       -O--CK   100   100   050    -    15\n164 Unknown_Attribute       -O--CK   100   100   050    -    42113\n165 Unknown_Attribute       -O--CK   100   100   050    -    114\n166 Unknown_Attribute       -O--CK   100   100   050    -    10\n167 Unknown_Attribute       -O--CK   100   100   050    -    79\n168 Unknown_Attribute       -O--CK   100   100   050    -    3000\n169 Unknown_Attribute       -O--CK   100   100   050    -    98\n175 Program_Fail_Count_Chip -O--CK   100   100   050    -    0\n176 Erase_Fail_Count_Chip   -O--CK   100   100   050    -    0\n177 Wear_Leveling_Count     -O--CK   100   100   050    -    0\n178 Used_Rsvd_Blk_Cnt_Chip  -O--CK   100   100   050    -    52\n181 Program_Fail_Cnt_Total  -O--CK   100   100   050    -    0\n182 Erase_Fail_Count_Total  -O--CK   100   100   050    -    0\n192 Power-Off_Retract_Count -O--CK   100   100   050    -    68\n194 Temperature_Celsius     -O---K   100   100   050    -    38\n195 Hardware_ECC_Recovered  -O--CK   100   100   050    -    92762\n196 Reallocated_Event_Count -O--CK   100   100   050    -    19\n197 Current_Pending_Sector  -O--CK   100   100   050    -    52\n198 Offline_Uncorrectable   -O--CK   100   100   050    -    19\n199 UDMA_CRC_Error_Count    -O--CK   100   100   050    -    0\n232 Available_Reservd_Space -O--CK   100   100   050    -    35\n241 Total_LBAs_Written      ----CK   100   100   050    -    147066\n242 Total_LBAs_Read         ----CK   100   100   050    -    238128\n245 Unknown_Attribute       -O--CK   100   100   050    -    242467\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning"
@@ -149,7 +142,6 @@ def test_smartctl():
 			"wwn": "5 000c50 0614757a2",
 			"sn": "6WS3155L",
 			"capacity-decibyte": 750000000000,
-			"human_readable_capacity": "750 GB",
 			"spin-rate-rpm": 7200,
 			"smart-data": "ok",
 			'sata-ports-n': 1,
