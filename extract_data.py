@@ -326,6 +326,14 @@ def get_gpu(args):
 def print_output(output, path):
     print("\nThe following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':\n")
     print(output)
+
+    try:
+        with open(os.path.join(path, "copy_this_to_tarallo.json"), "x") as f:
+            f.write(output)
+    except FileExistsError:
+        with open(os.path.join(path, "copy_this_to_tarallo.json"), "w") as f:
+            f.write(output)
+
     print(f"You can also transfer the generated JSON file $OUTPUT_PATH/copy_this_to_tarallo.json to your PC with 'scp {path}/copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal.")
 
 
@@ -362,20 +370,25 @@ def check_required_files(path): #very bad writing
 
 def check_and_install_dependencies():
     install_cmd = "apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode < /dev/null"
-    #exit_value = os.system("dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode \&> /dev/null")
-    exit_value = os.system("./check_dependencies.sh")
+    exit_value = os.system("dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null") #TODO: check & problem
     if exit_value == 1:
         ans = input("You need to install some packages in order for the peracotta to work. Do you want to install them? y/N ").lower()
         if ans == 'y':
             if os.geteuid() != 0:
                 #TODO: why path is needed in main.sh and why is not working without scripts
-                #os.system(f"sudo {install_cmd}")
-                os.system("./install_dependencies_all.sh")
+                os.system(f"sudo {install_cmd}")
             else:
                 os.system(f"/bin/bash/ -c {install_cmd}")
         else:
             print("Quitting...")
             exit(-1)
+
+
+def open_default_browser():
+    web_link = "https://tarallo.weeeopen.it/bulk/add" #TODO: so necessary the hash??
+    ans = input("Do you want to open the Bulk Add page on TARALLO in the default browser? y/N ").lower()
+    if ans == 'y':
+        os.system(f"xdg-open {web_link}")
 
 
 if __name__ == '__main__':
@@ -451,4 +464,5 @@ if __name__ == '__main__':
         # file generated, extract data next
         args.cpu, args.gpu, args.motherboard = get_gpu(args) #TODO: not object oriented enough
         run_extract_data(path, args)
+        open_default_browser()
 
