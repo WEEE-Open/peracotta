@@ -19,9 +19,7 @@ def test_ecc_ram1():
 			"model": "K",
 			"sn": "3375612524",
 			"frequency-hertz": 667000000,
-			"human_readable_frequency": "666 MHz",
 			"capacity-byte": 2147483648,
-			"human_readable_capacity": "2048 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "yes",
 			"ram-timings": "5-5-5-15"
@@ -33,9 +31,7 @@ def test_ecc_ram1():
 			"model": "K",
 			"sn": "3392385900",
 			"frequency-hertz": 667000000,
-			"human_readable_frequency": "666 MHz",
 			"capacity-byte": 2147483648,
-			"human_readable_capacity": "2048 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "yes",
 			"ram-timings": "5-5-5-15"
@@ -55,9 +51,7 @@ def test_ecc_ram1_not_an_hex():
 			"model": "K",
 			"sn": "0F00xb4r",
 			"frequency-hertz": 667000000,
-			"human_readable_frequency": "666 MHz",
 			"capacity-byte": 2147483648,
-			"human_readable_capacity": "2048 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "yes",
 			"ram-timings": "5-5-5-15"
@@ -69,9 +63,7 @@ def test_ecc_ram1_not_an_hex():
 			"model": "K",
 			"sn": "0xCA33B3RC",
 			"frequency-hertz": 667000000,
-			"human_readable_frequency": "666 MHz",
 			"capacity-byte": 2147483648,
-			"human_readable_capacity": "2048 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "yes",
 			"ram-timings": "5-5-5-15"
@@ -91,9 +83,7 @@ def test_ecc_ram2():
 			"model": "Undefined",
 			"sn": "2853609420",
 			"frequency-hertz": 667000000,
-			"human_readable_frequency": "666 MHz",
 			"capacity-byte": 1073741824,
-			"human_readable_capacity": "1024 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "yes",
 			"ram-timings": "5-5-5-15"
@@ -105,9 +95,7 @@ def test_ecc_ram2():
 			"model": "Undefined",
 			"sn": "2836829644",
 			"frequency-hertz": 667000000,
-			"human_readable_frequency": "666 MHz",
 			"capacity-byte": 1073741824,
-			"human_readable_capacity": "1024 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "yes",
 			"ram-timings": "5-5-5-15"
@@ -128,9 +116,7 @@ def test_ram1():
 			"model": "HYMP112U64CP8-S6",
 			"sn": "16416",
 			"frequency-hertz": 800000000,
-			"human_readable_frequency": "800 MHz",
 			"capacity-byte": 1073741824,
-			"human_readable_capacity": "1024 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "no",
 			"ram-timings": "6-6-6-18"
@@ -142,9 +128,7 @@ def test_ram1():
 			"model": "HYMP112U64CP8-S6",
 			"sn": "8224",
 			"frequency-hertz": 800000000,
-			"human_readable_frequency": "800 MHz",
 			"capacity-byte": 1073741824,
-			"human_readable_capacity": "1024 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "no",
 			"ram-timings": "6-6-6-18"
@@ -156,9 +140,7 @@ def test_ram1():
 			"model": "HYMP112U64CP8-S6",
 			"sn": "12320",
 			"frequency-hertz": 800000000,
-			"human_readable_frequency": "800 MHz",
 			"capacity-byte": 1073741824,
-			"human_readable_capacity": "1024 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "no",
 			"ram-timings": "6-6-6-18"
@@ -170,9 +152,7 @@ def test_ram1():
 			"model": "HYMP112U64CP8-S6",
 			"sn": "8225",
 			"frequency-hertz": 800000000,
-			"human_readable_frequency": "800 MHz",
 			"capacity-byte": 1073741824,
-			"human_readable_capacity": "1024 MB",
 			"ram-type": "ddr2",
 			"ram-ecc": "no",
 			"ram-timings": "6-6-6-18"

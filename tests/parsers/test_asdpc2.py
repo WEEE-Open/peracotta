@@ -19,7 +19,6 @@ def test_lspci():
 		'internal-name': '',
 		'model': 'HD Graphics 515',
 		'capacity-byte': None,
-		'human_readable_capacity': ''
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
 
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 2,
 		"thread-n": 4,
 		"frequency-hertz": 900000000,
-		"human_readable_frequency": "900 MHz"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
@@ -102,7 +100,6 @@ def test_smartctl():
 			'sn': 'CV1-8B128_006923456A',
 			'wwn': '5 002303 234ddcce5',
 			'capacity-byte': 128000000000,
-			'human_readable_capacity': '128 GB',
 			'smart-data': 'ok',
 			'sata-ports-n': 1,  # TODO: this is wrong, this is M.2
 			'notes': 'Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  1 Raw_Read_Error_Rate     POSR-K   100   100   000    -    0\n  5 Reallocated_Sector_Ct   PO----   100   100   000    -    0\n  9 Power_On_Hours          -O----   100   100   000    -    5\n 12 Power_Cycle_Count       PO----   100   100   000    -    1735\n170 Unknown_Attribute       -O--CK   100   100   000    -    0\n171 Unknown_Attribute       PO----   100   100   000    -    0\n172 Unknown_Attribute       PO----   100   100   000    -    0\n173 Unknown_Attribute       PO----   100   100   000    -    22\n174 Unknown_Attribute       PO----   100   100   000    -    31\n175 Program_Fail_Count_Chip PO----   100   100   000    -    0\n176 Erase_Fail_Count_Chip   PO----   100   100   000    -    0\n177 Wear_Leveling_Count     PO----   100   100   000    -    22\n178 Used_Rsvd_Blk_Cnt_Chip  PO----   100   100   000    -    0\n179 Used_Rsvd_Blk_Cnt_Tot   PO----   100   100   000    -    0\n180 Unused_Rsvd_Blk_Cnt_Tot PO--CK   100   100   000    -    143\n181 Program_Fail_Cnt_Total  PO----   100   100   000    -    0\n182 Erase_Fail_Count_Total  PO----   100   100   000    -    0\n183 Runtime_Bad_Block       -O--CK   100   100   000    -    0\n189 Unknown_SSD_Attribute   ------   100   100   000    -    93\n191 Unknown_SSD_Attribute   ------   100   100   000    -    3\n192 Power-Off_Retract_Count PO----   100   100   000    -    31\n194 Temperature_Celsius     -O----   100   100   000    -    45\n195 Hardware_ECC_Recovered  PO----   100   100   000    -    0\n199 UDMA_CRC_Error_Count    PO----   100   100   000    -    0\n232 Available_Reservd_Space PO----   100   100   010    -    100\n233 Media_Wearout_Indicator PO----   100   100   000    -    88140\n241 Total_LBAs_Written      PO----   100   100   000    -    69582\n242 Total_LBAs_Read         PO----   100   100   000    -    31505\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning'}]
