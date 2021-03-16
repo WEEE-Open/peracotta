@@ -331,14 +331,9 @@ class VerifyExtractedData(QWidget):
                 root_model.setHorizontalHeaderLabels(['Name', 'Value'])
                 tree.setModel(root_model)
 
-            #qboxlayout con due widget aventi qvboxlayout con dentro le robe <-
-            #fare qsplitter con due qvboxlayout
-            #oppure qgrid
-
             parent = root_model.invisibleRootItem()
-            h_box = QHBoxLayout()
             if component['type'] == 'I':
-                self.list_element(component,parent)
+                self.list_element(component, parent)
                 index = 0
             else:
                 index = 1
@@ -356,7 +351,7 @@ class VerifyExtractedData(QWidget):
 
             tree.expandAll()
 
-            layout_grid.addWidget(tree,1,index)
+            layout_grid.addWidget(tree, 1, index)
             tree.resizeColumnToContents(0)
             v_box.addLayout(layout_grid)
             v_box.addSpacing(15)
@@ -365,7 +360,7 @@ class VerifyExtractedData(QWidget):
 
 
 
-    def list_contents(self,feature,parent):
+    def list_contents(self, feature, parent):
         cont = ast.literal_eval(feature)
         for s, element in enumerate(cont):
             self.list_element(element, parent)
