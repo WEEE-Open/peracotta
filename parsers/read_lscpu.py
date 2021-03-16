@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+from dataclasses import dataclass
 
 from InputFileNotFoundError import InputFileNotFoundError
 
@@ -9,16 +10,15 @@ Read "lscpu" output
 """
 
 
+@dataclass
 class CPU:
-	def __init__(self):
-		self.type = "cpu"
-		self.architecture = ""
-		self.model = ""
-		self.brand = ""
-		self.n_cores = -1  # core-n on TARALLO
-		self.n_threads = -1  # thread-n on TARALLO
-		self.frequency = -1
-		self.human_readable_frequency = "N/A"  # TODO: calculate it or remove it
+	type = "cpu"
+	architecture = ""
+	model = ""
+	brand = ""
+	n_cores = -1  # core-n on TARALLO
+	n_threads = -1  # thread-n on TARALLO
+	frequency = -1
 
 
 def read_lscpu(path: str):
@@ -101,14 +101,13 @@ def read_lscpu(path: str):
 
 	result = {
 		"type": "cpu",
-		"working": "yes", # Indeed it is working
+		"working": "yes",  # Indeed it is working
 		"isa": cpu.architecture,
 		"model": cpu.model,
 		"brand": cpu.brand,
 		"core-n": cpu.n_cores,
 		"thread-n": cpu.n_threads,
 		"frequency-hertz": cpu.frequency,
-		"human_readable_frequency": cpu.human_readable_frequency,
 	}
 
 	if sockets > 1:

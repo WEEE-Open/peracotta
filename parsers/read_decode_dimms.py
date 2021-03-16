@@ -7,26 +7,26 @@ Read "decode-dimms" output
 import sys
 from InputFileNotFoundError import InputFileNotFoundError
 from enum import Enum
+from dataclasses import dataclass
 
-
-class Dimm:
-	def __init__(self):
-		self.type = "ram"
-		self.brand = ""
-		self.model = ""
-		self.serial_number = ""
-		self.frequency = -1
-		self.human_readable_frequency = ""
-		self.capacity = -1
-		self.human_readable_capacity = ""
-		self.ram_type = ""  # DDR, DDR2, DDR3 etc.
-		self.ecc = ECC.not_available
-		self.cas_latencies = ""
-		self.manufacturer_data_type = ""
 
 class ECC(Enum):
 	available = "yes"
 	not_available = "no"
+
+
+@dataclass
+class Dimm:
+	type = "ram"
+	brand = ""
+	model = ""
+	serial_number = ""
+	frequency = -1
+	capacity = -1
+	ram_type = ""  # DDR, DDR2, DDR3 etc.
+	ecc = ECC.not_available
+	cas_latencies = ""
+	manufacturer_data_type = ""
 
 
 # initial_chars_to_ignore is the length of the feature whose name the line begins with
@@ -63,7 +63,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 	del dimm_sections[0]
 
 	# create list of as many dimms as there are dimm_sections
-	dimms = [Dimm() for i in range(len(dimm_sections))]
+	dimms = [Dimm() for _ in range(len(dimm_sections))]
 
 	for i, dimm in enumerate(dimm_sections):
 		for line in dimm.splitlines():
@@ -76,13 +76,10 @@ def read_decode_dimms(path: str, interactive: bool = False):
 				freq = line.split(" ")[-3:-1]
 				dimms[i].frequency = int(freq[0])
 				if "KHz" in freq[1] or "kHz" in freq[1]:
-					dimms[i].human_readable_frequency = freq[0] + " KHz"
 					dimms[i].frequency *= 1000
 				elif "MHz" in freq[1]:
-					dimms[i].human_readable_frequency = freq[0] + " MHz"
 					dimms[i].frequency *= 1000 * 1000
 				elif "GHz" in freq[1]:
-					dimms[i].human_readable_frequency = freq[0] + " GHz"
 					dimms[i].frequency *= 1000 * 1000 * 1000
 				# The official thing is 667 MHz even if they run at 666 MHz
 				if dimms[i].frequency == 666000000:
@@ -92,13 +89,10 @@ def read_decode_dimms(path: str, interactive: bool = False):
 				cap = line.split(" ")[-2:]
 				dimms[i].capacity = int(cap[0])
 				if "KB" in cap[1] or "kB" in cap[1]:
-					dimms[i].human_readable_capacity = cap[0] + " KB"
 					dimms[i].capacity *= 1024
 				elif "MB" in cap[1]:
-					dimms[i].human_readable_capacity = cap[0] + " MB"
 					dimms[i].capacity *= 1024 * 1024
 				elif "GB" in cap[1]:
-					dimms[i].human_readable_capacity = cap[0] + " GB"
 					dimms[i].capacity *= 1024 * 1024 * 1024
 
 			# alternatives to "Manufacturer" are "DRAM Manufacturer" and "Module Manufacturer"
@@ -144,9 +138,7 @@ def read_decode_dimms(path: str, interactive: bool = False):
 			"model": dimm.model,
 			"sn": dimm.serial_number,
 			"frequency-hertz": dimm.frequency,
-			"human_readable_frequency": dimm.human_readable_frequency,
 			"capacity-byte": dimm.capacity,
-			"human_readable_capacity": dimm.human_readable_capacity,
 			"ram-type": dimm.ram_type,
 			"ram-ecc": str(dimm.ecc.value),
 			"ram-timings": dimm.cas_latencies,

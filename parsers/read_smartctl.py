@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from enum import Enum
+from dataclasses import dataclass
 
 import sys
 import os
@@ -10,23 +11,6 @@ from InputFileNotFoundError import InputFileNotFoundError
 """
 Read "smartctl" output:
 """
-
-
-class Disk:
-    def __init__(self):
-        self.type = ""
-        self.brand = ""
-        self.model = ""
-        self.family = ""
-        self.wwn = ""
-        self.serial_number = ""
-        self.form_factor = None
-        self.capacity = -1  # n of bytes
-        self.human_readable_capacity = ""
-        self.rotation_rate = -1
-        self.port = PORT.unknown
-        self.smart_data_long = SMART.not_available
-        self.smart_data = SMART.not_available
 
 
 class SMART(Enum):
@@ -43,6 +27,22 @@ class PORT(Enum):
     ide = "ide-ports-n"
     miniide = "mini-ide-ports-n"
     # TODO: add more, if they can even be detected
+
+
+@dataclass
+class Disk:
+    type = ""
+    brand = ""
+    model = ""
+    family = ""
+    wwn = ""
+    serial_number = ""
+    form_factor = None
+    capacity = -1  # n of bytes
+    rotation_rate = -1
+    port = PORT.unknown
+    smart_data_long = SMART.not_available
+    smart_data = SMART.not_available
 
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
@@ -159,10 +159,6 @@ def read_smartctl(path: str, interactive: bool = False):
                     bytes_rounded = int(round(float(num_bytes), - round_digits))
                     disk.capacity = bytes_rounded
 
-                    tmp_capacity = line.split("[")[1].split("]")[0]
-                    if tmp_capacity is not None:
-                        disk.human_readable_capacity = tmp_capacity
-
                 elif "Rotation Rate:" in line:
                     if "Solid State Device" not in line:
                         disk.rotation_rate = int(line.split("Rotation Rate:")[1].split("rpm")[0].strip())
@@ -195,7 +191,6 @@ def read_smartctl(path: str, interactive: bool = False):
                 "wwn": disk.wwn,
                 "sn": disk.serial_number,
                 "capacity-byte": disk.capacity,
-                "human_readable_capacity": disk.human_readable_capacity,
                 "smart-data": disk.smart_data.value
             }
             if disk.smart_data_long is not SMART.not_available:
@@ -211,7 +206,6 @@ def read_smartctl(path: str, interactive: bool = False):
                 # Despite the name it's still in bytes, but with SI prefix (not power of 2), "deci" is there just to
                 # tell some functions how to convert it to human-readable format
                 "capacity-decibyte": disk.capacity,
-                "human_readable_capacity": disk.human_readable_capacity,
                 "spin-rate-rpm": disk.rotation_rate,
                 "smart-data": disk.smart_data.value
             }

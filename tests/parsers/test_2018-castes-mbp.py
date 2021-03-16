@@ -19,7 +19,6 @@ def test_lspci():
 		'internal-name': '',
 		'model': 'Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X',
 		'capacity-byte': 4294967296,
-		'human_readable_capacity': '4096 MB'
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
 
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 6,
 		"thread-n": 12,
 		"frequency-hertz": 2200000000,
-		"human_readable_frequency": "N/A"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 

@@ -18,7 +18,7 @@ def test_77_lspci():
 		'internal-name': '',
 		'model': '771/671',
 		'capacity-byte': None,
-		'human_readable_capacity': ''}
+	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
 
 	assert output == expect
@@ -34,7 +34,6 @@ def test_lscpu():
 		'core-n': 1,
 		'thread-n': 1,
 		'frequency-hertz': 2800000000,
-		'human_readable_frequency': 'N/A'
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
