@@ -5,20 +5,20 @@ Read "lspci -v" and "glxinfo" outputs
 """
 
 import re
+from dataclasses import dataclass
 
 from InputFileNotFoundError import InputFileNotFoundError
 
 
+@dataclass
 class VideoCard:
-	def __init__(self):
-		self.type = "graphics-card"
-		self.manufacturer_brand = ""
-		self.reseller_brand = ""
-		self.internal_name = ""
-		self.model = ""
-		self.capacity = -1  # bytes
-		self.human_readable_capacity = ""
-		self.warning = ""
+	type = "graphics-card"
+	manufacturer_brand = ""
+	reseller_brand = ""
+	internal_name = ""
+	model = ""
+	capacity = -1  # bytes
+	warning = ""
 
 
 def parse_lspci_output(gpu: VideoCard, lspci_path: str, interactive: bool = False):
@@ -169,20 +169,23 @@ def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
 				exit(-1)
 				return  # To stop complaints from PyCharm
 
-			gpu.capacity, gpu.human_readable_capacity = convert_video_memory_size(tmp_vid_mem, tmp_vid_mem_multiplier)
+			gpu.capacity = convert_video_memory_size(tmp_vid_mem, tmp_vid_mem_multiplier)
 
 		if "Dedicated video memory" in line:
-
 			try:
 				tmp_vram = int(line.split(" ")[7].split(" ")[0])
 				tmp_vram_multiplier = line[-2:]
 			except ValueError:
 				exit(-1)
 				return
-			gpu.capacity, gpu.human_readable_capacity = convert_video_memory_size(tmp_vram, tmp_vram_multiplier)
-			if gpu.capacity < 0:
-				gpu.warning = "Could not find dedicated video memory. Please check the value."
-			break  # TODO: is this acceptable?
+			capacity = convert_video_memory_size(tmp_vram, tmp_vram_multiplier)
+			if capacity < 0:
+				gpu.warning = "Could not find dedicated video memory"
+				if gpu.capacity < 0:
+					gpu.warning += ". The value cannot be trusted."
+			else:
+				gpu.capacity = capacity
+			break
 
 	if gpu.capacity > 0:
 		# Round to the next power of 2
@@ -199,19 +202,15 @@ def parse_glxinfo_output(gpu: VideoCard, glxinfo_path: str):
 
 def convert_video_memory_size(capacity, units_of_measure):
 	if units_of_measure == "GB":
-		hr_cap = str(capacity) + " " + units_of_measure
 		capacity *= 1024 * 1024 * 1024
 	elif units_of_measure == "MB":
-		hr_cap = str(capacity) + " " + units_of_measure
 		capacity *= 1024 * 1024
 	elif units_of_measure.upper() == "KB":
-		hr_cap = str(capacity) + " " + units_of_measure
 		capacity *= 1024
 	else:
 		capacity = -1
-		hr_cap = ''
 
-	return capacity, hr_cap
+	return capacity
 
 
 def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: str, interactive: bool = False):
@@ -234,7 +233,6 @@ def read_lspci_and_glxinfo(has_dedicated: bool, lspci_path: str, glxinfo_path: s
 		"model": gpu.model.strip(),
 		"internal-name": gpu.internal_name.strip(),
 		"capacity-byte": gpu.capacity,
-		"human_readable_capacity": gpu.human_readable_capacity.strip(),
 		"working": 'yes',  # Indeed it is working
 	}
 	if gpu.manufacturer_brand is not None and gpu.reseller_brand is not None:

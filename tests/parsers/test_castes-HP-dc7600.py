@@ -17,8 +17,7 @@ def test_lspci_dedicated():
 		'brand': 'PC Partner Limited / Sapphire Technology',
 		'internal-name': 'G98',
 		'model': 'GeForce G 100',
-		'capacity-byte': 536870912,  # This has 512 MB ov VRAM, but glxinfo reports 496?
-		'human_readable_capacity': '496 MB',
+		'capacity-byte': 536870912,  # This has 512 MB of VRAM, but glxinfo reports 496?
 		'brand-manufacturer': 'Nvidia'
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, os.path.join(filedir, 'NVIDIA-G100/lspci.txt'), os.path.join(filedir, 'NVIDIA-G100/glxinfo.txt'))
@@ -34,7 +33,6 @@ def test_lspci_integrated():
 		'model': '82945G/GZ',
 		'internal-name': '',
 		'capacity-byte': None,
-		'human_readable_capacity': '',
 		'brand-manufacturer': 'Intel'
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, '82945G/lspci.txt'), os.path.join(filedir, '82945G/glxinfo.txt'))
@@ -52,7 +50,6 @@ def test_lscpu():
 		"core-n": 1,
 		"thread-n": 2,
 		"frequency-hertz": 2800000000,
-		"human_readable_frequency": "N/A"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 

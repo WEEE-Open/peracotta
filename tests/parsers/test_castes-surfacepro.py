@@ -18,7 +18,6 @@ def test_lspci():
 		"model": "HD Graphics 515",
 		'internal-name': '',
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 2,
 		"thread-n": 4,
 		"frequency-hertz": 900000000,
-		"human_readable_frequency": "N/A"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
@@ -104,7 +102,6 @@ def test_smartctl():
 			"spin-rate-rpm": -1,
 			"wwn": "",
 			"notes": "SMART/Health Information (NVMe Log 0x02, NSID 0x1)\nCritical Warning:                   0x00\nTemperature:                        31 Celsius\nAvailable Spare:                    100%\nAvailable Spare Threshold:          10%\nPercentage Used:                    1%\nData Units Read:                    9,622,050 [4.92 TB]\nData Units Written:                 6,340,481 [3.24 TB]\nHost Read Commands:                 128,200,306\nHost Write Commands:                69,116,853\nController Busy Time:               1,045\nPower Cycles:                       692\nPower On Hours:                     301\nUnsafe Shutdowns:                   31\nMedia and Data Integrity Errors:    0\nError Information Log Entries:      0",
-			"human_readable_capacity": "",
 			"smart-data": "ok",
 		}
 	]

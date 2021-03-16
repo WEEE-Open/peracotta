@@ -5,6 +5,7 @@ import os
 import subprocess as sp
 import json
 import base64
+import prettyprinter
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
     QMessageBox, QScrollArea, QPlainTextEdit, QTreeView,QGridLayout
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor,QStandardItem, QStandardItemModel
@@ -385,12 +386,7 @@ class VerifyExtractedData(QWidget):
     def list_data(self, key, value,parent):
         name = key
         if value != "":
-            # skip not human readable frequency and capacity
-            if key == "human_readable_frequency":
-                name = "frequency"
-            elif key == "human_readable_capacity":
-                name = "capacity"
-            desc = str(value)
+            desc = str(prettyprinter.print_feature(key, value))
         else:
             desc = "missing feature"
 

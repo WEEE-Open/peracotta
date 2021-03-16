@@ -19,7 +19,6 @@ def test_lspci():
 		'internal-name': 'GK107M',
 		'model': 'GeForce GT 750M Mac Edition',
 		'capacity-byte': 2147483648,
-		'human_readable_capacity': '2048 MB'
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
 
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 4,
 		"thread-n": 8,
 		"frequency-hertz": 2800000000,
-		"human_readable_frequency": "N/A"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
@@ -105,7 +103,6 @@ def test_smartctl():
 			'model': 'SM0512F',
 			'sn': 'S1K5NYCF740776',
 			'capacity-byte': 500000000000,
-			'human_readable_capacity': '500 GB',
 			'wwn': '5 002538 655584d30',
 			'smart-data': 'ok',
 			'sata-ports-n': 1,

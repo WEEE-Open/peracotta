@@ -19,7 +19,6 @@ def test_lspci():
 		"model": "VGA controller",
 		"internal-name": "",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
@@ -37,7 +36,6 @@ def test_lscpu():
 		"core-n": 2,
 		"thread-n": 4,
 		"frequency-hertz": 2500000000,
-		"human_readable_frequency": "N/A"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
@@ -107,7 +105,6 @@ def test_smartctl():
 			"sn": "14110C323F00",
 			'wwn': '5 00a075 01d3243de',
 			"capacity-byte": 128000000000,
-			"human_readable_capacity": "128 GB",
 			'smart-data': 'ok',
 			'sata-ports-n': 1, # TODO: this is wrong, this is mSATA
 			"notes": "Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  1 Raw_Read_Error_Rate     POSR-K   100   100   000    -    2\n  5 Reallocate_NAND_Blk_Cnt PO--CK   100   100   000    -    0\n  9 Power_On_Hours          -O--CK   100   100   000    -    4767\n 12 Power_Cycle_Count       -O--CK   100   100   000    -    7869\n171 Program_Fail_Count      -O--CK   100   100   000    -    0\n172 Erase_Fail_Count        -O--CK   100   100   000    -    0\n173 Ave_Block-Erase_Count   -O--CK   095   095   000    -    177\n174 Unexpect_Power_Loss_Ct  -O--CK   100   100   000    -    366\n180 Unused_Reserve_NAND_Blk PO--CK   000   000   000    -    1036\n183 SATA_Interfac_Downshift -O--CK   100   100   000    -    0\n184 Error_Correction_Count  -O--CK   100   100   000    -    0\n187 Reported_Uncorrect      -O--CK   100   100   000    -    0\n194 Temperature_Celsius     -O---K   034   006   000    -    66 (Min/Max 17/94)\n196 Reallocated_Event_Count -O--CK   100   100   000    -    0\n197 Current_Pending_Sector  -O--CK   100   100   000    -    0\n198 Offline_Uncorrectable   ----CK   100   100   000    -    0\n199 UDMA_CRC_Error_Count    -O--CK   100   100   000    -    0\n202 Percent_Lifetime_Used   P---CK   095   095   000    -    5\n206 Write_Error_Rate        -OSR--   100   100   000    -    0\n210 Success_RAIN_Recov_Cnt  -O--CK   100   100   000    -    0\n246 Total_Host_Sector_Write -O--CK   100   100   000    -    14546033643\n247 Host_Program_Page_Count -O--CK   100   100   000    -    463669262\n248 Bckgnd_Program_Page_Cnt -O--CK   100   100   000    -    910054629\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning"

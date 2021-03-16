@@ -18,7 +18,6 @@ def test_lspci():
 		"model": "S3 UniChrome Pro",
 		"internal-name": "P4M890",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "VIA"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 1,
 		"thread-n": 2,
 		"frequency-hertz": 3000000000,
-		"human_readable_frequency": "N/A"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
