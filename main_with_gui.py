@@ -6,7 +6,7 @@ import subprocess as sp
 import json
 import base64
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView
+    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView,QGridLayout
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor,QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
@@ -308,6 +308,7 @@ class VerifyExtractedData(QWidget):
             nothing_found = QLabel("Nothing was found.")
             v_box.addWidget(nothing_found, alignment=Qt.AlignCenter)
 
+        layout_grid = QGridLayout()
         for i, component in enumerate(system_info):
             if i == 0:
                 prev_type = component["type"]
@@ -317,46 +318,47 @@ class VerifyExtractedData(QWidget):
             if component["type"] != prev_type or i == 0:
                 if component['type'] == 'I':
                     title = QLabel('ITEM')
+                    layout_grid.addWidget(title, 0, 0)
                 else:
                     title = QLabel('PRODUCT')
+                    layout_grid.addWidget(title, 0, 1)
                 # noinspection PyArgumentList
                 title.setFont(QFont("futura", pointSize=16, italic=False))
                 if i != 0:
                     v_box.addSpacing(10)
-                v_box.addWidget(title, alignment=Qt.AlignCenter)
+                tree = QTreeView()
+                root_model = QStandardItemModel()
+                root_model.setHorizontalHeaderLabels(['Name', 'Value'])
+                tree.setModel(root_model)
 
-
-            #unico product e item sx product dx
-            #qhboxlayout con due widget aventi qvboxlayout con dentro le robe <-
+            #qboxlayout con due widget aventi qvboxlayout con dentro le robe <-
             #fare qsplitter con due qvboxlayout
             #oppure qgrid
-
-            #
-
-            tree = QTreeView()
-            root_model = QStandardItemModel()
-            root_model.setHorizontalHeaderLabels(['Name','Value'])
-            tree.setModel(root_model)
 
             parent = root_model.invisibleRootItem()
             h_box = QHBoxLayout()
             if component['type'] == 'I':
                 self.list_element(component,parent)
+                index = 0
             else:
+                index = 1
+                name = component['features'].pop('type', '_').upper()
+                parent.appendRow([QStandardItem(name), QStandardItem('')])
+                new_parent = parent.child(parent.rowCount() - 1)
                 for feature in component.items():
                     if feature[0] != "type":
                         if feature[0] == 'features':
-                            self.list_features(str(feature[1]),parent)
+                            self.list_features(str(feature[1]),new_parent)
                         elif feature[0] == 'contents':
-                            self.list_contents(str(feature[1]),parent)
+                            self.list_contents(str(feature[1]),new_parent)
                         else:
-                            self.list_data(feature[0], feature[1],parent)
+                            self.list_data(feature[0], feature[1],new_parent)
 
             tree.expandAll()
 
-            h_box.addWidget(tree)
+            layout_grid.addWidget(tree,1,index)
             tree.resizeColumnToContents(0)
-            v_box.addLayout(h_box)
+            v_box.addLayout(layout_grid)
             v_box.addSpacing(15)
 
         self.setLayout(v_box)
