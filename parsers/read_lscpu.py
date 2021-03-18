@@ -19,7 +19,6 @@ class CPU:
 	n_cores = -1  # core-n on TARALLO
 	n_threads = -1  # thread-n on TARALLO
 	frequency = -1
-	human_readable_frequency = "N/A"
 
 
 def read_lscpu(path: str):
@@ -100,25 +99,6 @@ def read_lscpu(path: str):
 	if tmp_freq is not None:
 		cpu.frequency = int(float(tmp_freq.replace(',', '.')) * 1000 * 1000 * 1000)
 
-	def get_human_readable_cpu_frequency_value(div: int):
-		significant_part = cpu.frequency / div
-		if significant_part == int(significant_part) or significant_part >= 10:
-			return f"{int(significant_part)}"
-		return f"{significant_part :.2f}"
-
-	if 1 <= cpu.frequency < 1_000:
-		unit = "Hz"
-		cpu.human_readable_frequency = f"{cpu.frequency} {unit}"
-	elif 1_000 <= cpu.frequency < 1_000_000:
-		unit = "KHz"
-		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000)} {unit}"
-	elif 1_000_000 <= cpu.frequency < 1_000_000_000:
-		unit = "MHz"
-		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000_000)} {unit}"
-	elif 1_000_000_000 <= cpu.frequency < 1_000_000_000_000:
-		unit = "GHz"
-		cpu.human_readable_frequency = f"{get_human_readable_cpu_frequency_value(1_000_000_000)} {unit}"
-
 	result = {
 		"type": "cpu",
 		"working": "yes",  # Indeed it is working
@@ -128,7 +108,6 @@ def read_lscpu(path: str):
 		"core-n": cpu.n_cores,
 		"thread-n": cpu.n_threads,
 		"frequency-hertz": cpu.frequency,
-		"human_readable_frequency": cpu.human_readable_frequency,
 	}
 
 	if sockets > 1:
