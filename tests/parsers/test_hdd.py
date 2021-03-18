@@ -16,7 +16,6 @@ def test_smartctl():
 			"sata-ports-n": 1,
 			"wwn": "5 000039 7222954ce",
 			'capacity-decibyte': 500000000000,
-			'human_readable_capacity': '500 GB',
 			'spin-rate-rpm': 5400,
 			'smart-data': 'ok',
 			'hdd-form-factor': '2.5-7mm',

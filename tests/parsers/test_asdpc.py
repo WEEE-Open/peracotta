@@ -19,7 +19,6 @@ def test_lspci():
 		'brand': 'PC Partner Limited / Sapphire Technology Tahiti PRO',
 		'model': 'Radeon HD 7950/8950 OEM / R9 280',
 		'capacity-byte': 3221225472,
-		'human_readable_capacity': '3072 MB'
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(True, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
 
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 4,
 		"thread-n": 8,
 		"frequency-hertz": 3300000000,
-		"human_readable_frequency": "3.30 GHz"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
@@ -51,8 +49,6 @@ def test_ram():
 			'brand': 'G Skill Intl',
 			'capacity-byte': 8589934592,
 			'frequency-hertz': 1333000000,
-			'human_readable_capacity': '8192 MB',
-			'human_readable_frequency': '1333 MHz',
 			'model': 'F3-1600C7-8GTX',
 			'sn': '',
 			'type': 'ram',
@@ -65,8 +61,6 @@ def test_ram():
 			'brand': 'G Skill Intl',
 			'capacity-byte': 8589934592,
 			'frequency-hertz': 1333000000,
-			'human_readable_capacity': '8192 MB',
-			'human_readable_frequency': '1333 MHz',
 			'model': 'F3-1600C7-8GTX',
 			'sn': '',
 			'type': 'ram',
@@ -152,7 +146,6 @@ def test_smartctl():
 			'sn': 'S1F00F00F00F00',
 			'wwn': '5 002538 2c302d451',
 			'capacity-byte': 120000000000,
-			'human_readable_capacity': '120 GB',
 			'smart-data': 'ok',
 			'sata-ports-n': 1,
 			'notes': 'Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  5 Reallocated_Sector_Ct   PO--CK   100   100   010    -    0\n  9 Power_On_Hours          -O--CK   097   097   000    -    12337\n 12 Power_Cycle_Count       -O--CK   095   095   000    -    4108\n177 Wear_Leveling_Count     PO--C-   095   095   000    -    57\n179 Used_Rsvd_Blk_Cnt_Tot   PO--C-   100   100   010    -    0\n181 Program_Fail_Cnt_Total  -O--CK   100   100   010    -    0\n182 Erase_Fail_Count_Total  -O--CK   100   100   010    -    0\n183 Runtime_Bad_Block       PO--C-   100   100   010    -    0\n187 Uncorrectable_Error_Cnt -O--CK   100   100   000    -    0\n190 Airflow_Temperature_Cel -O--CK   072   058   000    -    28\n195 ECC_Error_Rate          -O-RC-   200   200   000    -    0\n199 CRC_Error_Count         -OSRCK   100   100   000    -    0\n235 POR_Recovery_Count      -O--C-   099   099   000    -    133\n241 Total_LBAs_Written      -O--CK   099   099   000    -    17500329386\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning'
@@ -165,7 +158,6 @@ def test_smartctl():
 			'wwn': '5 0014ee 21c4e201d',
 			'sn': 'WCC3B4RB4RB4R',
 			'capacity-decibyte': 1000000000000,
-			'human_readable_capacity': '1,00 TB',
 			'spin-rate-rpm': 7200,
 			'smart-data': 'ok',
 			'sata-ports-n': 1,

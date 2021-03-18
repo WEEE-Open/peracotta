@@ -18,7 +18,6 @@ def test_lspci():
 		"model": "Mobile 4 Series Chipset",
 		"internal-name": "",
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Intel"
 	}
 	output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(False, os.path.join(filedir, 'lspci.txt'), os.path.join(filedir, 'glxinfo.txt'))
@@ -36,7 +35,6 @@ def test_lscpu():
 		"core-n": 2,
 		"thread-n": 2,
 		"frequency-hertz": 2400000000,
-		"human_readable_frequency": "2.40 GHz"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
@@ -107,7 +105,6 @@ def test_smartctl():
 			"wwn": "5 00000e 0447dfa8d",
 			"sn": "K95BTA42BD8H",
 			"capacity-decibyte": 160000000000,
-			"human_readable_capacity": "160 GB",
 			"spin-rate-rpm": 5400,
 			"smart-data": "ok",
 			'sata-ports-n': 1,

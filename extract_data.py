@@ -223,7 +223,7 @@ def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
     return result
 
 
-# remove default/not found and human_readable values from TARALLO-ready JSON
+# remove default/not found values from TARALLO-ready JSON
 def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
     filtered = []
 
@@ -238,8 +238,6 @@ def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
                     removed.add(k)
                 elif isinstance(v, int) and v <= 0:
                     removed.add(k)
-                elif gui is False and 'human_readable' in k:
-                    removed.add(k)
                 else:
                     cleaned_item[k] = v
         filtered.append(cleaned_item)
@@ -248,7 +246,7 @@ def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
             print(f"Removed from {item['type']}: {', '.join(removed)}.")
 
     # remove empty dicts
-    #filtered[:] = [item for item in filtered """if item != {}"""]
+    # filtered[:] = [item for item in filtered """if item != {}"""]
     return filtered
 
 

@@ -19,7 +19,6 @@ def test_lspci():
 		"model": "GeForce GTX 970",
 		'internal-name': 'GM204',
 		"capacity-byte": None,
-		"human_readable_capacity": "",
 		"brand-manufacturer": "Nvidia"
 	}
 	# False to ignore missing glxinfo
@@ -38,7 +37,6 @@ def test_lscpu():
 		"core-n": 4,
 		"thread-n": 8,
 		"frequency-hertz": 2800000000,
-		"human_readable_frequency": "2.80 GHz"
 	}
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
@@ -235,7 +233,6 @@ def test_smartctl():
 			"wwn": "5 0014ee 7bf4d152d",
 			"sn": "WCASYD636342",
 			"capacity-decibyte": 500000000000,
-			"human_readable_capacity": "500 GB",
 			"spin-rate-rpm": 7200,
 			"smart-data": "ok",
 			'sata-ports-n': 1,
@@ -249,7 +246,6 @@ def test_smartctl():
 			"wwn": "5 0014ee 3ef215d89",
 			"sn": "WCASYE636777",
 			"capacity-decibyte": 500000000000,
-			"human_readable_capacity": "500 GB",
 			"spin-rate-rpm": 7200,
 			"smart-data": "ok",
 			'sata-ports-n': 1,

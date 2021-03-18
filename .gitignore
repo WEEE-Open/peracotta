@@ -4,3 +4,5 @@ dev_dmdi_files/
 .DS_Store
 __pycache__/
 tmp/
+generate_files.pkexec
+
