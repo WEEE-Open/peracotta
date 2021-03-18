@@ -425,7 +425,7 @@ if __name__ == '__main__':
         if args.path is not None:
             print("If the files already exist what should I store?")
             exit(-1)
-        args.cpu, args.gpu, args.motherboard = get_gpu(args) #TODO: not object oriented enough
+        args.cpu, args.gpu, args.motherboard = get_gpu(args) #TODO: no dotted notation makes me grrr
         path = os.path.join(os.getcwd(), args.files)
         check_required_files(path)
         run_extract_data(path, args)
@@ -462,7 +462,7 @@ if __name__ == '__main__':
             os.system(f"./generate_files.sh {path}")
 
         # file generated, extract data next
-        args.cpu, args.gpu, args.motherboard = get_gpu(args) #TODO: not object oriented enough
+        args.cpu, args.gpu, args.motherboard = get_gpu(args)
         run_extract_data(path, args)
         open_default_browser()
 
