@@ -1,4 +1,4 @@
-# P.E.R.A.C.O.T.T.A.
+# 🍐 P.E.R.A.C.O.T.T.A. 🍐
 
 *Progetto Esteso Raccolta Automatica Configurazioni hardware Organizzate Tramite Tarallo Autonomamente*
 
