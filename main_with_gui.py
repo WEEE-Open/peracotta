@@ -7,11 +7,12 @@ import json
 import base64
 import prettyprinter
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-    QMessageBox, QScrollArea, QPlainTextEdit
-from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
+    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout
+from PyQt5.QtGui import QFont, QIcon, QPalette, QColor, QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
 from enum import Enum
+import ast
 
 # should be None in production
 # should be set to "tests/<machine_to_test>" when testing
@@ -65,8 +66,7 @@ class Welcome(QWidget):
         self.generate_files_button.clicked.connect(lambda: self.prompt_gpu_location(window))
 
         self.load_previously_generated_files_button = QPushButton("Load previously generated files")
-        self.load_previously_generated_files_button.clicked.connect(
-            lambda: self.load_previously_generated_files(window))
+        self.load_previously_generated_files_button.clicked.connect(lambda: self.load_previously_generated_files(window))
         # by default it's enabled, if one of the expected files does not exist it's disabled
         style_disabled = "background-color:#666677; color:#444444"
 
@@ -116,7 +116,7 @@ class Welcome(QWidget):
 
     def check_install_dependencies(self, window: QMainWindow):
         working_directory = os.getcwd()
-        cmd = working_directory + "/check_dependencies.sh"
+        cmd = os.path.join(working_directory, "check_dependencies.sh")
         check_dep, _ = sp.getstatusoutput(cmd)
         if check_dep == 1:
             button_reply = QMessageBox.question(self, 'Install dependencies',
@@ -182,7 +182,7 @@ class Welcome(QWidget):
                 os.makedirs(os.path.join(working_directory, "tmp"))
             folder_name = "tmp"
 
-            path = working_directory + "/polkit.py"
+            path = os.path.join(working_directory, "polkit.py")
             p = sp.Popen([sys.executable, path], stdout=sp.PIPE, stderr=sp.STDOUT)
             p.wait()
 
@@ -261,8 +261,7 @@ class FilesGenerated(QWidget):
                 files_dir = DEBUG_DIR
             else:
                 files_dir = "tmp"
-            system_info = extract_and_collect_data_from_generated_files(files_dir,
-                                                                        has_dedicated_gpu, gpu_in_cpu)
+            system_info = extract_and_collect_data_from_generated_files(files_dir, has_dedicated_gpu, gpu_in_cpu)
             window.takeCentralWidget()
 
             # new_window = ScrollableWindow()
@@ -298,6 +297,7 @@ class VerifyExtractedData(QWidget):
         json_button.setStyleSheet(button_style)
         json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
 
+
         v_box.addSpacing(20)
         v_box.addWidget(json_button, alignment=Qt.AlignCenter)
         v_box.addSpacing(20)
@@ -307,6 +307,7 @@ class VerifyExtractedData(QWidget):
             nothing_found = QLabel("Nothing was found.")
             v_box.addWidget(nothing_found, alignment=Qt.AlignCenter)
 
+        layout_grid = QGridLayout()
         for i, component in enumerate(system_info):
             if i == 0:
                 prev_type = component["type"]
@@ -314,35 +315,82 @@ class VerifyExtractedData(QWidget):
                 prev_type = system_info[i - 1]["type"]
 
             if component["type"] != prev_type or i == 0:
-                title = QLabel(component["type"].upper())
+                if component['type'] == 'I':
+                    title = QLabel('ITEMS')
+                    layout_grid.addWidget(title, 0, 0)
+                else:
+                    title = QLabel('PRODUCTS')
+                    layout_grid.addWidget(title, 0, 1)
                 # noinspection PyArgumentList
                 title.setFont(QFont("futura", pointSize=16, italic=False))
                 if i != 0:
                     v_box.addSpacing(10)
-                v_box.addWidget(title, alignment=Qt.AlignCenter)
+                tree = QTreeView()
+                root_model = QStandardItemModel()
+                root_model.setHorizontalHeaderLabels(['Name', 'Value'])
+                tree.setModel(root_model)
 
-            for feature in component.items():
-                if feature[0] != "type":
-                    h_box = QHBoxLayout()
+            parent = root_model.invisibleRootItem()
+            if component['type'] == 'I':
+                self.list_element(component, parent)
+                index = 0
+            else:
+                index = 1
+                name = component['features'].pop('type', '_').upper()
+                parent.appendRow([QStandardItem(name), QStandardItem('')])
+                new_parent = parent.child(parent.rowCount() - 1)
+                for feature in component.items():
+                    if feature[0] != "type":
+                        if feature[0] == 'features':
+                            self.list_features(str(feature[1]),new_parent)
+                        elif feature[0] == 'contents':
+                            self.list_contents(str(feature[1]),new_parent)
+                        else:
+                            self.list_data(feature[0], feature[1],new_parent)
 
-                    # the single dict entry is converted to a tuple
-                    name = QLabel(str(feature[0]))
-                    if feature[1] != "":
-                        desc = QLabel(str(prettyprinter.print_feature(feature[0], feature[1])))
-                    else:
-                        desc = QLabel("missing feature")
-                        name.setStyleSheet("color: yellow")
-                        desc.setStyleSheet("color: yellow")
+            tree.expandAll()
 
-                    h_box.addWidget(name, alignment=Qt.AlignCenter)
-                    h_box.addStretch()
-                    h_box.addWidget(desc, alignment=Qt.AlignCenter)
-
-                    v_box.addLayout(h_box)
-
+            layout_grid.addWidget(tree, 1, index)
+            tree.resizeColumnToContents(0)
+            v_box.addLayout(layout_grid)
             v_box.addSpacing(15)
 
         self.setLayout(v_box)
+
+
+
+    def list_contents(self, feature, parent):
+        cont = ast.literal_eval(feature)
+        for s, element in enumerate(cont):
+            self.list_element(element, parent)
+
+    def list_element(self, element, parent):
+        name = element['features'].pop('type', '_').upper()
+        parent.appendRow([QStandardItem(name), QStandardItem('')])
+        new_parent = parent.child(parent.rowCount() - 1)
+        key = list(element.keys())
+        for k in key:
+            if k == 'features':
+                self.list_features(str(element[k]), new_parent)
+            elif k == 'contents':
+                self.list_contents(str(element[k]), new_parent)
+
+
+    def list_features(self,feature,parent):
+        data_dict = ast.literal_eval(feature)
+        for key, value in data_dict.items():
+            self.list_data( key, value,parent)
+
+    def list_data(self, key, value,parent):
+        name = key
+        if value != "":
+            desc = str(prettyprinter.print_feature(key, value))
+        else:
+            desc = "missing feature"
+
+        child_item = [QStandardItem(name), QStandardItem(desc)]
+        parent.appendRow(child_item)
+
 
     def display_plaintext_data(self, window: QMainWindow, system_info):
         window.takeCentralWidget()
