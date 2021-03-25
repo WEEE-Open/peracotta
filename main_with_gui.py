@@ -7,8 +7,8 @@ import json
 import base64
 import prettyprinter
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView,QGridLayout
-from PyQt5.QtGui import QFont, QIcon, QPalette, QColor,QStandardItem, QStandardItemModel
+    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout
+from PyQt5.QtGui import QFont, QIcon, QPalette, QColor, QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
 from enum import Enum
@@ -66,8 +66,7 @@ class Welcome(QWidget):
         self.generate_files_button.clicked.connect(lambda: self.prompt_gpu_location(window))
 
         self.load_previously_generated_files_button = QPushButton("Load previously generated files")
-        self.load_previously_generated_files_button.clicked.connect(
-            lambda: self.load_previously_generated_files(window))
+        self.load_previously_generated_files_button.clicked.connect(lambda: self.load_previously_generated_files(window))
         # by default it's enabled, if one of the expected files does not exist it's disabled
         style_disabled = "background-color:#666677; color:#444444"
 
@@ -134,7 +133,7 @@ class Welcome(QWidget):
 
     def check_install_dependencies(self, window: QMainWindow):
         working_directory = os.getcwd()
-        cmd = working_directory + "/check_dependencies.sh"
+        cmd = os.path.join(working_directory, "check_dependencies.sh")
         check_dep, _ = sp.getstatusoutput(cmd)
         if check_dep == 1:
             button_reply = QMessageBox.question(self, 'Install dependencies',
@@ -200,7 +199,7 @@ class Welcome(QWidget):
                 os.makedirs(os.path.join(working_directory, "tmp"))
             folder_name = "tmp"
 
-            path = working_directory + "/polkit.py"
+            path = os.path.join(working_directory, "polkit.py")
             p = sp.Popen([sys.executable, path], stdout=sp.PIPE, stderr=sp.STDOUT)
             p.wait()
 
@@ -279,8 +278,7 @@ class FilesGenerated(QWidget):
                 files_dir = DEBUG_DIR
             else:
                 files_dir = "tmp"
-            system_info = extract_and_collect_data_from_generated_files(files_dir,
-                                                                        has_dedicated_gpu, gpu_in_cpu)
+            system_info = extract_and_collect_data_from_generated_files(files_dir, has_dedicated_gpu, gpu_in_cpu)
             window.takeCentralWidget()
 
             # new_window = ScrollableWindow()
@@ -335,10 +333,10 @@ class VerifyExtractedData(QWidget):
 
             if component["type"] != prev_type or i == 0:
                 if component['type'] == 'I':
-                    title = QLabel('ITEM')
+                    title = QLabel('ITEMS')
                     layout_grid.addWidget(title, 0, 0)
                 else:
-                    title = QLabel('PRODUCT')
+                    title = QLabel('PRODUCTS')
                     layout_grid.addWidget(title, 0, 1)
                 # noinspection PyArgumentList
                 title.setFont(QFont("futura", pointSize=16, italic=False))
@@ -391,7 +389,7 @@ class VerifyExtractedData(QWidget):
         for k in key:
             if k == 'features':
                 self.list_features(str(element[k]), new_parent)
-            elif k=='contents':
+            elif k == 'contents':
                 self.list_contents(str(element[k]), new_parent)
 
 
