@@ -432,6 +432,7 @@ class PlainTextWidget(QWidget):
         super().__init__()
         v_box = QVBoxLayout()
         h_buttons = QHBoxLayout()
+        s_buttons = QHBoxLayout()
 
         button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
         copy_pastable_json = json.dumps(system_info, indent=2)
@@ -453,15 +454,24 @@ class PlainTextWidget(QWidget):
         plain_text.setMinimumSize(plain_text.width(), plain_text.height())
         # prevent from resizing too much
 
-        back_button = QPushButton("Go back")
-        back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
+        self.back_button = QPushButton("Go back")
+        self.back_button.setStyleSheet("padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;")
+        self.back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
+
+        self.tarallo_data = QPushButton("Send data to T.A.R.A.L.L.O")
+        self.tarallo_data.setStyleSheet(button_style)
+        self.tarallo_data.clicked.connect(lambda: self.send_data(system_info))
 
         h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
         h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
 
+        s_buttons.addWidget(self.back_button, alignment=Qt.AlignCenter)
+        s_buttons.addWidget(self.tarallo_data, alignment=Qt.AlignCenter)
+
         v_box.addLayout(h_buttons)
         v_box.addWidget(plain_text)
-        v_box.addWidget(back_button, alignment=Qt.AlignCenter)
+        v_box.addLayout(s_buttons)
+
         self.setLayout(v_box)
 
     def restore_previous_window(self, window: QMainWindow, system_info):
@@ -473,6 +483,14 @@ class PlainTextWidget(QWidget):
         self.notification = Notification(text)
         self.notification.show()
         self.notification.animate()
+
+    def send_data(self, system_info):
+        answer = QMessageBox(self)
+        answer.setWindowTitle("Send data to T.A.R.A.L.L.O")
+        answer.setText("Bulk identifier ....")
+        btnupload = answer.addButton("Upload", QMessageBox.YesRole)
+        btncancel = answer.addButton("Cancel", QMessageBox.NoRole)
+        answer.exec_()
 
 
 class Notification(QLabel):
