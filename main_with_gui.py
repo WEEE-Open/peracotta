@@ -463,10 +463,10 @@ class PlainTextWidget(QWidget):
         self.tarallo_data.setStyleSheet(button_style)
         self.tarallo_data.clicked.connect(lambda: self.send_data(system_info))
 
-        h_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
-        h_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
+        s_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
+        s_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
 
-        s_buttons.addWidget(self.back_button, alignment=Qt.AlignCenter)
+        h_buttons.addWidget(self.back_button, alignment=Qt.AlignLeft)
         s_buttons.addWidget(self.tarallo_data, alignment=Qt.AlignCenter)
 
         v_box.addLayout(h_buttons)
@@ -497,8 +497,8 @@ class DataToTarallo(QWidget):
         self.lblid = QLabel("Bulk identifier: ")
         self.txtid = QLineEdit()
         self.chbov = QCheckBox("Overwrite if identifier already exists")
-        self.btnupl = QPushButton("Upload")
         self.btncnc = QPushButton("Cancel")
+        self.btnupl = QPushButton("Upload")
         layout.addWidget(self.lbltitle)
         layout.addWidget(self.lblid)
         layout.addWidget(self.txtid)
@@ -507,17 +507,39 @@ class DataToTarallo(QWidget):
         layout.addWidget(self.btncnc)
         self.setLayout(layout)
         self.btnupl.clicked.connect(lambda: self.upload(system_info,self.chbov.isChecked(),self.txtid.text()))
-        #self.btnupl.clicked.connect(self.cancel)
+        self.btncnc.clicked.connect(self.close)
 
-    def upload(self, system_info,checked,bulkid):
-        p = sp.Popen([sys.executable, 'Loading.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
+    def upload(self, system_info, checked, bulkid):
+        #p = sp.Popen([sys.executable, 'Loading.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
+        #p.wait()
         t = Tarallo.Tarallo("http://localhost:8080/","yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k")
-        t.bulk_add(system_info,bulkid,checked)
-        p.terminate()
+        ver = t.bulk_add(system_info, bulkid, checked)
+        #p.terminate()
         self.close()
+        if ver:
+            mb_wentok = QMessageBox(self)
+            mb_wentok.setWindowTitle("Send data to T.A.R.A.L.L.O")
+            mb_wentok.setText("Everything went fine, what do you want to do?")
+            btnclose = mb_wentok.addButton("Close", QMessageBox.YesRole)
+            btncnt = mb_wentok.addButton("Continue", QMessageBox.AcceptRole)
+            mb_wentok.exec_()
+            if mb_wentok.clickedButton() == btncnt:
+                self.close()
+            else:
+                self.close()
+                sys.exit()
+        else:
+            mb_notok = QMessageBox(self)
+            mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O")
+            mb_notok.setText("There have been some problems")
+            btnclose = mb_notok.addButton("Back to json", QMessageBox.YesRole)
+            btncnt = mb_notok.addButton("Retry", QMessageBox.AcceptRole)
+            mb_notok.exec_()
+            if mb_notok.clickedButton() == btncnt:
+                self.upload(system_info,checked,bulkid)
+            else:
+                self.close()
 
-    def cancel(self):
-        self.close()
 
 
 class Notification(QLabel):
