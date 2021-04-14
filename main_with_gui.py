@@ -7,12 +7,13 @@ import json
 import base64
 import prettyprinter
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout
+    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout, QLineEdit, QCheckBox
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor, QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
 from enum import Enum
 import ast
+from pytarallo import Tarallo
 
 # should be None in production
 # should be set to "tests/<machine_to_test>" when testing
@@ -484,13 +485,39 @@ class PlainTextWidget(QWidget):
         self.notification.show()
         self.notification.animate()
 
-    def send_data(self, system_info):
-        answer = QMessageBox(self)
-        answer.setWindowTitle("Send data to T.A.R.A.L.L.O")
-        answer.setText("Bulk identifier ....")
-        btnupload = answer.addButton("Upload", QMessageBox.YesRole)
-        btncancel = answer.addButton("Cancel", QMessageBox.NoRole)
-        answer.exec_()
+    def send_data(self,system_info):
+        self.w = DataToTarallo(system_info)
+        self.w.show()
+
+class DataToTarallo(QWidget):
+    def __init__(self,system_info):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.lbltitle = QLabel("Send data to T.A.R.A.L.L.O")
+        self.lblid = QLabel("Bulk identifier: ")
+        self.txtid = QLineEdit()
+        self.chbov = QCheckBox("Overwrite if identifier already exists")
+        self.btnupl = QPushButton("Upload")
+        self.btncnc = QPushButton("Cancel")
+        layout.addWidget(self.lbltitle)
+        layout.addWidget(self.lblid)
+        layout.addWidget(self.txtid)
+        layout.addWidget(self.chbov)
+        layout.addWidget(self.btnupl)
+        layout.addWidget(self.btncnc)
+        self.setLayout(layout)
+        self.btnupl.clicked.connect(lambda: self.upload(system_info,self.chbov.isChecked(),self.txtid.text()))
+        #self.btnupl.clicked.connect(self.cancel)
+
+    def upload(self, system_info,checked,bulkid):
+        p = sp.Popen([sys.executable, 'Loading.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
+        t = Tarallo.Tarallo("http://localhost:8080/","yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k")
+        t.bulk_add(system_info,bulkid,checked)
+        p.terminate()
+        self.close()
+
+    def cancel(self):
+        self.close()
 
 
 class Notification(QLabel):
