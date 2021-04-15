@@ -14,12 +14,26 @@ from extract_data import extract_and_collect_data_from_generated_files
 from enum import Enum
 import ast
 from pytarallo import Tarallo
+from dotenv import load_dotenv
+from os import environ as env
+
+load_dotenv()
+try:
+    t_url = env['TARALLO_URL']
+    t_token= env['TARALLO_TOKEN']
+except KeyError:
+    raise EnvironmentError("Missing definitions of TARALLO* environment variables (see README)")
 
 # should be None in production
 # should be set to "tests/<machine_to_test>" when testing
 DEBUG_DIR = None
 
 gpu_loc_file = "gpu_location.txt"
+
+
+def _go_to_tarallo():
+    website_link = str(base64.b64decode("aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="), "utf-8")
+    sp.Popen(["xdg-open", website_link])
 
 
 class GPU(Enum):
@@ -437,7 +451,6 @@ class PlainTextWidget(QWidget):
 
         button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
         copy_pastable_json = json.dumps(system_info, indent=2)
-        website_link = str(base64.b64decode("aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="), "utf-8")
 
         self.clipboard_button = QPushButton("Copy to clipboard")
         self.clipboard_button.setStyleSheet(button_style)
@@ -446,7 +459,7 @@ class PlainTextWidget(QWidget):
 
         self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
         self.website_button.setStyleSheet(button_style)
-        self.website_button.clicked.connect(lambda: sp.Popen(["xdg-open", website_link]))
+        self.website_button.clicked.connect(lambda: _go_to_tarallo())
 
         plain_text = QPlainTextEdit()
         plain_text.document().setPlainText(copy_pastable_json)
@@ -485,16 +498,19 @@ class PlainTextWidget(QWidget):
         self.notification.show()
         self.notification.animate()
 
-    def send_data(self,system_info):
+    def send_data(self, system_info):
         self.w = DataToTarallo(system_info)
         self.w.show()
 
 class DataToTarallo(QWidget):
     def __init__(self,system_info):
         super().__init__()
+        self.showWindow(system_info)
+
+    def showWindow(self,system_info):
         layout = QVBoxLayout()
         self.lbltitle = QLabel("Send data to T.A.R.A.L.L.O")
-        self.lblid = QLabel("Bulk identifier: ")
+        self.lblid = QLabel("Bulk identifier: (optional)")
         self.txtid = QLineEdit()
         self.chbov = QCheckBox("Overwrite if identifier already exists")
         self.btncnc = QPushButton("Cancel")
@@ -510,11 +526,10 @@ class DataToTarallo(QWidget):
         self.btncnc.clicked.connect(self.close)
 
     def upload(self, system_info, checked, bulkid):
-        #p = sp.Popen([sys.executable, 'Loading.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
-        #p.wait()
-        t = Tarallo.Tarallo("http://localhost:8080/","yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k")
+        p = sp.Popen([sys.executable, 'Loading.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
+        t = Tarallo.Tarallo(t_url,t_token)
         ver = t.bulk_add(system_info, bulkid, checked)
-        #p.terminate()
+        p.terminate()
         self.close()
         if ver:
             mb_wentok = QMessageBox(self)
@@ -522,23 +537,26 @@ class DataToTarallo(QWidget):
             mb_wentok.setText("Everything went fine, what do you want to do?")
             btnclose = mb_wentok.addButton("Close", QMessageBox.YesRole)
             btncnt = mb_wentok.addButton("Continue", QMessageBox.AcceptRole)
+            btntar = mb_wentok.addButton("See this PC on T.A.R.A.L.L.O",QMessageBox.NoRole)
             mb_wentok.exec_()
             if mb_wentok.clickedButton() == btncnt:
                 self.close()
-            else:
+            elif mb_wentok.clickedButton() == btnclose:
                 self.close()
                 sys.exit()
+            else:
+                _go_to_tarallo()
         else:
             mb_notok = QMessageBox(self)
             mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O")
             mb_notok.setText("There have been some problems")
             btnclose = mb_notok.addButton("Back to json", QMessageBox.YesRole)
-            btncnt = mb_notok.addButton("Retry", QMessageBox.AcceptRole)
+            #btncnt = mb_notok.addButton("Retry", QMessageBox.AcceptRole)
             mb_notok.exec_()
-            if mb_notok.clickedButton() == btncnt:
-                self.upload(system_info,checked,bulkid)
-            else:
-                self.close()
+            #if mb_notok.clickedButton() == btncnt:
+                #self.showWindow(system_info)
+            #else:
+            self.close()
 
 
 
