@@ -5,7 +5,9 @@ Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
 import json
 import os
-import regex
+import re
+import random
+
 
 from InputFileNotFoundError import InputFileNotFoundError
 from parsers.read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
@@ -14,7 +16,9 @@ from parsers.read_decode_dimms import read_decode_dimms
 from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from parsers.read_smartctl import read_smartctl
 from tarallo_token import TARALLO_TOKEN
-
+from rich import print
+from rich.console import Console
+from datetime import datetime
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
                                                   verbose: bool = False, gui: bool = True):
@@ -306,7 +310,25 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui:
     return result
 
 def get_gpu(args):
-    while True not in (args.gpu, args.cpu, args.motherboard):
+
+    if args.files is not None:
+        args.cpu = False
+        args.gpu = False
+        args.motherboard = False
+
+        try:
+            with open(os.path.join(os.getcwd(), args.files, "gpu_location.txt")) as f:
+                location = f.readline().lower().rstrip()
+                if location == 'mobo':
+                    args.motherboard = True
+                elif location == 'gpu':
+                    args.gpu = True
+                elif location == 'cpu':
+                    args.cpu = True
+        except FileNotFoundError:
+            pass
+
+    while not any((args.gpu, args.cpu, args.motherboard)):
         print("\nWhere is GPU in your PC? c/g/b\n",
               "c for integrated in CPU\n",
               "g for discrete graphics card\n",
@@ -358,22 +380,21 @@ def check_required_files(path): #very bad writing
             for ex in file_in_dir:
                 if found == 1:
                     break
-                res = regex.findall(file, ex)
+                res = re.findall(file, ex)
                 if res is not []:
                     found += 1
             if found == 0:
-                print(f"Missing file {file}\nPlease re-run this script without the -f or --files option.")
+                print(f"[bold red]Missing file {file}\nPlease re-run this script without the -f or --files option.[/]")
                 exit(-1)
 
 
 def check_and_install_dependencies():
     install_cmd = "apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode < /dev/null"
-    exit_value = os.system("dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null") #TODO: check & problem
+    exit_value = os.system("dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null")
     if exit_value == 1:
         ans = input("You need to install some packages in order for the peracotta to work. Do you want to install them? y/N ").lower()
         if ans == 'y':
             if os.geteuid() != 0:
-                #TODO: why path is needed in main.sh and why is not working without scripts
                 os.system(f"sudo {install_cmd}")
             else:
                 os.system(f"/bin/bash/ -c {install_cmd}")
@@ -383,10 +404,21 @@ def check_and_install_dependencies():
 
 
 def open_default_browser():
-    web_link = "https://tarallo.weeeopen.it/bulk/add" #TODO: so necessary the hash??
-    ans = input("Do you want to open the Bulk Add page on TARALLO in the default browser? y/N ").lower()
-    if ans == 'y':
-        os.system(f"xdg-open {web_link}")
+    import base64
+    web_link = "aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="
+    web_link = base64.b64decode(web_link).decode('ascii').rstrip()
+    egg = Console()
+    text = ['Congratulations!!!', "You're", "the", "1000th", "WEEEisitor", "of", "the", "day"]
+    this_moment = datetime.now()
+    if this_moment.minute == this_moment.second:
+        for word in text:
+            red = random.randint(0, 255)
+            green = random.randint(0, 255)
+            blue = random.randint(0, 255)
+            egg.print(word, end=" ", style=f"rgb({red},{green},{blue})")
+        egg.print(web_link)
+    else:
+        print(f"Finished successfully! Now you can add this output to T.A.R.A.L.L.O (bad timing, anyway) {web_link}")
 
 
 if __name__ == '__main__':
@@ -418,12 +450,13 @@ if __name__ == '__main__':
         import main_with_gui
         main_with_gui.main()
         
-    elif args.files is not None:
+    elif args.files is not None: #TODO:read from gpu_location.txt
         # if -f flag is added, most of the other flags doesn't mean anything
-        if args.path is not None:
-            print("If the files already exist what should I store?")
+        if args.path is not None or any((args.cpu, args.gpu, args.motherboard)):
+            print("[bold red]Error: Bad flags combination (./main.py -f <path> is correct) [/]")
             exit(-1)
-        args.cpu, args.gpu, args.motherboard = get_gpu(args) #TODO: no dotted notation makes me grrr
+
+        args.cpu, args.gpu, args.motherboard = get_gpu(args)
         path = os.path.join(os.getcwd(), args.files)
         check_required_files(path)
         run_extract_data(path, args)
@@ -449,7 +482,7 @@ if __name__ == '__main__':
         else:
             path = os.path.join(os.getcwd(), args.path)
             if os.path.isdir(path):
-                print("Wrong path: can't create a directory with this name, existing already")
+                print("[bold red]Wrong path: can't create a directory with this name, existing already[/]")
                 exit(-2)
             os.mkdir(path)
         check_and_install_dependencies()
