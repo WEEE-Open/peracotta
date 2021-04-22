@@ -31,8 +31,8 @@ DEBUG_DIR = None
 gpu_loc_file = "gpu_location.txt"
 
 
-def _go_to_tarallo():
-    website_link = str(base64.b64decode("aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="), "utf-8")
+def _go_to_tarallo(str_url):
+    website_link = t_url+str_url
     sp.Popen(["xdg-open", website_link])
 
 
@@ -330,8 +330,7 @@ class VerifyExtractedData(QWidget):
         json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
 
 
-        v_box.addSpacing(20)
-        v_box.addWidget(json_button, alignment=Qt.AlignCenter)
+
         v_box.addSpacing(20)
 
         # if system_info is empty
@@ -385,7 +384,10 @@ class VerifyExtractedData(QWidget):
             layout_grid.addWidget(tree, 1, index)
             tree.resizeColumnToContents(0)
             v_box.addLayout(layout_grid)
-            v_box.addSpacing(15)
+            #v_box.addSpacing(15)
+
+        v_box.addWidget(json_button, alignment=Qt.AlignCenter)
+        v_box.addSpacing(20)
 
         self.setLayout(v_box)
 
@@ -452,14 +454,10 @@ class PlainTextWidget(QWidget):
         button_style = "background-color: #006699; padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
         copy_pastable_json = json.dumps(system_info, indent=2)
 
-        self.clipboard_button = QPushButton("Copy to clipboard")
-        self.clipboard_button.setStyleSheet(button_style)
-        self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
-        self.clipboard_button.clicked.connect(lambda: self.spawn_notification("Copied to clipboard"))
-
-        self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
-        self.website_button.setStyleSheet(button_style)
-        self.website_button.clicked.connect(lambda: _go_to_tarallo())
+        self.back_button = QPushButton("Go back")
+        self.back_button.setStyleSheet("padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;")
+        self.back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
+        h_buttons.addWidget(self.back_button, alignment=Qt.AlignLeft)
 
         plain_text = QPlainTextEdit()
         plain_text.document().setPlainText(copy_pastable_json)
@@ -468,23 +466,34 @@ class PlainTextWidget(QWidget):
         plain_text.setMinimumSize(plain_text.width(), plain_text.height())
         # prevent from resizing too much
 
-        self.back_button = QPushButton("Go back")
-        self.back_button.setStyleSheet("padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;")
-        self.back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
+        layout_grid = QGridLayout()
+
+        self.lbl_manual = QLabel("Manual")
+        layout_grid.addWidget(self.lbl_manual, 0, 1,Qt.AlignCenter)
+
+
+        self.clipboard_button = QPushButton("Copy to clipboard")
+        self.clipboard_button.setStyleSheet(button_style)
+        self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
+        self.clipboard_button.clicked.connect(lambda: self.spawn_notification("Copied to clipboard"))
+        layout_grid.addWidget(self.clipboard_button, 1, 1,Qt.AlignCenter)
+
+        self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
+        self.website_button.setStyleSheet(button_style)
+        self.website_button.clicked.connect(lambda: _go_to_tarallo("/bulk/add"))
+        layout_grid.addWidget(self.website_button, 2, 1,Qt.AlignCenter)
+
+        self.lbl_automatic = QLabel("Automatic")
+        layout_grid.addWidget(self.lbl_automatic, 0, 0,Qt.AlignCenter)
 
         self.tarallo_data = QPushButton("Send data to T.A.R.A.L.L.O")
         self.tarallo_data.setStyleSheet(button_style)
         self.tarallo_data.clicked.connect(lambda: self.send_data(system_info))
-
-        s_buttons.addWidget(self.clipboard_button, alignment=Qt.AlignCenter)
-        s_buttons.addWidget(self.website_button, alignment=Qt.AlignCenter)
-
-        h_buttons.addWidget(self.back_button, alignment=Qt.AlignLeft)
-        s_buttons.addWidget(self.tarallo_data, alignment=Qt.AlignCenter)
+        layout_grid.addWidget(self.tarallo_data, 1, 0, -1, 1, Qt.AlignCenter)
 
         v_box.addLayout(h_buttons)
         v_box.addWidget(plain_text)
-        v_box.addLayout(s_buttons)
+        v_box.addLayout(layout_grid)
 
         self.setLayout(v_box)
 
@@ -526,10 +535,8 @@ class DataToTarallo(QWidget):
         self.btncnc.clicked.connect(self.close)
 
     def upload(self, system_info, checked, bulkid):
-        p = sp.Popen([sys.executable, 'Loading.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
         t = Tarallo.Tarallo(t_url,t_token)
         ver = t.bulk_add(system_info, bulkid, checked)
-        p.terminate()
         self.close()
         if ver:
             mb_wentok = QMessageBox(self)
@@ -537,7 +544,7 @@ class DataToTarallo(QWidget):
             mb_wentok.setText("Everything went fine, what do you want to do?")
             btnclose = mb_wentok.addButton("Close", QMessageBox.YesRole)
             btncnt = mb_wentok.addButton("Continue", QMessageBox.AcceptRole)
-            btntar = mb_wentok.addButton("See this PC on T.A.R.A.L.L.O",QMessageBox.NoRole)
+            btntar = mb_wentok.addButton("See this PC on T.A.R.A.L.L.O", QMessageBox.NoRole)
             mb_wentok.exec_()
             if mb_wentok.clickedButton() == btncnt:
                 self.close()
@@ -545,17 +552,13 @@ class DataToTarallo(QWidget):
                 self.close()
                 sys.exit()
             else:
-                _go_to_tarallo()
+                _go_to_tarallo("/bulk/import")
         else:
             mb_notok = QMessageBox(self)
             mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O")
-            mb_notok.setText("There have been some problems")
+            mb_notok.setText("It seems there have been some problems or this pc is a duplicate. Please retry")
             btnclose = mb_notok.addButton("Back to json", QMessageBox.YesRole)
-            #btncnt = mb_notok.addButton("Retry", QMessageBox.AcceptRole)
             mb_notok.exec_()
-            #if mb_notok.clickedButton() == btncnt:
-                #self.showWindow(system_info)
-            #else:
             self.close()
 
 
