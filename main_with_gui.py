@@ -14,6 +14,7 @@ from extract_data import extract_and_collect_data_from_generated_files
 from enum import Enum
 import ast
 from pytarallo import Tarallo
+from pytarallo.Errors import NoInternetConnectionError
 from dotenv import load_dotenv
 from os import environ as env
 
@@ -535,29 +536,37 @@ class DataToTarallo(QWidget):
         self.btncnc.clicked.connect(self.close)
 
     def upload(self, system_info, checked, bulkid):
-        t = Tarallo.Tarallo(t_url,t_token)
-        ver = t.bulk_add(system_info, bulkid, checked)
-        self.close()
-        if ver:
-            mb_wentok = QMessageBox(self)
-            mb_wentok.setWindowTitle("Send data to T.A.R.A.L.L.O")
-            mb_wentok.setText("Everything went fine, what do you want to do?")
-            btnclose = mb_wentok.addButton("Close", QMessageBox.YesRole)
-            btncnt = mb_wentok.addButton("Continue", QMessageBox.AcceptRole)
-            btntar = mb_wentok.addButton("See this PC on T.A.R.A.L.L.O", QMessageBox.NoRole)
-            mb_wentok.exec_()
-            if mb_wentok.clickedButton() == btncnt:
-                self.close()
-            elif mb_wentok.clickedButton() == btnclose:
-                self.close()
-                sys.exit()
+        try:
+            t = Tarallo.Tarallo(t_url,t_token)
+            ver = t.bulk_add(system_info, bulkid, checked)
+            self.close()
+            if ver:
+                mb_wentok = QMessageBox(self)
+                mb_wentok.setWindowTitle("Send data to T.A.R.A.L.L.O")
+                mb_wentok.setText("Everything went fine, what do you want to do?")
+                btnclose = mb_wentok.addButton("Close", QMessageBox.YesRole)
+                btncnt = mb_wentok.addButton("Continue", QMessageBox.AcceptRole)
+                btntar = mb_wentok.addButton("See this PC on T.A.R.A.L.L.O", QMessageBox.NoRole)
+                mb_wentok.exec_()
+                if mb_wentok.clickedButton() == btncnt:
+                    self.close()
+                elif mb_wentok.clickedButton() == btnclose:
+                    self.close()
+                    sys.exit()
+                else:
+                    _go_to_tarallo("/bulk/import")
             else:
-                _go_to_tarallo("/bulk/import")
-        else:
+                mb_notok = QMessageBox(self)
+                mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O")
+                mb_notok.setText("It seems there have been some problems or this pc is a duplicate. Please retry")
+                btnclose = mb_notok.addButton("Back to json", QMessageBox.YesRole)
+                mb_notok.exec_()
+                self.close()
+        except NoInternetConnectionError:
             mb_notok = QMessageBox(self)
             mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O")
-            mb_notok.setText("It seems there have been some problems or this pc is a duplicate. Please retry")
-            btnclose = mb_notok.addButton("Back to json", QMessageBox.YesRole)
+            mb_notok.setText("No internet connection, please connect and try again.")
+            btnclose = mb_notok.addButton("Close", QMessageBox.YesRole)
             mb_notok.exec_()
             self.close()
 
