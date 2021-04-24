@@ -55,7 +55,7 @@ you can either pass it the arguments, or it will ask you for them nicely.
 You can also pass as the -f/--files argument the directory where generate_files.sh dropped its files. By default (i.e. if you don't give any arguments 
 to `generate_files.sh`) it will output the files in the current directory. Since this may clutter the working directory 
 with txt files, it's best to make a new directory (e.g. `mkdir tmp`) and pass it to the file generator (e.g. `generate_files.sh tmp`).
-You can then pass this path to this script so that it knows where to find the txt files (e.g. `./main.py -g tmp`).  
+You can then pass this path to this script so that it knows where to find the txt files (e.g. `./main.py -f tmp`).  
 This is done automatically by the GUI version.
 
 

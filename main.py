@@ -347,12 +347,8 @@ def print_output(output, path):
     print("\nThe following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':\n")
     print(output)
 
-    try:
-        with open(os.path.join(path, "copy_this_to_tarallo.json"), "x") as f:
-            f.write(output)
-    except FileExistsError:
-        with open(os.path.join(path, "copy_this_to_tarallo.json"), "w") as f:
-            f.write(output)
+    with open(os.path.join(path, "copy_this_to_tarallo.json"), "w") as f:
+        f.write(output)
 
     print(f"You can also transfer the generated JSON file $OUTPUT_PATH/copy_this_to_tarallo.json to your PC with 'scp {path}/copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal.")
 
@@ -414,7 +410,7 @@ def open_default_browser():
             egg.print(word, end=" ", style=f"rgb({red},{green},{blue})")
         egg.print(web_link)
     else:
-        print(f"Finished successfully! Now you can add this output to T.A.R.A.L.L.O (bad timing, anyway) {web_link}")
+        print(f"Finished successfully! Now you can add this output to T.A.R.A.L.L.O {web_link}")
 
 def main(args):
     if args.gui:
