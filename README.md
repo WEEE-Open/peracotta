@@ -51,15 +51,18 @@ These are the scripts you run directly from the terminal. Quite obviously, `main
 
 This script basically runs `sudo ./generate_files.sh` and collect data into an appropriate json for T.A.R.A.L.L.O, but it does so in an interactive manner, so 
 you can either pass it the arguments, or it will ask you for them nicely.
+
 You can also pass as the -f/--files argument the directory where generate_files.sh dropped its files. By default (i.e. if you don't give any arguments 
 to `generate_files.sh`) it will output the files in the current directory. Since this may clutter the working directory 
 with txt files, it's best to make a new directory (e.g. `mkdir tmp`) and pass it to the file generator (e.g. `generate_files.sh tmp`).
 You can then pass this path to this script so that it knows where to find the txt files (e.g. `./main.py -g tmp`).  
 This is done automatically by the GUI version.
+
+
 You can find the usage below, but keep in mind that the three most important arguments are:
-- the path for files generation (if none given, it will default to a tmp directory, and if it exist, you will be asked whether you want to overwrite it)
+- the path for files generation (if none given, it will default to a tmp directory, and if it exist, you will be asked whether you want to overwrite it).
 - `-g | -c | -b`: one of these tells the script where the GPU (or graphics card if it's not integrated) is located. If none of them is given, a menu with the same choices will appear during the execution.
-- the path to the txt files
+- the path to the txt files, previously generated with generate_files.sh.
 ```bash
 usage: main.py [-h] [-f FILES] [-g | -c | -b] [-i] [-v] [path]
 
@@ -87,7 +90,7 @@ With or without GUI (one argument optional):
 ### main_with_gui.py
 
 This script is interactive, so you'll just need to run it with `./main_with_gui.py`. It does everything the terminal based version does, with the addition of a nice GUI.  
-The GUI is also available from `extract_data.py` with the `-i` or `--gui` option.
+The GUI is also available from `main.py` with the `-i` or `--gui` option.
 
 ## Underlying scripts run by main.py and main_with_gui.py
 
