@@ -236,6 +236,8 @@ def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
                     removed.add(k)
                 elif isinstance(v, int) and v <= 0:
                     removed.add(k)
+                elif v is None:
+                    removed.add(k)
                 else:
                     cleaned_item[k] = v
         filtered.append(cleaned_item)
