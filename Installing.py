@@ -8,13 +8,10 @@ import os
 class UIMainWindow(QWidget):
     def __init__(self, main_window, *args, **kwargs):
         super().__init__()
-        #qr = self.frameGeometry()
         self.main_window = main_window
         self.central_widget = QtWidgets.QWidget(self.main_window)
         self.label = QtWidgets.QLabel(self.central_widget)
         self.movie = QMovie(os.path.join("data", "Installing.gif"))
-        #qr.moveCenter(self.main_window)
-        #self.move(qr.topLeft())
         self.setup_ui()
 
     def setup_ui(self):
