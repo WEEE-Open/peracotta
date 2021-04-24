@@ -16,7 +16,7 @@ Read "smartctl" output:
 class SMART(Enum):
     working = "ok"
     fail = "fail"
-    not_available = "not_available"
+    not_available = None
     old = "old"  # this means "il disco funziona, ma ha quantità inumane di ore di funzionamento alle spalle (perché stava in un server), non sta ancora morendo ma non facciamoci affidamento"
     # TODO: find a way to apply "old" when needed
 

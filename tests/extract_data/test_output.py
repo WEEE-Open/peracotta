@@ -99,6 +99,7 @@ def explore_cleanup(param):
                 explore_cleanup(param["contents"])
             else:
                 assert ("human_readable" not in k)
+                assert v is not None
                 if isinstance(v, str):
                     assert v != ""
                 elif isinstance(v, int):
