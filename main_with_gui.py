@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton,
     QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor, QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt, QPropertyAnimation
-from extract_data import extract_and_collect_data_from_generated_files
+from main import extract_and_collect_data_from_generated_files
 from enum import Enum
 import ast
 

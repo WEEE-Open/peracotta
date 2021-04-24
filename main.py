@@ -5,7 +5,7 @@ Collect data from all the 'read...' scripts and returns it as a list of dicts
 """
 import json
 import os
-import re
+import fnmatch
 import random
 
 
@@ -369,23 +369,19 @@ def run_extract_data(path, args):
         print(str(e))
         exit(1)
 
-def check_required_files(path): #very bad writing
+def check_required_files(path):
     file_in_dir = os.listdir(path)
     with open("required_files.txt", "r") as f:
-        while True:
-            file = f.readline().rstrip()
-            if file is None or file == '':
-                break
-            found = 0
+        for line in f.readlines():
+            file = line.rstrip()
+
             for ex in file_in_dir:
-                if found == 1:
+                if fnmatch.fnmatch(ex, file):
                     break
-                res = re.findall(file, ex)
-                if res is not []:
-                    found += 1
-            if found == 0:
+            else:
                 print(f"[bold red]Missing file {file}\nPlease re-run this script without the -f or --files option.[/]")
                 exit(-1)
+
 
 
 def check_and_install_dependencies():
@@ -450,15 +446,14 @@ if __name__ == '__main__':
         import main_with_gui
         main_with_gui.main()
         
-    elif args.files is not None: #TODO:read from gpu_location.txt
+    elif args.files is not None:
         # if -f flag is added, most of the other flags doesn't mean anything
         if args.path is not None or any((args.cpu, args.gpu, args.motherboard)):
             print("[bold red]Error: Bad flags combination (./main.py -f <path> is correct) [/]")
             exit(-1)
-
-        args.cpu, args.gpu, args.motherboard = get_gpu(args)
         path = os.path.join(os.getcwd(), args.files)
         check_required_files(path)
+        args.cpu, args.gpu, args.motherboard = get_gpu(args)
         run_extract_data(path, args)
 
     else:
@@ -486,6 +481,7 @@ if __name__ == '__main__':
                 exit(-2)
             os.mkdir(path)
         check_and_install_dependencies()
+
         # now that I have a dest folder, I generate files
         if os.geteuid() != 0:
             os.system(f"sudo ./generate_files.sh {path}")
