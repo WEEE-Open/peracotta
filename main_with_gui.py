@@ -73,7 +73,7 @@ class Welcome(QWidget):
         expected_files = []
         with open('required_files.txt', 'r') as f:
             for line in f.readlines():
-                expected_files.append(line)
+                expected_files.append(line.strip())
 
         cwd = os.getcwd()
         tmp_path = os.path.join(cwd, "tmp")
@@ -83,7 +83,7 @@ class Welcome(QWidget):
             self.load_previously_generated_files_button.setEnabled(False)
         else:
             # if tmp does exist
-            button_enabled = False
+            button_enabled = True
             # for each file in tmp, check if its name is in expected_files
             for existing_file in os.listdir(tmp_path):
                 if existing_file not in expected_files:
@@ -92,6 +92,23 @@ class Welcome(QWidget):
                         # (this is because smartctl could create output files with different names)
                         if expected_file in existing_file:
                             button_enabled = True
+
+            existing_files = []
+            for existing_file in os.listdir(tmp_path):
+                existing_files.append(existing_file)
+
+            for expected_file in expected_files:
+                if expected_file not in existing_files:
+                    if expected_file == 'smartctl-dev*':
+                        for existing_file in existing_files:
+                            if 'smartctl-dev' not in existing_file:
+                                button_enabled = False
+                            else:
+                                button_enabled = True
+                                break
+                    else:
+                        button_enabled = False
+                        break
 
             if not button_enabled:
                 self.load_previously_generated_files_button.setStyleSheet(style_disabled)

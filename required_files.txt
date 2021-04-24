@@ -2,7 +2,6 @@ baseboard.txt
 chassis.txt
 connector.txt
 dimms.txt
-dmesg.txt
 glxinfo.txt
 gpu_location.txt
 lscpu.txt
