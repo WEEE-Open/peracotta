@@ -7,7 +7,7 @@ import json
 import base64
 import prettyprinter
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout, QLineEdit, QCheckBox
+QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout, QLineEdit, QCheckBox, QDesktopWidget
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor, QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
@@ -532,8 +532,12 @@ class DataToTarallo(QWidget):
         layout.addWidget(self.btnupl)
         layout.addWidget(self.btncnc)
         self.setLayout(layout)
+        self.resize(200, 150)
+        sizeObject = QDesktopWidget().screenGeometry(0)
+        self.move(int(sizeObject.width()/2)-100,int(sizeObject.height()/2)-75)
         self.btnupl.clicked.connect(lambda: self.upload(system_info,self.chbov.isChecked(),self.txtid.text()))
         self.btncnc.clicked.connect(self.close)
+
 
     def upload(self, system_info, checked, bulkid):
         try:
@@ -553,7 +557,7 @@ class DataToTarallo(QWidget):
                 elif mb_wentok.clickedButton() == btnclose:
                     self.close()
                     sys.exit()
-                else:
+                elif mb_wentok.clickedButton() == btntar:
                     _go_to_tarallo("/bulk/import")
             else:
                 mb_notok = QMessageBox(self)
