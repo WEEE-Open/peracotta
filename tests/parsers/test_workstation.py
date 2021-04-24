@@ -123,7 +123,7 @@ def test_smartctl():
 			"sn": "",
 			"capacity-decibyte": 996000000000,
 			"spin-rate-rpm": 20000,
-			"smart-data": "not_available",
+			"smart-data": None,
 		}
 	]
 	output = read_smartctl.read_smartctl(filedir)
