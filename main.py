@@ -466,7 +466,7 @@ def main(args):
         # file generated, extract data next
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
         run_extract_data(path, args)
-        open_default_browser()
+    open_default_browser()
 
 
 if __name__ == '__main__':

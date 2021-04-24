@@ -3,7 +3,6 @@ chassis.txt
 connector.txt
 dimms.txt
 glxinfo.txt
-gpu_location.txt
 lscpu.txt
 lspci.txt
 net.txt
