@@ -416,36 +416,11 @@ def open_default_browser():
     else:
         print(f"Finished successfully! Now you can add this output to T.A.R.A.L.L.O (bad timing, anyway) {web_link}")
 
-
-if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Parse the files generated with generate_files.sh and "
-                                                 "get all the possible info out of them",
-                                     epilog="If no argument is given, then this script will interactively guide you to run the PERACOTTA data gathering package."
-                                            "Alternatively, you can choose to pass either the path to the directory where you want the files to be generated, the gpu location, or both."
-                                            "In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location."
-                                     )
-    parser.add_argument('-f', '--files', action='store', default=None, required=False,
-                        help="retrieve previously generated files from a given path")
-    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=False)
-    gpu_group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
-    gpu_group.add_argument('-c', '--cpu', action="store_true", default=False,
-                           help="GPU is integrated inside the CPU")
-    gpu_group.add_argument('-b', '--motherboard', action="store_true", default=False,
-                           help="GPU is integrated inside the motherboard")
-    gui_group = parser.add_argument_group('With or without GUI (one argument optional)').add_mutually_exclusive_group(required=False)
-    gui_group.add_argument('-i', '--gui', action="store_true", default=False,
-                           help="launch GUI instead of using the terminal version")
-    parser.add_argument('-v', '--verbose', action="store_true", default=False, help="print some warning messages")
-    parser.add_argument('path', action="store", nargs='?', type=str, help="optional path where generated files are stored")
-
-    args = parser.parse_args()
-
+def main(args):
     if args.gui:
         import main_with_gui
         main_with_gui.main()
-        
+
     elif args.files is not None:
         # if -f flag is added, most of the other flags doesn't mean anything
         if args.path is not None or any((args.cpu, args.gpu, args.motherboard)):
@@ -493,3 +468,30 @@ if __name__ == '__main__':
         run_extract_data(path, args)
         open_default_browser()
 
+
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Parse the files generated with generate_files.sh and "
+                                                 "get all the possible info out of them",
+                                     epilog="If no argument is given, then this script will interactively guide you to run the PERACOTTA data gathering package."
+                                            "Alternatively, you can choose to pass either the path to the directory where you want the files to be generated, the gpu location, or both."
+                                            "In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location."
+                                     )
+    parser.add_argument('-f', '--files', action='store', default=None, required=False,
+                        help="retrieve previously generated files from a given path")
+    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=False)
+    gpu_group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
+    gpu_group.add_argument('-c', '--cpu', action="store_true", default=False,
+                           help="GPU is integrated inside the CPU")
+    gpu_group.add_argument('-b', '--motherboard', action="store_true", default=False,
+                           help="GPU is integrated inside the motherboard")
+    gui_group = parser.add_argument_group('With or without GUI (one argument optional)').add_mutually_exclusive_group(required=False)
+    gui_group.add_argument('-i', '--gui', action="store_true", default=False,
+                           help="launch GUI instead of using the terminal version")
+    parser.add_argument('-v', '--verbose', action="store_true", default=False, help="print some warning messages")
+    parser.add_argument('path', action="store", nargs='?', type=str, help="optional path where generated files are stored")
+
+    args = parser.parse_args()
+
+    main(args)
