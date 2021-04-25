@@ -5,9 +5,10 @@ RUN rm -rf tmp copy_this_to_tarallo.json
 RUN apt update
 RUN apt full-upgrade -y
 RUN apt install -y python3-pip
-RUN ./install_dependencies_all.sh
+RUN ./scripts/install_dependencies_all.sh
 RUN pip3 install -r requirements.txt
-ENTRYPOINT ["/root/peracotta/main.sh"]
+ENTRYPOINT ["/root/peracotta/main.py"]
+
 # build with:
 # docker build -t peracotta .
 # run with:
