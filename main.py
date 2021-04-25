@@ -459,9 +459,9 @@ def main(args):
 
         # now that I have a dest folder, I generate files
         if os.geteuid() != 0:
-            os.system(f"sudo ./generate_files.sh {path}")
+            os.system(f"sudo ./scripts/generate_files.sh {path}")
         else:
-            os.system(f"./generate_files.sh {path}")
+            os.system(f"./scripts/generate_files.sh {path}")
 
         # file generated, extract data next
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
