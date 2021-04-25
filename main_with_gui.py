@@ -484,7 +484,7 @@ class PlainTextWidget(QWidget):
         self.lbl_automatic = QLabel("Automatic")
         layout_grid.addWidget(self.lbl_automatic, 0, 0, Qt.AlignCenter)
 
-        self.tarallo_data = QPushButton("Send data to T.A.R.A.L.L.O")
+        self.tarallo_data = QPushButton("Send data to T.A.R.A.L.L.O.")
         self.tarallo_data.setStyleSheet(button_style)
         self.tarallo_data.clicked.connect(lambda: self.send_data(system_info))
         layout_grid.addWidget(self.tarallo_data, 1, 0, -1, 1, Qt.AlignCenter)
@@ -544,11 +544,11 @@ class DataToTarallo(QWidget):
             self.close()
             if ver:
                 mb_wentok = QMessageBox(self)
-                mb_wentok.setWindowTitle("Send data to T.A.R.A.L.L.O")
+                mb_wentok.setWindowTitle("Send data to T.A.R.A.L.L.O.")
                 mb_wentok.setText("Everything went fine, what do you want to do?")
                 btnclose = mb_wentok.addButton("Close", QMessageBox.YesRole)
                 btncnt = mb_wentok.addButton("Continue", QMessageBox.AcceptRole)
-                btntar = mb_wentok.addButton("See this PC on T.A.R.A.L.L.O", QMessageBox.NoRole)
+                btntar = mb_wentok.addButton("See this PC on T.A.R.A.L.L.O.", QMessageBox.NoRole)
                 mb_wentok.exec_()
                 if mb_wentok.clickedButton() == btncnt:
                     self.close()
@@ -559,15 +559,15 @@ class DataToTarallo(QWidget):
                     _go_to_tarallo("/bulk/import")
             else:
                 mb_notok = QMessageBox(self)
-                mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O")
-                mb_notok.setText("It seems there have been some problems or this pc is a duplicate. Please retry")
-                btnclose = mb_notok.addButton("Back to json", QMessageBox.YesRole)
+                mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O.")
+                mb_notok.setText("It seems there have been some problems or this PC is a duplicate. Please retry.")
+                btnclose = mb_notok.addButton("Back to JSON", QMessageBox.YesRole)
                 mb_notok.exec_()
                 self.close()
         except NoInternetConnectionError:
             mb_notok = QMessageBox(self)
-            mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O")
-            mb_notok.setText("No internet connection, please connect and try again.")
+            mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O.")
+            mb_notok.setText("No Internet connection or T.A.R.A.L.L.O. is down. Please connect and try again.")
             btnclose = mb_notok.addButton("Close", QMessageBox.YesRole)
             mb_notok.exec_()
             self.close()
