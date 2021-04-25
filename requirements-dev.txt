@@ -9,7 +9,6 @@ packaging==19.2
 pluggy==0.13.1
 py==1.10.0
 Pygments==2.8.1
-PyQt5-stubs==5.13.1.4
 pyparsing==2.4.6
 pytest==5.3.2
 six==1.13.0
