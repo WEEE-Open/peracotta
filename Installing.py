@@ -25,6 +25,8 @@ class UIMainWindow(QWidget):
         self.main_window.setCentralWidget(self.central_widget)
         self.label.setMovie(self.movie)
         self.movie.start()
+        sizeObject = QDesktopWidget().screenGeometry(0)
+        self.main_window.move(int(sizeObject.width()/2)-200,int(sizeObject.height()/2)-100)
 
 
 if __name__ == "__main__":
