@@ -150,7 +150,7 @@ class Welcome(QWidget):
 
     def check_install_dependencies(self, window: QMainWindow):
         working_directory = os.getcwd()
-        cmd = os.path.join(working_directory, "check_dependencies.sh")
+        cmd = os.path.join(working_directory, "scripts/check_dependencies.sh")
         check_dep, _ = sp.getstatusoutput(cmd)
         if check_dep == 1:
             button_reply = QMessageBox.question(self, 'Install dependencies',
@@ -159,7 +159,7 @@ class Welcome(QWidget):
             if button_reply == QMessageBox.Yes:
                 p = sp.Popen([sys.executable, 'Installing.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
                 working_directory = os.getcwd()
-                with sp.Popen(["pkexec", os.path.join(working_directory, "install_dependencies_all.sh")],
+                with sp.Popen(["pkexec", os.path.join(working_directory, "scripts/install_dependencies_all.sh")],
                               shell=False) as process:
                     process.wait(timeout=80)
             else:
