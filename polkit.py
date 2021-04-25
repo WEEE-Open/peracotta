@@ -1,7 +1,6 @@
 import os
 from time import sleep
 
-
 # launch script with: ./generate_files.pkexec /path/to/tmp
 
 # in annotate key path to generate_files.sh
@@ -14,7 +13,7 @@ dotpolicy_content = """ <?xml version="1.0" encoding="UTF-8"?>
 <policyconfig>
 
   <action id="org.freedesktop.policykit.pkexec.run-generate_files">
-    <description>Run FlashTool</description>
+    <description>Run P.E.R.A.C.O.T.T.A.</description>
     <message>Authentication is required to run generate_files</message>
     <defaults>
       <allow_any>no</allow_any>
@@ -84,4 +83,4 @@ if __name__ == '__main__':
     folder_name = "tmp"
     path_to_gen_files_sh = working_directory + "/generate_files.sh"
     print(path_to_gen_files_sh)
-    make_dotfiles(path_to_generate_files_sh = path_to_gen_files_sh)
+    make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
