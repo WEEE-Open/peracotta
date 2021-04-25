@@ -58,7 +58,7 @@ def make_dotfiles(path_to_generate_files_sh: str):
     if not os.path.isfile(path_to_dotpolicy):
         with open(local_path_to_dotpolicy, 'w') as f:
             f.write(dotpolicy_with_path)
-            os.system("x-terminal-emulator -e ./terminal_move.sh")
+            os.system("x-terminal-emulator -e ./move_pkexec_policy_file.sh")
             while not os.path.exists(path_to_dotpolicy):
                 sleep(0.1)
             print(path_to_dotpolicy, "was created!")
