@@ -4,10 +4,9 @@ import sys
 import os
 import subprocess as sp
 import json
-import base64
 import prettyprinter
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout, QLineEdit, QCheckBox, QDesktopWidget
+    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout, QLineEdit, QCheckBox, QDesktopWidget
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor, QStandardItem, QStandardItemModel
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from extract_data import extract_and_collect_data_from_generated_files
@@ -21,7 +20,7 @@ from os import environ as env
 load_dotenv()
 try:
     t_url = env['TARALLO_URL']
-    t_token= env['TARALLO_TOKEN']
+    t_token = env['TARALLO_TOKEN']
 except KeyError:
     raise EnvironmentError("Missing definitions of TARALLO* environment variables (see README)")
 
@@ -33,7 +32,7 @@ gpu_loc_file = "gpu_location.txt"
 
 
 def _go_to_tarallo(str_url):
-    website_link = t_url+str_url
+    website_link = t_url + str_url
     sp.Popen(["xdg-open", website_link])
 
 
@@ -82,7 +81,9 @@ class Welcome(QWidget):
         self.generate_files_button.clicked.connect(lambda: self.prompt_gpu_location(window))
 
         self.load_previously_generated_files_button = QPushButton("Load previously generated files")
-        self.load_previously_generated_files_button.clicked.connect(lambda: self.load_previously_generated_files(window))
+        self.load_previously_generated_files_button.clicked.connect(
+            lambda: self.load_previously_generated_files(window)
+        )
         # by default it's enabled, if one of the expected files does not exist it's disabled
         style_disabled = "background-color:#666677; color:#444444"
 
@@ -153,8 +154,8 @@ class Welcome(QWidget):
         check_dep, _ = sp.getstatusoutput(cmd)
         if check_dep == 1:
             button_reply = QMessageBox.question(self, 'Install dependencies',
-                                               "You need to install some packages in order for the peracotta to work. Do you want to install them?",
-                                               QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                                                "You need to install some packages in order for the peracotta to work. Do you want to install them?",
+                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if button_reply == QMessageBox.Yes:
                 p = sp.Popen([sys.executable, 'Installing.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
                 working_directory = os.getcwd()
@@ -247,7 +248,8 @@ class Welcome(QWidget):
             # noinspection PyArgumentList
             QMessageBox.critical(self, "WTF1", "Have a look at the extent of your huge fuck-up:\n" + str(e))
 
-    def load_previously_generated_files(self, window: QMainWindow):
+    @staticmethod
+    def load_previously_generated_files(window: QMainWindow):
         # if this is called the files surely exist (if not, the button was disabled)
         with open(os.path.join(os.getcwd(), "tmp", gpu_loc_file)) as f:
             gpu_loc = GPU(f.read())
@@ -274,7 +276,8 @@ class FilesGenerated(QWidget):
             has_dedicated_gpu = True
             gpu_in_cpu = False
         self.extract_data_button.clicked.connect(
-            lambda: self.extract_data_from_generated_files(window, has_dedicated_gpu, gpu_in_cpu))
+            lambda: self.extract_data_from_generated_files(window, has_dedicated_gpu, gpu_in_cpu)
+        )
 
         h_box = QHBoxLayout()
         h_box.addStretch()
@@ -322,15 +325,13 @@ class VerifyExtractedData(QWidget):
     def init_ui(self, window: QMainWindow, system_info):
 
         v_box = QVBoxLayout()
-        button_style = "background-color: #006699; padding-left:20px; padding-right:20px; \
-						padding-top:5px; padding-bottom:5px;"
+        button_style = "background-color: #006699; padding-left:20px; padding-right:20px;" \
+                       "padding-top:5px; padding-bottom:5px;"
 
         # proceed to the json - button
         json_button = QPushButton("Proceed to JSON")
         json_button.setStyleSheet(button_style)
         json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
-
-
 
         v_box.addSpacing(20)
 
@@ -374,25 +375,22 @@ class VerifyExtractedData(QWidget):
                 for feature in component.items():
                     if feature[0] != "type":
                         if feature[0] == 'features':
-                            self.list_features(str(feature[1]),new_parent)
+                            self.list_features(str(feature[1]), new_parent)
                         elif feature[0] == 'contents':
-                            self.list_contents(str(feature[1]),new_parent)
+                            self.list_contents(str(feature[1]), new_parent)
                         else:
-                            self.list_data(feature[0], feature[1],new_parent)
+                            self.list_data(feature[0], feature[1], new_parent)
 
             tree.expandAll()
 
             layout_grid.addWidget(tree, 1, index)
             tree.resizeColumnToContents(0)
             v_box.addLayout(layout_grid)
-            #v_box.addSpacing(15)
 
         v_box.addWidget(json_button, alignment=Qt.AlignCenter)
         v_box.addSpacing(20)
 
         self.setLayout(v_box)
-
-
 
     def list_contents(self, feature, parent):
         cont = ast.literal_eval(feature)
@@ -410,13 +408,13 @@ class VerifyExtractedData(QWidget):
             elif k == 'contents':
                 self.list_contents(str(element[k]), new_parent)
 
-
-    def list_features(self,feature,parent):
+    def list_features(self, feature, parent):
         data_dict = ast.literal_eval(feature)
         for key, value in data_dict.items():
-            self.list_data( key, value,parent)
+            self.list_data(key, value, parent)
 
-    def list_data(self, key, value,parent):
+    @staticmethod
+    def list_data(key, value, parent):
         name = key
         if value != "":
             desc = str(prettyprinter.print_feature(key, value))
@@ -426,8 +424,8 @@ class VerifyExtractedData(QWidget):
         child_item = [QStandardItem(name), QStandardItem(desc)]
         parent.appendRow(child_item)
 
-
-    def display_plaintext_data(self, window: QMainWindow, system_info):
+    @staticmethod
+    def display_plaintext_data(window: QMainWindow, system_info):
         window.takeCentralWidget()
         plaintext_widget = PlainTextWidget(window, system_info)
         window.setCentralWidget(plaintext_widget)
@@ -470,22 +468,21 @@ class PlainTextWidget(QWidget):
         layout_grid = QGridLayout()
 
         self.lbl_manual = QLabel("Manual")
-        layout_grid.addWidget(self.lbl_manual, 0, 1,Qt.AlignCenter)
-
+        layout_grid.addWidget(self.lbl_manual, 0, 1, Qt.AlignCenter)
 
         self.clipboard_button = QPushButton("Copy to clipboard")
         self.clipboard_button.setStyleSheet(button_style)
         self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
         self.clipboard_button.clicked.connect(lambda: self.spawn_notification("Copied to clipboard"))
-        layout_grid.addWidget(self.clipboard_button, 1, 1,Qt.AlignCenter)
+        layout_grid.addWidget(self.clipboard_button, 1, 1, Qt.AlignCenter)
 
         self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
         self.website_button.setStyleSheet(button_style)
         self.website_button.clicked.connect(lambda: _go_to_tarallo("/bulk/add"))
-        layout_grid.addWidget(self.website_button, 2, 1,Qt.AlignCenter)
+        layout_grid.addWidget(self.website_button, 2, 1, Qt.AlignCenter)
 
         self.lbl_automatic = QLabel("Automatic")
-        layout_grid.addWidget(self.lbl_automatic, 0, 0,Qt.AlignCenter)
+        layout_grid.addWidget(self.lbl_automatic, 0, 0, Qt.AlignCenter)
 
         self.tarallo_data = QPushButton("Send data to T.A.R.A.L.L.O")
         self.tarallo_data.setStyleSheet(button_style)
@@ -498,7 +495,8 @@ class PlainTextWidget(QWidget):
 
         self.setLayout(v_box)
 
-    def restore_previous_window(self, window: QMainWindow, system_info):
+    @staticmethod
+    def restore_previous_window(window: QMainWindow, system_info):
         window.takeCentralWidget()
         extracted_data_scrollable = VerifyExtractedDataScrollable(window, system_info)
         window.setCentralWidget(extracted_data_scrollable)
@@ -512,12 +510,13 @@ class PlainTextWidget(QWidget):
         self.w = DataToTarallo(system_info)
         self.w.show()
 
+
 class DataToTarallo(QWidget):
-    def __init__(self,system_info):
+    def __init__(self, system_info):
         super().__init__()
         self.showWindow(system_info)
 
-    def showWindow(self,system_info):
+    def showWindow(self, system_info):
         layout = QVBoxLayout()
         self.lbltitle = QLabel("Send data to T.A.R.A.L.L.O")
         self.lblid = QLabel("Bulk identifier: (optional)")
@@ -534,14 +533,13 @@ class DataToTarallo(QWidget):
         self.setLayout(layout)
         self.resize(200, 150)
         sizeObject = QDesktopWidget().screenGeometry(0)
-        self.move(int(sizeObject.width()/2)-100,int(sizeObject.height()/2)-75)
-        self.btnupl.clicked.connect(lambda: self.upload(system_info,self.chbov.isChecked(),self.txtid.text()))
+        self.move(int(sizeObject.width() / 2) - 100, int(sizeObject.height() / 2) - 75)
+        self.btnupl.clicked.connect(lambda: self.upload(system_info, self.chbov.isChecked(), self.txtid.text()))
         self.btncnc.clicked.connect(self.close)
-
 
     def upload(self, system_info, checked, bulkid):
         try:
-            t = Tarallo.Tarallo(t_url,t_token)
+            t = Tarallo.Tarallo(t_url, t_token)
             ver = t.bulk_add(system_info, bulkid, checked)
             self.close()
             if ver:
@@ -575,14 +573,13 @@ class DataToTarallo(QWidget):
             self.close()
 
 
-
 class Notification(QLabel):
     def __init__(self, text):
         super().__init__(text)
+        self.animation = QPropertyAnimation(self, b"windowOpacity")
         self.init_ui(text)
 
     def init_ui(self, text):
-        self.animation = QPropertyAnimation(self, b"windowOpacity")
         self.animation.setDuration(1800)
         self.animation.setStartValue(1.0)
         self.animation.setEndValue(0.0)
