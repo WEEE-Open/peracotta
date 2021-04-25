@@ -1,4 +1,4 @@
-from extract_data import extract_and_collect_data_from_generated_files as get_result
+from main import extract_and_collect_data_from_generated_files as get_result
 import os
 import pytest
 
