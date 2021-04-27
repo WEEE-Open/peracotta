@@ -192,7 +192,8 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         to_res = {k: product.pop(k) for k in both if k in product.keys() and k != "type"}
         to_res["type"] = "P"
         to_res["features"] = {k: v for k, v in product.items() if k not in item_keys or k == "type"}
-        result.append(to_res)
+        if to_res not in result:
+            result.append(to_res)
 
     # tuple = list(dicts), bool
     # result= chassis,mobo ,cpu, dimms, gpu, disks
