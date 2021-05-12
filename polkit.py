@@ -81,6 +81,6 @@ if __name__ == '__main__':
         os.makedirs(os.path.join(working_directory, "tmp"))
 
     folder_name = "tmp"
-    path_to_gen_files_sh = os.path.join(working_directory, "scripts", "/generate_files.sh")
+    path_to_gen_files_sh = os.path.join(working_directory, "scripts", "generate_files.sh")
     print(path_to_gen_files_sh)
     make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
