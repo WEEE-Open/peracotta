@@ -8,6 +8,10 @@ import os
 import fnmatch
 import random
 from datetime import datetime
+from pytarallo import Tarallo
+from pytarallo.Errors import NoInternetConnectionError
+from dotenv import load_dotenv
+from os import environ as env
 
 from rich import print
 from rich.console import Console
@@ -367,6 +371,7 @@ def run_extract_data(path, args):
     except InputFileNotFoundError as e:
         print(str(e))
         exit(1)
+    return data
 
 
 def check_required_files(path):
@@ -416,6 +421,50 @@ def open_default_browser():
     else:
         print(f"Finished successfully! Now you can add this output to T.A.R.A.L.L.O {web_link}")
 
+def upload(jsoned):
+    ans = input(
+        "Do you want to automatically upload the json to T.A.R.A.L.L.O ? (y/N): ").lower().rstrip()
+
+    if ans == 'y':
+        load_dotenv()
+        try:
+            t_url = env['TARALLO_URL']
+            t_token = env['TARALLO_TOKEN']
+        except KeyError:
+            raise EnvironmentError("[red]Missing definitions of TARALLO* environment variables (see README)[/]")
+
+        try:
+            bulk_id = input(
+                            "Add an identifier, please (optional): ").rstrip()
+            t = Tarallo.Tarallo(t_url, t_token)
+            ver = t.bulk_add(jsoned, bulk_id, False)
+            if ver is True:
+                print("All went fine")
+            elif ver is False:
+                overwrite = input(
+                    "Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
+                if overwrite == 'y':
+                    ver = t.bulk_add(jsoned, bulk_id, True)
+                    if ver is True:
+                        print("All went fine")
+                    elif ver is False:
+                        print("Upload didn't went well. Check above and try to upload on your own")
+                else:
+                    bulk_id = input("Do you want to use another identifier? Just press enter for an automatic one."
+                               "You choose (New_id/n): ").rstrip()
+                    if bulk_id not in ('n', 'N'):
+                        ver = t.bulk_add(jsoned, bulk_id, True)
+                        if ver is True:
+                            print("All went fine")
+                        elif ver is False:
+                            print("Upload didn't went well. Check above and try to upload on your own")
+
+        except NoInternetConnectionError:
+            print("Unable to reach T.A.R.A.L.L.O")
+
+
+
+
 
 def main(args):
     if args.gui:
@@ -430,7 +479,7 @@ def main(args):
         path = os.path.join(os.getcwd(), args.files)
         check_required_files(path)
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
-        run_extract_data(path, args)
+        final_output = run_extract_data(path, args)
 
     else:
         if args.path is None:
@@ -466,8 +515,10 @@ def main(args):
 
         # file generated, extract data next
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
-        run_extract_data(path, args)
+        final_output = run_extract_data(path, args)
+
     open_default_browser()
+    upload(final_output)
 
 
 if __name__ == '__main__':
@@ -497,4 +548,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    main(args)
+    try:
+        main(args)
+    except KeyboardInterrupt:
+        print("\n [blue]Quitting.........\nDone")
