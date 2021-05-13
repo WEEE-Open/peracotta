@@ -32,7 +32,7 @@ local_path_to_dotpolicy = "./generate_files_pkexec.policy"
 # path to generate_files.sh in between dquotes
 # this should be saved as ./generate_files.pkexec
 dotpkexec_content = """#!/bin/sh
-pkexec "" "$@"
+pkexec "" $(readlink -f "$@")
 """
 path_to_dotpkexec = "./generate_files.pkexec"
 
