@@ -7,7 +7,7 @@ Base Board Information
 	Manufacturer: Apple Inc.
 	Product Name: Mac-937A206F2EE63C01
 	Version: MacBookPro15,1
-	Serial Number: ***REMOVED***
+	Serial Number: C0290440002JP5P1T
 	Asset Tag:  
 	Features:
 		Board is a hosting board

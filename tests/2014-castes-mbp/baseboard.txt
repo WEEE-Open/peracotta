@@ -7,7 +7,7 @@ Base Board Information
 	Manufacturer: Apple Inc.
 	Product Name: Mac-2BD1B31983FE1663
 	Version: MacBookPro11,3
-	Serial Number: ***REMOVED***
+	Serial Number: C02433601ECG3MK13
 	Asset Tag: Base Board Asset Tag#
 	Features:
 		Board is a hosting board

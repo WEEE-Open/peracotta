@@ -53,7 +53,7 @@ def test_baseboard():
 		"working": "yes",
 		'brand': 'Apple Inc.',
 		'model': 'Mac-937A206F2EE63C01',
-		'sn': '***REMOVED***'
+		'sn': 'C0290440002JP5P1T'
 	}
 	output = read_dmidecode.get_baseboard(os.path.join(filedir, 'baseboard.txt'))
 
@@ -68,7 +68,7 @@ def test_connector():
 		"working": "yes",
 		'brand': 'Apple Inc.',
 		'model': 'Mac-937A206F2EE63C01',
-		'sn': '***REMOVED***',
+		'sn': 'C0290440002JP5P1T',
 		'usb-ports-n': 2,
 		'mini-jack-ports-n': 1,
 		'thunderbolt-ports-n': 1,

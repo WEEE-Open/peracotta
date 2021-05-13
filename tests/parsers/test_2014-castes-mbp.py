@@ -53,7 +53,7 @@ def test_baseboard():
 		"working": "yes",
 		'brand': 'Apple Inc.',
 		'model': 'Mac-2BD1B31983FE1663',
-		'sn': '***REMOVED***'
+		'sn': 'C02433601ECG3MK13'
 	}
 	output = read_dmidecode.get_baseboard(os.path.join(filedir, 'baseboard.txt'))
 
@@ -68,7 +68,7 @@ def test_connector():
 		"working": "yes",
 		'brand': 'Apple Inc.',
 		'model': 'Mac-2BD1B31983FE1663',
-		'sn': '***REMOVED***',
+		'sn': 'C02433601ECG3MK13',
 		'usb-ports-n': 3,
 		'mini-jack-ports-n': 1,
 		'hdmi-ports-n': 1,
@@ -101,7 +101,7 @@ def test_smartctl():
 			'brand': 'Apple',
 			'family': 'SD/SM/TS...E/F/G SSDs',
 			'model': 'SM0512F',
-			'sn': '***REMOVED***',
+			'sn': 'S1K5NYCF740776',
 			'capacity-byte': 500000000000,
 			'wwn': '5 002538 655584d30',
 			'smart-data': 'ok',
