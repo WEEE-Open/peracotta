@@ -56,24 +56,18 @@ def make_dotfiles(path_to_generate_files_sh: str):
     # print()
     # print(dotpkexec_with_path)
 
-    if not os.path.isfile(path_to_dotpolicy):
-        with open(local_path_to_dotpolicy, 'w') as f:
-            f.write(dotpolicy_with_path)
-            os.system("x-terminal-emulator -e ./scripts/move_pkexec_policy_file.sh")
-            while not os.path.exists(path_to_dotpolicy):
-                sleep(0.1)
-            print(path_to_dotpolicy, "was created!")
-    else:
-        print(path_to_dotpolicy, "already existed.")
+    with open(local_path_to_dotpolicy, 'w') as f:
+        f.write(dotpolicy_with_path)
+        os.system("x-terminal-emulator -e ./scripts/move_pkexec_policy_file.sh")
+        while not os.path.exists(path_to_dotpolicy):
+            sleep(0.1)
+        print(path_to_dotpolicy, "was created!")
 
-    if not os.path.isfile(path_to_dotpkexec):
-        with open(path_to_dotpkexec, 'w') as f:
-            f.write(dotpkexec_with_path)
-            # make file executable -- octal is needed
-            os.chmod(path_to_dotpkexec, 0o776)
-            print(path_to_dotpkexec, "was created!")
-    else:
-        print(path_to_dotpkexec, "already existed.")
+    with open(path_to_dotpkexec, 'w') as f:
+        f.write(dotpkexec_with_path)
+        # make file executable -- octal is needed
+        os.chmod(path_to_dotpkexec, 0o776)
+        print(path_to_dotpkexec, "was created!")
 
 
 if __name__ == '__main__':
