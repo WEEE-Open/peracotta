@@ -8,6 +8,10 @@ import os
 import fnmatch
 import random
 from datetime import datetime
+from pytarallo import Tarallo
+from pytarallo.Errors import NoInternetConnectionError
+from dotenv import load_dotenv
+from os import environ as env
 
 from rich import print
 from rich.console import Console
@@ -18,6 +22,19 @@ from parsers.read_lscpu import read_lscpu
 from parsers.read_decode_dimms import read_decode_dimms
 from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from parsers.read_smartctl import read_smartctl
+
+
+def is_product(component: dict):
+    # check if brand and model exist
+    if "brand" not in component or "model" not in component:
+        return False
+    # check if brand or model has a not valid value
+    candidates = [component["brand"].lower(), component["model"].lower()]
+    for candidate in candidates:
+        if isinstance(candidate, str) and candidate in ("", "null", "unknown", "undefined", "no enclosure"):
+            return False
+    # if all conditions are False, the product should be added
+    return True
 
 
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
@@ -54,18 +71,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         for wifi_card in mobo[1:]:
             wifi_cards.append(wifi_card)
         mobo = mobo[0]
-
-    def is_product(component: dict):
-        # check if brand and model exist
-        if "brand" not in component.keys() or "model" not in component.keys():
-            return False
-        # check if brand or model has a not valid value
-        candidates = [component["brand"].lower(), component["model"].lower()]
-        for candidate in candidates:
-            if isinstance(candidate, str) and candidate in ("", "null", "unknown", "undefined", "no enclosure"):
-                return False
-        # if all conditions are False, the product should be added
-        return True
 
     def normalize_brands(coll_dict):
         names = {}
@@ -293,7 +298,7 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui:
         # return JSON ready for TARALLO
         if unpack:
             if isinstance(component, list):
-                if component.__len__() == 0:
+                if len(component) == 0:
                     result.append(empty_dict)
                     continue
                 for item in component:
@@ -302,13 +307,38 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui:
                 result.append(component)
         # return list of lists of dicts to use in extract_and_collect_data_from_generated_files() for long output
         else:
-            if component.__len__() == 0:
+            if len(component) == 0:
                 result.append(empty_dict)
             else:
                 result.append(component)
 
         result = do_cleanup(result, gui, verbose)
 
+    # check on case and mobo
+    try:
+        if (chassis['model'], chassis['brand'], chassis['variant']) == (mobo['brand'], mobo['model'], mobo['variant']):
+            chassis.pop('model')
+    except KeyError:
+        pass
+
+    # maybe there's a nicer way
+    comparator = []
+    for comp in result:
+        if isinstance(comp, list):
+            comparator = comparator + comp
+        else:
+            comparator.append(comp)
+
+    # avoid bad associations between items and products
+    for comp1 in comparator:
+        for comp2 in comparator:
+            if is_product(comp1) and is_product(comp2) and comp1['type'] != comp2['type']:
+                if (comp1['brand'], comp2['model']) == (comp2['brand'], comp2['model']):
+                    variant1 = comp1.pop('variant', '')
+                    variant2 = comp2.pop('variant', '')
+                    if variant1 == variant2:
+                        comp1['variant'] = variant1.rstrip().join(f"_{comp1['type']}")
+                        comp2['variant'] = variant2.rstrip().join(f"_{comp2['type']}")
     return result
 
 
@@ -367,6 +397,7 @@ def run_extract_data(path, args):
     except InputFileNotFoundError as e:
         print(str(e))
         exit(1)
+    return data
 
 
 def check_required_files(path):
@@ -395,11 +426,11 @@ def check_and_install_dependencies():
             else:
                 os.system(f"/bin/bash/ -c {install_cmd}")
         else:
-            print("Quitting...")
+            print("[blue]Quitting...[/]")
             exit(-1)
 
 
-def open_default_browser():
+def prompt_to_open_browser():
     import base64
     web_link = "aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="
     web_link = base64.b64decode(web_link).decode('ascii').rstrip()
@@ -414,7 +445,54 @@ def open_default_browser():
             egg.print(word, end=" ", style=f"rgb({red},{green},{blue})")
         egg.print(web_link)
     else:
-        print(f"Finished successfully! Now you can add this output to T.A.R.A.L.L.O {web_link}")
+        print(f"[green]Finished successfully![/] Now you can add this output to the T.A.R.A.L.L.O. -> {web_link}")
+
+
+def upload(jsoned):
+    msg_upload_ok = "All went fine"
+    msg_upload_failed = "The upload failed. Check above and try to upload on your own"
+
+    ans = input("Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): ").lower().rstrip()
+
+    if ans.lower() == 'n':
+        print("\nBye bye! 🍐\n")
+        return
+
+    try:
+        load_dotenv()
+        t_url = env['TARALLO_URL']
+        t_token = env['TARALLO_TOKEN']
+    except KeyError:
+        raise EnvironmentError("[red]Missing definitions of TARALLO* environment variables (see the README)[/]")
+
+    while True:
+        try:
+            bulk_id = input("Please enter a bulk identifier (optional): ").rstrip()
+            t = Tarallo.Tarallo(t_url, t_token)
+            ver = t.bulk_add(jsoned, bulk_id, False)
+            if ver:
+                print(msg_upload_ok)
+            else:
+                overwrite = input("Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
+                if overwrite.lower() == 'y':
+                    ver = t.bulk_add(jsoned, bulk_id, True)
+                    if ver:
+                        print(msg_upload_ok)
+                    else:
+                        print(msg_upload_failed)
+                else:
+                    bulk_id = input("Do you want to use another identifier? Just press enter for an automatic one. "
+                                    "You choose (NEW_ID/n): ").rstrip()
+                    if bulk_id.lower() != "n":
+                        ver = t.bulk_add(jsoned, bulk_id, True)
+                        if ver:
+                            print(msg_upload_ok)
+                        else:
+                            print(msg_upload_failed)
+
+        except NoInternetConnectionError:
+            print("\n[yellow]Unable to reach the T.A.R.A.L.L.O. "
+                  "Please connect this PC to the Internet and try again.[/]\n")
 
 
 def main(args):
@@ -430,7 +508,7 @@ def main(args):
         path = os.path.join(os.getcwd(), args.files)
         check_required_files(path)
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
-        run_extract_data(path, args)
+        final_output = run_extract_data(path, args)
 
     else:
         if args.path is None:
@@ -445,7 +523,7 @@ def main(args):
                         path = os.getcwd()
                         print("Outputting files to working directory...")
                     else:
-                        print("Quitting...")
+                        print("[blue]Quitting...[/]")
                         exit(-1)
             else:
                 os.mkdir(path)
@@ -466,8 +544,10 @@ def main(args):
 
         # file generated, extract data next
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
-        run_extract_data(path, args)
-    open_default_browser()
+        final_output = run_extract_data(path, args)
+
+    prompt_to_open_browser()
+    upload(final_output)
 
 
 if __name__ == '__main__':
@@ -497,4 +577,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    main(args)
+    try:
+        main(args)
+    except KeyboardInterrupt:
+        print("\n[blue]Quitting...[/]")
