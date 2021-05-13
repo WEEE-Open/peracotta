@@ -314,6 +314,13 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui:
 
         result = do_cleanup(result, gui, verbose)
 
+    #check on case and mobo
+    try:
+        if (chassis['model'], chassis['brand'], chassis['variant']) == (mobo['brand'], mobo['model'], mobo['variant']):
+            chassis.pop('model')
+    except KeyError:
+        pass
+
     #maybe there's a nicer way
     comparator = []
     for comp in result:
