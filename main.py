@@ -24,6 +24,19 @@ from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from parsers.read_smartctl import read_smartctl
 
 
+def is_product(component: dict):
+    # check if brand and model exist
+    if "brand" not in component.keys() or "model" not in component.keys():
+        return False
+    # check if brand or model has a not valid value
+    candidates = [component["brand"].lower(), component["model"].lower()]
+    for candidate in candidates:
+        if isinstance(candidate, str) and candidate in ("", "null", "unknown", "undefined", "no enclosure"):
+            return False
+    # if all conditions are False, the product should be added
+    return True
+
+
 def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
                                                   verbose: bool = False, gui: bool = True):
     directory = directory.rstrip('/')
@@ -58,18 +71,6 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
         for wifi_card in mobo[1:]:
             wifi_cards.append(wifi_card)
         mobo = mobo[0]
-
-    def is_product(component: dict):
-        # check if brand and model exist
-        if "brand" not in component.keys() or "model" not in component.keys():
-            return False
-        # check if brand or model has a not valid value
-        candidates = [component["brand"].lower(), component["model"].lower()]
-        for candidate in candidates:
-            if isinstance(candidate, str) and candidate in ("", "null", "unknown", "undefined", "no enclosure"):
-                return False
-        # if all conditions are False, the product should be added
-        return True
 
     def normalize_brands(coll_dict):
         names = {}
@@ -313,6 +314,24 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui:
 
         result = do_cleanup(result, gui, verbose)
 
+    #maybe there's a nicer way
+    comparator = []
+    for comp in result:
+        if isinstance(comp, list):
+            comparator = comparator + comp
+        else:
+            comparator.append(comp)
+
+    #avoid bad associations between items and products
+    for comp1 in comparator:
+        for comp2 in comparator:
+            if is_product(comp1) and is_product(comp2) and comp1['type'] != comp2['type']:
+                if (comp1['brand'], comp2['model']) == (comp2['brand'], comp2['model']):
+                    variant1 = comp1.pop('variant', '')
+                    variant2 = comp2.pop('variant', '')
+                    if variant1 == variant2:
+                        comp1['variant'] = variant1.rstrip().join(f"_{comp1['type']}")
+                        comp2['variant'] = variant2.rstrip().join(f"_{comp2['type']}")
     return result
 
 
