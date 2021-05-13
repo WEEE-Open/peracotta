@@ -31,7 +31,7 @@ local_path_to_dotpolicy = "./generate_files_pkexec.policy"
 
 # path to generate_files.sh in between dquotes
 # this should be saved as ./generate_files.pkexec
-dotpkexec_content = """#!/bin/sh
+dotpkexec_content = """#!/bin/bash
 [[ $# -eq 0 ]] && OUT="." || OUT="$@"
 pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY "" $(readlink -f "$OUT")
 """
