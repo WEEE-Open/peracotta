@@ -33,14 +33,14 @@ local_path_to_dotpolicy = "./generate_files_pkexec.policy"
 # this should be saved as ./generate_files.pkexec
 dotpkexec_content = """#!/bin/bash
 [[ $# -eq 0 ]] && OUT="." || OUT="$@"
-pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY "" $(readlink -f "$OUT")
+pkexec "" $(readlink -f "$OUT")
 """
 path_to_dotpkexec = "./generate_files.pkexec"
 
 
 def make_dotfiles(path_to_generate_files_sh: str):
     dotpolicy_split = '<annotate key="org.freedesktop.policykit.exec.path">'
-    dotpkexec_split = '$XAUTHORITY "'
+    dotpkexec_split = 'pkexec "'
 
     dotpolicy_with_path = dotpolicy_content.split(dotpolicy_split)[0] + \
                           dotpolicy_split + \
