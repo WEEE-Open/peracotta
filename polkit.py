@@ -40,7 +40,7 @@ path_to_dotpkexec = "./generate_files.pkexec"
 
 def make_dotfiles(path_to_generate_files_sh: str):
     dotpolicy_split = '<annotate key="org.freedesktop.policykit.exec.path">'
-    dotpkexec_split = 'pkexec "'
+    dotpkexec_split = '$XAUTHORITY "'
 
     dotpolicy_with_path = dotpolicy_content.split(dotpolicy_split)[0] + \
                           dotpolicy_split + \
