@@ -4,21 +4,21 @@ from time import sleep
 # launch script with: ./generate_files.pkexec /path/to/tmp
 
 # in annotate key path to generate_files.sh
-# this should be saved as /usr/share/polkit-1/actions/generate_files_pkexec.policy
-dotpolicy_content = """ <?xml version="1.0" encoding="UTF-8"?>
+# this should be saved as /usr/share/polkit-1/actions/it.weeeopen.peracotta.generate-files.policy
+dotpolicy_content = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE policyconfig PUBLIC
  "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
 
 <policyconfig>
 
-  <action id="org.freedesktop.policykit.pkexec.run-generate_files">
+  <action id="it.weeeopen.peracotta.generate-files">
     <description>Run P.E.R.A.C.O.T.T.A.</description>
     <message>Authentication is required to run generate_files</message>
     <defaults>
-      <allow_any>no</allow_any>
-      <allow_inactive>no</allow_inactive>
-      <allow_active>auth_admin_keep</allow_active>
+      <allow_any>yes</allow_any>
+      <allow_inactive>yes</allow_inactive>
+      <allow_active>yes</allow_active>
     </defaults>
     <annotate key="org.freedesktop.policykit.exec.path"></annotate>
     <annotate key="org.freedesktop.policykit.exec.allow_gui">TRUE</annotate>
@@ -26,8 +26,8 @@ dotpolicy_content = """ <?xml version="1.0" encoding="UTF-8"?>
 
 </policyconfig>
 """
-path_to_dotpolicy = "/usr/share/polkit-1/actions/generate_files_pkexec.policy"
-local_path_to_dotpolicy = "./generate_files_pkexec.policy"
+path_to_dotpolicy = "/usr/share/polkit-1/actions/it.weeeopen.peracotta.generate-files.policy"
+local_path_to_dotpolicy = "./it.weeeopen.peracotta.generate-files.policy"
 
 # path to generate_files.sh in between dquotes
 # this should be saved as ./generate_files.pkexec
