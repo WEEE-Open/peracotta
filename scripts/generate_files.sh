@@ -9,8 +9,9 @@ if [ $# -eq 0 ]; then
     echo "No path given: outputting files to working directory"
     OUTPATH="."
 elif [ $# -eq 1 ]; then
-    echo "Outputting files to "$1
-    OUTPATH=$1
+    echo "Outputting files to $1"
+    # if path is absolute, use it, otherwise enforce relative path for pkexec to prevent /root/tmp
+    [[ $1 =~ ^/ ]] && OUTPATH=$1 || OUTPATH="./$1"
 else
     echo -n "Unexpected number of parameters.\nUsage: sudo ./generate_files.sh /optional/path/to/files"
 fi
