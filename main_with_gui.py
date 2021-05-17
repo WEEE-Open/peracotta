@@ -78,11 +78,11 @@ class Welcome(QWidget):
 
         self.generate_files_button = QPushButton("Generate Files")
         # noinspection PyUnresolvedReferences
-        self.generate_files_button.clicked.connect(lambda: self.prompt_gpu_location(window))
+        self.generate_files_button.clicked.connect(lambda: self.prompt_gpu_location(window, False))
 
         self.load_previously_generated_files_button = QPushButton("Load previously generated files")
         self.load_previously_generated_files_button.clicked.connect(
-            lambda: self.load_previously_generated_files(window)
+            lambda: self.load_previously_generated_files(self, window)
         )
         # by default it's enabled, if one of the expected files does not exist it's disabled
         style_disabled = "background-color:#666677; color:#444444"
@@ -167,7 +167,7 @@ class Welcome(QWidget):
         if check_dep == 1 and button_reply == QMessageBox.Yes:
             p.terminate()
 
-    def prompt_gpu_location(self, window: QMainWindow):
+    def prompt_gpu_location(self, window: QMainWindow, load_files):
         # TODO: allow NO as an answer
         self.check_install_dependencies(window)
         while True:
@@ -185,8 +185,11 @@ class Welcome(QWidget):
                                                "Do you confirm this system has the GPU integrated in the CPU?",
                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if confirm == QMessageBox.Yes:
-                    self.generate_files(window, gpu_loc=GPU.int_cpu)
-                    break
+                    if load_files:
+                        return GPU.int_cpu
+                    else:
+                        self.generate_files(window, gpu_loc=GPU.int_cpu)
+                        break
                 else:
                     continue
             elif answer.clickedButton() == btnmobo:
@@ -195,8 +198,11 @@ class Welcome(QWidget):
                                                "Do you confirm this system has the GPU integrated in the motherboard?",
                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if confirm == QMessageBox.Yes:
-                    self.generate_files(window, gpu_loc=GPU.int_mobo)
-                    break
+                    if load_files:
+                        return GPU.int_mobo
+                    else:
+                        self.generate_files(window, gpu_loc=GPU.int_mobo)
+                        break
                 else:
                     continue
             else:
@@ -204,8 +210,11 @@ class Welcome(QWidget):
                                                "Do you confirm this system has a dedicated GPU?",
                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if confirm == QMessageBox.Yes:
-                    self.generate_files(window, gpu_loc=GPU.dec_gpu)
-                    break
+                    if load_files:
+                        return GPU.dec_gpu
+                    else:
+                        self.generate_files(window, gpu_loc=GPU.dec_gpu)
+                        break
                 else:
                     continue
 
@@ -249,8 +258,18 @@ class Welcome(QWidget):
             QMessageBox.critical(self, "WTF1", "Have a look at the extent of your huge fuck-up:\n" + str(e))
 
     @staticmethod
-    def load_previously_generated_files(window: QMainWindow):
-        # if this is called the files surely exist (if not, the button was disabled)
+    def load_previously_generated_files(self, window: QMainWindow):
+        gpu_file = False
+        cwd = os.getcwd()
+        tmp_path = os.path.join(cwd, "tmp")
+        for existing_file in os.listdir(tmp_path):
+            if existing_file == gpu_loc_file:
+                gpu_file = True
+        if not gpu_file:
+            folder_name = "tmp"
+            gpu_loc = self.prompt_gpu_location(window, True)
+            with open(os.path.join(folder_name, gpu_loc_file), "w") as f:
+                f.write(gpu_loc.value)
         with open(os.path.join(os.getcwd(), "tmp", gpu_loc_file)) as f:
             gpu_loc = GPU(f.read())
         window.takeCentralWidget()
@@ -369,7 +388,7 @@ class VerifyExtractedData(QWidget):
                 index = 0
             else:
                 index = 1
-                name = component['features'].get('type', 'Unknown component').upper()
+                name = component['features'].pop('type', '_').upper()
                 parent.appendRow([QStandardItem(name), QStandardItem('')])
                 new_parent = parent.child(parent.rowCount() - 1)
                 for feature in component.items():
@@ -398,7 +417,7 @@ class VerifyExtractedData(QWidget):
             self.list_element(element, parent)
 
     def list_element(self, element, parent):
-        name = element['features'].get('type', 'Unknown component').upper()
+        name = element['features'].pop('type', '_').upper()
         parent.appendRow([QStandardItem(name), QStandardItem('')])
         new_parent = parent.child(parent.rowCount() - 1)
         key = list(element.keys())
@@ -411,8 +430,6 @@ class VerifyExtractedData(QWidget):
     def list_features(self, feature, parent):
         data_dict = ast.literal_eval(feature)
         for key, value in data_dict.items():
-            if key == 'type':
-                continue
             self.list_data(key, value, parent)
 
     @staticmethod
