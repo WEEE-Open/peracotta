@@ -38,6 +38,13 @@ echo Found ${#DISKZ[@]} disks
 for d in "${DISKZ[@]}"; do
 	smartctl -x /dev/$d > "$OUTPATH/smartctl-dev-$d.txt"
 done
+
+#Add an empty file if no disk is detected
+if ${#DISKZ[@]} -eq 0
+then
+touch "$OUTPATH/smartctl-dev-nodisk.txt"
+fi
+
 # Already done on our custom distro, but repetita iuvant
 modprobe at24
 modprobe eeprom
