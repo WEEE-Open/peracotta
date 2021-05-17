@@ -6,10 +6,6 @@ jobs:
   run-linters:
     name: Run linters
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ '3.6', '3.7', '3.8', '3.9' ]
-
     steps:
       - name: Checkout git repo
         uses: actions/checkout@v2
@@ -17,7 +13,7 @@ jobs:
       - name: Set up Python version ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
           architecture: x64
 
       - name: Install Python dependencies
