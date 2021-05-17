@@ -126,7 +126,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     result = [new_chassis]
 
     # mount the cpu
-    if len(cpu) != 0:
+    if len(cpu) > 0:
         if isinstance(cpu, list):
             for one_cpu in cpu:
                 if is_product(one_cpu):
@@ -145,7 +145,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     # adding some ram
     if isinstance(dimms, list):
         for dimm in dimms:
-            if is_product(dimm):
+            if len(dimm) > 0 and is_product(dimm):
                 products.append(dimm)
                 new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in both + item_keys}})
             else:
