@@ -1,0 +1,193 @@
+00:00.0 Host bridge: Intel Corporation 2nd Generation Core Processor Family DRAM Controller (rev 09)
+	Subsystem: ASUSTeK Computer Inc. P8P67/P8H67 Series Motherboard
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=0c <?>
+	Kernel driver in use: snb_uncore
+
+00:01.0 PCI bridge: Intel Corporation Xeon E3-1200/2nd Generation Core Processor Family PCI Express Root Port (rev 09) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 24
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: 0000e000-0000efff
+	Memory behind bridge: f8000000-fa0fffff
+	Prefetchable memory behind bridge: 00000000e8000000-00000000f3ffffff
+	Capabilities: [88] Subsystem: ASUSTeK Computer Inc. Xeon E3-1200/2nd Generation Core Processor Family PCI Express Root Port
+	Capabilities: [80] Power Management version 3
+	Capabilities: [90] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [a0] Express Root Port (Slot+), MSI 00
+	Capabilities: [100] Virtual Channel
+	Capabilities: [140] Root Complex Link
+	Kernel driver in use: pcieport
+
+00:16.0 Communication controller: Intel Corporation 6 Series/C200 Series Chipset Family MEI Controller #1 (rev 04)
+	Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Flags: bus master, fast devsel, latency 0, IRQ 40
+	Memory at fa204000 (64-bit, non-prefetchable) [size=16]
+	Capabilities: [50] Power Management version 3
+	Capabilities: [8c] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Kernel driver in use: mei_me
+	Kernel modules: mei_me
+
+00:1a.0 USB controller: Intel Corporation 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #2 (rev 05) (prog-if 20 [EHCI])
+	Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Flags: bus master, medium devsel, latency 0, IRQ 23
+	Memory at fa203000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] Debug port: BAR=1 offset=00a0
+	Capabilities: [98] PCI Advanced Features
+	Kernel driver in use: ehci-pci
+	Kernel modules: ehci_pci
+
+00:1c.0 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 1 (rev b5) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=0
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Capabilities: [a0] Power Management version 2
+	Kernel driver in use: pcieport
+
+00:1c.4 PCI bridge: Intel Corporation 82801 PCI Bridge (rev b5) (prog-if 01 [Subtractive decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 10
+	Bus: primary=00, secondary=03, subordinate=04, sec-latency=0
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable- Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Capabilities: [a0] Power Management version 2
+
+00:1c.5 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 6 (rev b5) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 26
+	Bus: primary=00, secondary=05, subordinate=05, sec-latency=0
+	I/O behind bridge: 0000d000-0000dfff
+	Memory behind bridge: e4000000-e40fffff
+	Prefetchable memory behind bridge: 00000000f4100000-00000000f41fffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Capabilities: [a0] Power Management version 2
+	Kernel driver in use: pcieport
+
+00:1c.6 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 7 (rev b5) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 27
+	Bus: primary=00, secondary=06, subordinate=06, sec-latency=0
+	Memory behind bridge: fa100000-fa1fffff
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: ASUSTeK Computer Inc. 6 Series/C200 Series Chipset Family PCI Express Root Port 7
+	Capabilities: [a0] Power Management version 2
+	Kernel driver in use: pcieport
+
+00:1c.7 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 8 (rev b5) (prog-if 00 [Normal decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 28
+	Bus: primary=00, secondary=07, subordinate=07, sec-latency=0
+	Capabilities: [40] Express Root Port (Slot+), MSI 00
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [90] Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Capabilities: [a0] Power Management version 2
+	Kernel driver in use: pcieport
+
+00:1d.0 USB controller: Intel Corporation 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #1 (rev 05) (prog-if 20 [EHCI])
+	Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Flags: bus master, medium devsel, latency 0, IRQ 23
+	Memory at fa202000 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: [50] Power Management version 2
+	Capabilities: [58] Debug port: BAR=1 offset=00a0
+	Capabilities: [98] PCI Advanced Features
+	Kernel driver in use: ehci-pci
+	Kernel modules: ehci_pci
+
+00:1f.0 ISA bridge: Intel Corporation H67 Express Chipset Family LPC Controller (rev 05)
+	Subsystem: ASUSTeK Computer Inc. P8H67 Series Motherboard
+	Flags: bus master, medium devsel, latency 0
+	Capabilities: [e0] Vendor Specific Information: Len=0c <?>
+	Kernel driver in use: lpc_ich
+	Kernel modules: lpc_ich
+
+00:1f.2 SATA controller: Intel Corporation 6 Series/C200 Series Chipset Family SATA AHCI Controller (rev 05) (prog-if 01 [AHCI 1.0])
+	Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 30
+	I/O ports at f070 [size=8]
+	I/O ports at f060 [size=4]
+	I/O ports at f050 [size=8]
+	I/O ports at f040 [size=4]
+	I/O ports at f020 [size=32]
+	Memory at fa201000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: [80] MSI: Enable+ Count=1/1 Maskable- 64bit-
+	Capabilities: [70] Power Management version 3
+	Capabilities: [a8] SATA HBA v1.0
+	Capabilities: [b0] PCI Advanced Features
+	Kernel driver in use: ahci
+	Kernel modules: ahci
+
+00:1f.3 SMBus: Intel Corporation 6 Series/C200 Series Chipset Family SMBus Controller (rev 05)
+	Subsystem: ASUSTeK Computer Inc. P8 series motherboard
+	Flags: medium devsel, IRQ 18
+	Memory at fa200000 (64-bit, non-prefetchable) [size=256]
+	I/O ports at f000 [size=32]
+	Kernel driver in use: i801_smbus
+	Kernel modules: i2c_i801
+
+01:00.0 VGA compatible controller: NVIDIA Corporation GF106 [GeForce GTS 450] (rev a1) (prog-if 00 [VGA controller])
+	Subsystem: ASUSTeK Computer Inc. GF106 [GeForce GTS 450]
+	Flags: bus master, fast devsel, latency 0, IRQ 39
+	Memory at f8000000 (32-bit, non-prefetchable) [size=32M]
+	Memory at e8000000 (64-bit, prefetchable) [size=128M]
+	Memory at f0000000 (64-bit, prefetchable) [size=64M]
+	I/O ports at e000 [size=128]
+	Expansion ROM at 000c0000 [disabled] [size=128K]
+	Capabilities: [60] Power Management version 3
+	Capabilities: [68] MSI: Enable+ Count=1/1 Maskable- 64bit+
+	Capabilities: [78] Express Endpoint, MSI 00
+	Capabilities: [b4] Vendor Specific Information: Len=14 <?>
+	Capabilities: [100] Virtual Channel
+	Capabilities: [128] Power Budgeting <?>
+	Capabilities: [600] Vendor Specific Information: ID=0001 Rev=1 Len=024 <?>
+	Kernel driver in use: nouveau
+	Kernel modules: nouveau
+
+01:00.1 Audio device: NVIDIA Corporation GF106 High Definition Audio Controller (rev a1)
+	Subsystem: ASUSTeK Computer Inc. GF106 High Definition Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 17
+	Memory at fa080000 (32-bit, non-prefetchable) [size=16K]
+	Capabilities: [60] Power Management version 3
+	Capabilities: [68] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [78] Express Endpoint, MSI 00
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+
+03:00.0 PCI bridge: ASMedia Technology Inc. ASM1083/1085 PCIe to PCI Bridge (rev 01) (prog-if 01 [Subtractive decode])
+	Flags: bus master, fast devsel, latency 0, IRQ 10
+	Bus: primary=03, secondary=04, subordinate=04, sec-latency=32
+	Capabilities: [c0] Subsystem: ASUSTeK Computer Inc. ASM1083/1085 PCIe to PCI Bridge
+
+05:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller (rev 03)
+	Subsystem: ASUSTeK Computer Inc. M4A785TD Motherboard
+	Flags: bus master, fast devsel, latency 0, IRQ 17
+	I/O ports at d000 [size=256]
+	Memory at f4104000 (64-bit, prefetchable) [size=4K]
+	Memory at f4100000 (64-bit, prefetchable) [size=16K]
+	[virtual] Expansion ROM at e4000000 [disabled] [size=64K]
+	Capabilities: [40] Power Management version 3
+	Capabilities: [50] MSI: Enable- Count=1/1 Maskable- 64bit+
+	Capabilities: [70] Express Endpoint, MSI 01
+	Capabilities: [ac] MSI-X: Enable+ Count=4 Masked-
+	Capabilities: [cc] Vital Product Data
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Virtual Channel
+	Capabilities: [160] Device Serial Number 00-00-00-00-00-00-00-00
+	Kernel driver in use: r8169
+	Kernel modules: r8169
+
+06:00.0 USB controller: NEC Corporation uPD720200 USB 3.0 Host Controller (rev 03) (prog-if 30 [XHCI])
+	Subsystem: ASUSTeK Computer Inc. P8P67 Deluxe Motherboard
+	Flags: bus master, fast devsel, latency 0, IRQ 18
+	Memory at fa100000 (64-bit, non-prefetchable) [size=8K]
+	Capabilities: [50] Power Management version 3
+	Capabilities: [70] MSI: Enable- Count=1/8 Maskable- 64bit+
+	Capabilities: [90] MSI-X: Enable+ Count=8 Masked-
+	Capabilities: [a0] Express Endpoint, MSI 00
+	Capabilities: [100] Advanced Error Reporting
+	Capabilities: [140] Device Serial Number ff-ff-ff-ff-ff-ff-ff-ff
+	Capabilities: [150] Latency Tolerance Reporting
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+
