@@ -90,7 +90,7 @@ def explore_cleanup(param):
             explore_cleanup(p)
 
     elif isinstance(param, dict):
-        assert param != {}
+        assert param != dict()
         for k, v in param.items():
             if k == "features":
                 assert isinstance(param["features"], dict)
