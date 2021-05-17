@@ -388,7 +388,7 @@ class VerifyExtractedData(QWidget):
                 index = 0
             else:
                 index = 1
-                name = component['features'].pop('type', '_').upper()
+                name = component['features'].get('type', 'Unknown component').upper()
                 parent.appendRow([QStandardItem(name), QStandardItem('')])
                 new_parent = parent.child(parent.rowCount() - 1)
                 for feature in component.items():
