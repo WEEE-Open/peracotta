@@ -126,30 +126,32 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     result = [new_chassis]
 
     # mount the cpu
-    if len(cpu) != 0:
+    if len(cpu) > 0:
         if isinstance(cpu, list):
             for one_cpu in cpu:
-                if is_product(one_cpu):
-                    products.append(one_cpu)
-                    new_mobo["contents"].append(
-                        {"features": {k: v for k, v in one_cpu.items() if k in both + item_keys}})
-                else:
-                    new_mobo["contents"].append({"features": one_cpu})
+                if len(one_cpu) > 0:
+                    if is_product(one_cpu):
+                        products.append(one_cpu)
+                        new_mobo["contents"].append(
+                            {"features": {k: v for k, v in one_cpu.items() if k in both + item_keys}})
+                    else:
+                        new_mobo["contents"].append({"features": one_cpu})
         else:
-            if is_product(cpu):
+            if len(cpu) > 0 and is_product(cpu):
                 products.append(cpu)
                 new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in both + item_keys}})
-            else:
+            elif len(cpu) > 0:
                 new_mobo["contents"].append({"features": cpu})
 
     # adding some ram
     if isinstance(dimms, list):
         for dimm in dimms:
-            if is_product(dimm):
-                products.append(dimm)
-                new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in both + item_keys}})
-            else:
-                new_mobo["contents"].append({"features": dimm})
+            if len(dimm) > 0:
+                if len(dimm) > 0 and is_product(dimm):
+                    products.append(dimm)
+                    new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in both + item_keys}})
+                else:
+                    new_mobo["contents"].append({"features": dimm})
 
     elif len(dimms) > 0:
         if is_product(dimms):
@@ -161,11 +163,12 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     # mount disks
     if isinstance(disks, list):
         for disk in disks:
-            if is_product(disk):
-                products.append(disk)
-                new_chassis["contents"].append({"features": {k: v for k, v in disk.items() if k in both + item_keys}})
-            else:
-                new_chassis["contents"].append({"features": disk})
+            if len(disk) > 0:
+                if is_product(disk):
+                    products.append(disk)
+                    new_chassis["contents"].append({"features": {k: v for k, v in disk.items() if k in both + item_keys}})
+                else:
+                    new_chassis["contents"].append({"features": disk})
 
     elif isinstance(disks, dict) and len(disks) > 0:
         if is_product(disks):
@@ -185,11 +188,12 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     # get wifi cards
     if wifi_cards and len(wifi_cards) > 0:
         for wifi_card in wifi_cards:
-            if is_product(wifi_card):
-                products.append(wifi_card)
-                new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in both + item_keys}})
-            else:
-                new_mobo["contents"].append({"features": wifi_card})
+            if len(wifi_card) > 0:
+                if is_product(wifi_card):
+                    products.append(wifi_card)
+                    new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in both + item_keys}})
+                else:
+                    new_mobo["contents"].append({"features": wifi_card})
 
     # fix the product type
     for product in products:
