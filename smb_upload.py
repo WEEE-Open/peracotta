@@ -22,7 +22,7 @@ def main(parsed_args):
 		os.system(f"umount {tmpdirname}")
 	else:
 		os.mkdir(tmpdirname)
-	os.system(f"mount -t cifs {smb_path} {tmpdirname} -o username={smb_user},password={smb_pass}")
+	os.system(f"sudo mount -t cifs {smb_path} {tmpdirname} -o username={smb_user},password={smb_pass}")
 
 	if parsed_args.path is None:
 		path = './tmp'

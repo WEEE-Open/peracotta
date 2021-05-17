@@ -5,4 +5,5 @@ dev_dmdi_files/
 __pycache__/
 tmp/
 generate_files.pkexec
-
+.env
+tmp_smb_mount/
