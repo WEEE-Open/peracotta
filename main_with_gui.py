@@ -430,6 +430,8 @@ class VerifyExtractedData(QWidget):
     def list_features(self, feature, parent):
         data_dict = ast.literal_eval(feature)
         for key, value in data_dict.items():
+            if key == 'type':
+                 continue
             self.list_data(key, value, parent)
 
     @staticmethod
