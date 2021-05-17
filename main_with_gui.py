@@ -417,7 +417,7 @@ class VerifyExtractedData(QWidget):
             self.list_element(element, parent)
 
     def list_element(self, element, parent):
-        name = element['features'].pop('type', '_').upper()
+        name = element['features'].get('type', 'Unknown component').upper()
         parent.appendRow([QStandardItem(name), QStandardItem('')])
         new_parent = parent.child(parent.rowCount() - 1)
         key = list(element.keys())
