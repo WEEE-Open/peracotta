@@ -6,16 +6,14 @@
 set -eu
 
 if [ $# -eq 0 ]; then
-    #echo "No path given: outputting files to current directory"
+    echo "No path given: outputting files to working directory"
     OUTPATH="."
 elif [ $# -eq 1 ]; then
-    OUTPATH="$1"
+    echo "Outputting files to "$1
+    OUTPATH=$1
 else
     echo -n "Unexpected number of parameters.\nUsage: sudo ./generate_files.sh /optional/path/to/files"
 fi
-
-echo Outputting files to $(readlink -f "$OUTPATH")
-mkdir -p $OUTPATH
 
 dmidecode -t baseboard > "$OUTPATH/baseboard.txt"
 dmidecode -t connector > "$OUTPATH/connector.txt"
@@ -40,6 +38,13 @@ echo Found ${#DISKZ[@]} disks
 for d in "${DISKZ[@]}"; do
 	smartctl -x /dev/$d > "$OUTPATH/smartctl-dev-$d.txt"
 done
+
+#Add an empty file if no disk is detected
+if ${#DISKZ[@]} -eq 0
+then
+touch "$OUTPATH/smartctl-dev-nodisk.txt"
+fi
+
 # Already done on our custom distro, but repetita iuvant
 modprobe at24
 modprobe eeprom
