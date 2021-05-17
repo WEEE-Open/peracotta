@@ -167,7 +167,7 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             else:
                 new_chassis["contents"].append({"features": disk})
 
-    elif isinstance(disks, dict) and disks != 0:
+    elif isinstance(disks, dict) and len(disks) > 0:
         if is_product(disks):
             products.append(disks)
             new_chassis["contents"].append({"features": {k: v for k, v in disks.items() if k in both + item_keys}})

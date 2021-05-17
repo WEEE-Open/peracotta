@@ -4,6 +4,7 @@ import os
 from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
+from parsers import read_smartctl
 import os
 
 filedir = 'tests/77/'
@@ -38,6 +39,7 @@ def test_lscpu():
 	output = read_lscpu.read_lscpu(os.path.join(filedir, 'lscpu.txt'))
 
 	assert output == expect
+
 
 def test_77_baseboard():
 	expect = {
@@ -85,5 +87,12 @@ def test_77_chassis():
 		'motherboard-form-factor': '',
 	}
 	output = read_dmidecode.get_chassis(os.path.join(filedir, 'chassis.txt'))
+
+	assert output == expect
+
+
+def test_77_no_disks_disk_that_doesnt_exist():
+	expect = []
+	output = read_smartctl.read_smartctl(os.path.join(filedir))
 
 	assert output == expect
