@@ -259,13 +259,12 @@ class Welcome(QWidget):
 
     @staticmethod
     def load_previously_generated_files(self, window: QMainWindow):
-        gpu_file = False
         cwd = os.getcwd()
         tmp_path = os.path.join(cwd, "tmp")
         for existing_file in os.listdir(tmp_path):
             if existing_file == gpu_loc_file:
-                gpu_file = True
-        if not gpu_file:
+                break
+        else:  # there is no gpu_location.txt file
             folder_name = "tmp"
             gpu_loc = self.prompt_gpu_location(window, True)
             with open(os.path.join(folder_name, gpu_loc_file), "w") as f:
