@@ -15,6 +15,11 @@ else
     echo -n "Unexpected number of parameters.\nUsage: sudo ./generate_files.sh /optional/path/to/files"
 fi
 
+# Already done on our custom distro, but repetita iuvant
+modprobe at24
+modprobe eeprom
+decode-dimms > "$OUTPATH/dimms.txt"
+
 dmidecode -t baseboard > "$OUTPATH/baseboard.txt"
 dmidecode -t connector > "$OUTPATH/connector.txt"
 dmidecode -t chassis > "$OUTPATH/chassis.txt"
@@ -44,8 +49,3 @@ if ${#DISKZ[@]} -eq 0
 then
 touch "$OUTPATH/smartctl-dev-nodisk.txt"
 fi
-
-# Already done on our custom distro, but repetita iuvant
-modprobe at24
-modprobe eeprom
-decode-dimms > "$OUTPATH/dimms.txt"
