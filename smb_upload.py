@@ -15,45 +15,40 @@ def main(parsed_args):
 	except KeyError:
 		raise EnvironmentError("Missing definition of UPLOAD_SMB_* environment variables")
 
-	tmpdirname = "tmp_smb_mount"
+	tmpdirname = "/tmp/peracotta_smb_mount"
 	destdirname = 'peracotta-tmp-' + str(datetime.now().timestamp()).replace('.', '-')
 
-	if os.path.isdir(tmpdirname):
-		os.system(f"umount {tmpdirname}")
-	else:
+	if not os.path.isdir(tmpdirname):
 		os.mkdir(tmpdirname)
-	os.system(f"sudo mount -t cifs {smb_path} {tmpdirname} -o username={smb_user},password={smb_pass}")
 
+	json = parsed_args.json
 	if parsed_args.path is None:
-		path = './tmp'
+		path = '/home/weee/peracotta/tmp'
 	else:
 		path = parsed_args.path
 
-	if os.path.isdir(path):
-		try:
+	try:
+		os.system(f"sudo mount -t cifs {smb_path} {tmpdirname} -o username={smb_user},password={smb_pass},uid={os.getuid()},gid={os.getgid()},forceuid,forcegid")
+
+		if os.path.isdir(path):
 			shutil.copytree(path, f"{tmpdirname}/{destdirname}", copy_function=shutil.copy)
-		except shutil.Error as e:
-			print(f"Copy error: {e}")
+		else:
+			print(f"Source directory {os.path.abspath(path)} is not a directory")
 			exit(1)
-		except OSError as e:
-			print(f"Copy error: {e}")
-			exit(1)
-	else:
-		print(f"Source directory {os.path.abspath(path)} is not a directory")
-		exit(1)
 
-	json = parsed_args.json
-	if json is not None:
-		try:
+		if json is not None:
 			shutil.copy(path, f"{tmpdirname}/{destdirname}")
-		except shutil.Error as e:
-			print(f"Copy error: {e}")
-			exit(1)
-		except OSError as e:
-			print(f"Copy error: {e}")
-			exit(1)
 
-	print("Done!")
+		print("Done!")
+	except shutil.Error as e:
+		print(f"Copy error: {e}")
+		exit(1)
+	except OSError as e:
+		print(f"Copy error: {e}")
+		exit(1)
+	finally:
+		os.system(f"sudo umount {tmpdirname}")
+
 	exit(0)
 
 
