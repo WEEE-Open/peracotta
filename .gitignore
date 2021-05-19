@@ -5,5 +5,6 @@ dev_dmdi_files/
 __pycache__/
 tmp/
 generate_files.pkexec
+it.weeeopen.peracotta.generate-files.policy
 .env
 tmp_smb_mount/
