@@ -3,7 +3,10 @@
 # Dependencies on Debian:
 # pciutils i2c-tools mesa-utils smartmontools dmidecode
 
-set -eu
+# -e -> exit on first error
+# -u -> exit if unused variable is found
+# -x -> show every command that is run
+set -ux
 
 if [ $# -eq 0 ]; then
     echo "No path given: outputting files to working directory"
