@@ -31,6 +31,8 @@ Activate it:
 `source venv/bin/activate`  
 Install the requirements in the virtual environment:  
 `pip install -r requirements.txt`  
+Copy and modify to your needs the .env example file into the actual .env:  
+`cp .env.example .env`  
 Use it.  
 When you're done, exit the virtualenv with `deactivate` 
 or simply close the terminal you were using.
