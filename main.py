@@ -15,6 +15,7 @@ from os import environ as env
 
 from rich import print
 from rich.console import Console
+from rich import traceback
 
 from InputFileNotFoundError import InputFileNotFoundError
 from parsers.read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
@@ -23,6 +24,7 @@ from parsers.read_decode_dimms import read_decode_dimms
 from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from parsers.read_smartctl import read_smartctl
 
+traceback.install()
 
 def is_product(component: dict):
     # check if brand and model exist
@@ -467,7 +469,8 @@ def upload(jsoned):
         t_url = env['TARALLO_URL']
         t_token = env['TARALLO_TOKEN']
     except KeyError:
-        raise EnvironmentError("[red]Missing definitions of TARALLO* environment variables (see the README)[/]")
+        raise EnvironmentError("Missing definitions of TARALLO* environment variables (see the README)")
+
 
     while True:
         try:
@@ -553,8 +556,7 @@ def main(args):
     prompt_to_open_browser()
     upload(final_output)
 
-
-if __name__ == '__main__':
+def generate_parser():
     import argparse
 
     parser = argparse.ArgumentParser(description="Parse the files generated with generate_files.sh and "
@@ -579,7 +581,10 @@ if __name__ == '__main__':
     parser.add_argument('path', action="store", nargs='?', type=str,
                         help="optional path where generated files are stored")
 
-    args = parser.parse_args()
+    return parser
+
+if __name__ == '__main__':
+    args = generate_parser().parse_args()
 
     try:
         main(args)
