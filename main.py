@@ -455,7 +455,7 @@ def prompt_to_open_browser():
 
 
 def upload(jsoned):
-    msg_upload_ok = "All went fine"
+    msg_upload_ok = "All went fine \nBye bye! 🍐\n"
     msg_upload_failed = "The upload failed. Check above and try to upload on your own"
 
     ans = input("Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): ").lower().rstrip()
@@ -479,12 +479,14 @@ def upload(jsoned):
             ver = t.bulk_add(jsoned, bulk_id, False)
             if ver:
                 print(msg_upload_ok)
+                return
             else:
                 overwrite = input("Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
                 if overwrite.lower() == 'y':
                     ver = t.bulk_add(jsoned, bulk_id, True)
                     if ver:
                         print(msg_upload_ok)
+                        return
                     else:
                         print(msg_upload_failed)
                 else:
@@ -494,6 +496,7 @@ def upload(jsoned):
                         ver = t.bulk_add(jsoned, bulk_id, True)
                         if ver:
                             print(msg_upload_ok)
+                            return
                         else:
                             print(msg_upload_failed)
 
