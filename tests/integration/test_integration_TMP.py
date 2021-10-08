@@ -10,14 +10,16 @@ for fold in set(test_folders):
     if "baseboard.txt" not in os.listdir(f"tests/{fold}"):
         test_folders.remove(fold)
 
-@pytest.fixture(scope="module", params=test_folders)
-def args(request):
-    return parser.parse_args(['-f', f'tests/{request.param}'])
-
-
-def test_get_gpu(args, capsys, monkeypatch):    # checking that gpu_location is correctly read
-    # this function could prompt a menu requesting gpu location. Setting a value into stdin buffer just in case input is needed
+@pytest.fixture(scope="function", params=test_folders)
+def args(request, monkeypatch):
+    args = parser.parse_args(['-f', f'tests/{request.param}'])
+    # the following function could prompt a menu requesting gpu location. Setting a value into stdin buffer just in case input is needed
     monkeypatch.setattr('sys.stdin', io.StringIO('b'))
     get_gpu(args)
+    return args
+
+
+def test_get_gpu(args):    # checking that gpu_location is correctly read
     # checking mutual exclusion
     assert any([args.cpu, args.gpu, args.motherboard]) and len([val for val in (args.cpu, args.gpu, args.motherboard) if val is True]) <= 1
+

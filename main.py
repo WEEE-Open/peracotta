@@ -455,13 +455,13 @@ def prompt_to_open_browser():
 
 
 def upload(jsoned):
-    msg_upload_ok = "All went fine \nBye bye! 🍐\n"
+    msg_upload_ok = "[green]All went fine! [/] [blue]\nBye bye! [/]🍐\n"
     msg_upload_failed = "The upload failed. Check above and try to upload on your own"
 
     ans = input("Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): ").lower().rstrip()
 
     if ans.lower() == 'n':
-        print("\nBye bye! 🍐\n")
+        print("\n[blue]Bye bye! [/]🍐\n")
         return
 
     try:
