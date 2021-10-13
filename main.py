@@ -479,14 +479,14 @@ def upload(jsoned):
             ver = t.bulk_add(jsoned, bulk_id, False)
             if ver:
                 print(msg_upload_ok)
-                return
+                break
             else:
                 overwrite = input("Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
                 if overwrite.lower() == 'y':
                     ver = t.bulk_add(jsoned, bulk_id, True)
                     if ver:
                         print(msg_upload_ok)
-                        return
+                        break
                     else:
                         print(msg_upload_failed)
                 else:
@@ -496,7 +496,7 @@ def upload(jsoned):
                         ver = t.bulk_add(jsoned, bulk_id, True)
                         if ver:
                             print(msg_upload_ok)
-                            return
+                            break
                         else:
                             print(msg_upload_failed)
 
