@@ -78,7 +78,7 @@ def test_baseboard():
 	expect = {
 		'brand': 'Gigabyte Technology Co., Ltd.',
 		'model': '970A-DS3P FX',
-		'sn': 'To be filled by O.E.M.',
+		'sn': '',
 		'type': 'motherboard',
 		"working": "yes",
 	}
@@ -95,7 +95,7 @@ def test_connector():
 	expect = {
 		'brand': 'Gigabyte Technology Co., Ltd.',
 		'model': '970A-DS3P FX',
-		'sn': 'To be filled by O.E.M.',
+		'sn': '',
 		'type': 'motherboard',
 		"working": "yes",
 		'usb-ports-n': 3,
@@ -127,7 +127,7 @@ def test_chassis():
 	expect = {
 		'brand': 'Gigabyte Technology Co., Ltd.',
 		'model': '',
-		'sn': 'To Be Filled By O.E.M.',
+		'sn': '',
 		'type': 'case',
 		'motherboard-form-factor': '',
 	}
