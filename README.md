@@ -46,6 +46,8 @@ If requirements change:
 - install the correct version of the requirements (e.g. a new library or a new version of an already installed library)  
 - with the virtual environment activated, run `pip freeze > requirements-dev.txt` and *manually* edit the file (add the `-r requirements.txt` line and remove non-dev requirements)
 
+If you can't generate the files because you don't have access to `sudo`, such as on our development VM, you should use the files in a directory from `tests`.
+
 ## main.py and main_with_gui.py
 
 These are the scripts you run directly from the terminal. Quite obviously, `main_with_gui.py` presents a graphical interface, and `main.py` runs in the terminal.
