@@ -33,7 +33,8 @@ def is_product(component: dict):
     # check if brand or model has a not valid value
     candidates = [component["brand"].lower(), component["model"].lower()]
     for candidate in candidates:
-        if isinstance(candidate, str) and candidate in ("", "null", "unknown", "undefined", "no enclosure"):
+        if isinstance(candidate, str) and candidate.lower() in ("", "null", "unknown", "undefined", "no enclosure",
+                                                                "to be filled by o.e.m."):
             return False
     # if all conditions are False, the product should be added
     return True

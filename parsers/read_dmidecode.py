@@ -120,7 +120,9 @@ def get_baseboard(path: str):
 
 		elif "Serial Number:" in line:
 			mobo.serial_number = line.split("Serial Number:")[1].strip()
-			if not mobo.serial_number.endswith('O.E.M.'):
+			if 'to be filled by o.e.m' in mobo.serial_number.lower():
+				mobo.serial_number = ''
+			else:
 				mobo.serial_number = mobo.serial_number.strip('.')
 
 	result = {
@@ -317,6 +319,8 @@ def get_chassis(path: str):
 	for line in output.splitlines():
 		if "Manufacturer" in line:
 			chassis.brand = line.split("Manufacturer:")[1].strip()
+			if "to be filled by o.e.m" in chassis.brand.lower():
+				chassis.brand = ''
 
 		# This is Desktop, Laptop, etc...
 		elif "Type: " in line:
@@ -326,7 +330,9 @@ def get_chassis(path: str):
 
 		elif "Serial Number" in line:
 			chassis.serial_number = line.split("Serial Number:")[1].strip()
-			if not chassis.serial_number.endswith('O.E.M.'):
+			if 'to be filled by o.e.m' in chassis.serial_number.lower():
+				chassis.serial_number = ''
+			else:
 				chassis.serial_number = chassis.serial_number.strip('.')
 
 	result = {
