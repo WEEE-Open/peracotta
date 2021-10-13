@@ -109,9 +109,9 @@ def test_chassis():
 	# This is also wrong, but for pre-assembled computers it should be right
 	expect = {
 		"type": "case",
-		"brand": "To Be Filled By O.E.M.",
+		"brand": "",
 		"model": "",
-		"sn": "To Be Filled By O.E.M.",
+		"sn": "",
 		"motherboard-form-factor": ""
 	}
 	output = read_dmidecode.get_chassis(os.path.join(filedir, 'chassis.txt'))
