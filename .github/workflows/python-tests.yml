@@ -35,13 +35,15 @@ jobs:
         run: |
           git clone https://github.com/weee-open/tarallo
           cd tarallo || exit
-          make build
+          make ci
           make up
           cd - &> /dev/null
           
+      - name: Create test .env file to access local Tarallo instance
+        run: |
+          echo "export TARALLO_URL=http://127.0.0.1:8080" >> .env
+          echo "export TARALLO_TOKEN=yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k" >> .env
+          
       - name: Run tests
-        env:
-          TARALLO_URL: http://127.0.0.1:8080
-          TARALLO_TOKEN: yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k
         run: pytest -vv tests
 
