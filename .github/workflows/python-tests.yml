@@ -31,6 +31,14 @@ jobs:
         run: pip install dataclasses
         if: ${{ matrix.python-version }} == '3.6'
 
+      - name: Set up local development Tarallo instance
+        run: |
+          git clone https://github.com/weee-open/tarallo
+          cd tarallo || exit
+          make build
+          make up
+          cd - &> /dev/null
+          
       - name: Run tests
         env:
           TARALLO_URL: http://127.0.0.1:8080
