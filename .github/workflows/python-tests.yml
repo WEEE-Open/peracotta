@@ -32,5 +32,8 @@ jobs:
         if: ${{ matrix.python-version }} == '3.6'
 
       - name: Run tests
+        env:
+          TARALLO_URL: http://127.0.0.1:8080
+          TARALLO_TOKEN: yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k
         run: pytest -vv tests
 
