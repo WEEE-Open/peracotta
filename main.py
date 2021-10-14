@@ -26,6 +26,7 @@ from parsers.read_smartctl import read_smartctl
 
 traceback.install()
 
+
 def is_product(component: dict):
     # check if brand and model exist
     if "brand" not in component or "model" not in component:
@@ -472,7 +473,6 @@ def upload(jsoned):
     except KeyError:
         raise EnvironmentError("Missing definitions of TARALLO* environment variables (see the README)")
 
-
     while True:
         try:
             bulk_id = input("Please enter a bulk identifier (optional): ").rstrip()
@@ -482,7 +482,8 @@ def upload(jsoned):
                 print(msg_upload_ok)
                 break
             else:
-                overwrite = input("Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
+                overwrite = input(
+                    "Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
                 if overwrite.lower() == 'y':
                     ver = t.bulk_add(jsoned, bulk_id, True)
                     if ver:
@@ -560,6 +561,7 @@ def main(args):
     prompt_to_open_browser()
     upload(final_output)
 
+
 def generate_parser():
     import argparse
 
@@ -586,6 +588,7 @@ def generate_parser():
                         help="optional path where generated files are stored")
 
     return parser
+
 
 if __name__ == '__main__':
     args = generate_parser().parse_args()
