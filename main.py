@@ -15,6 +15,7 @@ from os import environ as env
 
 from rich import print
 from rich.console import Console
+from rich import traceback
 
 from InputFileNotFoundError import InputFileNotFoundError
 from parsers.read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
@@ -22,6 +23,8 @@ from parsers.read_lscpu import read_lscpu
 from parsers.read_decode_dimms import read_decode_dimms
 from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
 from parsers.read_smartctl import read_smartctl
+
+traceback.install()
 
 
 def is_product(component: dict):
@@ -569,7 +572,7 @@ def prompt_to_open_browser():
 
 
 def upload(jsoned):
-    msg_upload_ok = "All went fine"
+    msg_upload_ok = "[green]All went fine! [/] [blue]\nBye bye! [/]🍐\n"
     msg_upload_failed = "The upload failed. Check above and try to upload on your own"
 
     ans = (
@@ -581,7 +584,8 @@ def upload(jsoned):
     )
 
     if ans.lower() == "n":
-        print("\nBye bye! 🍐\n")
+        print("\n[blue]Bye bye! [/]🍐\n")
+
         return
 
     try:
@@ -589,8 +593,9 @@ def upload(jsoned):
         t_url = env["TARALLO_URL"]
         t_token = env["TARALLO_TOKEN"]
     except KeyError:
+
         raise EnvironmentError(
-            "[red]Missing definitions of TARALLO* environment variables (see the README)[/]"
+            "Missing definitions of TARALLO* environment variables (see the README)"
         )
 
     while True:
@@ -600,7 +605,9 @@ def upload(jsoned):
             ver = t.bulk_add(jsoned, bulk_id, False)
             if ver:
                 print(msg_upload_ok)
+                break
             else:
+
                 overwrite = (
                     input(
                         "Cannot update, do you want to try overwriting the identifier? (y/N): "
@@ -609,9 +616,11 @@ def upload(jsoned):
                     .rstrip()
                 )
                 if overwrite.lower() == "y":
+
                     ver = t.bulk_add(jsoned, bulk_id, True)
                     if ver:
                         print(msg_upload_ok)
+                        break
                     else:
                         print(msg_upload_failed)
                 else:
@@ -623,6 +632,7 @@ def upload(jsoned):
                         ver = t.bulk_add(jsoned, bulk_id, True)
                         if ver:
                             print(msg_upload_ok)
+                            break
                         else:
                             print(msg_upload_failed)
 
@@ -693,7 +703,8 @@ def main(args):
     upload(final_output)
 
 
-if __name__ == "__main__":
+def generate_parser():
+
     import argparse
 
     parser = argparse.ArgumentParser(
@@ -760,7 +771,11 @@ if __name__ == "__main__":
         help="optional path where generated files are stored",
     )
 
-    args = parser.parse_args()
+    return parser
+
+
+if __name__ == "__main__":
+    args = generate_parser().parse_args()
 
     try:
         main(args)
