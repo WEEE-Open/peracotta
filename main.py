@@ -583,8 +583,7 @@ def upload(jsoned):
         .rstrip()
     )
 
-
-    if ans.lower() == 'n':
+    if ans.lower() == "n":
         print("\n[blue]Bye bye! [/]🍐\n")
 
         return
@@ -595,8 +594,9 @@ def upload(jsoned):
         t_token = env["TARALLO_TOKEN"]
     except KeyError:
 
-        raise EnvironmentError("Missing definitions of TARALLO* environment variables (see the README)")
-
+        raise EnvironmentError(
+            "Missing definitions of TARALLO* environment variables (see the README)"
+        )
 
     while True:
         try:
@@ -608,9 +608,14 @@ def upload(jsoned):
                 break
             else:
 
-                overwrite = input(
-                    "Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
-                if overwrite.lower() == 'y':
+                overwrite = (
+                    input(
+                        "Cannot update, do you want to try overwriting the identifier? (y/N): "
+                    )
+                    .lower()
+                    .rstrip()
+                )
+                if overwrite.lower() == "y":
 
                     ver = t.bulk_add(jsoned, bulk_id, True)
                     if ver:
@@ -698,7 +703,6 @@ def main(args):
     upload(final_output)
 
 
-
 def generate_parser():
 
     import argparse
@@ -770,7 +774,7 @@ def generate_parser():
     return parser
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = generate_parser().parse_args()
 
     try:
