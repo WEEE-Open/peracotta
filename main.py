@@ -34,40 +34,51 @@ def is_product(component: dict):
     # check if brand or model has a not valid value
     candidates = [component["brand"].lower(), component["model"].lower()]
     for candidate in candidates:
-        if isinstance(candidate, str) and candidate.lower() in ("", "null", "unknown", "undefined", "no enclosure",
-                                                                "to be filled by o.e.m."):
+        if isinstance(candidate, str) and candidate.lower() in (
+            "",
+            "null",
+            "unknown",
+            "undefined",
+            "no enclosure",
+            "to be filled by o.e.m.",
+        ):
             return False
     # if all conditions are False, the product should be added
     return True
 
 
-def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool,
-                                                  verbose: bool = False, gui: bool = True):
-    directory = directory.rstrip('/')
+def extract_and_collect_data_from_generated_files(
+    directory: str,
+    has_dedicated_gpu: bool,
+    gpu_in_cpu: bool,
+    verbose: bool = False,
+    gui: bool = True,
+):
+    directory = directory.rstrip("/")
 
-    chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(directory, has_dedicated_gpu, gpu_in_cpu,
-                                                              gui=gui, verbose=verbose, unpack=False)
+    chassis, mobo, cpu, dimms, gpu, disks, psu = extract_data(
+        directory, has_dedicated_gpu, gpu_in_cpu, gui=gui, verbose=verbose, unpack=False
+    )
     # the None check MUST come before the others
 
-    no_gpu_info_str = "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging " \
-                      "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
-    no_vram_info_str = "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which " \
-                       "could be near the actual value. Please humans, fix this error by hand."
+    no_gpu_info_str = (
+        "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging "
+        "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
+    )
+    no_vram_info_str = (
+        "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which "
+        "could be near the actual value. Please humans, fix this error by hand."
+    )
     if len(chassis) == 0:
-        chassis = {
-            "type": "case",
-            "brand": None,
-            "model": None,
-            "serial_number": None
-        }
+        chassis = {"type": "case", "brand": None, "model": None, "serial_number": None}
 
     wifi_cards = None
     if len(mobo) == 0:
         mobo = {
-            "type": 'motherboard',
+            "type": "motherboard",
             "brand": None,
             "model": None,
-            "serial_number": None
+            "serial_number": None,
         }
     # in this case it contains wifi cards
     if isinstance(mobo, list):
@@ -87,9 +98,25 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
                 if p_dict["brand"] in names.keys():
                     p_dict["brand"] = names[p_dict["brand"]]
 
-    item_keys = ["arrival-batch", "cib", "cib-old", "cib-qr", "data-erased", "mac", "notes",
-                 "os-license-code", "os-license-version", "other-code", "owner", "smart-data",
-                 "sn", "software", "surface-scan", "working", "wwn"]
+    item_keys = [
+        "arrival-batch",
+        "cib",
+        "cib-old",
+        "cib-qr",
+        "data-erased",
+        "mac",
+        "notes",
+        "os-license-code",
+        "os-license-version",
+        "other-code",
+        "owner",
+        "smart-data",
+        "sn",
+        "software",
+        "surface-scan",
+        "working",
+        "wwn",
+    ]
     both = ["brand", "model", "variant", "type"]
 
     # search for a normalized form of brands for each component
@@ -106,8 +133,10 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     # setting mobo dict
     if is_product(mobo):
         products.append(mobo)
-        new_mobo = {"features": {k: v for k, v in mobo.items() if k in both + item_keys},
-                    "contents": []}
+        new_mobo = {
+            "features": {k: v for k, v in mobo.items() if k in both + item_keys},
+            "contents": [],
+        }
     else:
         new_mobo = {"features": mobo, "contents": []}
 
@@ -122,8 +151,11 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     # finally get the item
     if is_product(chassis):
         products.append(chassis)
-        new_chassis = {"type": "I", "features": {k: v for k, v in chassis.items() if k in both + item_keys},
-                       "contents": [new_mobo, psu]}
+        new_chassis = {
+            "type": "I",
+            "features": {k: v for k, v in chassis.items() if k in both + item_keys},
+            "contents": [new_mobo, psu],
+        }
     else:
         new_chassis = {"type": "I", "features": chassis, "contents": [new_mobo, psu]}
 
@@ -137,13 +169,26 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
                     if is_product(one_cpu):
                         products.append(one_cpu)
                         new_mobo["contents"].append(
-                            {"features": {k: v for k, v in one_cpu.items() if k in both + item_keys}})
+                            {
+                                "features": {
+                                    k: v
+                                    for k, v in one_cpu.items()
+                                    if k in both + item_keys
+                                }
+                            }
+                        )
                     else:
                         new_mobo["contents"].append({"features": one_cpu})
         else:
             if len(cpu) > 0 and is_product(cpu):
                 products.append(cpu)
-                new_mobo["contents"].append({"features": {k: v for k, v in cpu.items() if k in both + item_keys}})
+                new_mobo["contents"].append(
+                    {
+                        "features": {
+                            k: v for k, v in cpu.items() if k in both + item_keys
+                        }
+                    }
+                )
             elif len(cpu) > 0:
                 new_mobo["contents"].append({"features": cpu})
 
@@ -153,14 +198,22 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             if len(dimm) > 0:
                 if len(dimm) > 0 and is_product(dimm):
                     products.append(dimm)
-                    new_mobo["contents"].append({"features": {k: v for k, v in dimm.items() if k in both + item_keys}})
+                    new_mobo["contents"].append(
+                        {
+                            "features": {
+                                k: v for k, v in dimm.items() if k in both + item_keys
+                            }
+                        }
+                    )
                 else:
                     new_mobo["contents"].append({"features": dimm})
 
     elif len(dimms) > 0:
         if is_product(dimms):
             products.append(dimms)
-            new_mobo["contents"].append({"features": {k: v for k, v in dimms.items() if k in both + item_keys}})
+            new_mobo["contents"].append(
+                {"features": {k: v for k, v in dimms.items() if k in both + item_keys}}
+            )
         else:
             new_mobo["contents"].append({"features": dimms})
 
@@ -170,14 +223,22 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             if len(disk) > 0:
                 if is_product(disk):
                     products.append(disk)
-                    new_chassis["contents"].append({"features": {k: v for k, v in disk.items() if k in both + item_keys}})
+                    new_chassis["contents"].append(
+                        {
+                            "features": {
+                                k: v for k, v in disk.items() if k in both + item_keys
+                            }
+                        }
+                    )
                 else:
                     new_chassis["contents"].append({"features": disk})
 
     elif isinstance(disks, dict) and len(disks) > 0:
         if is_product(disks):
             products.append(disks)
-            new_chassis["contents"].append({"features": {k: v for k, v in disks.items() if k in both + item_keys}})
+            new_chassis["contents"].append(
+                {"features": {k: v for k, v in disks.items() if k in both + item_keys}}
+            )
         else:
             new_chassis["contents"].append({"features": disks})
 
@@ -185,7 +246,9 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
     if len(gpu) > 0:
         if is_product(gpu):
             products.append(gpu)
-            new_mobo["contents"].append({"features": {k: v for k, v in gpu.items() if k in both + item_keys}})
+            new_mobo["contents"].append(
+                {"features": {k: v for k, v in gpu.items() if k in both + item_keys}}
+            )
         else:
             new_mobo["contents"].append({"features": gpu})
 
@@ -195,16 +258,28 @@ def extract_and_collect_data_from_generated_files(directory: str, has_dedicated_
             if len(wifi_card) > 0:
                 if is_product(wifi_card):
                     products.append(wifi_card)
-                    new_mobo["contents"].append({"features": {k: v for k, v in wifi_card.items() if k in both + item_keys}})
+                    new_mobo["contents"].append(
+                        {
+                            "features": {
+                                k: v
+                                for k, v in wifi_card.items()
+                                if k in both + item_keys
+                            }
+                        }
+                    )
                 else:
                     new_mobo["contents"].append({"features": wifi_card})
 
     # fix the product type
     for product in products:
         #   create the dictionaries
-        to_res = {k: product.pop(k) for k in both if k in product.keys() and k != "type"}
+        to_res = {
+            k: product.pop(k) for k in both if k in product.keys() and k != "type"
+        }
         to_res["type"] = "P"
-        to_res["features"] = {k: v for k, v in product.items() if k not in item_keys or k == "type"}
+        to_res["features"] = {
+            k: v for k, v in product.items() if k not in item_keys or k == "type"
+        }
         if to_res not in result:
             result.append(to_res)
 
@@ -226,9 +301,9 @@ def extract_integrated_gpu_from_standalone(gpu: dict) -> dict:
     if model_present and internal_name_present:
         model = f"{gpu['model']} ({gpu['internal-name']})"
     elif model_present:
-        model = gpu['model']
+        model = gpu["model"]
     elif internal_name_present:
-        model = gpu['internal-name']
+        model = gpu["internal-name"]
     else:
         model = None
 
@@ -251,7 +326,7 @@ def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
         else:
             cleaned_item = {}
             for k, v in item.items():
-                if isinstance(v, str) and v == '':
+                if isinstance(v, str) and v == "":
                     removed.add(k)
                 elif isinstance(v, int) and v <= 0:
                     removed.add(k)
@@ -269,11 +344,19 @@ def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
     return filtered
 
 
-def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui: bool,
-                 verbose: bool, unpack: bool = True):
+def extract_data(
+    directory: str,
+    has_dedicated_gpu: bool,
+    gpu_in_cpu: bool,
+    gui: bool,
+    verbose: bool,
+    unpack: bool = True,
+):
     mobo = get_baseboard(directory + "/baseboard.txt")
     cpu = read_lscpu(directory + "/lscpu.txt")
-    gpu = read_lspci_and_glxinfo(has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", verbose)
+    gpu = read_lspci_and_glxinfo(
+        has_dedicated_gpu, directory + "/lspci.txt", directory + "/glxinfo.txt", verbose
+    )
     if not has_dedicated_gpu:
         entries = extract_integrated_gpu_from_standalone(gpu)
         if gpu_in_cpu:
@@ -324,8 +407,12 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui:
 
     # check on case and mobo
     try:
-        if (chassis['model'], chassis['brand'], chassis['variant']) == (mobo['brand'], mobo['model'], mobo['variant']):
-            chassis.pop('model')
+        if (chassis["model"], chassis["brand"], chassis["variant"]) == (
+            mobo["brand"],
+            mobo["model"],
+            mobo["variant"],
+        ):
+            chassis.pop("model")
     except KeyError:
         pass
 
@@ -340,13 +427,17 @@ def extract_data(directory: str, has_dedicated_gpu: bool, gpu_in_cpu: bool, gui:
     # avoid bad associations between items and products
     for comp1 in comparator:
         for comp2 in comparator:
-            if is_product(comp1) and is_product(comp2) and comp1['type'] != comp2['type']:
-                if (comp1['brand'], comp2['model']) == (comp2['brand'], comp2['model']):
-                    variant1 = comp1.pop('variant', '')
-                    variant2 = comp2.pop('variant', '')
+            if (
+                is_product(comp1)
+                and is_product(comp2)
+                and comp1["type"] != comp2["type"]
+            ):
+                if (comp1["brand"], comp2["model"]) == (comp2["brand"], comp2["model"]):
+                    variant1 = comp1.pop("variant", "")
+                    variant2 = comp2.pop("variant", "")
                     if variant1 == variant2:
-                        comp1['variant'] = variant1.rstrip().join(f"_{comp1['type']}")
-                        comp2['variant'] = variant2.rstrip().join(f"_{comp2['type']}")
+                        comp1["variant"] = variant1.rstrip().join(f"_{comp1['type']}")
+                        comp2["variant"] = variant2.rstrip().join(f"_{comp2['type']}")
     return result
 
 
@@ -359,48 +450,55 @@ def get_gpu(args):
         try:
             with open(os.path.join(os.getcwd(), args.files, "gpu_location.txt")) as f:
                 location = f.readline().lower().rstrip()
-                if location == 'mobo':
+                if location == "mobo":
                     args.motherboard = True
-                elif location == 'gpu':
+                elif location == "gpu":
                     args.gpu = True
-                elif location == 'cpu':
+                elif location == "cpu":
                     args.cpu = True
         except FileNotFoundError:
             pass
 
     while not any((args.gpu, args.cpu, args.motherboard)):
-        print("\nWhere is GPU in your PC? c/g/b\n",
-              "c for integrated in CPU\n",
-              "g for discrete graphics card\n",
-              "b for integrated in the motherboard\n")
+        print(
+            "\nWhere is GPU in your PC? c/g/b\n",
+            "c for integrated in CPU\n",
+            "g for discrete graphics card\n",
+            "b for integrated in the motherboard\n",
+        )
         gpu_flag = input("Insert your choice: ")
-        if gpu_flag == 'c':
+        if gpu_flag == "c":
             args.cpu = True
-        elif gpu_flag == 'g':
+        elif gpu_flag == "g":
             args.gpu = True
-        elif gpu_flag == 'b':
+        elif gpu_flag == "b":
             args.motherboard = True
     return args.cpu, args.gpu, args.motherboard
 
 
 def print_output(output, path):
-    print("\nThe following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':\n")
+    print(
+        "\nThe following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':\n"
+    )
     print(output)
 
     with open(os.path.join(path, "copy_this_to_tarallo.json"), "w") as f:
         f.write(output)
 
     print(
-        f"You can also transfer the generated JSON file $OUTPUT_PATH/copy_this_to_tarallo.json to your PC with 'scp {path}/copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal.")
+        f"You can also transfer the generated JSON file $OUTPUT_PATH/copy_this_to_tarallo.json to your PC with 'scp {path}/copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal."
+    )
 
 
 def run_extract_data(path, args):
     try:
-        data = extract_and_collect_data_from_generated_files(directory=path,
-                                                             has_dedicated_gpu=args.gpu,
-                                                             gpu_in_cpu=args.cpu,
-                                                             verbose=args.verbose,
-                                                             gui=False)
+        data = extract_and_collect_data_from_generated_files(
+            directory=path,
+            has_dedicated_gpu=args.gpu,
+            gpu_in_cpu=args.cpu,
+            verbose=args.verbose,
+            gui=False,
+        )
         print_output(json.dumps(data, indent=2), path)
     except InputFileNotFoundError as e:
         print(str(e))
@@ -418,17 +516,22 @@ def check_required_files(path):
                 if fnmatch.fnmatch(ex, file):
                     break
             else:
-                print(f"[bold red]Missing file {file}\nPlease re-run this script without the -f or --files option.[/]")
+                print(
+                    f"[bold red]Missing file {file}\nPlease re-run this script without the -f or --files option.[/]"
+                )
                 exit(-1)
 
 
 def check_and_install_dependencies():
     install_cmd = "apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode < /dev/null"
-    exit_value = os.system("dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null")
+    exit_value = os.system(
+        "dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null"
+    )
     if exit_value == 1:
         ans = input(
-            "You need to install some packages in order for the peracotta to work. Do you want to install them? y/N ").lower()
-        if ans == 'y':
+            "You need to install some packages in order for the peracotta to work. Do you want to install them? y/N "
+        ).lower()
+        if ans == "y":
             if os.geteuid() != 0:
                 os.system(f"sudo {install_cmd}")
             else:
@@ -440,10 +543,20 @@ def check_and_install_dependencies():
 
 def prompt_to_open_browser():
     import base64
+
     web_link = "aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="
-    web_link = base64.b64decode(web_link).decode('ascii').rstrip()
+    web_link = base64.b64decode(web_link).decode("ascii").rstrip()
     egg = Console()
-    text = ['Congratulations!!!', "You're", "the", "1000th", "WEEEisitor", "of", "the", "day"]
+    text = [
+        "Congratulations!!!",
+        "You're",
+        "the",
+        "1000th",
+        "WEEEisitor",
+        "of",
+        "the",
+        "day",
+    ]
     this_moment = datetime.now()
     if this_moment.minute == this_moment.second:
         for word in text:
@@ -453,25 +566,37 @@ def prompt_to_open_browser():
             egg.print(word, end=" ", style=f"rgb({red},{green},{blue})")
         egg.print(web_link)
     else:
-        print(f"[green]Finished successfully![/] Now you can add this output to the T.A.R.A.L.L.O. -> {web_link}")
+        print(
+            f"[green]Finished successfully![/] Now you can add this output to the T.A.R.A.L.L.O. -> {web_link}"
+        )
 
 
 def upload(jsoned):
     msg_upload_ok = "[green]All went fine! [/] [blue]\nBye bye! [/]🍐\n"
     msg_upload_failed = "The upload failed. Check above and try to upload on your own"
 
-    ans = input("Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): ").lower().rstrip()
+    ans = (
+        input(
+            "Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): "
+        )
+        .lower()
+        .rstrip()
+    )
+
 
     if ans.lower() == 'n':
         print("\n[blue]Bye bye! [/]🍐\n")
+
         return
 
     try:
         load_dotenv()
-        t_url = env['TARALLO_URL']
-        t_token = env['TARALLO_TOKEN']
+        t_url = env["TARALLO_URL"]
+        t_token = env["TARALLO_TOKEN"]
     except KeyError:
+
         raise EnvironmentError("Missing definitions of TARALLO* environment variables (see the README)")
+
 
     while True:
         try:
@@ -482,9 +607,11 @@ def upload(jsoned):
                 print(msg_upload_ok)
                 break
             else:
+
                 overwrite = input(
                     "Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
                 if overwrite.lower() == 'y':
+
                     ver = t.bulk_add(jsoned, bulk_id, True)
                     if ver:
                         print(msg_upload_ok)
@@ -492,8 +619,10 @@ def upload(jsoned):
                     else:
                         print(msg_upload_failed)
                 else:
-                    bulk_id = input("Do you want to use another identifier? Just press enter for an automatic one. "
-                                    "You choose (NEW_ID/n): ").rstrip()
+                    bulk_id = input(
+                        "Do you want to use another identifier? Just press enter for an automatic one. "
+                        "You choose (NEW_ID/n): "
+                    ).rstrip()
                     if bulk_id.lower() != "n":
                         ver = t.bulk_add(jsoned, bulk_id, True)
                         if ver:
@@ -503,19 +632,24 @@ def upload(jsoned):
                             print(msg_upload_failed)
 
         except NoInternetConnectionError:
-            print("\n[yellow]Unable to reach the T.A.R.A.L.L.O. "
-                  "Please connect this PC to the Internet and try again.[/]\n")
+            print(
+                "\n[yellow]Unable to reach the T.A.R.A.L.L.O. "
+                "Please connect this PC to the Internet and try again.[/]\n"
+            )
 
 
 def main(args):
     if args.gui:
         import main_with_gui
+
         main_with_gui.main()
 
     elif args.files is not None:
         # if -f flag is added, most of the other flags doesn't mean anything
         if args.path is not None or any((args.cpu, args.gpu, args.motherboard)):
-            print("[bold red]Error: Bad flags combination (./main.py -f <path> is correct) [/]")
+            print(
+                "[bold red]Error: Bad flags combination (./main.py -f <path> is correct) [/]"
+            )
             exit(-1)
         path = os.path.join(os.getcwd(), args.files)
         check_required_files(path)
@@ -527,11 +661,11 @@ def main(args):
             path = os.path.join(os.getcwd(), "tmp")
             if os.path.isdir(path):
                 sel = input("Overwrite existing files in tmp dir? y/N ").lower()
-                if sel == 'y':
+                if sel == "y":
                     print("Overwriting...")
                 else:
                     sel = input("Output files to working directory? y/N ").lower()
-                    if sel == 'y':
+                    if sel == "y":
                         path = os.getcwd()
                         print("Outputting files to working directory...")
                     else:
@@ -543,7 +677,9 @@ def main(args):
         else:
             path = os.path.join(os.getcwd(), args.path)
             if os.path.isdir(path):
-                print("[bold red]Wrong path: can't create a directory with this name, existing already[/]")
+                print(
+                    "[bold red]Wrong path: can't create a directory with this name, existing already[/]"
+                )
                 exit(-2)
             os.mkdir(path)
         check_and_install_dependencies()
@@ -562,30 +698,74 @@ def main(args):
     upload(final_output)
 
 
+
 def generate_parser():
+
     import argparse
 
-    parser = argparse.ArgumentParser(description="Parse the files generated with generate_files.sh and "
-                                                 "get all the possible info out of them",
-                                     epilog="If no argument is given, then this script will interactively guide you to run the PERACOTTA data gathering package."
-                                            "Alternatively, you can choose to pass either the path to the directory where you want the files to be generated, the gpu location, or both."
-                                            "In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location."
-                                     )
-    parser.add_argument('-f', '--files', action='store', default=None, required=False,
-                        help="retrieve previously generated files from a given path")
-    gpu_group = parser.add_argument_group('GPU Location').add_mutually_exclusive_group(required=False)
-    gpu_group.add_argument('-g', '--gpu', action="store_true", default=False, help="computer has dedicated GPU")
-    gpu_group.add_argument('-c', '--cpu', action="store_true", default=False,
-                           help="GPU is integrated inside the CPU")
-    gpu_group.add_argument('-b', '--motherboard', action="store_true", default=False,
-                           help="GPU is integrated inside the motherboard")
-    gui_group = parser.add_argument_group('With or without GUI (one argument optional)').add_mutually_exclusive_group(
-        required=False)
-    gui_group.add_argument('-i', '--gui', action="store_true", default=False,
-                           help="launch GUI instead of using the terminal version")
-    parser.add_argument('-v', '--verbose', action="store_true", default=False, help="print some warning messages")
-    parser.add_argument('path', action="store", nargs='?', type=str,
-                        help="optional path where generated files are stored")
+    parser = argparse.ArgumentParser(
+        description="Parse the files generated with generate_files.sh and "
+        "get all the possible info out of them",
+        epilog="If no argument is given, then this script will interactively guide you to run the PERACOTTA data gathering package."
+        "Alternatively, you can choose to pass either the path to the directory where you want the files to be generated, the gpu location, or both."
+        "In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location.",
+    )
+    parser.add_argument(
+        "-f",
+        "--files",
+        action="store",
+        default=None,
+        required=False,
+        help="retrieve previously generated files from a given path",
+    )
+    gpu_group = parser.add_argument_group("GPU Location").add_mutually_exclusive_group(
+        required=False
+    )
+    gpu_group.add_argument(
+        "-g",
+        "--gpu",
+        action="store_true",
+        default=False,
+        help="computer has dedicated GPU",
+    )
+    gpu_group.add_argument(
+        "-c",
+        "--cpu",
+        action="store_true",
+        default=False,
+        help="GPU is integrated inside the CPU",
+    )
+    gpu_group.add_argument(
+        "-b",
+        "--motherboard",
+        action="store_true",
+        default=False,
+        help="GPU is integrated inside the motherboard",
+    )
+    gui_group = parser.add_argument_group(
+        "With or without GUI (one argument optional)"
+    ).add_mutually_exclusive_group(required=False)
+    gui_group.add_argument(
+        "-i",
+        "--gui",
+        action="store_true",
+        default=False,
+        help="launch GUI instead of using the terminal version",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        default=False,
+        help="print some warning messages",
+    )
+    parser.add_argument(
+        "path",
+        action="store",
+        nargs="?",
+        type=str,
+        help="optional path where generated files are stored",
+    )
 
     return parser
 

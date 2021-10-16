@@ -5,9 +5,31 @@ import os
 import subprocess as sp
 import json
 import prettyprinter
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QVBoxLayout, QPushButton, QMainWindow, QLabel, QWidget, \
-    QMessageBox, QScrollArea, QPlainTextEdit, QTreeView, QGridLayout, QLineEdit, QCheckBox, QDesktopWidget
-from PyQt5.QtGui import QFont, QIcon, QPalette, QColor, QStandardItem, QStandardItemModel
+from PyQt5.QtWidgets import (
+    QApplication,
+    QHBoxLayout,
+    QVBoxLayout,
+    QPushButton,
+    QMainWindow,
+    QLabel,
+    QWidget,
+    QMessageBox,
+    QScrollArea,
+    QPlainTextEdit,
+    QTreeView,
+    QGridLayout,
+    QLineEdit,
+    QCheckBox,
+    QDesktopWidget,
+)
+from PyQt5.QtGui import (
+    QFont,
+    QIcon,
+    QPalette,
+    QColor,
+    QStandardItem,
+    QStandardItemModel,
+)
 from PyQt5.QtCore import Qt, QPropertyAnimation
 from main import extract_and_collect_data_from_generated_files
 from enum import Enum
@@ -19,10 +41,12 @@ from os import environ as env
 
 load_dotenv()
 try:
-    t_url = env['TARALLO_URL']
-    t_token = env['TARALLO_TOKEN']
+    t_url = env["TARALLO_URL"]
+    t_token = env["TARALLO_TOKEN"]
 except KeyError:
-    raise EnvironmentError("Missing definitions of TARALLO* environment variables (see README)")
+    raise EnvironmentError(
+        "Missing definitions of TARALLO* environment variables (see README)"
+    )
 
 # should be None in production
 # should be set to "tests/<machine_to_test>" when testing
@@ -64,10 +88,12 @@ class Welcome(QWidget):
         super().__init__()
         self.title = QLabel("Welcome to P.E.R.A.C.O.T.T.A.")
         self.subtitle = QLabel(
-            "(Progetto Esteso Raccolta Automatica Configurazioni hardware Organizzate Tramite Tarallo Autonomamente)")
+            "(Progetto Esteso Raccolta Automatica Configurazioni hardware Organizzate Tramite Tarallo Autonomamente)"
+        )
         self.intro = QLabel(
             "When you're ready to generate the files required to gather info about this system, click the "
-            "'Generate files' button below.")
+            "'Generate files' button below."
+        )
 
         # noinspection PyArgumentList
         title_font = QFont("futura", pointSize=24, italic=False)
@@ -78,9 +104,13 @@ class Welcome(QWidget):
 
         self.generate_files_button = QPushButton("Generate Files")
         # noinspection PyUnresolvedReferences
-        self.generate_files_button.clicked.connect(lambda: self.prompt_gpu_location(window, False))
+        self.generate_files_button.clicked.connect(
+            lambda: self.prompt_gpu_location(window, False)
+        )
 
-        self.load_previously_generated_files_button = QPushButton("Load previously generated files")
+        self.load_previously_generated_files_button = QPushButton(
+            "Load previously generated files"
+        )
         self.load_previously_generated_files_button.clicked.connect(
             lambda: self.load_previously_generated_files(self, window)
         )
@@ -88,7 +118,7 @@ class Welcome(QWidget):
         style_disabled = "background-color:#666677; color:#444444"
 
         expected_files = []
-        with open('required_files.txt', 'r') as f:
+        with open("required_files.txt", "r") as f:
             for line in f.readlines():
                 expected_files.append(line.strip())
 
@@ -116,9 +146,9 @@ class Welcome(QWidget):
 
             for expected_file in expected_files:
                 if expected_file not in existing_files:
-                    if expected_file == 'smartctl-dev*':
+                    if expected_file == "smartctl-dev*":
                         for existing_file in existing_files:
-                            if 'smartctl-dev' not in existing_file:
+                            if "smartctl-dev" not in existing_file:
                                 button_enabled = False
                             else:
                                 button_enabled = True
@@ -128,14 +158,18 @@ class Welcome(QWidget):
                         break
 
             if not button_enabled:
-                self.load_previously_generated_files_button.setStyleSheet(style_disabled)
+                self.load_previously_generated_files_button.setStyleSheet(
+                    style_disabled
+                )
                 self.load_previously_generated_files_button.setEnabled(False)
 
         h_box = QHBoxLayout()
         h_box.addStretch()
         h_box.addWidget(self.generate_files_button, alignment=Qt.AlignCenter)
         h_box.addStretch()
-        h_box.addWidget(self.load_previously_generated_files_button, alignment=Qt.AlignCenter)
+        h_box.addWidget(
+            self.load_previously_generated_files_button, alignment=Qt.AlignCenter
+        )
         h_box.addStretch()
 
         v_box = QVBoxLayout()
@@ -153,14 +187,27 @@ class Welcome(QWidget):
         cmd = os.path.join(working_directory, "scripts/check_dependencies.sh")
         check_dep, _ = sp.getstatusoutput(cmd)
         if check_dep == 1:
-            button_reply = QMessageBox.question(self, 'Install dependencies',
-                                                "You need to install some packages in order for the peracotta to work. Do you want to install them?",
-                                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            button_reply = QMessageBox.question(
+                self,
+                "Install dependencies",
+                "You need to install some packages in order for the peracotta to work. Do you want to install them?",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No,
+            )
             if button_reply == QMessageBox.Yes:
-                p = sp.Popen([sys.executable, 'Installing.py'], stdout=sp.PIPE, stderr=sp.STDOUT)
+                p = sp.Popen(
+                    [sys.executable, "Installing.py"], stdout=sp.PIPE, stderr=sp.STDOUT
+                )
                 working_directory = os.getcwd()
-                with sp.Popen(["pkexec", os.path.join(working_directory, "scripts/install_dependencies_all.sh")],
-                              shell=False) as process:
+                with sp.Popen(
+                    [
+                        "pkexec",
+                        os.path.join(
+                            working_directory, "scripts/install_dependencies_all.sh"
+                        ),
+                    ],
+                    shell=False,
+                ) as process:
                     process.wait(timeout=80)
             else:
                 exit(-1)
@@ -176,14 +223,20 @@ class Welcome(QWidget):
             answer.setWindowTitle("Discrete GPU")
             answer.setText("Where is this system's GPU located?")
             btncpu = answer.addButton("Integrated in the CPU", QMessageBox.YesRole)
-            btnmobo = answer.addButton("Integrated in the motherboard", QMessageBox.AcceptRole)
+            btnmobo = answer.addButton(
+                "Integrated in the motherboard", QMessageBox.AcceptRole
+            )
             btngpu = answer.addButton("Dedicated graphics card", QMessageBox.NoRole)
             answer.exec_()
             if answer.clickedButton() == btncpu:
                 # noinspection PyCallByClass
-                confirm = QMessageBox.question(self, "Confirm",
-                                               "Do you confirm this system has the GPU integrated in the CPU?",
-                                               QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                confirm = QMessageBox.question(
+                    self,
+                    "Confirm",
+                    "Do you confirm this system has the GPU integrated in the CPU?",
+                    QMessageBox.Yes | QMessageBox.No,
+                    QMessageBox.No,
+                )
                 if confirm == QMessageBox.Yes:
                     if load_files:
                         return GPU.int_cpu
@@ -194,9 +247,13 @@ class Welcome(QWidget):
                     continue
             elif answer.clickedButton() == btnmobo:
                 # noinspection PyCallByClass
-                confirm = QMessageBox.question(self, "Confirm",
-                                               "Do you confirm this system has the GPU integrated in the motherboard?",
-                                               QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                confirm = QMessageBox.question(
+                    self,
+                    "Confirm",
+                    "Do you confirm this system has the GPU integrated in the motherboard?",
+                    QMessageBox.Yes | QMessageBox.No,
+                    QMessageBox.No,
+                )
                 if confirm == QMessageBox.Yes:
                     if load_files:
                         return GPU.int_mobo
@@ -206,9 +263,13 @@ class Welcome(QWidget):
                 else:
                     continue
             else:
-                confirm = QMessageBox.question(self, "Confirm",
-                                               "Do you confirm this system has a dedicated GPU?",
-                                               QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                confirm = QMessageBox.question(
+                    self,
+                    "Confirm",
+                    "Do you confirm this system has a dedicated GPU?",
+                    QMessageBox.Yes | QMessageBox.No,
+                    QMessageBox.No,
+                )
                 if confirm == QMessageBox.Yes:
                     if load_files:
                         return GPU.dec_gpu
@@ -229,8 +290,13 @@ class Welcome(QWidget):
             p = sp.Popen([sys.executable, path], stdout=sp.PIPE, stderr=sp.STDOUT)
             p.wait()
 
-            with sp.Popen(["./generate_files.pkexec", os.path.join(working_directory, folder_name)],
-                          shell=False) as process:
+            with sp.Popen(
+                [
+                    "./generate_files.pkexec",
+                    os.path.join(working_directory, folder_name),
+                ],
+                shell=False,
+            ) as process:
                 process.wait(timeout=60)
             # the information concerning the gpu location is saved in gpu_location
             with open(os.path.join(folder_name, gpu_loc_file), "w") as f:
@@ -243,19 +309,30 @@ class Welcome(QWidget):
         except sp.CalledProcessError as err:
             # noinspection PyCallByClass
             # noinspection PyArgumentList
-            QMessageBox.critical(self, "Error",
-                                 "Something went wrong while running 'generate_files.sh'. Here is the stderr:\n" + err.output)
+            QMessageBox.critical(
+                self,
+                "Error",
+                "Something went wrong while running 'generate_files.sh'. Here is the stderr:\n"
+                + err.output,
+            )
 
         except FileNotFoundError:
             # noinspection PyCallByClass
             # noinspection PyArgumentList
-            QMessageBox.warning(self, "Warning",
-                                "I couldn't find the 'generate_files.sh' script in the current directory. Please import it and try again.")
+            QMessageBox.warning(
+                self,
+                "Warning",
+                "I couldn't find the 'generate_files.sh' script in the current directory. Please import it and try again.",
+            )
 
         except Exception as e:
             # noinspection PyCallByClass
             # noinspection PyArgumentList
-            QMessageBox.critical(self, "WTF1", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+            QMessageBox.critical(
+                self,
+                "WTF1",
+                "Have a look at the extent of your huge fuck-up:\n" + str(e),
+            )
 
     @staticmethod
     def load_previously_generated_files(self, window: QMainWindow):
@@ -282,7 +359,8 @@ class FilesGenerated(QWidget):
         super().__init__()
         self.label = QLabel(
             "Everything went fine. Click the button below if you want to proceed with the data extraction.\n"
-            "You will be able to review the data after this process.")
+            "You will be able to review the data after this process."
+        )
         self.extract_data_button = QPushButton("Extract data from output files")
         if gpu_loc == GPU.int_mobo:
             has_dedicated_gpu = False
@@ -294,7 +372,9 @@ class FilesGenerated(QWidget):
             has_dedicated_gpu = True
             gpu_in_cpu = False
         self.extract_data_button.clicked.connect(
-            lambda: self.extract_data_from_generated_files(window, has_dedicated_gpu, gpu_in_cpu)
+            lambda: self.extract_data_from_generated_files(
+                window, has_dedicated_gpu, gpu_in_cpu
+            )
         )
 
         h_box = QHBoxLayout()
@@ -309,13 +389,17 @@ class FilesGenerated(QWidget):
 
         self.setLayout(v_box)
 
-    def extract_data_from_generated_files(self, window: QMainWindow, has_dedicated_gpu: bool, gpu_in_cpu: bool):
+    def extract_data_from_generated_files(
+        self, window: QMainWindow, has_dedicated_gpu: bool, gpu_in_cpu: bool
+    ):
         try:
             if DEBUG_DIR:
                 files_dir = DEBUG_DIR
             else:
                 files_dir = "tmp"
-            system_info = extract_and_collect_data_from_generated_files(files_dir, has_dedicated_gpu, gpu_in_cpu)
+            system_info = extract_and_collect_data_from_generated_files(
+                files_dir, has_dedicated_gpu, gpu_in_cpu
+            )
             window.takeCentralWidget()
 
             # new_window = ScrollableWindow()
@@ -330,7 +414,11 @@ class FilesGenerated(QWidget):
         except Exception as e:
             # noinspection PyCallByClass
             # noinspection PyArgumentList
-            QMessageBox.critical(self, "WTF2", "Have a look at the extent of your huge fuck-up:\n" + str(e))
+            QMessageBox.critical(
+                self,
+                "WTF2",
+                "Have a look at the extent of your huge fuck-up:\n" + str(e),
+            )
 
 
 class VerifyExtractedData(QWidget):
@@ -343,13 +431,17 @@ class VerifyExtractedData(QWidget):
     def init_ui(self, window: QMainWindow, system_info):
 
         v_box = QVBoxLayout()
-        button_style = "background-color: #006699; padding-left:20px; padding-right:20px;" \
-                       "padding-top:5px; padding-bottom:5px;"
+        button_style = (
+            "background-color: #006699; padding-left:20px; padding-right:20px;"
+            "padding-top:5px; padding-bottom:5px;"
+        )
 
         # proceed to the json - button
         json_button = QPushButton("Proceed to JSON")
         json_button.setStyleSheet(button_style)
-        json_button.clicked.connect(lambda: self.display_plaintext_data(window, system_info))
+        json_button.clicked.connect(
+            lambda: self.display_plaintext_data(window, system_info)
+        )
 
         v_box.addSpacing(20)
 
@@ -366,11 +458,11 @@ class VerifyExtractedData(QWidget):
                 prev_type = system_info[i - 1]["type"]
 
             if component["type"] != prev_type or i == 0:
-                if component['type'] == 'I':
-                    title = QLabel('ITEMS')
+                if component["type"] == "I":
+                    title = QLabel("ITEMS")
                     layout_grid.addWidget(title, 0, 0)
                 else:
-                    title = QLabel('PRODUCTS')
+                    title = QLabel("PRODUCTS")
                     layout_grid.addWidget(title, 0, 1)
                 # noinspection PyArgumentList
                 title.setFont(QFont("futura", pointSize=16, italic=False))
@@ -378,23 +470,23 @@ class VerifyExtractedData(QWidget):
                     v_box.addSpacing(10)
                 tree = QTreeView()
                 root_model = QStandardItemModel()
-                root_model.setHorizontalHeaderLabels(['Name', 'Value'])
+                root_model.setHorizontalHeaderLabels(["Name", "Value"])
                 tree.setModel(root_model)
 
             parent = root_model.invisibleRootItem()
-            if component['type'] == 'I':
+            if component["type"] == "I":
                 self.list_element(component, parent)
                 index = 0
             else:
                 index = 1
-                name = component['features'].get('type', 'Unknown component').upper()
-                parent.appendRow([QStandardItem(name), QStandardItem('')])
+                name = component["features"].get("type", "Unknown component").upper()
+                parent.appendRow([QStandardItem(name), QStandardItem("")])
                 new_parent = parent.child(parent.rowCount() - 1)
                 for feature in component.items():
                     if feature[0] != "type":
-                        if feature[0] == 'features':
+                        if feature[0] == "features":
                             self.list_features(str(feature[1]), new_parent)
-                        elif feature[0] == 'contents':
+                        elif feature[0] == "contents":
                             self.list_contents(str(feature[1]), new_parent)
                         else:
                             self.list_data(feature[0], feature[1], new_parent)
@@ -416,20 +508,20 @@ class VerifyExtractedData(QWidget):
             self.list_element(element, parent)
 
     def list_element(self, element, parent):
-        name = element['features'].get('type', 'Unknown component').upper()
-        parent.appendRow([QStandardItem(name), QStandardItem('')])
+        name = element["features"].get("type", "Unknown component").upper()
+        parent.appendRow([QStandardItem(name), QStandardItem("")])
         new_parent = parent.child(parent.rowCount() - 1)
         key = list(element.keys())
         for k in key:
-            if k == 'features':
+            if k == "features":
                 self.list_features(str(element[k]), new_parent)
-            elif k == 'contents':
+            elif k == "contents":
                 self.list_contents(str(element[k]), new_parent)
 
     def list_features(self, feature, parent):
         data_dict = ast.literal_eval(feature)
         for key, value in data_dict.items():
-            if key == 'type':
+            if key == "type":
                 continue
             self.list_data(key, value, parent)
 
@@ -457,7 +549,9 @@ class VerifyExtractedDataScrollable(QScrollArea):
         self.the_widget: VerifyExtractedData = VerifyExtractedData(window, system_info)
         self.init_ui(window, self.the_widget, system_info)
 
-    def init_ui(self, window: QMainWindow, the_widget: VerifyExtractedData, system_info):
+    def init_ui(
+        self, window: QMainWindow, the_widget: VerifyExtractedData, system_info
+    ):
         scroll_area = self
         scroll_area.setWidget(the_widget)
         scroll_area.setWidgetResizable(True)
@@ -474,8 +568,12 @@ class PlainTextWidget(QWidget):
         copy_pastable_json = json.dumps(system_info, indent=2)
 
         self.back_button = QPushButton("Go back")
-        self.back_button.setStyleSheet("padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;")
-        self.back_button.clicked.connect(lambda: self.restore_previous_window(window, system_info))
+        self.back_button.setStyleSheet(
+            "padding-left:20px; padding-right:20px; padding-top:5px; padding-bottom:5px;"
+        )
+        self.back_button.clicked.connect(
+            lambda: self.restore_previous_window(window, system_info)
+        )
         h_buttons.addWidget(self.back_button, alignment=Qt.AlignLeft)
 
         plain_text = QPlainTextEdit()
@@ -492,8 +590,12 @@ class PlainTextWidget(QWidget):
 
         self.clipboard_button = QPushButton("Copy to clipboard")
         self.clipboard_button.setStyleSheet(button_style)
-        self.clipboard_button.clicked.connect(lambda: QApplication.clipboard().setText(copy_pastable_json))
-        self.clipboard_button.clicked.connect(lambda: self.spawn_notification("Copied to clipboard"))
+        self.clipboard_button.clicked.connect(
+            lambda: QApplication.clipboard().setText(copy_pastable_json)
+        )
+        self.clipboard_button.clicked.connect(
+            lambda: self.spawn_notification("Copied to clipboard")
+        )
         layout_grid.addWidget(self.clipboard_button, 1, 1, Qt.AlignCenter)
 
         self.website_button = QPushButton("Go to T.A.R.A.L.L.O.")
@@ -554,7 +656,9 @@ class DataToTarallo(QWidget):
         self.resize(200, 150)
         sizeObject = QDesktopWidget().screenGeometry(0)
         self.move(int(sizeObject.width() / 2) - 100, int(sizeObject.height() / 2) - 75)
-        self.btnupl.clicked.connect(lambda: self.upload(system_info, self.chbov.isChecked(), self.txtid.text()))
+        self.btnupl.clicked.connect(
+            lambda: self.upload(system_info, self.chbov.isChecked(), self.txtid.text())
+        )
         self.btncnc.clicked.connect(self.close)
 
     def upload(self, system_info, checked, bulkid):
@@ -568,7 +672,9 @@ class DataToTarallo(QWidget):
                 mb_wentok.setText("Everything went fine, what do you want to do?")
                 btnclose = mb_wentok.addButton("Close", QMessageBox.YesRole)
                 btncnt = mb_wentok.addButton("Continue", QMessageBox.AcceptRole)
-                btntar = mb_wentok.addButton("See this PC on T.A.R.A.L.L.O.", QMessageBox.NoRole)
+                btntar = mb_wentok.addButton(
+                    "See this PC on T.A.R.A.L.L.O.", QMessageBox.NoRole
+                )
                 mb_wentok.exec_()
                 if mb_wentok.clickedButton() == btncnt:
                     self.close()
@@ -580,14 +686,18 @@ class DataToTarallo(QWidget):
             else:
                 mb_notok = QMessageBox(self)
                 mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O.")
-                mb_notok.setText("It seems there have been some problems or this PC is a duplicate. Please retry.")
+                mb_notok.setText(
+                    "It seems there have been some problems or this PC is a duplicate. Please retry."
+                )
                 btnclose = mb_notok.addButton("Back to JSON", QMessageBox.YesRole)
                 mb_notok.exec_()
                 self.close()
         except NoInternetConnectionError:
             mb_notok = QMessageBox(self)
             mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O.")
-            mb_notok.setText("No Internet connection or T.A.R.A.L.L.O. is down. Please connect and try again.")
+            mb_notok.setText(
+                "No Internet connection or T.A.R.A.L.L.O. is down. Please connect and try again."
+            )
             btnclose = mb_notok.addButton("Close", QMessageBox.YesRole)
             mb_notok.exec_()
             self.close()
@@ -617,7 +727,7 @@ def main():
     app = QApplication(sys.argv)
 
     # set SUPERIOR dark theme
-    app.setStyle('Fusion')
+    app.setStyle("Fusion")
     palette = QPalette()
     palette.setColor(QPalette.Window, QColor(53, 53, 53))
     palette.setColor(QPalette.WindowText, Qt.white)
@@ -638,5 +748,5 @@ def main():
     sys.exit(app.exec_())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
