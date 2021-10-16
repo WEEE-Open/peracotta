@@ -25,8 +25,7 @@ def args(request, monkeypatch):
 
 def test_get_gpu(args):  # checking that gpu_location is correctly read
     # checking mutual exclusion
-    assert any([args.cpu, args.gpu, args.motherboard]) \
-           and len([val for val in (args.cpu, args.gpu, args.motherboard) if val is True]) <= 1
+    assert [args.cpu, args.gpu, args.motherboard].count(True) <= 1
 
 
 def test_upload_pytarallo(args, monkeypatch, capsys):  # testing pytarallo integration with peracotta
@@ -62,7 +61,6 @@ def test_upload_pytarallo(args, monkeypatch, capsys):  # testing pytarallo integ
         assert 'all went fine' in output
 
     try:
-
         auto_bulk_id()
         overwrite_id = fixed_bulk_id()
         overwrite_bulk_id(overwrite_id)
@@ -70,4 +68,4 @@ def test_upload_pytarallo(args, monkeypatch, capsys):  # testing pytarallo integ
 
     except EnvironmentError:
         # if this exception is raised probably bad config of peracotta/.env -> test must fail
-        assert False
+        assert False, "Bad peracotta .env configuration"
