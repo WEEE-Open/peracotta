@@ -26,7 +26,9 @@ dotpolicy_content = """<?xml version="1.0" encoding="UTF-8"?>
 
 </policyconfig>
 """
-path_to_dotpolicy = "/usr/share/polkit-1/actions/it.weeeopen.peracotta.generate-files.policy"
+path_to_dotpolicy = (
+    "/usr/share/polkit-1/actions/it.weeeopen.peracotta.generate-files.policy"
+)
 local_path_to_dotpolicy = "./it.weeeopen.peracotta.generate-files.policy"
 
 # path to generate_files.sh in between dquotes
@@ -42,40 +44,46 @@ def make_dotfiles(path_to_generate_files_sh: str):
     dotpolicy_split = '<annotate key="org.freedesktop.policykit.exec.path">'
     dotpkexec_split = 'pkexec "'
 
-    dotpolicy_with_path = dotpolicy_content.split(dotpolicy_split)[0] + \
-                          dotpolicy_split + \
-                          path_to_generate_files_sh + \
-                          dotpolicy_content.split(dotpolicy_split)[1]
+    dotpolicy_with_path = (
+        dotpolicy_content.split(dotpolicy_split)[0]
+        + dotpolicy_split
+        + path_to_generate_files_sh
+        + dotpolicy_content.split(dotpolicy_split)[1]
+    )
 
-    dotpkexec_with_path = dotpkexec_content.split(dotpkexec_split)[0] + \
-                          dotpkexec_split + \
-                          path_to_generate_files_sh + \
-                          dotpkexec_content.split(dotpkexec_split)[1]
+    dotpkexec_with_path = (
+        dotpkexec_content.split(dotpkexec_split)[0]
+        + dotpkexec_split
+        + path_to_generate_files_sh
+        + dotpkexec_content.split(dotpkexec_split)[1]
+    )
 
     # print(dotpolicy_with_path)
     # print()
     # print(dotpkexec_with_path)
 
-    with open(local_path_to_dotpolicy, 'w') as f:
+    with open(local_path_to_dotpolicy, "w") as f:
         f.write(dotpolicy_with_path)
         os.system("./scripts/move_pkexec_policy_file.sh")
         while not os.path.exists(path_to_dotpolicy):
             sleep(0.1)
         print(path_to_dotpolicy, "was created!")
 
-    with open(path_to_dotpkexec, 'w') as f:
+    with open(path_to_dotpkexec, "w") as f:
         f.write(dotpkexec_with_path)
         # make file executable -- octal is needed
         os.chmod(path_to_dotpkexec, 0o776)
         print(path_to_dotpkexec, "was created!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     working_directory = os.getcwd()
     if not os.path.isdir(os.path.join(working_directory, "tmp")):
         os.makedirs(os.path.join(working_directory, "tmp"))
 
     folder_name = "tmp"
-    path_to_gen_files_sh = os.path.join(working_directory, "scripts", "generate_files.sh")
+    path_to_gen_files_sh = os.path.join(
+        working_directory, "scripts", "generate_files.sh"
+    )
     print(path_to_gen_files_sh)
     make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)
