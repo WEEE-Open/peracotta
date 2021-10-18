@@ -112,7 +112,7 @@ class Welcome(QWidget):
             "Load previously generated files"
         )
         self.load_previously_generated_files_button.clicked.connect(
-            lambda: self.load_previously_generated_files(self, window)
+            lambda: self.load_previously_generated_files(window)
         )
         # by default it's enabled, if one of the expected files does not exist it's disabled
         style_disabled = "background-color:#666677; color:#444444"
@@ -334,7 +334,6 @@ class Welcome(QWidget):
                 "Have a look at the extent of your huge fuck-up:\n" + str(e),
             )
 
-    @staticmethod
     def load_previously_generated_files(self, window: QMainWindow):
         cwd = os.getcwd()
         tmp_path = os.path.join(cwd, "tmp")
