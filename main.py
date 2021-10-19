@@ -499,7 +499,6 @@ def run_extract_data(path, args):
             verbose=args.verbose,
             gui=False,
         )
-        print_output(json.dumps(data, indent=2), path)
     except InputFileNotFoundError as e:
         print(str(e))
         exit(1)
@@ -569,6 +568,19 @@ def prompt_to_open_browser():
         print(
             f"[green]Finished successfully![/] Now you can add this output to the T.A.R.A.L.L.O. -> {web_link}"
         )
+
+
+def get_additional_info(gathered_data):
+    code = input("Does this have a code already? (optional, ENTER to skip): ")
+    if code:
+        # some elaboration just to let in the upper part the 'code' key. Not necessary but definitely better looking
+        new = {'code': code}
+        new.update(gathered_data[0])
+        gathered_data[0] = new
+
+    owner = input("Do you want to add a owner? (optional, ENTER to skip): ")
+    if owner:
+        gathered_data[0]['features']['owner'] = owner
 
 
 def upload(jsoned):
@@ -644,6 +656,8 @@ def upload(jsoned):
 
 
 def main(args):
+    path = os.getcwd()
+
     if args.gui:
         import main_with_gui
 
@@ -656,14 +670,13 @@ def main(args):
                 "[bold red]Error: Bad flags combination (./main.py -f <path> is correct) [/]"
             )
             exit(-1)
-        path = os.path.join(os.getcwd(), args.files)
+        path = os.path.join(path, args.files)
         check_required_files(path)
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
-        final_output = run_extract_data(path, args)
 
     else:
         if args.path is None:
-            path = os.path.join(os.getcwd(), "tmp")
+            path = os.path.join(path, "tmp")
             if os.path.isdir(path):
                 sel = input("Overwrite existing files in tmp dir? y/N ").lower()
                 if sel == "y":
@@ -680,7 +693,7 @@ def main(args):
                 os.mkdir(path)
 
         else:
-            path = os.path.join(os.getcwd(), args.path)
+            path = os.path.join(path, args.path)
             if os.path.isdir(path):
                 print(
                     "[bold red]Wrong path: can't create a directory with this name, existing already[/]"
@@ -697,8 +710,10 @@ def main(args):
 
         # file generated, extract data next
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
-        final_output = run_extract_data(path, args)
 
+    final_output = run_extract_data(path, args)
+    get_additional_info(final_output)
+    print_output(json.dumps(final_output, indent=2), path)
     prompt_to_open_browser()
     upload(final_output)
 
