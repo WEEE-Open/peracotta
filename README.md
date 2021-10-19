@@ -68,7 +68,7 @@ This is done automatically by the GUI version.
 You can find the usage below, but keep in mind that the three most important arguments are:
 - the path for files generation (if none given, it will default to a tmp directory, and if it exist, you will be asked whether you want to overwrite it).
 - `-g | -c | -b`: one of these tells the script where the GPU (or graphics card if it's not integrated) is located. If none of them is given, a menu with the same choices will appear during the execution.
-- - `--code CODE` and `--owner OWNER`: these two parameters are used to add some more information directly into the output json file. 
+- `--code CODE` and `--owner OWNER`: these two parameters are used to add some more information directly into the output json file. 
 - the path to the txt files, previously generated with generate_files.sh.
 ```bash
 usage: main.py [-h] [-f FILES] [-g | -c | -b] [-i] [-v] [path]
