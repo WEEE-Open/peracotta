@@ -570,15 +570,21 @@ def prompt_to_open_browser():
         )
 
 
-def get_additional_info(gathered_data):
-    code = input("Does this have a code already? (optional, ENTER to skip): ")
+def get_additional_info(gathered_data, args):
+    if not args.code:
+        code = input("Does this have a code already? (optional, ENTER to skip): ")
+    else:
+        code = args.code
+
     if code:
         # some elaboration just to let in the upper part the 'code' key. Not necessary but definitely better looking
         new = {'code': code}
         new.update(gathered_data[0])
         gathered_data[0] = new
-
-    owner = input("Do you want to add a owner? (optional, ENTER to skip): ")
+    if not args.owner:
+        owner = input("Do you want to add a owner? (optional, ENTER to skip): ")
+    else:
+        owner = args.owner
     if owner:
         gathered_data[0]['features']['owner'] = owner
 
@@ -712,7 +718,7 @@ def main(args):
         args.cpu, args.gpu, args.motherboard = get_gpu(args)
 
     final_output = run_extract_data(path, args)
-    get_additional_info(final_output)
+    get_additional_info(final_output, args)
     print_output(json.dumps(final_output, indent=2), path)
     prompt_to_open_browser()
     upload(final_output)
@@ -735,7 +741,21 @@ def generate_parser():
         action="store",
         default=None,
         required=False,
-        help="retrieve previously generated files from a given path",
+        help="retrieve previously generated files from a given path"
+    )
+    parser.add_argument(
+        "--code",
+        action="store",
+        default=None,
+        required=False,
+        help="set the code assigned by T.A.R.A.L.L.O"
+    )
+    parser.add_argument(
+        "--owner",
+        action="store",
+        default=None,
+        required=False,
+        help="set a owner"
     )
     gpu_group = parser.add_argument_group("GPU Location").add_mutually_exclusive_group(
         required=False
@@ -785,7 +805,6 @@ def generate_parser():
         type=str,
         help="optional path where generated files are stored",
     )
-
     return parser
 
 
