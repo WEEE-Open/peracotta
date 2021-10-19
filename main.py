@@ -578,7 +578,7 @@ def get_additional_info(gathered_data, args):
 
     if code:
         # some elaboration just to let in the upper part the 'code' key. Not necessary but definitely better looking
-        new = {'code': code}
+        new = {"code": code}
         new.update(gathered_data[0])
         gathered_data[0] = new
     if not args.owner:
@@ -586,7 +586,7 @@ def get_additional_info(gathered_data, args):
     else:
         owner = args.owner
     if owner:
-        gathered_data[0]['features']['owner'] = owner
+        gathered_data[0]["features"]["owner"] = owner
 
 
 def upload(jsoned):
@@ -741,21 +741,17 @@ def generate_parser():
         action="store",
         default=None,
         required=False,
-        help="retrieve previously generated files from a given path"
+        help="retrieve previously generated files from a given path",
     )
     parser.add_argument(
         "--code",
         action="store",
         default=None,
         required=False,
-        help="set the code assigned by T.A.R.A.L.L.O"
+        help="set the code assigned by T.A.R.A.L.L.O",
     )
     parser.add_argument(
-        "--owner",
-        action="store",
-        default=None,
-        required=False,
-        help="set a owner"
+        "--owner", action="store", default=None, required=False, help="set a owner"
     )
     gpu_group = parser.add_argument_group("GPU Location").add_mutually_exclusive_group(
         required=False
