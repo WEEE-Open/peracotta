@@ -571,6 +571,18 @@ def prompt_to_open_browser():
 
 
 def get_additional_info(gathered_data, args):
+    def add_owner(item_part):
+        if type(item_part) is list:
+            for component in item_part:
+                add_owner(component)
+
+        else:
+            item_part['features']['owner'] = owner
+            try:
+                add_owner(item_part['contents'])
+            except KeyError:
+                return
+
     if not args.code:
         code = input("Does this have a code already? (optional, ENTER to skip): ")
     else:
@@ -586,7 +598,7 @@ def get_additional_info(gathered_data, args):
     else:
         owner = args.owner
     if owner:
-        gathered_data[0]['features']['owner'] = owner
+        add_owner(gathered_data[0])
 
 
 def upload(jsoned):
