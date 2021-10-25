@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ '3.6', '3.7', '3.8', '3.9' ]
+        python-version: [ '3.6', '3.7', '3.8', '3.9', '3.10' ]
 
     steps:
       - uses: actions/checkout@v2
@@ -31,6 +31,19 @@ jobs:
         run: pip install dataclasses
         if: ${{ matrix.python-version }} == '3.6'
 
+      - name: Set up local development Tarallo instance
+        run: |
+          git clone https://github.com/weee-open/tarallo
+          cd tarallo || exit
+          make ci
+          make up
+          cd - &> /dev/null
+          
+      - name: Create test .env file to access local Tarallo instance
+        run: |
+          echo "export TARALLO_URL=http://127.0.0.1:8080" >> .env
+          echo "export TARALLO_TOKEN=yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k" >> .env
+          
       - name: Run tests
         run: pytest -vv tests
 

@@ -30,7 +30,7 @@ if __name__ == "__main__":
     with open("brands.txt", "r") as f:
         li = list(f)
     for i in range(len(li)):
-        li[i] = li[i].replace('\n', '')
+        li[i] = li[i].replace("\n", "")
     double = li
     output = {}
     for el in double:

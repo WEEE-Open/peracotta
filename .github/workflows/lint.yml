@@ -1,26 +1,33 @@
-# see https://github.com/marketplace/actions/lint-action
-
 name: Lint
-on: push
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
 jobs:
   run-linters:
     name: Run linters
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout git repo
+      - name: Check out Git repository
         uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v1
         with:
-          python-version: 3.9
-          architecture: x64
+          python-version: 3.8
 
       - name: Install Python dependencies
-        run: pip install black
-
+        run: pip install black flake8
+        
       - name: Run linters
         uses: wearerequired/lint-action@v1
         with:
           black: true
-          # auto_fix: true
+          flake8: false
+          auto_fix: true

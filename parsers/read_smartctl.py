@@ -56,24 +56,35 @@ def read_smartctl(path: str, interactive: bool = False):
             disk = Disk()
 
             try:
-                with open(os.path.join(path, filename), 'r') as f:
+                with open(os.path.join(path, filename), "r") as f:
                     output = f.read()
             except FileNotFoundError:
                 raise InputFileNotFoundError(path)
 
-            if '=== START OF INFORMATION SECTION ===' not in output:
+            if "=== START OF INFORMATION SECTION ===" not in output:
                 if interactive:
-                    print(f"{filename} does not contain disk information, was it a USB stick?")
+                    print(
+                        f"{filename} does not contain disk information, was it a USB stick?"
+                    )
                 continue
 
-            data = output.split('=== START OF INFORMATION SECTION ===', 1)[1] \
-                .split('=== START OF READ SMART DATA SECTION ===', 1)[0]
+            data = output.split("=== START OF INFORMATION SECTION ===", 1)[1].split(
+                "=== START OF READ SMART DATA SECTION ===", 1
+            )[0]
 
             # For manual inspection later on
-            if 'Vendor Specific SMART Attributes with Thresholds:' in output:
-                disk.smart_data_long = 'Vendor Specific SMART Attributes with Thresholds:' + output.split('Vendor Specific SMART Attributes with Thresholds:', 1)[1].split('\n\n', 1)[0]
-            elif 'SMART/Health Information' in output:
-                disk.smart_data_long = 'SMART/Health Information' + output.split('SMART/Health Information', 1)[1].split('\n\n', 1)[0]
+            if "Vendor Specific SMART Attributes with Thresholds:" in output:
+                disk.smart_data_long = (
+                    "Vendor Specific SMART Attributes with Thresholds:"
+                    + output.split(
+                        "Vendor Specific SMART Attributes with Thresholds:", 1
+                    )[1].split("\n\n", 1)[0]
+                )
+            elif "SMART/Health Information" in output:
+                disk.smart_data_long = (
+                    "SMART/Health Information"
+                    + output.split("SMART/Health Information", 1)[1].split("\n\n", 1)[0]
+                )
 
             status = "not supported"
             for line in output.splitlines():
@@ -140,42 +151,49 @@ def read_smartctl(path: str, interactive: bool = False):
                 elif "Form Factor:" in line:
                     ff = line.split("Form Factor:")[1].strip()
                     # https://github.com/smartmontools/smartmontools/blob/40468930fd77d681b034941c94dc858fe2c1ef10/smartmontools/ataprint.cpp#L405
-                    if ff == '3.5 inches':
-                        disk.form_factor = '3.5'
-                    elif ff == '2.5 inches':
+                    if ff == "3.5 inches":
+                        disk.form_factor = "3.5"
+                    elif ff == "2.5 inches":
                         # This is the most common height, just guessing...
-                        disk.form_factor = '2.5-7mm'
-                    elif ff == '1.8 inches':
+                        disk.form_factor = "2.5-7mm"
+                    elif ff == "1.8 inches":
                         # Still guessing...
-                        disk.form_factor = '1.8-8mm'
-                    elif ff == 'M.2':
-                        disk.form_factor = 'm2'
+                        disk.form_factor = "1.8-8mm"
+                    elif ff == "M.2":
+                        disk.form_factor = "m2"
 
                 elif "User Capacity:" in line:
                     # https://stackoverflow.com/a/3411435
-                    num_bytes = line.split('User Capacity:')[1].split("bytes")[0].strip().replace(',', '').replace('.',
-                                                                                                                   '')
+                    num_bytes = (
+                        line.split("User Capacity:")[1]
+                        .split("bytes")[0]
+                        .strip()
+                        .replace(",", "")
+                        .replace(".", "")
+                    )
                     round_digits = int(floor(log10(abs(float(num_bytes))))) - 2
-                    bytes_rounded = int(round(float(num_bytes), - round_digits))
+                    bytes_rounded = int(round(float(num_bytes), -round_digits))
                     disk.capacity = bytes_rounded
 
                 elif "Rotation Rate:" in line:
                     if "Solid State Device" not in line:
-                        disk.rotation_rate = int(line.split("Rotation Rate:")[1].split("rpm")[0].strip())
+                        disk.rotation_rate = int(
+                            line.split("Rotation Rate:")[1].split("rpm")[0].strip()
+                        )
                         disk.type = "hdd"
                     else:
                         disk.type = "ssd"
 
-            if disk.brand == 'Western Digital':
+            if disk.brand == "Western Digital":
                 # These are useless and usually not even printed on labels and in bar codes...
-                disk.model = remove_prefix('WDC ', disk.model)
-                disk.serial_number = remove_prefix('WD-', disk.serial_number)
-            if disk.model.startswith('SSD '):
+                disk.model = remove_prefix("WDC ", disk.model)
+                disk.serial_number = remove_prefix("WD-", disk.serial_number)
+            if disk.model.startswith("SSD "):
                 disk.model = disk.model[4:]
 
-            if 'SATA' in disk.family or 'SATA' in disk.model:
+            if "SATA" in disk.family or "SATA" in disk.model:
                 disk.port = PORT.sata
-            if 'SATA Version is:' in output:
+            if "SATA Version is:" in output:
                 disk.port = PORT.sata
 
             disks.append(disk)
@@ -191,10 +209,10 @@ def read_smartctl(path: str, interactive: bool = False):
                 "wwn": disk.wwn,
                 "sn": disk.serial_number,
                 "capacity-byte": disk.capacity,
-                "smart-data": disk.smart_data.value
+                "smart-data": disk.smart_data.value,
             }
             if disk.smart_data_long is not SMART.not_available:
-                this_disk['notes'] = disk.smart_data_long
+                this_disk["notes"] = disk.smart_data_long
         else:
             this_disk = {
                 "type": "hdd",
@@ -207,7 +225,7 @@ def read_smartctl(path: str, interactive: bool = False):
                 # tell some functions how to convert it to human-readable format
                 "capacity-decibyte": disk.capacity,
                 "spin-rate-rpm": disk.rotation_rate,
-                "smart-data": disk.smart_data.value
+                "smart-data": disk.smart_data.value,
             }
         if disk.form_factor is not None:
             this_disk["hdd-form-factor"] = disk.form_factor
@@ -215,7 +233,7 @@ def read_smartctl(path: str, interactive: bool = False):
             # Disks usually have 1 port (be it SATA or IDE or SCSI or other)
             this_disk[disk.port.value] = 1
         if disk.smart_data_long is not SMART.not_available:
-            this_disk['notes'] = disk.smart_data_long
+            this_disk["notes"] = disk.smart_data_long
         result.append(this_disk)
     return result
 
@@ -224,17 +242,17 @@ def split_brand_and_other(line):
     lowered = line.lower()
 
     possibilities = [
-        'Western Digital',
-        'Seagate',
-        'Maxtor',
-        'Hitachi',
-        'Toshiba',
-        'Samsung',
-        'Fujitsu',
-        'Apple',
-        'Crucial/Micron',
-        'Crucial',
-        'LiteOn',
+        "Western Digital",
+        "Seagate",
+        "Maxtor",
+        "Hitachi",
+        "Toshiba",
+        "Samsung",
+        "Fujitsu",
+        "Apple",
+        "Crucial/Micron",
+        "Crucial",
+        "LiteOn",
     ]
 
     brand = None
@@ -242,7 +260,7 @@ def split_brand_and_other(line):
     for possible in possibilities:
         if lowered.startswith(possible.lower()):
             brand = possible
-            other = line[len(possible):].lstrip('_').strip()
+            other = line[len(possible) :].lstrip("_").strip()
             break
 
     return brand, other
@@ -250,11 +268,11 @@ def split_brand_and_other(line):
 
 def remove_prefix(prefix, text):
     if text.startswith(prefix):
-        return text[len(prefix):]
+        return text[len(prefix) :]
     return text
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import json
 
     try:
