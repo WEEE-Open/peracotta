@@ -36,7 +36,7 @@ def open_filesgen(qtbot):
         qtbot.addWidget(widget)
         widget.show()
         qtbot.wait_for_window_shown(widget)
-        #QtTest.QTest.qWait(3 * 1000)
+        # QtTest.QTest.qWait(3 * 1000)
         return widget
 
     return callback
@@ -78,7 +78,7 @@ class TestDataTarallo:
             gpu_in_cpu = False
         return has_dedicated_gpu, gpu_in_cpu
 
-    def test_no_pref(self,qtbot, folders):
+    def test_no_pref(self, qtbot, folders):
         gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests", folders))
         has_dedicated_gpu, gpu_in_cpu = self.def_gpu_location(gpu_loc)
         files_dir = os.path.join(os.getcwd(), "tests", folders)
@@ -122,7 +122,6 @@ class TestDataTarallo:
         QtTest.QTest.qWait(100)
         self.check_result()
 
-
     def test_over_id(self, qtbot, folders):
         gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests", folders))
         has_dedicated_gpu, gpu_in_cpu = self.def_gpu_location(gpu_loc)
@@ -138,4 +137,3 @@ class TestDataTarallo:
         self.press_upload(widget, qtbot)
         QtTest.QTest.qWait(100)
         self.check_result()
-
