@@ -82,6 +82,11 @@ class Window(QMainWindow):
         self.show()
 
 
+def get_gpu_location(directory):
+    with open(os.path.join(directory, gpu_loc_file)) as f:
+        return GPU(f.read())
+
+
 class Welcome(QWidget):
     def __init__(self, window: QMainWindow):
         # noinspection PyArgumentList
@@ -112,7 +117,7 @@ class Welcome(QWidget):
             "Load previously generated files"
         )
         self.load_previously_generated_files_button.clicked.connect(
-            lambda: self.load_previously_generated_files(self, window)
+            lambda: self.load_previously_generated_files(window)
         )
         # by default it's enabled, if one of the expected files does not exist it's disabled
         style_disabled = "background-color:#666677; color:#444444"
@@ -334,11 +339,10 @@ class Welcome(QWidget):
                 "Have a look at the extent of your huge fuck-up:\n" + str(e),
             )
 
-    @staticmethod
-    def load_previously_generated_files(self, window: QMainWindow):
-        cwd = os.getcwd()
-        tmp_path = os.path.join(cwd, "tmp")
-        for existing_file in os.listdir(tmp_path):
+    def load_previously_generated_files(self,
+                                        window: QMainWindow,
+                                        directory: str = os.path.join(os.getcwd(), "tmp")):
+        for existing_file in os.listdir(directory):
             if existing_file == gpu_loc_file:
                 break
         else:  # there is no gpu_location.txt file
@@ -346,8 +350,7 @@ class Welcome(QWidget):
             gpu_loc = self.prompt_gpu_location(window, True)
             with open(os.path.join(folder_name, gpu_loc_file), "w") as f:
                 f.write(gpu_loc.value)
-        with open(os.path.join(os.getcwd(), "tmp", gpu_loc_file)) as f:
-            gpu_loc = GPU(f.read())
+        gpu_loc = get_gpu_location(directory)
         window.takeCentralWidget()
         new_widget = FilesGenerated(window, gpu_loc)
         window.setCentralWidget(new_widget)
@@ -675,7 +678,7 @@ class DataToTarallo(QWidget):
                 btntar = mb_wentok.addButton(
                     "See this PC on T.A.R.A.L.L.O.", QMessageBox.NoRole
                 )
-                mb_wentok.exec_()
+                mb_wentok.show()
                 if mb_wentok.clickedButton() == btncnt:
                     self.close()
                 elif mb_wentok.clickedButton() == btnclose:
@@ -690,8 +693,9 @@ class DataToTarallo(QWidget):
                     "It seems there have been some problems or this PC is a duplicate. Please retry."
                 )
                 btnclose = mb_notok.addButton("Back to JSON", QMessageBox.YesRole)
-                mb_notok.exec_()
-                self.close()
+                mb_notok.show()
+                if mb_notok.clickedButton():
+                    self.close()
         except NoInternetConnectionError:
             mb_notok = QMessageBox(self)
             mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O.")
