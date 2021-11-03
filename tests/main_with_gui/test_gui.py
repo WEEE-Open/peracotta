@@ -43,9 +43,11 @@ def open_filesgen(qtbot):
 
     return callback
 
+
 def get_gpu_location(directory):
     with open(os.path.join(directory, gpu_loc_file)) as f:
         return GPU(f.read())
+
 
 class TestVisibleWindow:
     def test_visible_welcome(self, open_welcome, qtbot):

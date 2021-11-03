@@ -187,7 +187,6 @@ class Welcome(QWidget):
 
         self.setLayout(v_box)
 
-
     def check_install_dependencies(self, window: QMainWindow):
         working_directory = os.getcwd()
         cmd = os.path.join(working_directory, "scripts/check_dependencies.sh")
@@ -206,13 +205,13 @@ class Welcome(QWidget):
                 )
                 working_directory = os.getcwd()
                 with sp.Popen(
-                        [
-                            "pkexec",
-                            os.path.join(
-                                working_directory, "scripts/install_dependencies_all.sh"
-                            ),
-                        ],
-                        shell=False,
+                    [
+                        "pkexec",
+                        os.path.join(
+                            working_directory, "scripts/install_dependencies_all.sh"
+                        ),
+                    ],
+                    shell=False,
                 ) as process:
                     process.wait(timeout=80)
             else:
@@ -339,7 +338,6 @@ class Welcome(QWidget):
                 "WTF1",
                 "Have a look at the extent of your huge fuck-up:\n" + str(e),
             )
-
 
     def load_previously_generated_files(self, window: QMainWindow):
         cwd = os.getcwd()
