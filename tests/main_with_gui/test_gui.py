@@ -2,7 +2,9 @@ import pytest
 import os
 from PyQt5 import QtCore, QtTest, QtWidgets
 from main import extract_and_collect_data_from_generated_files
-from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo, get_gpu_location
+from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo
+
+gpu_loc_file = "gpu_location.txt"
 
 test_folders = [
     entries for entries in os.listdir("tests/") if os.path.isdir(f"tests/{entries}")
@@ -41,6 +43,9 @@ def open_filesgen(qtbot):
 
     return callback
 
+def get_gpu_location(directory):
+    with open(os.path.join(directory, gpu_loc_file)) as f:
+        return GPU(f.read())
 
 class TestVisibleWindow:
     def test_visible_welcome(self, open_welcome, qtbot):

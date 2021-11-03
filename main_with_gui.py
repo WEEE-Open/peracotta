@@ -187,6 +187,22 @@ class Welcome(QWidget):
 
         self.setLayout(v_box)
 
+    def load_previously_generated_files(self,
+                                        window: QMainWindow,
+                                        directory: str = os.path.join(os.getcwd(), "tmp")):
+        for existing_file in os.listdir(directory):
+            if existing_file == gpu_loc_file:
+                break
+        else:  # there is no gpu_location.txt file
+            folder_name = "tmp"
+            gpu_loc = self.prompt_gpu_location(window, True)
+            with open(os.path.join(folder_name, gpu_loc_file), "w") as f:
+                f.write(gpu_loc.value)
+        gpu_loc = get_gpu_location(directory)
+        window.takeCentralWidget()
+        new_widget = FilesGenerated(window, gpu_loc)
+        window.setCentralWidget(new_widget)
+
     def check_install_dependencies(self, window: QMainWindow):
         working_directory = os.getcwd()
         cmd = os.path.join(working_directory, "scripts/check_dependencies.sh")
@@ -205,13 +221,13 @@ class Welcome(QWidget):
                 )
                 working_directory = os.getcwd()
                 with sp.Popen(
-                    [
-                        "pkexec",
-                        os.path.join(
-                            working_directory, "scripts/install_dependencies_all.sh"
-                        ),
-                    ],
-                    shell=False,
+                        [
+                            "pkexec",
+                            os.path.join(
+                                working_directory, "scripts/install_dependencies_all.sh"
+                            ),
+                        ],
+                        shell=False,
                 ) as process:
                     process.wait(timeout=80)
             else:
@@ -338,22 +354,6 @@ class Welcome(QWidget):
                 "WTF1",
                 "Have a look at the extent of your huge fuck-up:\n" + str(e),
             )
-
-    def load_previously_generated_files(self,
-                                        window: QMainWindow,
-                                        directory: str = os.path.join(os.getcwd(), "tmp")):
-        for existing_file in os.listdir(directory):
-            if existing_file == gpu_loc_file:
-                break
-        else:  # there is no gpu_location.txt file
-            folder_name = "tmp"
-            gpu_loc = self.prompt_gpu_location(window, True)
-            with open(os.path.join(folder_name, gpu_loc_file), "w") as f:
-                f.write(gpu_loc.value)
-        gpu_loc = get_gpu_location(directory)
-        window.takeCentralWidget()
-        new_widget = FilesGenerated(window, gpu_loc)
-        window.setCentralWidget(new_widget)
 
 
 class FilesGenerated(QWidget):
