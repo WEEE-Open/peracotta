@@ -82,6 +82,11 @@ class Window(QMainWindow):
         self.show()
 
 
+def get_gpu_location(directory):
+    with open(os.path.join(directory, gpu_loc_file)) as f:
+        return GPU(f.read())
+
+
 class Welcome(QWidget):
     def __init__(self, window: QMainWindow):
         # noinspection PyArgumentList
@@ -674,7 +679,7 @@ class DataToTarallo(QWidget):
                 btntar = mb_wentok.addButton(
                     "See this PC on T.A.R.A.L.L.O.", QMessageBox.NoRole
                 )
-                mb_wentok.exec_()
+                mb_wentok.show()
                 if mb_wentok.clickedButton() == btncnt:
                     self.close()
                 elif mb_wentok.clickedButton() == btnclose:
@@ -689,8 +694,9 @@ class DataToTarallo(QWidget):
                     "It seems there have been some problems or this PC is a duplicate. Please retry."
                 )
                 btnclose = mb_notok.addButton("Back to JSON", QMessageBox.YesRole)
-                mb_notok.exec_()
-                self.close()
+                mb_notok.show()
+                if mb_notok.clickedButton():
+                    self.close()
         except NoInternetConnectionError:
             mb_notok = QMessageBox(self)
             mb_notok.setWindowTitle("Send data to T.A.R.A.L.L.O.")
