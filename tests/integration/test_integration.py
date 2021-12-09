@@ -29,7 +29,7 @@ def test_get_gpu(args):  # checking that gpu_location is correctly read
     # checking mutual exclusion
     assert [args.cpu, args.gpu, args.motherboard].count(True) <= 1
 
-
+@pytest.mark.upload
 def test_upload_pytarallo(
     args, monkeypatch, capsys
 ):  # testing pytarallo integration with peracotta

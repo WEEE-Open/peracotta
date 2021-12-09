@@ -49,6 +49,7 @@ def get_gpu_location(directory):
         return GPU(f.read())
 
 
+@pytest.mark.gui
 class TestVisibleWindow:
     def test_visible_welcome(self, open_welcome, qtbot):
         widget = open_welcome(Welcome)
@@ -59,6 +60,7 @@ class TestVisibleWindow:
         assert widget.isVisible()
 
 
+@pytest.mark.gui
 class TestDataTarallo:
     def press_upload(self, widget, qtbot):
         qtbot.mouseClick(widget.btnupl, QtCore.Qt.LeftButton)

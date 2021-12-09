@@ -2,6 +2,7 @@ import prettyprinter
 import pytest
 
 
+@pytest.mark.prettyprint
 def test_frequency():
     values = {
         100: "100 Hz",
@@ -16,6 +17,7 @@ def test_frequency():
         assert prettyprinter.print_feature("frequency-hertz", value) == expected
 
 
+@pytest.mark.prettyprint
 def test_diagonal_inches():
     values = {
         17: "17 in.",
@@ -26,6 +28,7 @@ def test_diagonal_inches():
         assert prettyprinter.print_feature("diagonal-inch", value) == expected
 
 
+@pytest.mark.prettyprint
 def test_diameter():
     values = {
         10: "10 mm",
@@ -40,6 +43,7 @@ def test_diameter():
         assert prettyprinter.print_feature("diameter-mm", value) == expected
 
 
+@pytest.mark.prettyprint
 def test_bytes():
     values = {
         10: "10 B",
@@ -62,6 +66,7 @@ def test_bytes():
         assert prettyprinter.print_feature("capacity-byte", value) == expected
 
 
+@pytest.mark.prettyprint
 def test_hdd_bytes():
     values = {
         10: "10 B",
