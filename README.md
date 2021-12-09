@@ -43,6 +43,8 @@ Same as before, until the `pip install` part. The correct command is:
 
 This will allow you to run tests: `pytest -vv tests`
 
+Some markers are also available, e.g. you can run `pytest -m gui` to just test the gui, or `pytest -m 'not gui'` to test everything else. See `pytest.ini` for a list of markers.
+
 If requirements change:  
 - install the correct version of the requirements (e.g. a new library or a new version of an already installed library)  
 - with the virtual environment activated, run `pip freeze > requirements-dev.txt` and *manually* edit the file (add the `-r requirements.txt` line and remove non-dev requirements)
