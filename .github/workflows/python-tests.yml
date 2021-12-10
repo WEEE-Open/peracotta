@@ -43,7 +43,11 @@ jobs:
         run: |
           echo "export TARALLO_URL=http://127.0.0.1:8080" >> .env
           echo "export TARALLO_TOKEN=yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k" >> .env
-          
-      - name: Run tests
-        run: pytest -vv tests
 
+      - name: Run tests
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: pytest -vv tests
+
+#      - name: Run tests
+#        run: pytest -vv tests
