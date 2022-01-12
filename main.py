@@ -40,6 +40,7 @@ def is_product(component: dict):
             "unknown",
             "undefined",
             "no enclosure",
+            "chassis manufacture",
             "to be filled by o.e.m.",
         ):
             return False
