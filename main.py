@@ -331,7 +331,17 @@ def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
                     removed.add(k)
                 elif v is None:
                     removed.add(k)
-                elif k in ('brand', 'brand-manufacturer', 'model', 'integrated-graphics-brand', 'integrated-graphics-model') and v.lower() in MEANINGLESS_VALUES:
+                elif (
+                    k
+                    in (
+                        "brand",
+                        "brand-manufacturer",
+                        "model",
+                        "integrated-graphics-brand",
+                        "integrated-graphics-model",
+                    )
+                    and v.lower() in MEANINGLESS_VALUES
+                ):
                     removed.add(k)
                 else:
                     cleaned_item[k] = v
