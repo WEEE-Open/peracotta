@@ -26,25 +26,23 @@ from parsers.read_smartctl import read_smartctl
 
 traceback.install()
 
+MEANINGLESS_VALUES = (
+    "",
+    "null",
+    "custom",
+    "unknown",
+    "undefined",
+    "no enclosure",
+    "chassis manufacture",
+    "to be filled by o.e.m.",
+)
+
 
 def is_product(component: dict):
     # check if brand and model exist
     if "brand" not in component or "model" not in component:
         return False
-    # check if brand or model has a not valid value
-    candidates = [component["brand"].lower(), component["model"].lower()]
-    for candidate in candidates:
-        if isinstance(candidate, str) and candidate.lower() in (
-            "",
-            "null",
-            "unknown",
-            "undefined",
-            "no enclosure",
-            "chassis manufacture",
-            "to be filled by o.e.m.",
-        ):
-            return False
-    # if all conditions are False, the product should be added
+
     return True
 
 
@@ -332,6 +330,8 @@ def do_cleanup(result: list, gui: bool, verbose: bool = False) -> list:
                 elif isinstance(v, int) and v <= 0:
                     removed.add(k)
                 elif v is None:
+                    removed.add(k)
+                elif k in ('brand', 'brand-manufacturer', 'model', 'integrated-graphics-brand', 'integrated-graphics-model') and v.lower() in MEANINGLESS_VALUES:
                     removed.add(k)
                 else:
                     cleaned_item[k] = v
