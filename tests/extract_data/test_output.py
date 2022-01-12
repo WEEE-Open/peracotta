@@ -12,7 +12,9 @@ def is_product(component: dict):
 
 
 test_folders = [
-    entries for entries in os.listdir("tests/source_files") if os.path.isdir(f"tests/source_files/{entries}")
+    entries
+    for entries in os.listdir("tests/source_files")
+    if os.path.isdir(f"tests/source_files/{entries}")
 ]
 for fold in set(test_folders):
     if "baseboard.txt" not in os.listdir(f"tests/source_files/{fold}"):

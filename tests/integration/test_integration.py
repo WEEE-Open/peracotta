@@ -7,7 +7,9 @@ from main import generate_parser, get_gpu, run_extract_data, upload
 
 parser = generate_parser()
 test_folders = [
-    entries for entries in os.listdir("tests/source_files/") if os.path.isdir(f"tests/source_files/{entries}")
+    entries
+    for entries in os.listdir("tests/source_files/")
+    if os.path.isdir(f"tests/source_files/{entries}")
 ]
 for fold in set(test_folders):
     if "baseboard.txt" not in os.listdir(f"tests/source_files/{fold}"):
