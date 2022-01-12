@@ -7,7 +7,7 @@ from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
 
-filedir = "tests/decode-dimms/"
+filedir = "tests/source_files/decode-dimms/"
 
 
 def test_ecc_ram1():

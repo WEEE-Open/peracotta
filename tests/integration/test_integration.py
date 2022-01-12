@@ -7,16 +7,16 @@ from main import generate_parser, get_gpu, run_extract_data, upload
 
 parser = generate_parser()
 test_folders = [
-    entries for entries in os.listdir("tests/") if os.path.isdir(f"tests/{entries}")
+    entries for entries in os.listdir("tests/source_files/") if os.path.isdir(f"tests/source_files/{entries}")
 ]
 for fold in set(test_folders):
-    if "baseboard.txt" not in os.listdir(f"tests/{fold}"):
+    if "baseboard.txt" not in os.listdir(f"tests/source_files/{fold}"):
         test_folders.remove(fold)
 
 
 @pytest.fixture(params=test_folders)
 def args(request, monkeypatch):
-    args = parser.parse_args(["-f", f"tests/{request.param}"])
+    args = parser.parse_args(["-f", f"tests/source_files/{request.param}"])
     # the following function could prompt a menu requesting gpu location.
     # Setting a value into stdin buffer just in case input is needed
     cli_input = io.StringIO("b")

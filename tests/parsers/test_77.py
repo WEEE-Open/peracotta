@@ -7,7 +7,7 @@ from parsers import read_lscpu
 from parsers import read_smartctl
 import os
 
-filedir = "tests/77/"
+filedir = "tests/source_files/77/"
 
 
 def test_77_lspci():

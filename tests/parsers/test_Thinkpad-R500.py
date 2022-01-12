@@ -7,7 +7,7 @@ from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
 
-filedir = "tests/Thinkpad-R500/"
+filedir = "tests/source_files/Thinkpad-R500/"
 
 
 def test_lspci():

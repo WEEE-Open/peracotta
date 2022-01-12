@@ -7,7 +7,7 @@ from parsers import read_lscpu
 from parsers import read_lspci_and_glxinfo
 from parsers import read_smartctl
 
-filedir = "tests/alecase/"
+filedir = "tests/source_files/alecase/"
 
 
 def test_lspci():

@@ -7,32 +7,21 @@ def is_product(component: dict):
     # check if brand and model exist
     if "brand" not in component.keys() or "model" not in component.keys():
         return False
-    # check if brand or model has a not valid value
-    candidates = [component["brand"].lower(), component["model"].lower()]
-    for candidate in candidates:
-        if isinstance(candidate, str) and candidate in (
-            "",
-            "null",
-            "unknown",
-            "undefined",
-            "no enclosure",
-        ):
-            return False
-    # if all conditions are False, the product should be added
+
     return True
 
 
 test_folders = [
-    entries for entries in os.listdir("tests/") if os.path.isdir(f"tests/{entries}")
+    entries for entries in os.listdir("tests/source_files") if os.path.isdir(f"tests/source_files/{entries}")
 ]
 for fold in set(test_folders):
-    if "baseboard.txt" not in os.listdir(f"tests/{fold}"):
+    if "baseboard.txt" not in os.listdir(f"tests/source_files/{fold}"):
         test_folders.remove(fold)
 
 
 @pytest.fixture(scope="module", params=test_folders)
 def res(request):
-    path = f"tests/{request.param}"
+    path = f"tests/source_files/{request.param}"
     with open(os.path.join(path, "gpu_location.txt"), "r") as f:
         gpu_flag = f.readline()
     has_dedicated_gpu = False

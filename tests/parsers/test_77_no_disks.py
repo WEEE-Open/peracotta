@@ -5,7 +5,7 @@ from parsers import read_lscpu
 from parsers import read_smartctl
 import os
 
-filedir = "tests/77-no-disks/"
+filedir = "tests/source_files/77-no-disks/"
 
 
 def test_lscpu():

@@ -7,10 +7,10 @@ from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo
 gpu_loc_file = "gpu_location.txt"
 
 test_folders = [
-    entries for entries in os.listdir("tests/") if os.path.isdir(f"tests/{entries}")
+    entries for entries in os.listdir("tests/source_files/") if os.path.isdir(f"tests/source_files/{entries}")
 ]
 for fold in set(test_folders):
-    if "baseboard.txt" not in os.listdir(f"tests/{fold}"):
+    if "baseboard.txt" not in os.listdir(f"tests/source_files/{fold}"):
         test_folders.remove(fold)
 
 
@@ -88,9 +88,9 @@ class TestDataTarallo:
         return has_dedicated_gpu, gpu_in_cpu
 
     def test_no_pref(self, qtbot, folders):
-        gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests", folders))
+        gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests/source_files", folders))
         has_dedicated_gpu, gpu_in_cpu = self.def_gpu_location(gpu_loc)
-        files_dir = os.path.join(os.getcwd(), "tests", folders)
+        files_dir = os.path.join(os.getcwd(), "tests/source_files", folders)
         system_info = extract_and_collect_data_from_generated_files(
             files_dir, has_dedicated_gpu, gpu_in_cpu
         )
@@ -102,9 +102,9 @@ class TestDataTarallo:
         self.check_result()
 
     def test_id(self, qtbot, folders):
-        gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests", folders))
+        gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests/source_files", folders))
         has_dedicated_gpu, gpu_in_cpu = self.def_gpu_location(gpu_loc)
-        files_dir = os.path.join(os.getcwd(), "tests", folders)
+        files_dir = os.path.join(os.getcwd(), "tests/source_files", folders)
         system_info = extract_and_collect_data_from_generated_files(
             files_dir, has_dedicated_gpu, gpu_in_cpu
         )
@@ -117,9 +117,9 @@ class TestDataTarallo:
         self.check_result()
 
     def test_overwrite(self, qtbot, folders):
-        gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests", folders))
+        gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests/source_files", folders))
         has_dedicated_gpu, gpu_in_cpu = self.def_gpu_location(gpu_loc)
-        files_dir = os.path.join(os.getcwd(), "tests", folders)
+        files_dir = os.path.join(os.getcwd(), "tests/source_files", folders)
         system_info = extract_and_collect_data_from_generated_files(
             files_dir, has_dedicated_gpu, gpu_in_cpu
         )
@@ -132,9 +132,9 @@ class TestDataTarallo:
         self.check_result()
 
     def test_over_id(self, qtbot, folders):
-        gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests", folders))
+        gpu_loc = get_gpu_location(os.path.join(os.getcwd(), "tests/source_files", folders))
         has_dedicated_gpu, gpu_in_cpu = self.def_gpu_location(gpu_loc)
-        files_dir = os.path.join(os.getcwd(), "tests", folders)
+        files_dir = os.path.join(os.getcwd(), "tests/source_files", folders)
         system_info = extract_and_collect_data_from_generated_files(
             files_dir, has_dedicated_gpu, gpu_in_cpu
         )

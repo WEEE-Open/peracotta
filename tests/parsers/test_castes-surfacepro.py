@@ -7,7 +7,7 @@ from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
 
-filedir = "tests/castes-SurfacePro4/"
+filedir = "tests/source_files/castes-SurfacePro4/"
 
 
 def test_lspci():
