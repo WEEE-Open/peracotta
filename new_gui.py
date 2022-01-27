@@ -6,10 +6,11 @@ from collections import defaultdict
 from os.path import expanduser
 import prettyprinter
 
-PATH = {"UI": "interface.ui",
-        "JSON": "copy_this_to_tarallo.json",
-        "FEATURES": "features.json",
-        }
+PATH = {
+    "UI": "interface.ui",
+    "JSON": "copy_this_to_tarallo.json",
+    "FEATURES": "features.json",
+}
 
 
 class Ui(QtWidgets.QMainWindow):
@@ -19,10 +20,10 @@ class Ui(QtWidgets.QMainWindow):
         self.app = app
         self.data = None
 
-        self.toolBox = self.findChild(QtWidgets.QToolBox, 'toolBox')
-        self.actionOpen = self.findChild(QtWidgets.QAction, 'actionOpen')
+        self.toolBox = self.findChild(QtWidgets.QToolBox, "toolBox")
+        self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
         self.actionOpen.triggered.connect(self.open_json)
-        self.actionOpenJson = self.findChild(QtWidgets.QAction, 'actionOpenJson')
+        self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
         self.show()
         self.setup()
@@ -73,7 +74,10 @@ class Ui(QtWidgets.QMainWindow):
             if encountered_types_count[the_type] >= 2:
                 encountered_types_current_count[the_type] += 1
                 counter = f" #{encountered_types_current_count[the_type]}"
-            self.toolBox.addItem(ToolBoxWidget(entry["features"], useful_default_features), f"{self.print_type_cool(the_type)}{counter}")
+            self.toolBox.addItem(
+                ToolBoxWidget(entry["features"], useful_default_features),
+                f"{self.print_type_cool(the_type)}{counter}",
+            )
         self.toolBox.removeItem(0)
 
     def open_json(self):
@@ -131,7 +135,11 @@ class CustomTableModel(QAbstractTableModel):
 
     def flags(self, index):
         if index.column() == 1:
-            return QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
+            return (
+                QtCore.Qt.ItemIsEditable
+                | QtCore.Qt.ItemIsEnabled
+                | QtCore.Qt.ItemIsSelectable
+            )
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
