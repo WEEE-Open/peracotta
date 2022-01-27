@@ -8,3 +8,5 @@ generate_files.pkexec
 it.weeeopen.peracotta.generate-files.policy
 .env
 tmp_smb_mount/
+copy_this_to_tarallo.json
+features.json
