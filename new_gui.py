@@ -18,8 +18,24 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi(PATH["UI"], self)
         self.app = app
         self.data = None
+        self.selectors = dict()
+        self.useful_default_features = dict()
 
+        # Output toolbox
         self.toolBox = self.findChild(QtWidgets.QToolBox, 'toolBox')
+
+        # Selectors area
+        self.selectorsWidget = self.findChild(QtWidgets.QWidget, 'selectorsWidget')
+
+        # Generate data button
+        self.generateBtn = self.findChild(QtWidgets.QPushButton, 'generateBtn')
+        self.generateBtn.clicked.connect(self.generate)
+
+        # Reset selectors button
+        self.resetBtn = self.findChild(QtWidgets.QPushButton, 'resetBtn')
+        self.resetBtn.clicked.connect(self.reset_toolbox)
+
+        # Menus
         self.actionOpen = self.findChild(QtWidgets.QAction, 'actionOpen')
         self.actionOpen.triggered.connect(self.open_json)
         self.actionOpenJson = self.findChild(QtWidgets.QAction, 'actionOpenJson')
@@ -36,6 +52,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def setup(self):
         try:
+            self.reset_toolbox()
             with open(PATH["FEATURES"], "r") as file:
                 default_feature_names = {}
                 default_feature_types = {}
@@ -48,7 +65,7 @@ class Ui(QtWidgets.QMainWindow):
                         default_feature_types[name] = feature["type"]
                         if "values" in feature:
                             default_feature_values[name] = feature["values"]
-                useful_default_features = {
+                self.useful_default_features = {
                     "names": default_feature_names,
                     "types": default_feature_types,
                     "values": default_feature_values,
@@ -61,6 +78,23 @@ class Ui(QtWidgets.QMainWindow):
         if self.data is None:
             return
 
+    def reset_toolbox(self):
+        print(self.toolBox.count())
+        for idx in range(0, self.toolBox.count()+1):
+            self.toolBox.layout().removeWidget(self.toolBox.findChild(QtWidgets.QTableView))
+            self.toolBox.removeItem(idx)
+
+    def generate(self):
+        # REMOVE AFTER TESTS
+        self.open_json()
+
+        self.reset_toolbox()
+
+        for checkbox in self.selectorsWidget.children():
+            if isinstance(checkbox, QtWidgets.QVBoxLayout):
+                continue
+            self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
+
         encountered_types_count = defaultdict(lambda: 0)
         encountered_types_current_count = defaultdict(lambda: 0)
         for entry in self.data:
@@ -69,12 +103,14 @@ class Ui(QtWidgets.QMainWindow):
 
         for entry in self.data:
             the_type = entry["features"]["type"]
+            if not self.selectors[the_type]:
+                continue
             counter = ""
             if encountered_types_count[the_type] >= 2:
                 encountered_types_current_count[the_type] += 1
                 counter = f" #{encountered_types_current_count[the_type]}"
-            self.toolBox.addItem(ToolBoxWidget(entry["features"], useful_default_features), f"{self.print_type_cool(the_type)}{counter}")
-        self.toolBox.removeItem(0)
+            self.toolBox.addItem(ToolBoxWidget(entry["features"], self.useful_default_features),
+                                 f"{self.print_type_cool(the_type)}{counter}")
 
     def open_json(self):
         # the_dir = QtWidgets.QFileDialog.getOpenFileName(self, "title",
@@ -88,7 +124,7 @@ class Ui(QtWidgets.QMainWindow):
         #     self.data = json.load(file)
         with open(PATH["JSON"], "r") as file:
             self.data = json.load(file)
-        self.setup()
+        # self.generate()
 
     def show_json(self):
         if self.data is None:
