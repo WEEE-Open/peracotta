@@ -1,9 +1,9 @@
 def print_feature(feature, value, feature_type=None):
     unit = _name_to_unit(feature)
     if unit is None:
-        if feature_type == 'i':
+        if feature_type == "i":
             return int(value)
-        elif feature_type == 'd':
+        elif feature_type == "d":
             return float(value)
         else:
             return str(value)
@@ -12,7 +12,7 @@ def print_feature(feature, value, feature_type=None):
 
 
 def name_to_unit(name):
-    return name.split('-')[-1]
+    return name.split("-")[-1]
 
 
 def printable_to_value(unit, input_value):
@@ -21,7 +21,7 @@ def printable_to_value(unit, input_value):
     string = input_value.strip()
     if len(string) <= 0:
         raise ValueError
-    if unit == 'n':
+    if unit == "n":
         return int(input_value)
 
     i = 0
@@ -40,7 +40,7 @@ def printable_to_value(unit, input_value):
         number = float(input_value[0:i])
 
     exp = 0
-    if unit == 'mm':
+    if unit == "mm":
         exp = 0
     elif pure:
         exp = 0
@@ -50,7 +50,7 @@ def printable_to_value(unit, input_value):
             if char.isalpha():
                 exp = _prefix_to_exponent(char)
                 break
-    if unit == 'byte':
+    if unit == "byte":
         base = 1024
     else:
         base = 1000
@@ -59,17 +59,17 @@ def printable_to_value(unit, input_value):
 
 
 def _prefix_to_exponent(char):
-    if char == 'k':
+    if char == "k":
         return 1
-    if char == 'm':
+    if char == "m":
         return 2
-    if char == 'g':
+    if char == "g":
         return 3
-    if char == 't':
+    if char == "t":
         return 4
-    if char == 'p':
+    if char == "p":
         return 5
-    if char == 'e':
+    if char == "e":
         return 6
     return 0
 

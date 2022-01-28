@@ -248,7 +248,9 @@ class CustomTableModel(QAbstractTableModel):
     def _printable_to_value(name, value):
         # noinspection PyBroadException
         try:
-            value = prettyprinter.printable_to_value(prettyprinter.name_to_unit(name), value)
+            value = prettyprinter.printable_to_value(
+                prettyprinter.name_to_unit(name), value
+            )
         except BaseException:
             value = 0
         return value
