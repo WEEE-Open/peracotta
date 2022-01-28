@@ -23,21 +23,21 @@ class Ui(QtWidgets.QMainWindow):
         self.useful_default_features = dict()
 
         # Output toolbox
-        self.toolBox = self.findChild(QtWidgets.QToolBox, 'toolBox')
+        self.toolBox = self.findChild(QtWidgets.QToolBox, "toolBox")
 
         # Selectors area
-        self.selectorsWidget = self.findChild(QtWidgets.QWidget, 'selectorsWidget')
+        self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
 
         # Generate data button
-        self.generateBtn = self.findChild(QtWidgets.QPushButton, 'generateBtn')
+        self.generateBtn = self.findChild(QtWidgets.QPushButton, "generateBtn")
         self.generateBtn.clicked.connect(self.generate)
 
         # Reset selectors button
-        self.resetBtn = self.findChild(QtWidgets.QPushButton, 'resetBtn')
+        self.resetBtn = self.findChild(QtWidgets.QPushButton, "resetBtn")
         self.resetBtn.clicked.connect(self.reset_toolbox)
 
         # Menus
-        self.actionOpen = self.findChild(QtWidgets.QAction, 'actionOpen')
+        self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
         self.actionOpen.triggered.connect(self.open_json)
         self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
@@ -81,8 +81,10 @@ class Ui(QtWidgets.QMainWindow):
 
     def reset_toolbox(self):
         print(self.toolBox.count())
-        for idx in range(0, self.toolBox.count()+1):
-            self.toolBox.layout().removeWidget(self.toolBox.findChild(QtWidgets.QTableView))
+        for idx in range(0, self.toolBox.count() + 1):
+            self.toolBox.layout().removeWidget(
+                self.toolBox.findChild(QtWidgets.QTableView)
+            )
             self.toolBox.removeItem(idx)
 
     def generate(self):
@@ -110,9 +112,10 @@ class Ui(QtWidgets.QMainWindow):
             if encountered_types_count[the_type] >= 2:
                 encountered_types_current_count[the_type] += 1
                 counter = f" #{encountered_types_current_count[the_type]}"
-            self.toolBox.addItem(ToolBoxWidget(entry["features"], self.useful_default_features),
-                                 f"{self.print_type_cool(the_type)}{counter}")
-
+            self.toolBox.addItem(
+                ToolBoxWidget(entry["features"], self.useful_default_features),
+                f"{self.print_type_cool(the_type)}{counter}",
+            )
 
     def open_json(self):
         # the_dir = QtWidgets.QFileDialog.getOpenFileName(self, "title",
