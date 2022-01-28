@@ -277,7 +277,7 @@ def main():
     # noinspection PyBroadException
     try:
         app = QtWidgets.QApplication(sys.argv)
-        # This is EXTREMEL
+        # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
         # noinspection PyUnusedLocal
         window = Ui(app)
         app.exec_()
