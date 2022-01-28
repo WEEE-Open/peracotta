@@ -88,7 +88,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>347</width>
-                <height>242</height>
+                <height>265</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -175,6 +175,13 @@
                 </widget>
                </item>
                <item>
+                <widget class="QCheckBox" name="checkBox_11">
+                 <property name="text">
+                  <string>PSU</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QCheckBox" name="checkBox_8">
                  <property name="text">
                   <string>Monitor</string>
@@ -198,6 +205,18 @@
               </layout>
              </widget>
             </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_3">
+          <property name="title">
+           <string>Owner</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QLineEdit" name="lineEdit"/>
            </item>
           </layout>
          </widget>
