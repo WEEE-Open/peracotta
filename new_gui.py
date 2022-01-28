@@ -185,25 +185,20 @@ class CustomTableModel(QAbstractTableModel):
         if row < 0 or row >= len(self.feature_keys):
             return None
 
-        if role == QtCore.Qt.DisplayRole:
+        if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole:
             column = index.column()
             name = self.feature_keys[row]
             if column == 0:
                 return self.default_features["names"].get(name, name)
             elif column == 1:
-                feature_type = self.default_features["types"].get(name, "s")
+                feature_type = self._get_feature_type(name)
                 value = self.features[name]
                 if feature_type == "e":
                     return self.default_features["values"][name].get(value, value)
                 elif feature_type in ("d", "i"):
-                    return prettyprinter.print_feature(name, value)
+                    return prettyprinter.print_feature(name, value, feature_type)
                 else:
                     return value
-        elif role == QtCore.Qt.EditRole:
-            column = index.column()
-            name = self.feature_keys[row]
-            if column == 1:
-                return self.features[name]
         elif role == QtCore.Qt.TextAlignmentRole:
             column = index.column()
             if column == 0:
@@ -223,26 +218,44 @@ class CustomTableModel(QAbstractTableModel):
             if row < 0 or row >= len(self.feature_keys):
                 return False
 
-            # TODO: allow deleting a feature?
-            if isinstance(value, str):
-                if len(value) <= 0:
-                    return False
-            if isinstance(value, int) or isinstance(value, float):
-                if value <= 0:
-                    return False
-
             name = self.feature_keys[row]
-            feature_type = self.default_features["types"].get(name, "s")
+            feature_type = self._get_feature_type(name)
+            if isinstance(value, str):
+                value = value.strip()
+
             if feature_type == "e":
+                value = str(value).lower()
                 if value not in self.default_features["values"][name]:
                     return False
             elif feature_type == "d":
+                value = self._printable_to_value(name, value)
                 value = float(value)
+                if value <= 0:
+                    return False
             elif feature_type == "i":
-                value = int(value)
+                value = self._printable_to_value(name, value)
+                value = int(round(value))
+                if value <= 0:
+                    return False
+            else:
+                if len(value) <= 0:
+                    return False
             self.features[name] = value
             return True
         return False
+
+    @staticmethod
+    def _printable_to_value(name, value):
+        # noinspection PyBroadException
+        try:
+            value = prettyprinter.printable_to_value(prettyprinter.name_to_unit(name), value)
+        except BaseException:
+            value = 0
+        return value
+
+    def _get_feature_type(self, name):
+        feature_type = self.default_features["types"].get(name, "s")
+        return feature_type
 
 
 class JsonWidget(QtWidgets.QDialog):
