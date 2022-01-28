@@ -6,10 +6,11 @@ from collections import defaultdict
 from os.path import expanduser
 import prettyprinter
 
-PATH = {"UI": "interface.ui",
-        "JSON": "copy_this_to_tarallo.json",
-        "FEATURES": "features.json",
-        }
+PATH = {
+    "UI": "interface.ui",
+    "JSON": "copy_this_to_tarallo.json",
+    "FEATURES": "features.json",
+}
 
 
 class Ui(QtWidgets.QMainWindow):
@@ -38,7 +39,7 @@ class Ui(QtWidgets.QMainWindow):
         # Menus
         self.actionOpen = self.findChild(QtWidgets.QAction, 'actionOpen')
         self.actionOpen.triggered.connect(self.open_json)
-        self.actionOpenJson = self.findChild(QtWidgets.QAction, 'actionOpenJson')
+        self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
         self.show()
         self.setup()
@@ -112,6 +113,7 @@ class Ui(QtWidgets.QMainWindow):
             self.toolBox.addItem(ToolBoxWidget(entry["features"], self.useful_default_features),
                                  f"{self.print_type_cool(the_type)}{counter}")
 
+
     def open_json(self):
         # the_dir = QtWidgets.QFileDialog.getOpenFileName(self, "title",
         #                                             f"{expanduser('~')}",
@@ -167,7 +169,11 @@ class CustomTableModel(QAbstractTableModel):
 
     def flags(self, index):
         if index.column() == 1:
-            return QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
+            return (
+                QtCore.Qt.ItemIsEditable
+                | QtCore.Qt.ItemIsEnabled
+                | QtCore.Qt.ItemIsSelectable
+            )
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
