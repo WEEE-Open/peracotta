@@ -56,6 +56,9 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QGroupBox" name="gpuGroupBox">
+          <property name="toolTip">
+           <string>Set the real GPU location into the machine</string>
+          </property>
           <property name="title">
            <string>GPU location</string>
           </property>
@@ -64,6 +67,9 @@
             <layout class="QVBoxLayout" name="gpuLocationLayout">
              <item>
               <widget class="QRadioButton" name="discreteRadioBtn">
+               <property name="toolTip">
+                <string>Click this if there is an AGP, PCI or PCI-Express graphics card</string>
+               </property>
                <property name="text">
                 <string>Discrete</string>
                </property>
@@ -71,6 +77,9 @@
              </item>
              <item>
               <widget class="QRadioButton" name="intMoboRadioBtn">
+               <property name="toolTip">
+                <string>Click this if the GPU is located into the motherboard</string>
+               </property>
                <property name="text">
                 <string>Integrated in Motherboard</string>
                </property>
@@ -78,6 +87,9 @@
              </item>
              <item>
               <widget class="QRadioButton" name="intCpuRadioBtn">
+               <property name="toolTip">
+                <string>Click this if the GPU is located into the CPU</string>
+               </property>
                <property name="text">
                 <string>Integrated in CPU</string>
                </property>
@@ -95,6 +107,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Select the components that you want to send to TARALLO</string>
           </property>
           <property name="title">
            <string>Selectors</string>
@@ -115,7 +130,7 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>0</y>
+                <y>-33</y>
                 <width>221</width>
                 <height>298</height>
                </rect>
@@ -240,6 +255,9 @@
         </item>
         <item>
          <widget class="QGroupBox" name="groupBox_3">
+          <property name="toolTip">
+           <string>Set the owner of the computer</string>
+          </property>
           <property name="title">
            <string>Owner</string>
           </property>
@@ -392,9 +410,10 @@
    </widget>
    <widget class="QMenu" name="menuInfo">
     <property name="title">
-     <string>Info</string>
+     <string>Help</string>
     </property>
-    <addaction name="actionAbout_WEEE_Open"/>
+    <addaction name="actionAboutUs"/>
+    <addaction name="actionSourceCode"/>
     <addaction name="separator"/>
     <addaction name="actionVersion"/>
    </widget>
@@ -417,7 +436,7 @@
     <string>Theme</string>
    </property>
   </action>
-  <action name="actionAbout_WEEE_Open">
+  <action name="actionAboutUs">
    <property name="text">
     <string>About WEEE Open</string>
    </property>
@@ -430,6 +449,11 @@
   <action name="actionOpenJson">
    <property name="text">
     <string>View JSON</string>
+   </property>
+  </action>
+  <action name="actionSourceCode">
+   <property name="text">
+    <string>Source code</string>
    </property>
   </action>
  </widget>

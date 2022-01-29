@@ -1,10 +1,20 @@
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
+from os.path import expanduser
 import sys
 import traceback
 import json
 import prettyprinter
+
+VERSION = '2.0'
+
+TARALLO_TOKEN = 'lollone'
+
+URL = {
+    "website": "https://weeeopen.polito.it",
+    "source_code": "https://github.com/WEEE-Open/peracotta",
+}
 
 PATH = {
     "UI": "interface.ui",
@@ -27,6 +37,8 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi(PATH["UI"], self)
         self.app = app
+        self.peracotta = Peracotta()
+        self.peracotta.updateEvent.connect(self.peracotta_results)
         self.data = None
         self.selectors = dict()
         self.useful_default_features = dict()
@@ -51,20 +63,30 @@ class Ui(QtWidgets.QMainWindow):
         self.resetBtn = self.findChild(QtWidgets.QPushButton, "resetBtn")
         self.resetBtn.clicked.connect(self.reset_setup_group)
 
+        # Save JSON button
+        self.saveJsonBtn = self.findChild(QtWidgets.QPushButton, "saveJsonBtn")
+        self.saveJsonBtn.clicked.connect(self.save_json)
+
+        # Upload to tarallo button
+        self.uploadBtn = self.findChild(QtWidgets.QPushButton, "uploadBtn")
+        self.uploadBtn.clicked.connect(self.upload_to_tarallo)
+
         # Menus
         self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
         self.actionOpen.triggered.connect(self.open_json)
         self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
+        self.actionExit = self.findChild(QtWidgets.QAction, "actionExit")
+        self.actionExit.triggered.connect(self.close)
+        self.actionAboutUs = self.findChild(QtWidgets.QAction, "actionAboutUs")
+        self.actionAboutUs.triggered.connect(self.open_website)
+        self.actionSourceCode = self.findChild(QtWidgets.QAction, "actionSourceCode")
+        self.actionSourceCode.triggered.connect(self.open_source_code)
+        self.actionVersion = self.findChild(QtWidgets.QAction, "actionVersion")
+        self.actionVersion.triggered.connect(self.show_version)
+
         self.show()
         self.setup()
-
-    @staticmethod
-    def print_type_cool(the_type: str) -> str:
-        if the_type in ("cpu", "ram", "hdd", "odd"):
-            return the_type.upper()
-        else:
-            return the_type.title()
 
     def setup(self):
         try:
@@ -94,6 +116,28 @@ class Ui(QtWidgets.QMainWindow):
         if self.data is None:
             return
 
+    # utilities
+    def reset_toolbox(self):
+        print(self.toolBox.count())
+        for idx in range(0, self.toolBox.count() + 1):
+            self.toolBox.layout().removeWidget(
+                self.toolBox.findChild(QtWidgets.QTableView)
+            )
+            self.toolBox.removeItem(idx)
+
+    def open_url(self, url_type: str):
+        url = QtCore.QUrl(url_type)
+        if not QtGui.QDesktopServices.openUrl(url):
+            QtWidgets.QMessageBox.warning(self, 'Cannot Open Url', f'Could not open url {url_type}')
+
+    @staticmethod
+    def print_type_cool(the_type: str) -> str:
+        if the_type in ("cpu", "ram", "hdd", "odd"):
+            return the_type.upper()
+        else:
+            return the_type.title()
+
+    # buttons functions
     def reset_setup_group(self):
         # reset gpu location
         for radioBtn in self.gpuGroupBox.findChildren(QtWidgets.QRadioButton):
@@ -112,15 +156,8 @@ class Ui(QtWidgets.QMainWindow):
         # reset owner
         self.ownerLineEdit.clear()
 
-    def reset_toolbox(self):
-        print(self.toolBox.count())
-        for idx in range(0, self.toolBox.count() + 1):
-            self.toolBox.layout().removeWidget(
-                self.toolBox.findChild(QtWidgets.QTableView)
-            )
-            self.toolBox.removeItem(idx)
-
     def generate(self):
+        self.peracotta.start()
         # REMOVE AFTER TESTS
         self.open_json()
 
@@ -152,6 +189,26 @@ class Ui(QtWidgets.QMainWindow):
             icon = QtGui.QIcon(ICON[the_type])
             self.toolBox.setItemIcon(idx, icon)
 
+    def save_json(self):
+        if self.data is None:
+            QtWidgets.QMessageBox.warning(self, "Warning", "There is nothing to be saved")
+            return
+        the_dir = QtWidgets.QFileDialog.getSaveFileName(self,
+                                                        "Save Peracotta JSON",
+                                                        f"{expanduser('~')}",
+                                                        "JSON (*.json);;Text file (*.txt);;All Files (*)")
+        if the_dir[0] == '':
+            return
+        with open(the_dir[0], "w") as file:
+            file.write(f"{self.data}")
+            file.flush()
+            file.close()
+
+    def upload_to_tarallo(self):
+        # TODO: make all the things
+        print(f"{TARALLO_TOKEN} - uploaded to tarallo ahahah xd")
+
+    # menu actions
     def open_json(self):
         # the_dir = QtWidgets.QFileDialog.getOpenFileName(self, "title",
         #                                             f"{expanduser('~')}",
@@ -170,6 +227,25 @@ class Ui(QtWidgets.QMainWindow):
         if self.data is None:
             return
         JsonWidget(self.data)
+
+    def open_website(self):
+        self.open_url(URL["website"])
+
+    def open_source_code(self):
+        self.open_url(URL["source_code"])
+
+    def show_version(self):
+        QtWidgets.QMessageBox.about(self, "Version", f"Peracotta v{VERSION}")
+
+    # multithread
+    def peracotta_results(self, data):
+        # TODO: analyze data from peracotta thread
+        print("peracotta terminated")
+
+    # close event
+    def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
+        if self.peracotta.isRunning():
+            self.peracotta.terminate()
 
 
 class ToolBoxWidget(QtWidgets.QTableView):
@@ -306,6 +382,16 @@ class JsonWidget(QtWidgets.QDialog):
         layout.addWidget(text_edit)
         self.setLayout(layout)
         self.exec_()
+
+
+class Peracotta(QtCore.QThread):
+    updateEvent = QtCore.pyqtSignal(str, name="update")
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self) -> None:
+        self.updateEvent.emit("asd")
 
 
 def main():
