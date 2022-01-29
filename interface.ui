@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>803</width>
-    <height>508</height>
+    <height>673</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,22 +17,52 @@
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QSplitter" name="splitter">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
+      <property name="childrenCollapsible">
+       <bool>false</bool>
+      </property>
       <widget class="QGroupBox" name="groupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>400</height>
+        </size>
+       </property>
        <property name="title">
         <string>Setup</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QGroupBox" name="gpuGroupBox">
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="title">
            <string>GPU location</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_7">
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <layout class="QVBoxLayout" name="gpuLocationLayout">
              <item>
               <widget class="QRadioButton" name="discreteRadioBtn">
                <property name="text">
@@ -87,8 +117,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>347</width>
-                <height>265</height>
+                <width>238</width>
+                <height>309</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -216,7 +246,7 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
-            <widget class="QLineEdit" name="lineEdit"/>
+            <widget class="QLineEdit" name="ownerLineEdit"/>
            </item>
           </layout>
          </widget>
@@ -258,6 +288,12 @@
        </layout>
       </widget>
       <widget class="QGroupBox" name="groupBox_2">
+       <property name="minimumSize">
+        <size>
+         <width>500</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="title">
         <string>Results</string>
        </property>
@@ -272,8 +308,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>352</width>
-             <height>383</height>
+             <width>478</width>
+             <height>548</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -287,8 +323,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>334</width>
-                 <height>338</height>
+                 <width>460</width>
+                 <height>503</height>
                 </rect>
                </property>
                <attribute name="label">

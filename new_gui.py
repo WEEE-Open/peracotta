@@ -1,9 +1,9 @@
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
-import sys, traceback
-import json
 from collections import defaultdict
-from os.path import expanduser
+import sys
+import traceback
+import json
 import prettyprinter
 
 PATH = {
@@ -25,8 +25,14 @@ class Ui(QtWidgets.QMainWindow):
         # Output toolbox
         self.toolBox = self.findChild(QtWidgets.QToolBox, "toolBox")
 
+        # Gpu location layout
+        self.gpuGroupBox = self.findChild(QtWidgets.QGroupBox, "gpuGroupBox")
+
         # Selectors area
         self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
+
+        # Owner line edit
+        self.ownerLineEdit = self.findChild(QtWidgets.QLineEdit, "ownerLineEdit")
 
         # Generate data button
         self.generateBtn = self.findChild(QtWidgets.QPushButton, "generateBtn")
@@ -34,7 +40,7 @@ class Ui(QtWidgets.QMainWindow):
 
         # Reset selectors button
         self.resetBtn = self.findChild(QtWidgets.QPushButton, "resetBtn")
-        self.resetBtn.clicked.connect(self.reset_toolbox)
+        self.resetBtn.clicked.connect(self.reset_setup_group)
 
         # Menus
         self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
@@ -78,6 +84,24 @@ class Ui(QtWidgets.QMainWindow):
 
         if self.data is None:
             return
+
+    def reset_setup_group(self):
+        # reset gpu location
+        for radioBtn in self.gpuGroupBox.findChildren(QtWidgets.QRadioButton):
+            radioBtn.setAutoExclusive(False)
+            radioBtn.setChecked(False)
+            radioBtn.setAutoExclusive(True)
+
+        # reset checkboxes
+        defaults = ['case', 'motherboard', 'cpu', 'gpu', 'ram', 'hard disk', 'odd']
+        for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
+            if checkbox.text().lower() in defaults:
+                checkbox.setChecked(True)
+            else:
+                checkbox.setChecked(False)
+
+        # reset owner
+        self.ownerLineEdit.clear()
 
     def reset_toolbox(self):
         print(self.toolBox.count())
