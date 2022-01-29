@@ -7,9 +7,9 @@ import traceback
 import json
 import prettyprinter
 
-VERSION = '2.0'
+VERSION = "2.0"
 
-TARALLO_TOKEN = 'lollone'
+TARALLO_TOKEN = "lollone"
 
 URL = {
     "website": "https://weeeopen.polito.it",
@@ -29,8 +29,9 @@ ICON = {
     "gpu": "assets/gpu.png",
     "odd": "assets/odd.png",
     "hard disk": "assets/hard disk.png",
-    "motherboard": "assets/motherboard.png"
+    "motherboard": "assets/motherboard.png",
 }
+
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(self, app: QtWidgets.QApplication) -> None:
@@ -128,7 +129,9 @@ class Ui(QtWidgets.QMainWindow):
     def open_url(self, url_type: str):
         url = QtCore.QUrl(url_type)
         if not QtGui.QDesktopServices.openUrl(url):
-            QtWidgets.QMessageBox.warning(self, 'Cannot Open Url', f'Could not open url {url_type}')
+            QtWidgets.QMessageBox.warning(
+                self, "Cannot Open Url", f"Could not open url {url_type}"
+            )
 
     @staticmethod
     def print_type_cool(the_type: str) -> str:
@@ -146,7 +149,7 @@ class Ui(QtWidgets.QMainWindow):
             radioBtn.setAutoExclusive(True)
 
         # reset checkboxes
-        defaults = ['case', 'motherboard', 'cpu', 'gpu', 'ram', 'hard disk', 'odd']
+        defaults = ["case", "motherboard", "cpu", "gpu", "ram", "hard disk", "odd"]
         for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
             if checkbox.text().lower() in defaults:
                 checkbox.setChecked(True)
@@ -191,13 +194,17 @@ class Ui(QtWidgets.QMainWindow):
 
     def save_json(self):
         if self.data is None:
-            QtWidgets.QMessageBox.warning(self, "Warning", "There is nothing to be saved")
+            QtWidgets.QMessageBox.warning(
+                self, "Warning", "There is nothing to be saved"
+            )
             return
-        the_dir = QtWidgets.QFileDialog.getSaveFileName(self,
-                                                        "Save Peracotta JSON",
-                                                        f"{expanduser('~')}",
-                                                        "JSON (*.json);;Text file (*.txt);;All Files (*)")
-        if the_dir[0] == '':
+        the_dir = QtWidgets.QFileDialog.getSaveFileName(
+            self,
+            "Save Peracotta JSON",
+            f"{expanduser('~')}",
+            "JSON (*.json);;Text file (*.txt);;All Files (*)",
+        )
+        if the_dir[0] == "":
             return
         with open(the_dir[0], "w") as file:
             file.write(f"{self.data}")
