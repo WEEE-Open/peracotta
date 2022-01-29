@@ -12,6 +12,15 @@ PATH = {
     "FEATURES": "features.json",
 }
 
+ICON = {
+    "case": "assets/case.png",
+    "ram": "assets/ram.png",
+    "cpu": "assets/cpu.png",
+    "gpu": "assets/gpu.png",
+    "odd": "assets/odd.png",
+    "hard disk": "assets/hard disk.png",
+    "motherboard": "assets/motherboard.png"
+}
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(self, app: QtWidgets.QApplication) -> None:
@@ -128,7 +137,7 @@ class Ui(QtWidgets.QMainWindow):
             the_type = entry["features"]["type"]
             encountered_types_count[the_type] += 1
 
-        for entry in self.data:
+        for idx, entry in enumerate(self.data):
             the_type = entry["features"]["type"]
             if not self.selectors[the_type]:
                 continue
@@ -140,6 +149,8 @@ class Ui(QtWidgets.QMainWindow):
                 ToolBoxWidget(entry["features"], self.useful_default_features),
                 f"{self.print_type_cool(the_type)}{counter}",
             )
+            icon = QtGui.QIcon(ICON[the_type])
+            self.toolBox.setItemIcon(idx, icon)
 
     def open_json(self):
         # the_dir = QtWidgets.QFileDialog.getOpenFileName(self, "title",

@@ -10,6 +10,11 @@
     <height>673</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -51,12 +56,6 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QGroupBox" name="gpuGroupBox">
-          <property name="font">
-           <font>
-            <family>Segoe UI</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
           <property name="title">
            <string>GPU location</string>
           </property>
@@ -117,8 +116,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>238</width>
-                <height>309</height>
+                <width>221</width>
+                <height>298</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -300,6 +299,11 @@
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
          <widget class="QScrollArea" name="scrollArea">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -309,7 +313,7 @@
              <x>0</x>
              <y>0</y>
              <width>478</width>
-             <height>548</height>
+             <height>540</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -324,7 +328,7 @@
                  <x>0</x>
                  <y>0</y>
                  <width>460</width>
-                 <height>503</height>
+                 <height>489</height>
                 </rect>
                </property>
                <attribute name="label">
@@ -368,7 +372,7 @@
      <x>0</x>
      <y>0</y>
      <width>803</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
