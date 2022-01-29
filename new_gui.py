@@ -52,8 +52,10 @@ class Ui(QtWidgets.QMainWindow):
         self.gpuGroupBox = self.findChild(QtWidgets.QGroupBox, "gpuGroupBox")
 
         # Radio buttons
-        self.discreteRadioBtn = self.findChild(QtWidgets.QRadioButton, 'discreteRadioBtn')
-        self.intCpuRadioBtn = self.findChild(QtWidgets.QRadioButton, 'intCpuRadioBtn')
+        self.discreteRadioBtn = self.findChild(
+            QtWidgets.QRadioButton, "discreteRadioBtn"
+        )
+        self.intCpuRadioBtn = self.findChild(QtWidgets.QRadioButton, "intCpuRadioBtn")
 
         # Selectors area
         self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
@@ -258,7 +260,7 @@ class Ui(QtWidgets.QMainWindow):
                 f"{self.print_type_cool(the_type)}{counter}",
             )
             icon = QtGui.QIcon(ICON[the_type])
-            self.toolBox.setItemIcon(self.toolBox.count()-1, icon)
+            self.toolBox.setItemIcon(self.toolBox.count() - 1, icon)
 
     # close event
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
@@ -405,20 +407,26 @@ class JsonWidget(QtWidgets.QDialog):
 class Peracotta(QtCore.QThread):
     updateEvent = QtCore.pyqtSignal(list, name="update")
 
-    def __init__(self, discreteRadioBtn: QtWidgets.QRadioButton, intCpuRadioBtn: QtWidgets.QRadioButton):
+    def __init__(
+        self,
+        discreteRadioBtn: QtWidgets.QRadioButton,
+        intCpuRadioBtn: QtWidgets.QRadioButton,
+    ):
         super().__init__()
         self.discreteRadioBtn = discreteRadioBtn
         self.intCpuRadioBtn = intCpuRadioBtn
 
     def run(self) -> None:
-        os.system('mkdir tmp; cd tmp; ../scripts/generate_files.sh; cd ..')
-        data = extract_data('tmp',
-                                       self.discreteRadioBtn.isChecked(),
-                                       self.intCpuRadioBtn.isChecked(),
-                                       False,
-                                       False
-                                       )
+        os.system("mkdir tmp; cd tmp; ../scripts/generate_files.sh; cd ..")
+        data = extract_data(
+            "tmp",
+            self.discreteRadioBtn.isChecked(),
+            self.intCpuRadioBtn.isChecked(),
+            False,
+            False,
+        )
         self.updateEvent.emit(data)
+
 
 def main():
     # noinspection PyBroadException
