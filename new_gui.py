@@ -3,9 +3,11 @@ from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
 from os.path import expanduser
 import sys
+import os
 import traceback
 import json
 import prettyprinter
+from main import extract_data
 
 VERSION = "2.0"
 
@@ -30,6 +32,7 @@ ICON = {
     "odd": "assets/odd.png",
     "hard disk": "assets/hard disk.png",
     "motherboard": "assets/motherboard.png",
+    "wifi-card": "assets/wifi-card.png",
 }
 
 
@@ -38,8 +41,6 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi(PATH["UI"], self)
         self.app = app
-        self.peracotta = Peracotta()
-        self.peracotta.updateEvent.connect(self.peracotta_results)
         self.data = None
         self.selectors = dict()
         self.useful_default_features = dict()
@@ -49,6 +50,10 @@ class Ui(QtWidgets.QMainWindow):
 
         # Gpu location layout
         self.gpuGroupBox = self.findChild(QtWidgets.QGroupBox, "gpuGroupBox")
+
+        # Radio buttons
+        self.discreteRadioBtn = self.findChild(QtWidgets.QRadioButton, 'discreteRadioBtn')
+        self.intCpuRadioBtn = self.findChild(QtWidgets.QRadioButton, 'intCpuRadioBtn')
 
         # Selectors area
         self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
@@ -86,6 +91,10 @@ class Ui(QtWidgets.QMainWindow):
         self.actionVersion = self.findChild(QtWidgets.QAction, "actionVersion")
         self.actionVersion.triggered.connect(self.show_version)
 
+        # Setup peracotta QThread
+        self.peracotta = Peracotta(self.discreteRadioBtn, self.intCpuRadioBtn)
+        self.peracotta.updateEvent.connect(self.peracotta_results)
+
         self.show()
         self.setup()
 
@@ -119,12 +128,9 @@ class Ui(QtWidgets.QMainWindow):
 
     # utilities
     def reset_toolbox(self):
-        print(self.toolBox.count())
-        for idx in range(0, self.toolBox.count() + 1):
-            self.toolBox.layout().removeWidget(
-                self.toolBox.findChild(QtWidgets.QTableView)
-            )
-            self.toolBox.removeItem(idx)
+        print(f"Total items: {self.toolBox.count()}")
+        for idx in range(self.toolBox.count()):
+            self.toolBox.removeItem(0)
 
     def open_url(self, url_type: str):
         url = QtCore.QUrl(url_type)
@@ -161,36 +167,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def generate(self):
         self.peracotta.start()
-        # REMOVE AFTER TESTS
-        self.open_json()
-
         self.reset_toolbox()
-
-        for checkbox in self.selectorsWidget.children():
-            if isinstance(checkbox, QtWidgets.QVBoxLayout):
-                continue
-            self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
-
-        encountered_types_count = defaultdict(lambda: 0)
-        encountered_types_current_count = defaultdict(lambda: 0)
-        for entry in self.data:
-            the_type = entry["features"]["type"]
-            encountered_types_count[the_type] += 1
-
-        for idx, entry in enumerate(self.data):
-            the_type = entry["features"]["type"]
-            if not self.selectors[the_type]:
-                continue
-            counter = ""
-            if encountered_types_count[the_type] >= 2:
-                encountered_types_current_count[the_type] += 1
-                counter = f" #{encountered_types_current_count[the_type]}"
-            self.toolBox.addItem(
-                ToolBoxWidget(entry["features"], self.useful_default_features),
-                f"{self.print_type_cool(the_type)}{counter}",
-            )
-            icon = QtGui.QIcon(ICON[the_type])
-            self.toolBox.setItemIcon(idx, icon)
 
     def save_json(self):
         if self.data is None:
@@ -245,9 +222,43 @@ class Ui(QtWidgets.QMainWindow):
         QtWidgets.QMessageBox.about(self, "Version", f"Peracotta v{VERSION}")
 
     # multithread
-    def peracotta_results(self, data):
-        # TODO: analyze data from peracotta thread
-        print("peracotta terminated")
+    def peracotta_results(self, data: list):
+        self.data = data
+        # checks for wanted items
+        for checkbox in self.selectorsWidget.children():
+            if isinstance(checkbox, QtWidgets.QVBoxLayout):
+                continue
+            self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
+
+        # types count
+        encountered_types_count = defaultdict(lambda: 0)
+        encountered_types_current_count = defaultdict(lambda: 0)
+        for entry in self.data:
+            if entry == {}:
+                continue
+            the_type = entry["type"]
+            encountered_types_count[the_type] += 1
+
+        # toolbox fill
+        for idx, entry in enumerate(self.data):
+            idx_offset = 0
+            if entry == {}:
+                idx_offset += 1
+                continue
+            the_type = entry["type"]
+            if not self.selectors[the_type]:
+                idx_offset += 1
+                continue
+            counter = ""
+            if encountered_types_count[the_type] >= 2:
+                encountered_types_current_count[the_type] += 1
+                counter = f" #{encountered_types_current_count[the_type]}"
+            self.toolBox.addItem(
+                ToolBoxWidget(entry, self.useful_default_features),
+                f"{self.print_type_cool(the_type)}{counter}",
+            )
+            icon = QtGui.QIcon(ICON[the_type])
+            self.toolBox.setItemIcon(self.toolBox.count()-1, icon)
 
     # close event
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
@@ -392,14 +403,22 @@ class JsonWidget(QtWidgets.QDialog):
 
 
 class Peracotta(QtCore.QThread):
-    updateEvent = QtCore.pyqtSignal(str, name="update")
+    updateEvent = QtCore.pyqtSignal(list, name="update")
 
-    def __init__(self):
+    def __init__(self, discreteRadioBtn: QtWidgets.QRadioButton, intCpuRadioBtn: QtWidgets.QRadioButton):
         super().__init__()
+        self.discreteRadioBtn = discreteRadioBtn
+        self.intCpuRadioBtn = intCpuRadioBtn
 
     def run(self) -> None:
-        self.updateEvent.emit("asd")
-
+        os.system('mkdir tmp; cd tmp; ../scripts/generate_files.sh; cd ..')
+        data = extract_data('tmp',
+                                       self.discreteRadioBtn.isChecked(),
+                                       self.intCpuRadioBtn.isChecked(),
+                                       False,
+                                       False
+                                       )
+        self.updateEvent.emit(data)
 
 def main():
     # noinspection PyBroadException

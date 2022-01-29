@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>803</width>
+    <width>813</width>
     <height>673</height>
    </rect>
   </property>
@@ -130,9 +130,9 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>-33</y>
-                <width>221</width>
-                <height>298</height>
+                <y>0</y>
+                <width>253</width>
+                <height>396</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -222,6 +222,13 @@
                 <widget class="QCheckBox" name="checkBox_11">
                  <property name="text">
                   <string>PSU</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBox_12">
+                 <property name="text">
+                  <string>WiFi-Card</string>
                  </property>
                 </widget>
                </item>
@@ -330,8 +337,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>478</width>
-             <height>540</height>
+             <width>480</width>
+             <height>526</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -345,8 +352,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>460</width>
-                 <height>489</height>
+                 <width>462</width>
+                 <height>471</height>
                 </rect>
                </property>
                <attribute name="label">
@@ -389,8 +396,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>803</width>
-     <height>23</height>
+     <width>813</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
