@@ -196,18 +196,17 @@ class Ui(QtWidgets.QMainWindow):
 
     # menu actions
     def open_json(self):
-        # the_dir = QtWidgets.QFileDialog.getOpenFileName(self, "title",
-        #                                             f"{expanduser('~')}",
-        #                                             f"JSON (*.json);;All Files (*)",
-        #                                             )
-        # if the_dir[0] == '':
-        #     self.data = None
-        #     return
-        # with open(the_dir[0], "r") as file:
-        #     self.data = json.load(file)
-        with open(PATH["JSON"], "r") as file:
+        the_dir = QtWidgets.QFileDialog.getOpenFileName(self, "title",
+                                                    f"{expanduser('~')}",
+                                                    f"JSON (*.json);;All Files (*)",
+                                                    )
+        if the_dir[0] == '':
+            self.data = None
+            return
+        with open(the_dir[0], "r") as file:
             self.data = json.load(file)
-        # self.generate()
+
+        self.peracotta_results(self.data)
 
     def show_json(self):
         if self.data is None:
