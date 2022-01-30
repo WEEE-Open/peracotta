@@ -196,11 +196,13 @@ class Ui(QtWidgets.QMainWindow):
 
     # menu actions
     def open_json(self):
-        the_dir = QtWidgets.QFileDialog.getOpenFileName(self, "title",
-                                                    f"{expanduser('~')}",
-                                                    f"JSON (*.json);;All Files (*)",
-                                                    )
-        if the_dir[0] == '':
+        the_dir = QtWidgets.QFileDialog.getOpenFileName(
+            self,
+            "title",
+            f"{expanduser('~')}",
+            f"JSON (*.json);;All Files (*)",
+        )
+        if the_dir[0] == "":
             self.data = None
             return
         with open(the_dir[0], "r") as file:
