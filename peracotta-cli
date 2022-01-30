@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
-"""
-Collect data from all the 'read...' scripts and returns it as a list of dicts
-"""
-import json
+import argparse
+import os
+
 import os
 import fnmatch
 import random
@@ -17,14 +16,212 @@ from rich import print
 from rich.console import Console
 from rich import traceback
 
-from InputFileNotFoundError import InputFileNotFoundError
-from parsers.read_dmidecode import get_baseboard, get_chassis, get_connectors, get_net
-from parsers.read_lscpu import read_lscpu
-from parsers.read_decode_dimms import read_decode_dimms
-from parsers.read_lspci_and_glxinfo import read_lspci_and_glxinfo
-from parsers.read_smartctl import read_smartctl
+import peracommon
 
-traceback.install()
+
+def main(the_args):
+    path = os.getcwd()
+    generated_files_path = None
+    target_path = f"{path}/tmp"
+
+    # TODO: --------------------------------------------
+    # TODO: DA RIVEDERE asd
+    # TODO: --------------------------------------------
+
+
+    if the_args.files is not None:
+        # TODO: set generated_files_path and/or target_path
+        # if -f flag is added, most of the other flags doesn't mean anything
+        if the_args.path is not None or any((the_args.cpu, the_args.gpu, the_args.motherboard)):
+            print(
+                "[bold red]Error: Bad flags combination (./main.py -f <path> is correct) [/]"
+            )
+            exit(-1)
+        path = os.path.join(path, the_args.files)
+        check_required_files(path)
+        the_args.cpu, the_args.gpu, the_args.motherboard = get_gpu(the_args)
+
+    else:
+        if the_args.path is None:
+            path = os.path.join(path, "tmp")
+            if os.path.isdir(path):
+                sel = input("Overwrite existing files in tmp dir? y/N ").lower()
+                if sel == "y":
+                    print("Overwriting...")
+                else:
+                    sel = input("Output files to working directory? y/N ").lower()
+                    if sel == "y":
+                        path = os.getcwd()
+                        print("Outputting files to working directory...")
+                    else:
+                        print("[blue]Quitting...[/]")
+                        exit(-1)
+            else:
+                os.mkdir(path)
+
+        else:
+            path = os.path.join(path, the_args.path)
+            if os.path.isdir(path):
+                print(
+                    "[bold red]Wrong path: can't create a directory with this name, existing already[/]"
+                )
+                exit(-2)
+            os.mkdir(path)
+        check_and_install_dependencies()
+
+        # now that I have a dest folder, I generate files
+        if os.geteuid() != 0:
+            os.system(f"sudo ./scripts/generate_files.sh {path}")
+        else:
+            os.system(f"./scripts/generate_files.sh {path}")
+
+        # file generated, extract data next
+        the_args.cpu, the_args.gpu, the_args.motherboard = get_gpu(the_args)
+
+    # TODO: --------------------------------------------
+    # TODO: FINE parte DA RIVEDERE asd
+    # TODO: --------------------------------------------
+
+    if not generated_files_path:
+        has_dependencies = peracommon.check_dependencies_for_generate_files()
+        if not has_dependencies:
+            if not ask_install_depdendencies():
+                print("[blue]Quitting...[/]")
+                exit(-1)
+
+        generated_files_path = peracommon.generate_files(target_path)
+
+    # List of items
+    parsed = peracommon.call_parsers(generated_files_path, components, gpu_location)
+
+    # Tree of items and products and CCTF
+    result = peracommon.call_parsers(parsed, owner, code)
+
+    print_output(json.dumps(result, indent=2), path)
+
+    prompt_to_open_browser()
+
+    upload_to_tarallo(result)
+
+
+def ask_install_depdendencies():
+    ans = input("You need to install some packages. Do you want to install them? y/N ").lower()
+    if ans == "y":
+        install_cmd = "apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode < /dev/null"
+        if os.geteuid() != 0:
+            os.system(f"sudo {install_cmd}")
+        else:
+            os.system(f"/bin/bash -c {install_cmd}")
+        return True
+    else:
+        return False
+
+
+def prompt_to_open_browser():
+    import base64
+
+    web_link = "aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="
+    web_link = base64.b64decode(web_link).decode("ascii").rstrip()
+    egg = Console()
+    text = [
+        "Congratulations!!!",
+        "You're",
+        "the",
+        "1000th",
+        "WEEEisitor",
+        "of",
+        "the",
+        "day",
+    ]
+    this_moment = datetime.now()
+    if this_moment.minute == this_moment.second:
+        for word in text:
+            red = random.randint(0, 255)
+            green = random.randint(0, 255)
+            blue = random.randint(0, 255)
+            egg.print(word, end=" ", style=f"rgb({red},{green},{blue})")
+        egg.print(web_link)
+    else:
+        print(
+            f"[green]Finished successfully![/] Now you can add this output to the T.A.R.A.L.L.O. -> {web_link}"
+        )
+
+
+def upload_to_tarallo(data):
+    msg_upload_ok = "[green]All went fine! [/] [blue]\nBye bye! [/]🍐\n"
+    msg_upload_failed = "The upload failed. Check above and try to upload on your own"
+
+    ans = (
+        input(
+            "Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): "
+        )
+        .lower()
+        .rstrip()
+    )
+
+    if ans.lower() == "n":
+        print("\n[blue]Bye bye! [/]🍐\n")
+
+        return
+
+    try:
+        load_dotenv()
+        t_url = env["TARALLO_URL"]
+        t_token = env["TARALLO_TOKEN"]
+    except KeyError:
+        raise EnvironmentError(
+            "Missing definitions of TARALLO* environment variables (see the README)"
+        )
+
+    while True:
+        try:
+            bulk_id = input("Please enter a bulk identifier (optional): ").rstrip()
+            t = Tarallo.Tarallo(t_url, t_token)
+            ver = t.bulk_add(data, bulk_id, False)
+            if ver:
+                print(msg_upload_ok)
+                break
+            else:
+
+                overwrite = (
+                    input(
+                        "Cannot update, do you want to try overwriting the identifier? (y/N): "
+                    )
+                    .lower()
+                    .rstrip()
+                )
+                if overwrite.lower() == "y":
+
+                    ver = t.bulk_add(data, bulk_id, True)
+                    if ver:
+                        print(msg_upload_ok)
+                        break
+                    else:
+                        print(msg_upload_failed)
+                else:
+                    bulk_id = input(
+                        "Do you want to use another identifier? Just press enter for an automatic one. "
+                        "You choose (NEW_ID/n): "
+                    ).rstrip()
+                    if bulk_id.lower() != "n":
+                        ver = t.bulk_add(data, bulk_id, True)
+                        if ver:
+                            print(msg_upload_ok)
+                            break
+                        else:
+                            print(msg_upload_failed)
+
+        except NoInternetConnectionError:
+            print(
+                "\n[yellow]Unable to reach the T.A.R.A.L.L.O. "
+                "Please connect this PC to the Internet and try again.[/]\n"
+            )
+
+
+
+# TODO: review
+
+
 
 MEANINGLESS_VALUES = (
     "",
@@ -532,55 +729,6 @@ def check_required_files(path):
                 exit(-1)
 
 
-def check_and_install_dependencies():
-    install_cmd = "apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode < /dev/null"
-    exit_value = os.system(
-        "dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null"
-    )
-    if exit_value == 1:
-        ans = input(
-            "You need to install some packages in order for the peracotta to work. Do you want to install them? y/N "
-        ).lower()
-        if ans == "y":
-            if os.geteuid() != 0:
-                os.system(f"sudo {install_cmd}")
-            else:
-                os.system(f"/bin/bash/ -c {install_cmd}")
-        else:
-            print("[blue]Quitting...[/]")
-            exit(-1)
-
-
-def prompt_to_open_browser():
-    import base64
-
-    web_link = "aHR0cHM6Ly90YXJhbGxvLndlZWVvcGVuLml0L2J1bGsvYWRkCg=="
-    web_link = base64.b64decode(web_link).decode("ascii").rstrip()
-    egg = Console()
-    text = [
-        "Congratulations!!!",
-        "You're",
-        "the",
-        "1000th",
-        "WEEEisitor",
-        "of",
-        "the",
-        "day",
-    ]
-    this_moment = datetime.now()
-    if this_moment.minute == this_moment.second:
-        for word in text:
-            red = random.randint(0, 255)
-            green = random.randint(0, 255)
-            blue = random.randint(0, 255)
-            egg.print(word, end=" ", style=f"rgb({red},{green},{blue})")
-        egg.print(web_link)
-    else:
-        print(
-            f"[green]Finished successfully![/] Now you can add this output to the T.A.R.A.L.L.O. -> {web_link}"
-        )
-
-
 def get_additional_info(gathered_data, args):
     if not args.code:
         code = input("Does this have a code already? (optional, ENTER to skip): ")
@@ -599,146 +747,11 @@ def get_additional_info(gathered_data, args):
     if owner:
         gathered_data[0]["features"]["owner"] = owner
 
+# TODO: end review
 
-def upload(jsoned):
-    msg_upload_ok = "[green]All went fine! [/] [blue]\nBye bye! [/]🍐\n"
-    msg_upload_failed = "The upload failed. Check above and try to upload on your own"
-
-    ans = (
-        input(
-            "Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): "
-        )
-        .lower()
-        .rstrip()
-    )
-
-    if ans.lower() == "n":
-        print("\n[blue]Bye bye! [/]🍐\n")
-
-        return
-
-    try:
-        load_dotenv()
-        t_url = env["TARALLO_URL"]
-        t_token = env["TARALLO_TOKEN"]
-    except KeyError:
-
-        raise EnvironmentError(
-            "Missing definitions of TARALLO* environment variables (see the README)"
-        )
-
-    while True:
-        try:
-            bulk_id = input("Please enter a bulk identifier (optional): ").rstrip()
-            t = Tarallo.Tarallo(t_url, t_token)
-            ver = t.bulk_add(jsoned, bulk_id, False)
-            if ver:
-                print(msg_upload_ok)
-                break
-            else:
-
-                overwrite = (
-                    input(
-                        "Cannot update, do you want to try overwriting the identifier? (y/N): "
-                    )
-                    .lower()
-                    .rstrip()
-                )
-                if overwrite.lower() == "y":
-
-                    ver = t.bulk_add(jsoned, bulk_id, True)
-                    if ver:
-                        print(msg_upload_ok)
-                        break
-                    else:
-                        print(msg_upload_failed)
-                else:
-                    bulk_id = input(
-                        "Do you want to use another identifier? Just press enter for an automatic one. "
-                        "You choose (NEW_ID/n): "
-                    ).rstrip()
-                    if bulk_id.lower() != "n":
-                        ver = t.bulk_add(jsoned, bulk_id, True)
-                        if ver:
-                            print(msg_upload_ok)
-                            break
-                        else:
-                            print(msg_upload_failed)
-
-        except NoInternetConnectionError:
-            print(
-                "\n[yellow]Unable to reach the T.A.R.A.L.L.O. "
-                "Please connect this PC to the Internet and try again.[/]\n"
-            )
-
-
-def main(args):
-    path = os.getcwd()
-
-    if args.gui:
-        import main_with_gui
-
-        main_with_gui.main()
-
-    elif args.files is not None:
-        # if -f flag is added, most of the other flags doesn't mean anything
-        if args.path is not None or any((args.cpu, args.gpu, args.motherboard)):
-            print(
-                "[bold red]Error: Bad flags combination (./main.py -f <path> is correct) [/]"
-            )
-            exit(-1)
-        path = os.path.join(path, args.files)
-        check_required_files(path)
-        args.cpu, args.gpu, args.motherboard = get_gpu(args)
-
-    else:
-        if args.path is None:
-            path = os.path.join(path, "tmp")
-            if os.path.isdir(path):
-                sel = input("Overwrite existing files in tmp dir? y/N ").lower()
-                if sel == "y":
-                    print("Overwriting...")
-                else:
-                    sel = input("Output files to working directory? y/N ").lower()
-                    if sel == "y":
-                        path = os.getcwd()
-                        print("Outputting files to working directory...")
-                    else:
-                        print("[blue]Quitting...[/]")
-                        exit(-1)
-            else:
-                os.mkdir(path)
-
-        else:
-            path = os.path.join(path, args.path)
-            if os.path.isdir(path):
-                print(
-                    "[bold red]Wrong path: can't create a directory with this name, existing already[/]"
-                )
-                exit(-2)
-            os.mkdir(path)
-        check_and_install_dependencies()
-
-        # now that I have a dest folder, I generate files
-        if os.geteuid() != 0:
-            os.system(f"sudo ./scripts/generate_files.sh {path}")
-        else:
-            os.system(f"./scripts/generate_files.sh {path}")
-
-        # file generated, extract data next
-        args.cpu, args.gpu, args.motherboard = get_gpu(args)
-
-    final_output = run_extract_data(path, args)
-    get_additional_info(final_output, args)
-    print_output(json.dumps(final_output, indent=2), path)
-    prompt_to_open_browser()
-    upload(final_output)
 
 
 def generate_parser():
-
-    import argparse
-
     parser = argparse.ArgumentParser(
         description="Parse the files generated with generate_files.sh and "
         "get all the possible info out of them",

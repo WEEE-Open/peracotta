@@ -1,13 +1,17 @@
+#!/usr/bin/env python3
+
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
 from os.path import expanduser
+from main import extract_data
+from dotenv import load_dotenv, env
 import sys
 import os
 import traceback
 import json
 import prettyprinter
-from main import extract_data
+import peracommon
 
 VERSION = "2.0"
 
@@ -37,11 +41,13 @@ ICON = {
 
 
 class Ui(QtWidgets.QMainWindow):
-    def __init__(self, app: QtWidgets.QApplication) -> None:
+    def __init__(self, app: QtWidgets.QApplication, tarallo_url: str, tarallo_token: str) -> None:
         super(Ui, self).__init__()
         uic.loadUi(PATH["UI"], self)
         self.app = app
         self.data = None
+        self.tarallo_url = tarallo_url
+        self.tarallo_token = tarallo_token
         self.selectors = dict()
         self.useful_default_features = dict()
 
@@ -192,7 +198,48 @@ class Ui(QtWidgets.QMainWindow):
 
     def upload_to_tarallo(self):
         # TODO: make all the things
-        print(f"{TARALLO_TOKEN} - uploaded to tarallo ahahah xd")
+        try:
+            bulk_id = input("Please enter a bulk identifier (optional): ").rstrip()
+            tarallo = Tarallo.Tarallo(self.tarallo_url, self.tarallo_token)
+            ver = tarallo.bulk_add(data, bulk_id, False)
+            if ver:
+                print(msg_upload_ok)
+                break
+            else:
+
+                overwrite = (
+                    input(
+                        "Cannot update, do you want to try overwriting the identifier? (y/N): "
+                    )
+                    .lower()
+                    .rstrip()
+                )
+                if overwrite.lower() == "y":
+
+                    ver = t.bulk_add(data, bulk_id, True)
+                    if ver:
+                        print(msg_upload_ok)
+                        break
+                    else:
+                        print(msg_upload_failed)
+                else:
+                    bulk_id = input(
+                        "Do you want to use another identifier? Just press enter for an automatic one. "
+                        "You choose (NEW_ID/n): "
+                    ).rstrip()
+                    if bulk_id.lower() != "n":
+                        ver = t.bulk_add(data, bulk_id, True)
+                        if ver:
+                            print(msg_upload_ok)
+                            break
+                        else:
+                            print(msg_upload_failed)
+
+        except NoInternetConnectionError:
+            print(
+                "\n[yellow]Unable to reach the T.A.R.A.L.L.O. "
+                "Please connect this PC to the Internet and try again.[/]\n"
+            )
 
     # menu actions
     def open_json(self):
@@ -418,7 +465,7 @@ class Peracotta(QtCore.QThread):
         self.intCpuRadioBtn = intCpuRadioBtn
 
     def run(self) -> None:
-        os.system("mkdir tmp; cd tmp; ../scripts/generate_files.sh; cd ..")
+        peracommon.generate_files("tmp")
         data = extract_data(
             "tmp",
             self.discreteRadioBtn.isChecked(),
@@ -432,6 +479,9 @@ class Peracotta(QtCore.QThread):
 def main():
     # noinspection PyBroadException
     try:
+        load_dotenv()
+        tarallo_url = env["TARALLO_URL"]
+        tarallo_token = env["TARALLO_TOKEN"]
         app = QtWidgets.QApplication(sys.argv)
         # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
         # noinspection PyUnusedLocal
