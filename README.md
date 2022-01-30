@@ -123,3 +123,5 @@ There are many read_something.py scripts: these are used internally by the other
 
 This is the GUI icon.  
 Yes, it's a pear emoji. 🍐
+
+Fan icons created by <a href="https://www.flaticon.com/free-icons/fan" title="fan icons">juicy_fish</a> - Flaticon
