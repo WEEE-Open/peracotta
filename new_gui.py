@@ -19,20 +19,20 @@ URL = {
 }
 
 PATH = {
-    "UI": "interface.ui",
+    "UI": "assets/interface.ui",
     "JSON": "copy_this_to_tarallo.json",
     "FEATURES": "features.json",
 }
 
 ICON = {
-    "case": "assets/case.png",
-    "ram": "assets/ram.png",
-    "cpu": "assets/cpu.png",
-    "gpu": "assets/gpu.png",
-    "odd": "assets/odd.png",
-    "hard disk": "assets/hard disk.png",
-    "motherboard": "assets/motherboard.png",
-    "wifi-card": "assets/wifi-card.png",
+    "case": "assets/toolbox/case.png",
+    "ram": "assets/toolbox/ram.png",
+    "cpu": "assets/toolbox/cpu.png",
+    "gpu": "assets/toolbox/gpu.png",
+    "odd": "assets/toolbox/odd.png",
+    "hard disk": "assets/toolbox/hard disk.png",
+    "motherboard": "assets/toolbox/motherboard.png",
+    "wifi-card": "assets/toolbox/wifi-card.png",
 }
 
 
