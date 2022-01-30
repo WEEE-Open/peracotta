@@ -10,4 +10,4 @@ it.weeeopen.peracotta.generate-files.policy
 tmp_smb_mount/
 copy_this_to_tarallo.json
 features.json
-win/tmp/
+scripts/tmp/
