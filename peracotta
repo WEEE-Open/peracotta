@@ -4,10 +4,11 @@ from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
 from os.path import expanduser
-from main import extract_data
-from dotenv import load_dotenv, env
+from pytarallo import Tarallo
+from pytarallo.Errors import NoInternetConnectionError
+from dotenv import load_dotenv
+from os import environ as env
 import sys
-import os
 import traceback
 import json
 import prettyprinter
@@ -24,6 +25,7 @@ URL = {
 
 PATH = {
     "UI": "assets/interface.ui",
+    "TARALLOUPLOADDIALOG": "assets/uploadTaralloDialog.ui",
     "JSON": "copy_this_to_tarallo.json",
     "FEATURES": "features.json",
 }
@@ -45,6 +47,7 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi(PATH["UI"], self)
         self.app = app
+        self.taralloDialog = None
         self.data = None
         self.tarallo_url = tarallo_url
         self.tarallo_token = tarallo_token
@@ -83,7 +86,7 @@ class Ui(QtWidgets.QMainWindow):
 
         # Upload to tarallo button
         self.uploadBtn = self.findChild(QtWidgets.QPushButton, "uploadBtn")
-        self.uploadBtn.clicked.connect(self.upload_to_tarallo)
+        self.uploadBtn.clicked.connect(self.tarallo_dialog)
 
         # Menus
         self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
@@ -196,15 +199,23 @@ class Ui(QtWidgets.QMainWindow):
             file.flush()
             file.close()
 
-    def upload_to_tarallo(self):
+    def tarallo_dialog(self):
+        self.taralloDialog = TaralloUploadDialog()
+        self.taralloDialog.signal.connect(self.upload_to_tarallo)
+
+    def upload_to_tarallo(self, flag: bool, bulk_id=None):
         # TODO: make all the things
+        if not flag:
+            if tarallo_success_dialog():
+                self.open_url("asdzorz")
+            return
         try:
-            bulk_id = input("Please enter a bulk identifier (optional): ").rstrip()
             tarallo = Tarallo.Tarallo(self.tarallo_url, self.tarallo_token)
-            ver = tarallo.bulk_add(data, bulk_id, False)
+            ver = tarallo.bulk_add(self.data, bulk_id, False)
             if ver:
-                print(msg_upload_ok)
-                break
+                QtWidgets.QMessageBox.information(self, "Upload successful!",
+                                                  "Upload successful! Now go to TARALLO and finish the job.")
+                return
             else:
 
                 overwrite = (
@@ -216,10 +227,10 @@ class Ui(QtWidgets.QMainWindow):
                 )
                 if overwrite.lower() == "y":
 
-                    ver = t.bulk_add(data, bulk_id, True)
+                    ver = tarallo.bulk_add(self.data, bulk_id, True)
                     if ver:
                         print(msg_upload_ok)
-                        break
+                        return
                     else:
                         print(msg_upload_failed)
                 else:
@@ -231,7 +242,7 @@ class Ui(QtWidgets.QMainWindow):
                         ver = t.bulk_add(data, bulk_id, True)
                         if ver:
                             print(msg_upload_ok)
-                            break
+                            return
                         else:
                             print(msg_upload_failed)
 
@@ -452,6 +463,31 @@ class JsonWidget(QtWidgets.QDialog):
         self.exec_()
 
 
+class TaralloUploadDialog(QtWidgets.QDialog):
+    signal = QtCore.pyqtSignal(bool, str, name="event")
+
+    def __init__(self):
+        super().__init__()
+        uic.loadUi(PATH["TARALLOUPLOADDIALOG"], self)
+
+        self.setWindowTitle("Set bulk identifier")
+        self.bulkLineEdit = self.findChild(QtWidgets.QLineEdit, "bulkLineEdit")
+        self.okButton = self.findChild(QtWidgets.QPushButton, "okButton")
+        self.okButton.clicked.connect(self.ok_signal)
+        self.cancelButton = self.findChild(QtWidgets.QPushButton, "cancelButton")
+        self.cancelButton.clicked.connect(self.cancel_signal)
+
+        self.show()
+
+    def ok_signal(self):
+        self.signal.emit(True, self.bulkLineEdit.text())
+        self.close()
+
+    def cancel_signal(self):
+        self.signal.emit(False, None)
+        self.close()
+
+
 class Peracotta(QtCore.QThread):
     updateEvent = QtCore.pyqtSignal(list, name="update")
 
@@ -466,14 +502,17 @@ class Peracotta(QtCore.QThread):
 
     def run(self) -> None:
         peracommon.generate_files("tmp")
-        data = extract_data(
-            "tmp",
-            self.discreteRadioBtn.isChecked(),
-            self.intCpuRadioBtn.isChecked(),
-            False,
-            False,
-        )
-        self.updateEvent.emit(data)
+
+
+def tarallo_success_dialog():
+    dialog = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Warning, "Upload successful",
+                                   "Upload successful! Now go to TARALLO and finish the job.")
+    dialog.setStandardButtons(QtWidgets.QMessageBox.Ok)
+    viewOnTaralloButton = dialog.addButton("View on TARALLO", dialog.ActionRole)
+    dialog.exec_()
+    if dialog.clickedButton() == viewOnTaralloButton:
+        return True
+    return False
 
 
 def main():
@@ -485,7 +524,7 @@ def main():
         app = QtWidgets.QApplication(sys.argv)
         # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
         # noinspection PyUnusedLocal
-        window = Ui(app)
+        window = Ui(app, tarallo_url, tarallo_token)
         app.exec_()
 
     except KeyboardInterrupt:
