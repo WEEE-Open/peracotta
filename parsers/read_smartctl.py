@@ -6,8 +6,6 @@ import sys
 import os
 from math import log10, floor
 
-from InputFileNotFoundError import InputFileNotFoundError
-
 """
 Read "smartctl" output:
 """
@@ -44,6 +42,7 @@ class Disk:
     smart_data_long = SMART.not_available
     smart_data = SMART.not_available
 
+# TODO: rewrite this entirely
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
 # SINCE THERE MAY BE MULTIPLE FILES

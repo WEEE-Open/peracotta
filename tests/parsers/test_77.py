@@ -20,7 +20,7 @@ def test_77_lspci():
         "model": "771/671",
         "capacity-byte": None,
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False, os.path.join(filedir, "lspci.txt"), os.path.join(filedir, "glxinfo.txt")
     )
 
@@ -38,7 +38,7 @@ def test_lscpu():
         "thread-n": 1,
         "frequency-hertz": 2800000000,
     }
-    output = read_lscpu.read_lscpu(os.path.join(filedir, "lscpu.txt"))
+    output = read_lscpu.parse_lscpu(os.path.join(filedir, "lscpu.txt"))
 
     assert output == expect
 
@@ -90,7 +90,7 @@ def test_77_chassis():
         "type": "case",
         "motherboard-form-factor": "",
     }
-    output = read_dmidecode.get_chassis(os.path.join(filedir, "chassis.txt"))
+    output = read_dmidecode.parse_case(os.path.join(filedir, "chassis.txt"))
 
     assert output == expect
 

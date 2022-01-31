@@ -20,7 +20,7 @@ def test_lspci_dedicated1():
         "brand-manufacturer": "Nvidia",
     }
 
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         True,
         os.path.join(os.path.join(filedir, filesubdir), "lspci.txt"),
         os.path.join(os.path.join(filedir, filesubdir), "glxinfo.txt"),
@@ -39,7 +39,7 @@ def test_lspci_dedicated2():
         "capacity-byte": 1073741824,
         "brand-manufacturer": "Nvidia",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         True,
         os.path.join(filedir, "dedicated/lspci-9400GT.txt"),
         os.path.join(filedir, "dedicated/glxinfo-9400GT.txt"),
@@ -58,7 +58,7 @@ def test_lspci_dedicated3():
         "capacity-byte": 4294967296,
         "brand-manufacturer": "Nvidia",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         True,
         os.path.join(filedir, "dedicated/lspci-gtx-970.txt"),
         os.path.join(filedir, "dedicated/glxinfo-gtx-970.txt"),
@@ -80,7 +80,7 @@ def test_lspci_integrated_mobo_1():
         "capacity-byte": None,
         "brand-manufacturer": "Nvidia",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
         os.path.join(os.path.join(filedir, filesubdir), f"lspci-{file}.txt"),
         os.path.join(os.path.join(filedir, filesubdir), f"/glxinfo-{file}.txt"),
@@ -102,7 +102,7 @@ def test_lspci_integrated_mobo_2():
         "capacity-byte": None,
         "brand-manufacturer": "Intel",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
         os.path.join(os.path.join(filedir, filesubdir), f"lspci-{file}.txt"),
         os.path.join(os.path.join(filedir, filesubdir), f"/glxinfo-{file}.txt"),
@@ -124,7 +124,7 @@ def test_lspci_integrated_mobo_3():
         "capacity-byte": None,
         "brand-manufacturer": "AMD/ATI",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
         os.path.join(os.path.join(filedir, filesubdir), f"lspci-{file}.txt"),
         os.path.join(os.path.join(filedir, filesubdir), f"/glxinfo-{file}.txt"),
@@ -145,7 +145,7 @@ def test_lspci_integrated_cpu_1():
         "capacity-byte": None,
         "brand-manufacturer": "Intel",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
         os.path.join(os.path.join(filedir, filesubdir), "lspci.txt"),
         os.path.join(os.path.join(filedir, filesubdir), "glxinfo.txt"),
@@ -167,7 +167,7 @@ def test_lspci_integrated_cpu_2():
         "capacity-byte": None,
         "brand-manufacturer": "Intel",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
         os.path.join(os.path.join(filedir, filesubdir), "lspci.txt"),
         os.path.join(os.path.join(filedir, filesubdir), "glxinfo.txt"),
@@ -188,7 +188,7 @@ def test_lspci_integrated_cpu_3():
         "capacity-byte": None,
         "brand-manufacturer": "Intel",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
         os.path.join(os.path.join(filedir, filesubdir), "lspci.txt"),
         os.path.join(os.path.join(filedir, filesubdir), "glxinfo.txt"),

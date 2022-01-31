@@ -19,7 +19,7 @@ def test_lscpu():
         "thread-n": 1,
         "frequency-hertz": 2800000000,
     }
-    output = read_lscpu.read_lscpu(os.path.join(filedir, "lscpu.txt"))
+    output = read_lscpu.parse_lscpu(os.path.join(filedir, "lscpu.txt"))
 
     assert output == expect
 

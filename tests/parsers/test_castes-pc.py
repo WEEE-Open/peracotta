@@ -20,7 +20,7 @@ def test_lspci():
         "capacity-byte": 6442450944,
         "brand-manufacturer": "Nvidia",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         True, os.path.join(filedir, "lspci.txt"), os.path.join(filedir, "glxinfo.txt")
     )
 
@@ -38,7 +38,7 @@ def test_lscpu():
         "thread-n": 4,
         "frequency-hertz": 3200000000,
     }
-    output = read_lscpu.read_lscpu(os.path.join(filedir, "lscpu.txt"))
+    output = read_lscpu.parse_lscpu(os.path.join(filedir, "lscpu.txt"))
 
     assert output == expect
 
@@ -70,7 +70,7 @@ def test_ram():
             "ram-timings": "",
         },
     ]
-    output = read_decode_dimms.read_decode_dimms(os.path.join(filedir, "dimms.txt"))
+    output = read_decode_dimms.parse_decode_dimms(os.path.join(filedir, "dimms.txt"))
 
     assert len(output) == 2, "2 RAM modules are found"
     assert output == expect
@@ -118,7 +118,7 @@ def test_chassis():
         "sn": "",
         "motherboard-form-factor": "",
     }
-    output = read_dmidecode.get_chassis(os.path.join(filedir, "chassis.txt"))
+    output = read_dmidecode.parse_case(os.path.join(filedir, "chassis.txt"))
 
     assert output == expect
 
