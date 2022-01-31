@@ -140,7 +140,6 @@ class Ui(QtWidgets.QMainWindow):
 
     # gui utilities
     def reset_toolbox(self):
-        print(f"Total items: {self.toolBox.count()}")
         for idx in range(self.toolBox.count()):
             self.toolBox.removeItem(0)
 
@@ -225,16 +224,24 @@ class Ui(QtWidgets.QMainWindow):
         if the_dir[0] == "":
             return
         with open(the_dir[0], "w") as file:
-            file.write(f"{self.data}")
+            file.write(f"{json.dumps(self.data)}")
             file.flush()
             file.close()
 
-    def tarallo_dialog(self, bulk_id=""):
+    def tarallo_dialog(self, bulk_id=str()):
+        if self.data is None:
+            QtWidgets.QMessageBox.warning(
+                self, "Warning", "There is nothing to be uploaded"
+            )
+            return
+        if not bulk_id:
+            bulk_id = ""
         self.taralloDialog = TaralloUploadDialog(bulk_id)
         self.taralloDialog.signal.connect(self.upload_to_tarallo)
 
     # menu actions
     def open_json(self):
+        self.reset_toolbox()
         the_dir = QtWidgets.QFileDialog.getOpenFileName(
             self,
             "title",
@@ -447,7 +454,7 @@ class JsonWidget(QtWidgets.QDialog):
 class TaralloUploadDialog(QtWidgets.QDialog):
     signal = QtCore.pyqtSignal(bool, bool, str, name="event")
 
-    def __init__(self, bulk_id: str):
+    def __init__(self, bulk_id: str = ""):
         super().__init__()
         uic.loadUi(PATH["TARALLOUPLOADDIALOG"], self)
 
