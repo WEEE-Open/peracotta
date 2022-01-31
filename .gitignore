@@ -11,3 +11,4 @@ tmp_smb_mount/
 copy_this_to_tarallo.json
 features.json
 scripts/tmp/
+.pre-commit-config.yaml
