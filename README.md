@@ -14,10 +14,10 @@ You can have 2 use cases:
 - a very old PC, that even struggles with showing the Desktop Environment
 - a newer PC, which runs mostly fine even with graphical applications (like the DE, a browser, etc.)
 
-In the first case, you want to use `main.py`. This is a CLI Python script that does almost everything the GUI does, which is almost as easy to use.  
-In the second case, you want to use `main_with_gui.py`. This is the script which launches the GUI, and it's slightly easier to use than the CLI version.  
+In the first case, you want to use `peracruda`. This is a CLI Python script that does almost everything the GUI does, which is almost as easy to use.  
+In the second case, you want to use `peracotta`. This is the script which launches the GUI, and it's slightly easier to use than the CLI version.  
 
-In both cases, please refer to the _How to run_ and _main.sh and main_with_gui.py_ sections.
+In both cases, please refer to the _How to run_ and _main.sh and peracotta_ sections.
 
 ## How to run
 
@@ -51,11 +51,11 @@ If requirements change:
 
 If you can't generate the files because you don't have access to `sudo`, such as on our development VM, you should use the files in a directory from `tests`.
 
-## main.py and main_with_gui.py
+## peracotta and peracruda
 
-These are the scripts you run directly from the terminal. Quite obviously, `main_with_gui.py` presents a graphical interface, and `main.py` runs in the terminal.
+These are the scripts you run directly from the terminal. Quite obviously, `peracotta` presents a graphical interface, and `peracruda` runs in the terminal.
 
-### main.py
+### peracruda (CLI)
 
 This script basically runs `sudo ./generate_files.sh` and collect data into an appropriate json for T.A.R.A.L.L.O, but it does so in an interactive manner, so 
 you can either pass it the arguments, or it will ask you for them nicely.
@@ -63,7 +63,7 @@ you can either pass it the arguments, or it will ask you for them nicely.
 You can also pass as the -f/--files argument the directory where generate_files.sh dropped its files. By default (i.e. if you don't give any arguments 
 to `generate_files.sh`) it will output the files in the current directory. Since this may clutter the working directory 
 with txt files, it's best to make a new directory (e.g. `mkdir tmp`) and pass it to the file generator (e.g. `generate_files.sh tmp`).
-You can then pass this path to this script so that it knows where to find the txt files (e.g. `./main.py -f tmp`).  
+You can then pass this path to this script so that it knows where to find the txt files (e.g. `./peracruda -f tmp`).  
 This is done automatically by the GUI version.
 
 
@@ -72,43 +72,38 @@ You can find the usage below, but keep in mind that the three most important arg
 - `-g | -c | -b`: one of these tells the script where the GPU (or graphics card if it's not integrated) is located. If none of them is given, a menu with the same choices will appear during the execution.
 - `--code CODE` and `--owner OWNER`: these two parameters are used to add some more information directly into the output json file. 
 - the path to the txt files, previously generated with generate_files.sh.
-```bash
-usage: main.py [-h] [-f FILES] [-g | -c | -b] [-i] [-v] [path]
-
-Parse the files generated with generate_files.sh and get all the possible info out of them
-
-positional arguments:
-  path                  optional path where generated files are stored
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -f FILES, --files FILES
-                        retrieve previously generated files from a given path
-  --code CODE           set the code assigned by T.A.R.A.L.L.O
-  --owner OWNER         set a owner
-  -v, --verbose         print some warning messages
-
-GPU Location:
-  -g, --gpu             computer has dedicated GPU
-  -c, --cpu             GPU is integrated inside the CPU
-  -b, --motherboard     GPU is integrated inside the motherboard
-
-With or without GUI (one argument optional):
-  -i, --gui             launch GUI instead of using the terminal version
 
 ```
+usage: peracotta-cli [-h] [-f] [--code CODE] [--owner OWNER]
+                     [-g | -c | -b | --gpu-none] [-v]
+                     [path]
+Parse the files generated with generate_files.sh and get all the possible info
+out of them
+positional arguments:
+  path               optional path where generated files are stored
+optional arguments:
+  -h, --help         show this help message and exit
+  -f, --files        reuse previously generated files
+  --code CODE        set the code assigned by T.A.R.A.L.L.O
+  --owner OWNER      set a owner
+  -v, --verbose      print some warning messages
+GPU Location:
+  -g, --gpu          computer has dedicated GPU
+  -c, --cpu          GPU is integrated inside the CPU
+  -b, --motherboard  GPU is integrated inside the motherboard
+  --gpu-none         There's no GPU at all
+```
 
-### main_with_gui.py
+### peracotta (GUI)
 
-This script is interactive, so you'll just need to run it with `./main_with_gui.py`. It does everything the terminal based version does, with the addition of a nice GUI.  
-The GUI is also available from `main.py` with the `-i` or `--gui` option.
+This script is interactive, so you'll just need to run it with `./peracotta`. It does everything the terminal based version does, with the addition of a nice GUI.
 
-## Underlying scripts run by main.py and main_with_gui.py
+## Underlying scripts run by peracotta and peracruda
 
 ### generate_files.sh
 
 This will create some txt files with data related to the computer, that will be parsed by launching 
-`main.py` with -f/--files argument. The hard work is powered by the many `read_X.py` scripts, which are the actual 
+`peracruda` with -f/--files argument. The hard work is powered by the many `read_X.py` scripts, which are the actual 
 parsers.
 
 Install dependencies on Debian-based distributions (Debian, Ubuntu, Xubuntu, etc):  
@@ -117,7 +112,9 @@ These are the actual programs that generate the files that we parse.
 
 ### parsers
 
-There are many read_something.py scripts: these are used internally by the other scripts. They can also be launched from the command line. They can also be imported as libraries.
+There are many read_something.py scripts: these are used internally by the other scripts.
+They can also be launched from the command line.
+They can also be imported as libraries.
 
 ### data
 
