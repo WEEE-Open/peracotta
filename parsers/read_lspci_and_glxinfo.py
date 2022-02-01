@@ -146,6 +146,18 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
         if gpu["brand-manufacturer"].lower() == gpu["brand"].lower():
             del gpu["brand-manufacturer"]
 
+    if interactive:
+        if "brand" not in gpu and "brand-manufacturer" not in gpu:
+            print(
+                "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited logging "
+                "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
+            )
+        if "capacity-byte" not in gpu:
+            print (
+                "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which "
+                "could be near the actual value. Please humans, fix this error by hand."
+            )
+
 
 def _read_glxinfo_output(gpu: dict, glxinfo_file: str):
     for i, line in enumerate(glxinfo_file.splitlines()):

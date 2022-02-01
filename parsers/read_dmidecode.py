@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from typing import Optional
 
 connectors_map = {
     "PS/2": "ps2-ports-n",
@@ -267,7 +268,14 @@ def get_dmidecoded_value(section: str, key: str) -> str:
     return section.split(key, 1)[1].split("\n", 1)[0].strip()
 
 
-def parse_case(chassis_file: str, baseboard: list[dict]):
+def parse_psu(chassis: Optional[dict]):
+    if chassis.get("motherboard-form-factor") == "proprietary-laptop":
+        return {"type": "external-psu"}
+    else:
+        return {"type": "psu"}
+
+
+def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> list[dict]:
     chassis = {
         "type": "case"
     }
@@ -283,19 +291,18 @@ def parse_case(chassis_file: str, baseboard: list[dict]):
                 ff == "Laptop" or ff == "Notebook"
             ):  # Both exist in the wild and in tests, difference unknown
                 chassis["motherboard-form-factor"] = "proprietary-laptop"
-                for mobo in baseboard:
-                    if mobo["type"] == "motherboard" and "motherboard-form-factor" not in mobo:
-                        mobo["motherboard-form-factor"] = "proprietary-laptop"
+                if mobo and "motherboard-form-factor" not in mobo:
+                    mobo["motherboard-form-factor"] = "proprietary-laptop"
 
         elif "Serial Number" in line:
             chassis["sn"] = line.split("Serial Number:")[1].strip().strip(".")
 
     for key, value in chassis.items():
         if value == "Unknown":
-            # Restore the default of empty string
+            # Remove pointless values
             del chassis[key]
 
-    return chassis
+    return [chassis]
 
 
 if __name__ == "__main__":
