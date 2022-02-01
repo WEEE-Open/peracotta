@@ -116,9 +116,13 @@ class Ui(QtWidgets.QMainWindow):
         self.actionVersion = self.findChild(QtWidgets.QAction, "actionVersion")
         self.actionVersion.triggered.connect(self.show_version)
 
+        # Status bar widgets
+        self.progressBar = QtWidgets.QProgressBar()
+
         # Setup peracotta QThread
         self.peracotta = Peracotta(self.discreteRadioBtn, self.intCpuRadioBtn)
         self.peracotta.updateEvent.connect(self.peracotta_results)
+        self.peracotta.startEvent.connect(self.show_busy_progress_bar)
 
         self.show()
         self.setup()
@@ -177,6 +181,10 @@ class Ui(QtWidgets.QMainWindow):
         else:
             return the_type.title()
 
+    def show_busy_progress_bar(self):
+        self.progressBar.setRange(0, 0)
+        self.statusBar().addPermanentWidget(self.progressBar)
+
     # tarallo utilities
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
         if bulk_id == "":
@@ -226,6 +234,7 @@ class Ui(QtWidgets.QMainWindow):
         self.ownerLineEdit.clear()
 
     def generate(self):
+        self.peracotta.generate_files = True
         self.peracotta.start()
         self.reset_toolbox()
 
@@ -292,6 +301,8 @@ class Ui(QtWidgets.QMainWindow):
 
     # multithread
     def peracotta_results(self, data: list):
+        self.progressBar.setRange(0, 1)
+        self.statusBar().removeWidget(self.progressBar)
         self.data = data
         # checks for wanted items
         for checkbox in self.selectorsWidget.children():
@@ -501,6 +512,7 @@ class TaralloUploadDialog(QtWidgets.QDialog):
 
 class Peracotta(QtCore.QThread):
     updateEvent = QtCore.pyqtSignal(list, name="update")
+    startEvent = QtCore.pyqtSignal()
 
     def __init__(
         self,
@@ -513,8 +525,11 @@ class Peracotta(QtCore.QThread):
         self.generate_files = None
         self.the_dir = None
         self.set_default_values()
+        self.is_running = False
 
     def run(self) -> None:
+        self.is_running = True
+        self.startEvent.emit()
         if self.generate_files:
             if sys.platform == "win32":
                 from scripts.get_windows_specs import generate_win_files
@@ -522,14 +537,15 @@ class Peracotta(QtCore.QThread):
                 generate_win_files()
             else:
                 peracommon.generate_files(self.the_dir)
-        # TODO: parse everything
+        # TODO: parse everything, remove '[]' from updateEvent
 
-        # self.updateEvent.emit(json)
+        self.updateEvent.emit([])
         self.set_default_values()
 
     def set_default_values(self):
         self.generate_files = False
         self.the_dir = "tmp"
+        self.is_running = True
 
 
 class Uploader(QtCore.QThread):
