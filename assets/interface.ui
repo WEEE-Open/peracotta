@@ -417,7 +417,12 @@
     <property name="title">
      <string>Options</string>
     </property>
-    <addaction name="actionTheme"/>
+    <widget class="QMenu" name="menuTheme">
+     <property name="title">
+      <string>Theme</string>
+     </property>
+    </widget>
+    <addaction name="menuTheme"/>
    </widget>
    <widget class="QMenu" name="menuInfo">
     <property name="title">
@@ -442,11 +447,6 @@
     <string>Exit</string>
    </property>
   </action>
-  <action name="actionTheme">
-   <property name="text">
-    <string>Theme</string>
-   </property>
-  </action>
   <action name="actionAboutUs">
    <property name="text">
     <string>About WEEE Open</string>
@@ -465,6 +465,11 @@
   <action name="actionSourceCode">
    <property name="text">
     <string>Source code</string>
+   </property>
+  </action>
+  <action name="actionasd">
+   <property name="text">
+    <string>asd</string>
    </property>
   </action>
  </widget>
