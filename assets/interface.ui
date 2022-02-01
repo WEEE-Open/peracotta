@@ -265,6 +265,18 @@
          </widget>
         </item>
         <item>
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="title">
+           <string>Add Item/Product</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QComboBox" name="addItemComboBox"/>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
          <widget class="QGroupBox" name="groupBox_3">
           <property name="toolTip">
            <string>Set the owner of the computer</string>

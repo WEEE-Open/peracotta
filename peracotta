@@ -40,6 +40,10 @@ ICON = {
     "hard disk": "assets/toolbox/hard disk.png",
     "motherboard": "assets/toolbox/motherboard.png",
     "wifi-card": "assets/toolbox/wifi-card.png",
+    "psu": "assets/toolbox/psu.png",
+    "monitor": "assets/toolbox/monitor.png",
+    "keyboard": "assets/toolbox/keyboard.png",
+    "mouse": "assets/toolbox/mouse.png",
 }
 
 
@@ -56,6 +60,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tarallo_token = tarallo_token
         self.selectors = dict()
         self.useful_default_features = dict()
+        self.encountered_types_count = defaultdict(lambda: 0)
 
         # Output toolbox
         self.toolBox = self.findChild(QtWidgets.QToolBox, "toolBox")
@@ -71,6 +76,14 @@ class Ui(QtWidgets.QMainWindow):
 
         # Selectors area
         self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
+
+        self.addItemComboBox = self.findChild(QtWidgets.QComboBox, "addItemComboBox")
+        self.addItemComboBox.addItem("Select Type --")
+        for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
+            self.addItemComboBox.addItem(checkbox.text())
+            icon = QtGui.QIcon(ICON[checkbox.text().lower()])
+            self.addItemComboBox.setItemIcon(self.addItemComboBox.count() - 1, icon)
+        self.addItemComboBox.currentTextChanged.connect(self.add_toolbox_item)
 
         # Owner line edit
         self.ownerLineEdit = self.findChild(QtWidgets.QLineEdit, "ownerLineEdit")
@@ -268,6 +281,28 @@ class Ui(QtWidgets.QMainWindow):
         self.taralloDialog = TaralloUploadDialog(bulk_id)
         self.taralloDialog.signal.connect(self.upload_to_tarallo)
 
+    def add_toolbox_item(self):
+        if self.addItemComboBox.currentIndex() == 0:
+            return
+        else:
+            type = self.addItemComboBox.currentText().lower()
+            if not self.encountered_types_count[type]:
+                counter = ""
+            else:
+                counter = f" #{self.encountered_types_count[type] + 1}"
+            self.encountered_types_count[type] += 1
+
+            self.toolBox.addItem(
+                ToolBoxWidget({}, self.useful_default_features),
+                f"{self.print_type_cool(type)}{counter}",
+            )
+            icon = QtGui.QIcon(ICON[type])
+            self.toolBox.setItemIcon(self.toolBox.count() - 1, icon)
+            if self.data is None:
+                self.data = []
+            self.data.append({})
+            self.addItemComboBox.setCurrentIndex(0)
+
     # menu actions
     def open_json(self):
         self.reset_toolbox()
@@ -311,13 +346,12 @@ class Ui(QtWidgets.QMainWindow):
             self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
 
         # types count
-        encountered_types_count = defaultdict(lambda: 0)
         encountered_types_current_count = defaultdict(lambda: 0)
         for entry in self.data:
             if entry == {}:
                 continue
             the_type = entry["features"]["type"]
-            encountered_types_count[the_type] += 1
+            self.encountered_types_count[the_type] += 1
 
         # toolbox fill
         for idx, entry in enumerate(self.data):
@@ -330,7 +364,7 @@ class Ui(QtWidgets.QMainWindow):
                 idx_offset += 1
                 continue
             counter = ""
-            if encountered_types_count[the_type] >= 2:
+            if self.encountered_types_count[the_type] >= 2:
                 encountered_types_current_count[the_type] += 1
                 counter = f" #{encountered_types_current_count[the_type]}"
             self.toolBox.addItem(
