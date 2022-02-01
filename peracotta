@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import os
 
-from PyQt5 import uic, QtWidgets, QtCore, QtGui
+from PyQt5 import uic, QtWidgets, QtCore, QtGui, QtSql
+from PyQt5.QtSql import QSqlDatabase
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
 from os.path import expanduser
@@ -46,6 +47,21 @@ ICON = {
     "mouse": "assets/toolbox/mouse.png",
 }
 
+DEFAULT_PROGRESS_BAR_STYLE = (
+    "QStatusBar::item {"
+    "min-height: 12px;"
+    "max-height: 12px;"
+    "}"
+    "QProgressBar {"
+    "min-height: 14px;"
+    "max-height: 14px;"
+    "}"
+    "QProgressBar::chunk {"
+    "background-color: #00963A;"
+    "width: 50px;"
+    "}"
+)
+
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(
@@ -61,6 +77,7 @@ class Ui(QtWidgets.QMainWindow):
         self.selectors = dict()
         self.useful_default_features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
+        self.encountered_types_current_count = defaultdict(lambda: 0)
 
         # Output toolbox
         self.toolBox = self.findChild(QtWidgets.QToolBox, "toolBox")
@@ -131,6 +148,9 @@ class Ui(QtWidgets.QMainWindow):
 
         # Status bar widgets
         self.progressBar = QtWidgets.QProgressBar()
+        self.statusBar().addPermanentWidget(self.progressBar)
+        self.progressBar.hide()
+        self.statusBar().setStyleSheet(DEFAULT_PROGRESS_BAR_STYLE)
 
         # Setup peracotta QThread
         self.peracotta = Peracotta(self.discreteRadioBtn, self.intCpuRadioBtn)
@@ -196,7 +216,45 @@ class Ui(QtWidgets.QMainWindow):
 
     def show_busy_progress_bar(self):
         self.progressBar.setRange(0, 0)
-        self.statusBar().addPermanentWidget(self.progressBar)
+        self.progressBar.show()
+
+    def type_count(self, data: list):
+        for entry in data:
+            if entry == {}:
+                continue
+            if "features" in entry and entry["features"] == {}:
+                continue
+            if "type" in entry and entry["type"] == "P":
+                continue
+            the_type = entry["features"]["type"]
+            self.encountered_types_count[the_type] += 1
+
+    def recursive_item_content_finder(self, data: list):
+        for entry in data:
+            if entry == {}:
+                continue
+            if "features" in entry and entry["features"] == {}:
+                continue
+            if "type" in entry and entry["type"] == "P":
+                continue
+
+            self.type_count(data)
+            the_type = entry["features"]["type"]
+            if not self.selectors[the_type]:
+                continue
+            counter = ""
+            if self.encountered_types_count[the_type] > 1:
+                self.encountered_types_current_count[the_type] += 1
+                counter = f" #{self.encountered_types_current_count[the_type]}"
+            self.toolBox.addItem(
+                ToolBoxWidget(entry["features"], self.useful_default_features),
+                f"{self.print_type_cool(the_type)}{counter}",
+            )
+            icon = QtGui.QIcon(ICON[the_type])
+            self.toolBox.setItemIcon(self.toolBox.count() - 1, icon)
+
+            if "contents" in entry:
+                self.recursive_item_content_finder(entry["contents"])
 
     # tarallo utilities
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
@@ -292,8 +350,9 @@ class Ui(QtWidgets.QMainWindow):
                 counter = f" #{self.encountered_types_count[type] + 1}"
             self.encountered_types_count[type] += 1
 
+            data = {"type": self.addItemComboBox.currentText().lower()}
             self.toolBox.addItem(
-                ToolBoxWidget({}, self.useful_default_features),
+                ToolBoxWidget(data, self.useful_default_features),
                 f"{self.print_type_cool(type)}{counter}",
             )
             icon = QtGui.QIcon(ICON[type])
@@ -337,42 +396,15 @@ class Ui(QtWidgets.QMainWindow):
     # multithread
     def peracotta_results(self, data: list):
         self.progressBar.setRange(0, 1)
-        self.statusBar().removeWidget(self.progressBar)
+        self.progressBar.hide()
         self.data = data
+
         # checks for wanted items
-        for checkbox in self.selectorsWidget.children():
-            if isinstance(checkbox, QtWidgets.QVBoxLayout):
-                continue
+        for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
             self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
 
-        # types count
-        encountered_types_current_count = defaultdict(lambda: 0)
-        for entry in self.data:
-            if entry == {}:
-                continue
-            the_type = entry["features"]["type"]
-            self.encountered_types_count[the_type] += 1
-
         # toolbox fill
-        for idx, entry in enumerate(self.data):
-            idx_offset = 0
-            if entry == {}:
-                idx_offset += 1
-                continue
-            the_type = entry["features"]["type"]
-            if not self.selectors[the_type]:
-                idx_offset += 1
-                continue
-            counter = ""
-            if self.encountered_types_count[the_type] >= 2:
-                encountered_types_current_count[the_type] += 1
-                counter = f" #{encountered_types_current_count[the_type]}"
-            self.toolBox.addItem(
-                ToolBoxWidget(entry, self.useful_default_features),
-                f"{self.print_type_cool(the_type)}{counter}",
-            )
-            icon = QtGui.QIcon(ICON[the_type])
-            self.toolBox.setItemIcon(self.toolBox.count() - 1, icon)
+        self.recursive_item_content_finder(self.data)
 
     # close event
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
@@ -380,15 +412,60 @@ class Ui(QtWidgets.QMainWindow):
             self.peracotta.terminate()
 
 
-class ToolBoxWidget(QtWidgets.QTableView):
+class ToolBoxWidget(QtWidgets.QWidget):
     def __init__(self, data: dict, default_features: dict):
         super().__init__()
-        self.verticalHeader().hide()
-        self.setModel(CustomTableModel(data, default_features))
-        self.horizontalHeader().setStretchLastSection(True)
-        self.resizeColumnsToContents()
-        self.setShowGrid(False)
-        self.setAlternatingRowColors(True)
+        self.default_features = default_features
+
+        self.main_layout = QtWidgets.QVBoxLayout()
+        self.table = QtWidgets.QTableView()
+        self.features_combo_box = QtWidgets.QComboBox()
+        self.feature_line_edit = QtWidgets.QLineEdit()
+        self.feature_selector = QtWidgets.QComboBox()
+        self.add_feature_button = QtWidgets.QPushButton("Add")
+
+        # setup
+        self.table_setup(data, default_features)
+        self.feature_adder(data["type"])
+        self.setLayout(self.main_layout)
+
+    def table_setup(self, data: dict, default_features: dict):
+        self.table.verticalHeader().hide()
+        self.table.setModel(CustomTableModel(data, default_features))
+        self.table.horizontalHeader().setStretchLastSection(True)
+        self.table.setShowGrid(False)
+        self.table.setAlternatingRowColors(True)
+        self.main_layout.addWidget(self.table)
+
+    def feature_adder(self, type: str):
+        layout = QtWidgets.QHBoxLayout()
+        layout.addWidget(self.features_combo_box)
+        layout.addWidget(self.feature_line_edit)
+        layout.addWidget(self.feature_selector)
+        layout.addWidget(self.add_feature_button)
+        self.main_layout.addLayout(layout)
+        for name in self.default_features["names"]:
+            self.features_combo_box.addItem(self.default_features["names"][name])
+        self.features_combo_box.currentTextChanged.connect(self.set_input_type)
+        self.set_input_type()
+
+    def set_input_type(self):
+        for type in self.default_features["types"]:
+            if (
+                self.default_features["names"][type]
+                == self.features_combo_box.currentText()
+            ):
+                if self.default_features["types"][type] != "s":
+                    self.feature_line_edit.setHidden(True)
+                    self.feature_selector.setHidden(False)
+                    self.feature_selector.clear()
+                    for value in self.default_features["values"][type]:
+                        self.feature_selector.addItem(
+                            self.default_features["values"][type][value]
+                        )
+                else:
+                    self.feature_line_edit.setHidden(False)
+                    self.feature_selector.setHidden(True)
 
 
 class CustomTableModel(QAbstractTableModel):
@@ -533,8 +610,6 @@ class TaralloUploadDialog(QtWidgets.QDialog):
         self.overwriteCheckBox = self.findChild(
             QtWidgets.QCheckBox, "overwriteCheckBox"
         )
-
-        self.show()
 
     def ok_signal(self):
         self.signal.emit(self.overwriteCheckBox.isChecked(), self.bulkLineEdit.text())
