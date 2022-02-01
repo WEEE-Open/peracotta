@@ -20,7 +20,7 @@ def test_lspci_dedicated():
         "capacity-byte": 536870912,  # This has 512 MB of VRAM, but glxinfo reports 496?
         "brand-manufacturer": "Nvidia",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         True,
         os.path.join(filedir, "NVIDIA-G100/lspci.txt"),
         os.path.join(filedir, "NVIDIA-G100/glxinfo.txt"),
@@ -39,7 +39,7 @@ def test_lspci_integrated():
         "capacity-byte": None,
         "brand-manufacturer": "Intel",
     }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
         os.path.join(filedir, "82945G/lspci.txt"),
         os.path.join(filedir, "82945G/glxinfo.txt"),
@@ -59,13 +59,13 @@ def test_lscpu():
         "thread-n": 2,
         "frequency-hertz": 2800000000,
     }
-    output = read_lscpu.read_lscpu(os.path.join(filedir, "lscpu.txt"))
+    output = read_lscpu.parse_lscpu(os.path.join(filedir, "lscpu.txt"))
 
     assert output == expect
 
 
 def test_ram():
-    output = read_decode_dimms.read_decode_dimms(os.path.join(filedir, "dimms.txt"))
+    output = read_decode_dimms.parse_decode_dimms(os.path.join(filedir, "dimms.txt"))
 
     assert len(output) == 0
 
@@ -118,6 +118,6 @@ def test_chassis():
         "sn": "CZC6203MC5",
         "motherboard-form-factor": "",
     }
-    output = read_dmidecode.get_chassis(os.path.join(filedir, "chassis.txt"))
+    output = read_dmidecode.parse_case(os.path.join(filedir, "chassis.txt"))
 
     assert output == expect

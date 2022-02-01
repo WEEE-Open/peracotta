@@ -37,7 +37,7 @@ def test_ecc_ram1():
             "ram-timings": "5-5-5-15",
         },
     ]
-    output = read_decode_dimms.read_decode_dimms(
+    output = read_decode_dimms.parse_decode_dimms(
         os.path.join(filedir, "ECC/R451-R450.txt")
     )
 
@@ -71,7 +71,7 @@ def test_ecc_ram1_not_an_hex():
             "ram-timings": "5-5-5-15",
         },
     ]
-    output = read_decode_dimms.read_decode_dimms(
+    output = read_decode_dimms.parse_decode_dimms(
         os.path.join(filedir, "ECC/R451-R450-notanhex.txt")
     )
 
@@ -105,7 +105,7 @@ def test_ecc_ram2():
             "ram-timings": "5-5-5-15",
         },
     ]
-    output = read_decode_dimms.read_decode_dimms(
+    output = read_decode_dimms.parse_decode_dimms(
         os.path.join(filedir, "ECC/R480-R479.txt")
     )
 
@@ -163,7 +163,7 @@ def test_ram1():
             "ram-timings": "6-6-6-18",
         },
     ]
-    output = read_decode_dimms.read_decode_dimms(
+    output = read_decode_dimms.parse_decode_dimms(
         os.path.join(filedir, "non ECC/R469-R470-R471-R472.txt")
     )
 
