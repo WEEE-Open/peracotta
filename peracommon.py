@@ -136,7 +136,7 @@ def _find_all_components(component_type: str, result: list[dict]) -> list[dict]:
     return return_this
 
 
-def call_parsers(generated_files_path: str, components: set[ParserComponents], gpu_location: GpuLocation) -> list:
+def call_parsers(generated_files_path: str, components: set[ParserComponents], gpu_location: GpuLocation, interactive: bool = False) -> list:
     generated_files_path = generated_files_path.rstrip("/")
 
     def read_file(name: str) -> str:
@@ -155,10 +155,9 @@ def call_parsers(generated_files_path: str, components: set[ParserComponents], g
         pass
     else:
         if not components.isdisjoint({ParserComponents.CASE, ParserComponents.MOTHERBOARD}):
-            result += parse_motherboard(read_file("baseboard.txt"), read_file("connector.txt"), read_file("net.txt"))
+            result += parse_motherboard(read_file("baseboard.txt"), read_file("connector.txt"), read_file("net.txt"), interactive)
             if gpu_location == GpuLocation.MOTHERBOARD:
                 _merge_gpu(result, "motherboard", parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""))
-
         if ParserComponents.CASE in components:
             result += parse_case(read_file("chassis.txt"), _find_component("motherboard", result))
         if ParserComponents.CPU in components:
@@ -166,14 +165,15 @@ def call_parsers(generated_files_path: str, components: set[ParserComponents], g
             if gpu_location == GpuLocation.CPU:
                 _merge_gpu(result, "cpu", parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""))
         if ParserComponents.GPU in components and gpu_location == GpuLocation.DISCRETE:
-            result += parse_lspci_and_glxinfo(True, read_file("lspci.txt"), read_file("glxinfo.txt"))
+            result += parse_lspci_and_glxinfo(True, read_file("lspci.txt"), read_file("glxinfo.txt"), interactive)
         if ParserComponents.RAM in components:
-            result += parse_decode_dimms(read_file("dimms.txt"))
+            result += parse_decode_dimms(read_file("dimms.txt"), interactive)
         if ParserComponents.HDD in components or ParserComponents.SSD in components:
-            result += parse_smartctl(read_file("smartctl.txt"))
+            result += parse_smartctl(read_file("smartctl.txt"), interactive)
         if ParserComponents.PSU in components:
             result += parse_psu(_find_component("case", result))
 
+    result = _do_cleanup(result, interactive)
     return result
 
 
@@ -252,7 +252,7 @@ def can_be_product(component: dict):
     return True
 
 
-def do_cleanup(result: list[dict], verbose: bool = False) -> list[dict]:
+def _do_cleanup(result: list[dict], verbose: bool = False) -> list[dict]:
     by_type = {}
 
     for item in result:

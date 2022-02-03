@@ -55,11 +55,7 @@ def main(the_args):
     gpu_location = get_gpu(the_args)
 
     # List of items only
-    # TODO: pass interactive = True
-    result = peracommon.call_parsers(generated_files_path, set(peracommon.ParserComponents.all()), gpu_location)
-
-    # List of items, cleaned
-    result = peracommon.do_cleanup(result, True)
+    result = peracommon.call_parsers(generated_files_path, set(peracommon.ParserComponents.all()), gpu_location, True)
 
     owner = get_owner()
     if owner:
