@@ -42,6 +42,18 @@ class Disk:
     smart_data_long = SMART.not_available
     smart_data = SMART.not_available
 
+
+def parse_smartctl(file: str, interactive: bool = False) -> list[dict]:
+    disks = []
+    jdisks = json.loads(file)
+    for jdisk in jdisks:
+        disk = {
+            "type": "hdd",  # TODO: or ssd
+        }
+        disks.append(disk)
+    return disks
+
+
 # TODO: rewrite this entirely
 
 # THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,

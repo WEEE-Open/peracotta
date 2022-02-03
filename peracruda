@@ -257,15 +257,14 @@ def print_output(output: str, path: str):
 
 def check_required_files(path):
     files_in_dir = os.listdir(path)
-    with open("required_files.txt", "r") as f:
-        for file in peracommon.required_files():
-            for file_in_dir in files_in_dir:
-                if file_in_dir == file:
-                    break
-            else:
-                print(f"[bold red]Missing file {file}\n"
-                      f"Please re-run this script without the -f or --files option.[/]")
-                exit(1)
+    for file in peracommon.required_files():
+        for file_in_dir in files_in_dir:
+            if file_in_dir == file:
+                break
+        else:
+            print(f"[bold red]Missing file {file}\n"
+                  f"Please re-run this script without the -f or --files option.[/]")
+            exit(1)
 
 
 def get_code(the_args) -> Optional[str]:

@@ -9,6 +9,7 @@ from parsers.read_decode_dimms import parse_decode_dimms
 from parsers.read_dmidecode import parse_motherboard, parse_case, parse_psu
 from parsers.read_lscpu import parse_lscpu
 from parsers.read_lspci_and_glxinfo import parse_lspci_and_glxinfo
+from parsers.read_smartctl import parse_smartctl
 
 
 class InputFileNotFoundError(FileNotFoundError):
@@ -298,113 +299,65 @@ def do_cleanup(result: list[dict], verbose: bool = False) -> None:
                                 component2["variant"] = variant2.rstrip().join(f"_{component2['type']}").lstrip('_')
 
 
-def make_tree(parsed: list[dict]) -> list[dict]:
-    # TODO: review this
-    # mount the cpu
-    if len(cpu) > 0:
-        if isinstance(cpu, list):
-            for one_cpu in cpu:
-                if len(one_cpu) > 0:
-                    if can_be_product(one_cpu):
-                        products.append(one_cpu)
-                        new_mobo["contents"].append(
-                            {
-                                "features": {
-                                    k: v
-                                    for k, v in one_cpu.items()
-                                    if k in both + item_keys
-                                }
-                            }
-                        )
-                    else:
-                        new_mobo["contents"].append({"features": one_cpu})
-        else:
-            if len(cpu) > 0 and can_be_product(cpu):
-                products.append(cpu)
-                new_mobo["contents"].append(
-                    {
-                        "features": {
-                            k: v for k, v in cpu.items() if k in both + item_keys
-                        }
-                    }
-                )
-            elif len(cpu) > 0:
-                new_mobo["contents"].append({"features": cpu})
+def _should_be_in_motherboard(the_type: str, features: dict) -> bool:
+    if the_type in ("cpu", "ram"):
+        return True
+    if the_type.endswith('-card'):
+        return True
+    if the_type == 'ssd':
+        if features.get("hdd-form-factor", None) in ("m2", "m2.2"):
+            return True
+    return False
 
-    # adding some ram
-    if isinstance(dimms, list):
-        for dimm in dimms:
-            if len(dimm) > 0:
-                if len(dimm) > 0 and can_be_product(dimm):
-                    products.append(dimm)
-                    new_mobo["contents"].append(
-                        {
-                            "features": {
-                                k: v for k, v in dimm.items() if k in both + item_keys
-                            }
-                        }
-                    )
-                else:
-                    new_mobo["contents"].append({"features": dimm})
 
-    elif len(dimms) > 0:
-        if can_be_product(dimms):
-            products.append(dimms)
-            new_mobo["contents"].append(
-                {"features": {k: v for k, v in dimms.items() if k in both + item_keys}}
-            )
-        else:
-            new_mobo["contents"].append({"features": dimms})
+def _should_be_in_case(the_type: str, features: dict) -> bool:
+    if the_type in ("hdd", "ssd", "odd", "fdd", "psu"):
+        return True
+    # Fallback for when there's no motherboard
+    return _should_be_in_motherboard(the_type, features)
 
-    # mount disks
-    if isinstance(disks, list):
-        for disk in disks:
-            if len(disk) > 0:
-                if can_be_product(disk):
-                    products.append(disk)
-                    new_chassis["contents"].append(
-                        {
-                            "features": {
-                                k: v for k, v in disk.items() if k in both + item_keys
-                            }
-                        }
-                    )
-                else:
-                    new_chassis["contents"].append({"features": disk})
 
-    elif isinstance(disks, dict) and len(disks) > 0:
-        if can_be_product(disks):
-            products.append(disks)
-            new_chassis["contents"].append(
-                {"features": {k: v for k, v in disks.items() if k in both + item_keys}}
-            )
-        else:
-            new_chassis["contents"].append({"features": disks})
+def make_tree(items_and_products: list[dict]) -> list[dict]:
+    by_type = {}
+    result = []
 
-    # put gpu (still check if necessary 'null' format), assuming only one because was the same as before
-    if len(gpu) > 0:
-        if can_be_product(gpu):
-            products.append(gpu)
-            new_mobo["contents"].append(
-                {"features": {k: v for k, v in gpu.items() if k in both + item_keys}}
-            )
-        else:
-            new_mobo["contents"].append({"features": gpu})
+    for thing in items_and_products:
+        if thing.get("type") == 'I':
+            if "features" in thing:
+                if "type" in thing["features"]:
+                    the_type = thing.get("type")
+                    if the_type not in by_type:
+                        by_type[the_type] = []
+                    by_type[the_type].append(thing)
+                    continue
 
-    # get wifi cards
-    if wifi_cards and len(wifi_cards) > 0:
-        for wifi_card in wifi_cards:
-            if len(wifi_card) > 0:
-                if can_be_product(wifi_card):
-                    products.append(wifi_card)
-                    new_mobo["contents"].append(
-                        {
-                            "features": {
-                                k: v
-                                for k, v in wifi_card.items()
-                                if k in both + item_keys
-                            }
-                        }
-                    )
-                else:
-                    new_mobo["contents"].append({"features": wifi_card})
+        result.append(thing)
+
+    if "motherboard" in by_type:
+        containers = by_type["motherboard"]
+        del by_type["motherboard"]
+        for the_type in by_type:
+            if _should_be_in_motherboard(the_type, by_type[the_type].get("features", {})):
+                if "contents" not in containers[0]:
+                    containers[0]["contents"] = []
+                containers[0]["contents"] += by_type[the_type]
+                del by_type[the_type]
+        by_type["motherboard"] = containers
+
+    if "case" in by_type:
+        containers = by_type["case"]
+        del by_type["case"]
+        for the_type in by_type:
+            if _should_be_in_motherboard(the_type, by_type[the_type].get("features", {})):
+                if "contents" not in containers[0]:
+                    containers[0]["contents"] = []
+                containers[0]["contents"] += by_type[the_type]
+                del by_type[the_type]
+        by_type["case"] = containers
+
+    top_items = []
+    for the_type in by_type:
+        for thing in by_type[the_type]:
+            top_items += thing
+
+    return top_items + result
