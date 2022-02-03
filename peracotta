@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-import os
-
-from PyQt5 import uic, QtWidgets, QtCore, QtGui, QtSql
-from PyQt5.QtSql import QSqlDatabase
+from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
 from os.path import expanduser
@@ -10,6 +7,7 @@ from pytarallo import Tarallo
 from pytarallo.Errors import NoInternetConnectionError
 from dotenv import load_dotenv
 from os import environ as env
+import os
 import urllib.parse
 import sys
 import traceback
@@ -101,6 +99,7 @@ class Ui(QtWidgets.QMainWindow):
             icon = QtGui.QIcon(ICON[checkbox.text().lower()])
             self.addItemComboBox.setItemIcon(self.addItemComboBox.count() - 1, icon)
         self.addItemComboBox.currentTextChanged.connect(self.add_toolbox_item)
+        self.addItemComboBox.wheelEvent = lambda stop_wheel_event: None
 
         # Owner line edit
         self.ownerLineEdit = self.findChild(QtWidgets.QLineEdit, "ownerLineEdit")
