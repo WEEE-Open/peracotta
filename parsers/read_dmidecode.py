@@ -79,15 +79,13 @@ extra_connectors = {
 
 
 def parse_motherboard(baseboard_file: str, connectors_file: str, net_file: str, interactive: bool = False) -> list[dict]:
-    baseboard = get_baseboard(baseboard_file)
-    if args.ports is not None:
-        baseboard = get_connectors(connectors_file, baseboard, interactive)
-    if args.net is not None:
-        baseboard = get_net(net_file, baseboard, interactive)
-    return baseboard
+    baseboard = _get_baseboard(baseboard_file)
+    baseboard = _get_connectors(connectors_file, baseboard, interactive)
+    baseboards = _get_net(net_file, baseboard, interactive)
+    return baseboards
 
 
-def get_baseboard(baseboard: str):
+def _get_baseboard(baseboard: str) -> dict:
     mobo = {
         "type": "motherboard",
         "working": "yes",
@@ -106,7 +104,7 @@ def get_baseboard(baseboard: str):
     return mobo
 
 
-def get_connectors(connectors_file: str, baseboard: dict, interactive: bool = False):
+def _get_connectors(connectors_file: str, baseboard: dict, interactive: bool = False) -> dict:
     possible_connectors = set(connectors_map.values()) | set(
         connectors_map_tuples.values()
     )
@@ -170,7 +168,7 @@ def get_connectors(connectors_file: str, baseboard: dict, interactive: bool = Fa
     return {**baseboard, **connectors_clean, **{"notes": warnings}}
 
 
-def get_net(net: str, baseboard: dict, interactive: bool = False) -> list:
+def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]:
     mergeit = {
         "ethernet-ports-100m-n": 0,
         "ethernet-ports-1000m-n": 0,
@@ -270,9 +268,9 @@ def get_dmidecoded_value(section: str, key: str) -> str:
 
 def parse_psu(chassis: Optional[dict]):
     if chassis.get("motherboard-form-factor") == "proprietary-laptop":
-        return {"type": "external-psu"}
+        return [{"type": "external-psu"}]
     else:
-        return {"type": "psu"}
+        return [{"type": "psu"}]
 
 
 def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> list[dict]:

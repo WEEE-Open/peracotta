@@ -55,10 +55,15 @@ def main(the_args):
     gpu_location = get_gpu(the_args)
 
     # List of items only
-    result = peracommon.call_parsers(generated_files_path, peracommon.ParserComponents.all(), gpu_location)
+    # TODO: pass interactive = True
+    result = peracommon.call_parsers(generated_files_path, set(peracommon.ParserComponents.all()), gpu_location)
+
+    # List of items, cleaned
+    result = peracommon.do_cleanup(result, True)
 
     owner = get_owner()
     if owner:
+        # List of items
         result = peracommon.add_owner(result, owner)
 
     # List of items and products
@@ -220,7 +225,7 @@ def get_gpu(the_args) -> peracommon.GpuLocation:
 
     while not location:
         print(
-            "\nWhere is GPU in your PC? c/g/b\n",
+            "\nWhere is GPU in your PC? c/g/b/n\n",
             "c for integrated in CPU\n",
             "g for discrete graphics card\n",
             "b for integrated in the motherboard\n",

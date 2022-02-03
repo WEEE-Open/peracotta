@@ -59,13 +59,13 @@ def test_baseboard():
         "model": "P6T DELUXE V2",
         "sn": "723627130020069",
     }
-    output = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     expect = {
         "type": "motherboard",
@@ -83,7 +83,7 @@ def test_connector():
         "sas-sata-ports-n": 2,
         "notes": "Unknown connector: None / Other (AUDIO / AUDIO)",
     }
-    output = read_dmidecode.get_connectors(
+    output = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 
@@ -91,7 +91,7 @@ def test_connector():
 
 
 def test_net_without_connectors():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     expect = {
         "type": "motherboard",
@@ -102,14 +102,14 @@ def test_net_without_connectors():
         "ethernet-ports-1000m-n": 2,
         "mac": "00:c0:11:fe:fe:11, 00:c0:11:fe:fe:22",
     }
-    output = read_dmidecode.get_net(os.path.join(filedir, "net.txt"), baseboard)
+    output = read_dmidecode._get_net(os.path.join(filedir, "net.txt"), baseboard)
 
     assert output == expect
 
 
 def test_net_with_connectors():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
-    baseboard = read_dmidecode.get_connectors(
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 
@@ -130,14 +130,14 @@ def test_net_with_connectors():
         "sas-sata-ports-n": 2,
         "notes": "Unknown connector: None / Other (AUDIO / AUDIO)",
     }
-    output = read_dmidecode.get_net(os.path.join(filedir, "net.txt"), baseboard)
+    output = read_dmidecode._get_net(os.path.join(filedir, "net.txt"), baseboard)
 
     assert output == expect
 
 
 def test_net_with_connectors_different():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
-    baseboard = read_dmidecode.get_connectors(
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 
@@ -159,7 +159,7 @@ def test_net_with_connectors_different():
         "sas-sata-ports-n": 2,
         "notes": "Unknown connector: None / Other (AUDIO / AUDIO)",
     }
-    output = read_dmidecode.get_net(
+    output = read_dmidecode._get_net(
         os.path.join(filedir, "net_different.txt"), baseboard
     )
 
@@ -167,8 +167,8 @@ def test_net_with_connectors_different():
 
 
 def test_net_with_connectors_too_few():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
-    baseboard = read_dmidecode.get_connectors(
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 
@@ -190,14 +190,14 @@ def test_net_with_connectors_too_few():
         "notes": "Unknown connector: None / Other (AUDIO / AUDIO)\n"
         "BIOS reported 1 more ethernet port that was not found by the kernel",
     }
-    output = read_dmidecode.get_net(os.path.join(filedir, "net_too_few.txt"), baseboard)
+    output = read_dmidecode._get_net(os.path.join(filedir, "net_too_few.txt"), baseboard)
 
     assert output == expect
 
 
 def test_net_with_connectors_too_many():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
-    baseboard = read_dmidecode.get_connectors(
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 
@@ -218,7 +218,7 @@ def test_net_with_connectors_too_many():
         "sas-sata-ports-n": 2,
         "notes": "Unknown connector: None / Other (AUDIO / AUDIO)",
     }
-    output = read_dmidecode.get_net(
+    output = read_dmidecode._get_net(
         os.path.join(filedir, "net_too_many.txt"), baseboard
     )
 

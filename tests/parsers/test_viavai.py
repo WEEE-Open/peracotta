@@ -71,13 +71,13 @@ def test_baseboard():
         "model": "P5VD2-VM",
         "sn": "123456789000",
     }
-    output = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     expect = {
         "type": "motherboard",
@@ -97,7 +97,7 @@ def test_connector():
         "ide-ports-n": 2,
         "notes": "Unknown connector: None / None (SPDIF_OUT / SPDIF_OUT)",
     }
-    output = read_dmidecode.get_connectors(
+    output = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 

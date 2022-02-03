@@ -125,20 +125,18 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
                     "logging into the TARALLO afterwards. The information you're looking for should be in the "
                     f"following 2 lines:\n{first_line}\n{second_line}\n")
 
-            if gpu["model"] is None:
+            if gpu.get("model"):
+                # Try to remove duplicate information
+                gpu["brand"] = gpu["brand"].replace(gpu["model"], "").strip()
+            else:
                 if interactive:
                     print("I couldn't find the Integrated Graphics model. The model was set to 'None' and is to be "
                     "edited logging into the TARALLO afterwards. The information you're looking for should be in "
                     f"the following 2 lines:\n{first_line}\n{second_line}\n")
-            else:
-                # Try to remove duplicate information
-                gpu["brand"] = gpu["brand"].replace(gpu["model"], "").strip()
 
-            if gpu["internal-name"] is not None:
+            if gpu.get("internal-name", None):
                 # Same
-                gpu["brand"] = gpu["brand"].replace(
-                    gpu["internal-name"], ""
-                ).strip()
+                gpu["brand"] = gpu["brand"].replace(gpu["internal-name"], "").strip()
 
             break
             
@@ -193,10 +191,10 @@ def _read_glxinfo_output(gpu: dict, glxinfo_file: str):
                 gpu["notes"] += capacity
             break
 
-    if gpu["capacity-byte"] > 0:
+    if "capacity-byte" in gpu and gpu["capacity-byte"] > 0:
         # Round to the next power of 2
         # this may be different from human readable capacity...
-        rounded = 2 ** (gpu["capacity"] - 1).bit_length()
+        rounded = 2 ** (gpu["capacity-byte"] - 1).bit_length()
         one_and_half = int(rounded / 2 * 1.5)
         # Accounts for 3 GB VRAM cards and similar
         # Yes they do exist, try to remove this part and watch tests fail (and the card was manually verified to be 3 GB)

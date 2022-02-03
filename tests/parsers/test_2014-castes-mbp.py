@@ -57,13 +57,13 @@ def test_baseboard():
         "model": "Mac-2BD1B31983FE1663",
         "sn": "C02433601ECG3MK13",
     }
-    output = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     expect = {
         "type": "motherboard",
@@ -78,7 +78,7 @@ def test_connector():
         "power-connector": "proprietary",
         "notes": "",
     }
-    output = read_dmidecode.get_connectors(
+    output = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 

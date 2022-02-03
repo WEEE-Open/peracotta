@@ -57,13 +57,13 @@ def test_baseboard():
         "model": "Surface Pro 4",
         "sn": "A01012111654643A",
     }
-    output = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     expect = {
         "type": "motherboard",
@@ -73,7 +73,7 @@ def test_connector():
         "sn": "A01012111654643A",
         "notes": "",
     }
-    output = read_dmidecode.get_connectors(
+    output = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 

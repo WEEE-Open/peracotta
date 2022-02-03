@@ -49,6 +49,7 @@ class ParserComponents(Enum):
     GPU = "gpu"
     HDD = "hdd"
     SSD = "ssd"
+    PSU = "psu"
 
     @classmethod
     def all(cls):
@@ -100,7 +101,7 @@ def _extract_gpu_for_integrated(gpu: dict) -> dict:
     else:
         brand = None
 
-    internal_name_present = len(gpu["internal-name"]) > 0
+    internal_name_present = bool(gpu.get("internal-name", None))
     model_present = len(gpu["model"]) > 0
     if model_present and internal_name_present:
         model = f"{gpu['model']} ({gpu['internal-name']})"
@@ -154,7 +155,7 @@ def call_parsers(generated_files_path: str, components: set[ParserComponents], g
         pass
     else:
         if not components.isdisjoint({ParserComponents.CASE, ParserComponents.MOTHERBOARD}):
-            result += parse_motherboard(read_file("baseboard.txt"), read_file("connectors.txt"), read_file("net.txt"))
+            result += parse_motherboard(read_file("baseboard.txt"), read_file("connector.txt"), read_file("net.txt"))
             if gpu_location == GpuLocation.MOTHERBOARD:
                 _merge_gpu(result, "motherboard", parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""))
 
@@ -196,10 +197,12 @@ def split_products(parsed: list[dict]) -> list[dict]:
         "working",
         "wwn",
     ]
-    both = [
+    bmv = [
         "brand",
         "model",
         "variant",
+    ]
+    both = [
         "type",
     ]
 
@@ -211,7 +214,7 @@ def split_products(parsed: list[dict]) -> list[dict]:
             if item.get("variant", "") == "":
                 item["variant"] = "default"
             new_product = {
-                k: item.get(k) for k in both if k in item.keys() and k != "type"
+                k: item.get(k) for k in bmv if k in item.keys()
             }
             found = False
             for old_product in products:
@@ -221,16 +224,17 @@ def split_products(parsed: list[dict]) -> list[dict]:
             if not found:
                 new_product.update({
                     "type": "P",
-                    "features": {k: v for k, v in item.items() if k not in item_keys},
+                    "features": {k: v for k, v in item.items() if k not in bmv + item_keys},
                 })
-                products += new_product
+                products.append(new_product)
         new_item = {
             "type": "I",
-            "features": {k: v for k, v in item.items() if k in both + item_keys},
+            "features": {k: v for k, v in item.items() if k in bmv + both + item_keys},
             "contents": [],
         }
-        final_result += new_item
+        final_result.append(new_item)
 
+    final_result += products
     return final_result
 
 
@@ -248,11 +252,11 @@ def can_be_product(component: dict):
     return True
 
 
-def do_cleanup(result: list[dict], verbose: bool = False) -> None:
+def do_cleanup(result: list[dict], verbose: bool = False) -> list[dict]:
     by_type = {}
-    removed = set()
 
     for item in result:
+        removed = set()
         for k, v in item.items():
             # Check for k in these?
             # "brand",
@@ -262,17 +266,17 @@ def do_cleanup(result: list[dict], verbose: bool = False) -> None:
             # "integrated-graphics-model",
             if isinstance(v, str) and v.lower() in MEANINGLESS_VALUES:
                 removed.add(k)
-                del item[k]
             elif v is None:
                 removed.add(k)
-                del item[k]
+        for removed_thing in removed:
+            del item[removed_thing]
         the_type = item.get("type")
         if the_type not in by_type:
             by_type[the_type] = []
         by_type[the_type].append(item)
 
         if verbose and len(removed) > 0:
-            print(f"WARNING: Removed from {item['type']}: {', '.join(removed)}.")
+            print(f"WARNING: Removed from {item.get('type', 'item with no type')}: {', '.join(removed)}.")
 
     for case in by_type.get("case", []):
         for mobo in by_type.get("motherboard", []):
@@ -298,6 +302,7 @@ def do_cleanup(result: list[dict], verbose: bool = False) -> None:
                                 component1["variant"] = variant1.rstrip().join(f"_{component1['type']}").lstrip('_')
                                 component2["variant"] = variant2.rstrip().join(f"_{component2['type']}").lstrip('_')
 
+    return result
 
 def _should_be_in_motherboard(the_type: str, features: dict) -> bool:
     if the_type in ("cpu", "ram"):
@@ -311,7 +316,7 @@ def _should_be_in_motherboard(the_type: str, features: dict) -> bool:
 
 
 def _should_be_in_case(the_type: str, features: dict) -> bool:
-    if the_type in ("hdd", "ssd", "odd", "fdd", "psu"):
+    if the_type in ("motherboard", "hdd", "ssd", "odd", "fdd", "psu"):
         return True
     # Fallback for when there's no motherboard
     return _should_be_in_motherboard(the_type, features)
@@ -319,45 +324,61 @@ def _should_be_in_case(the_type: str, features: dict) -> bool:
 
 def make_tree(items_and_products: list[dict]) -> list[dict]:
     by_type = {}
-    result = []
+    products = []
 
     for thing in items_and_products:
         if thing.get("type") == 'I':
             if "features" in thing:
-                if "type" in thing["features"]:
-                    the_type = thing.get("type")
-                    if the_type not in by_type:
-                        by_type[the_type] = []
-                    by_type[the_type].append(thing)
-                    continue
+                the_type = thing["features"].get("type")
+                if the_type not in by_type:
+                    by_type[the_type] = []
+                by_type[the_type].append(thing)
+                continue
 
-        result.append(thing)
+        products.append(thing)
 
     if "motherboard" in by_type:
         containers = by_type["motherboard"]
         del by_type["motherboard"]
         for the_type in by_type:
-            if _should_be_in_motherboard(the_type, by_type[the_type].get("features", {})):
-                if "contents" not in containers[0]:
-                    containers[0]["contents"] = []
-                containers[0]["contents"] += by_type[the_type]
-                del by_type[the_type]
+            save = []
+            for thing in by_type[the_type]:
+                if _should_be_in_motherboard(the_type, thing.get("features", {})):
+                    if "contents" not in containers[0]:
+                        containers[0]["contents"] = []
+                    containers[0]["contents"].append(thing)
+                else:
+                    save.append(thing)
+            by_type[the_type] = save
+        save2 = {}
+        for the_type in by_type:
+            if len(by_type[the_type]) > 0:
+                save2[the_type] = by_type[the_type]
+        by_type = save2
         by_type["motherboard"] = containers
 
     if "case" in by_type:
         containers = by_type["case"]
         del by_type["case"]
         for the_type in by_type:
-            if _should_be_in_motherboard(the_type, by_type[the_type].get("features", {})):
-                if "contents" not in containers[0]:
-                    containers[0]["contents"] = []
-                containers[0]["contents"] += by_type[the_type]
-                del by_type[the_type]
+            save = []
+            for thing in by_type[the_type]:
+                if _should_be_in_case(the_type, thing.get("features", {})):
+                    if "contents" not in containers[0]:
+                        containers[0]["contents"] = []
+                    containers[0]["contents"].append(thing)
+                else:
+                    save.append(thing)
+                by_type[the_type] = save
+        save2 = {}
+        for the_type in by_type:
+            if len(by_type[the_type]) > 0:
+                save2[the_type] = by_type[the_type]
+        by_type = save2
         by_type["case"] = containers
 
     top_items = []
     for the_type in by_type:
-        for thing in by_type[the_type]:
-            top_items += thing
+        top_items += by_type[the_type]
 
-    return top_items + result
+    return top_items + products

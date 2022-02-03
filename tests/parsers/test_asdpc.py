@@ -84,13 +84,13 @@ def test_baseboard():
         "type": "motherboard",
         "working": "yes",
     }
-    output = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     # This is entirely wrong and is not reflected by any means from reality and the real motherboard, but the manufacturer
     # dropped all this garbage into the DMI information, so here we go...
@@ -119,7 +119,7 @@ def test_connector():
         "Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)\n"
         "Unknown connector: Other / None (J1G6 - AC JACK / Not Specified)",
     }
-    output = read_dmidecode.get_connectors(
+    output = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 

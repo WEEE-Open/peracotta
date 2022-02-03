@@ -84,13 +84,13 @@ def test_baseboard():
         "model": "H110M-ITX/ac",
         "sn": "M80-69017400518",
     }
-    output = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
 
     # This is entirely wrong and is not reflected by any means from reality and the real motherboard, but the manufacturer
     # dropped all this garbage into the DMI information, so here we go...
@@ -102,7 +102,7 @@ def test_connector():
         "sn": "M80-69017400518",
         "notes": "",
     }
-    output = read_dmidecode.get_connectors(
+    output = read_dmidecode._get_connectors(
         os.path.join(filedir, "connector.txt"), baseboard
     )
 
