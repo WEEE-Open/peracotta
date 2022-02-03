@@ -101,6 +101,14 @@ def _get_baseboard(baseboard: str) -> dict:
         elif "Serial Number:" in line:
             mobo["sn"] = line.split("Serial Number:")[1].strip().strip(".")
 
+    # Get MSI internal codename
+    if mobo.get("brand", "").upper().startswith("MICRO-STAR INTERNATIONAL"):
+        model = mobo.get("model", "")
+        model_parts = model.split("(")
+        if len(model_parts) == 2:
+            mobo["model"] = model_parts[0].strip()
+            mobo["internal-name"] = model_parts[1].rstrip(")").strip()
+
     return mobo
 
 
