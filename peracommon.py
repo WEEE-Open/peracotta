@@ -322,6 +322,18 @@ def _should_be_in_case(the_type: str, features: dict) -> bool:
     return _should_be_in_motherboard(the_type, features)
 
 
+def unmake_tree(items_and_products: list[dict]) -> list[dict]:
+    result = []
+
+    for thing in items_and_products:
+        result.append(thing)
+        if thing.get("type") == 'I':
+            if "contents" in thing:
+                result += unmake_tree(thing["contents"])
+                thing["contents"] = []
+    return result
+
+
 def make_tree(items_and_products: list[dict]) -> list[dict]:
     by_type = {}
     products = []
