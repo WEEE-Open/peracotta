@@ -80,7 +80,7 @@ class Ui(QtWidgets.QMainWindow):
         self.data = None
         self.tarallo_url = tarallo_url
         self.tarallo_token = tarallo_token
-        self.selectors = dict()
+        # self.selectors = dict()
         self.useful_default_features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
         self.encountered_types_current_count = defaultdict(lambda: 0)
@@ -259,8 +259,8 @@ class Ui(QtWidgets.QMainWindow):
 
             self.type_count(data)
             the_type = entry["features"]["type"]
-            if not self.selectors[the_type]:
-                continue
+            # if not self.selectors.get(the_type):
+            #     continue
             counter = ""
             if self.encountered_types_count[the_type] > 1:
                 self.encountered_types_current_count[the_type] += 1
@@ -269,8 +269,9 @@ class Ui(QtWidgets.QMainWindow):
                 ToolBoxWidget(entry["features"], self.useful_default_features),
                 f"{self.print_type_cool(the_type)}{counter}",
             )
-            icon = QtGui.QIcon(ICON[the_type])
-            self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
+            if the_type in ICON:
+                icon = QtGui.QIcon(ICON[the_type])
+                self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
 
             if "contents" in entry:
                 self.recursive_item_content_finder(entry["contents"])
@@ -434,8 +435,8 @@ class Ui(QtWidgets.QMainWindow):
         self.data = data
 
         # checks for wanted items
-        for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
-            self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
+        # for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
+        #     self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
 
         # toolbox fill
         self.recursive_item_content_finder(self.data)
@@ -446,13 +447,30 @@ class Ui(QtWidgets.QMainWindow):
             self.peracotta.terminate()
 
 
+class CustomTableView(QtWidgets.QTableView):
+    def __init__(self):
+        super().__init__()
+
+    def minimumSizeHint(self) -> QtCore.QSize:
+        default_size = super().minimumSizeHint()
+
+        frame = self.frameWidth() * 2
+
+        header = self.verticalHeader().sizeHint().height()
+        rows = self.verticalHeader().length()
+        h = header + rows + frame
+        # print(f"{header} + {rows} + {frame} = {h} > {default_size.height()}")
+
+        return QtCore.QSize(default_size.width(), h)
+
+
 class ToolBoxWidget(QtWidgets.QWidget):
     def __init__(self, data: dict, default_features: dict):
         super().__init__()
         self.default_features = default_features
 
         self.main_layout = QtWidgets.QVBoxLayout()
-        self.table = QtWidgets.QTableView()
+        self.table = CustomTableView()
         self.features_combo_box = QtWidgets.QComboBox()
         self.feature_line_edit = QtWidgets.QLineEdit()
         self.feature_selector = QtWidgets.QComboBox()
