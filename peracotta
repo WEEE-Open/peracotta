@@ -15,6 +15,14 @@ import json
 import prettyprinter
 import peracommon
 
+# TODO: peracruda/28 check if file already exists
+# TODO: peracruda/53 file generation
+# TODO: peracruda/58 call parsers
+# TODO: peracruda/63 set owner to everything
+# TODO: peracruda/66 split_products returns the list of product
+# TODO: peracruda/69
+
+
 VERSION = "2.0"
 
 URL = {
@@ -76,9 +84,13 @@ class Ui(QtWidgets.QMainWindow):
         self.useful_default_features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
         self.encountered_types_current_count = defaultdict(lambda: 0)
+        # self.app.setStyle("Fusion")
 
         # Output toolbox
-        self.toolBox = self.findChild(QtWidgets.QToolBox, "toolBox")
+        self.itemToolBox = self.findChild(QtWidgets.QToolBox, "itemToolBox")
+
+        # App settings
+        self.settings = QtCore.QSettings("WEEE Open", "PERACOTTA")
 
         # Gpu location layout
         self.gpuGroupBox = self.findChild(QtWidgets.QGroupBox, "gpuGroupBox")
@@ -123,8 +135,16 @@ class Ui(QtWidgets.QMainWindow):
         # File actions
         self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
         self.actionOpen.triggered.connect(self.open_json)
+        self.actionOpenLastJson = self.findChild(
+            QtWidgets.QAction, "actionOpenLastJson"
+        )
+        self.actionOpenLastJson.triggered.connect(self.open_latest_json)
         self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
+        self.actionLoadRawFiles = self.findChild(
+            QtWidgets.QAction, "actionLoadRawFiles"
+        )
+        self.actionLoadRawFiles.triggered.connect(self.load_raw_files)
         self.actionExit = self.findChild(QtWidgets.QAction, "actionExit")
         self.actionExit.triggered.connect(self.close)
 
@@ -149,7 +169,7 @@ class Ui(QtWidgets.QMainWindow):
         self.progressBar = QtWidgets.QProgressBar()
         self.statusBar().addPermanentWidget(self.progressBar)
         self.progressBar.hide()
-        self.statusBar().setStyleSheet(DEFAULT_PROGRESS_BAR_STYLE)
+        # self.statusBar().setStyleSheet(DEFAULT_PROGRESS_BAR_STYLE)
 
         # Setup peracotta QThread
         self.peracotta = Peracotta(self.discreteRadioBtn, self.intCpuRadioBtn)
@@ -189,8 +209,8 @@ class Ui(QtWidgets.QMainWindow):
 
     # gui utilities
     def reset_toolbox(self):
-        for idx in range(self.toolBox.count()):
-            self.toolBox.removeItem(0)
+        for idx in range(self.itemToolBox.count()):
+            self.itemToolBox.removeItem(0)
 
     def open_url(self, url_type: str):
         url = QtCore.QUrl(url_type)
@@ -245,15 +265,19 @@ class Ui(QtWidgets.QMainWindow):
             if self.encountered_types_count[the_type] > 1:
                 self.encountered_types_current_count[the_type] += 1
                 counter = f" #{self.encountered_types_current_count[the_type]}"
-            self.toolBox.addItem(
+            self.itemToolBox.addItem(
                 ToolBoxWidget(entry["features"], self.useful_default_features),
                 f"{self.print_type_cool(the_type)}{counter}",
             )
             icon = QtGui.QIcon(ICON[the_type])
-            self.toolBox.setItemIcon(self.toolBox.count() - 1, icon)
+            self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
 
             if "contents" in entry:
                 self.recursive_item_content_finder(entry["contents"])
+        for scroll_area in self.itemToolBox.findChildren(QtWidgets.QScrollArea):
+            scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            scroll_area.verticalScrollBar().hide()
+            scroll_area.verticalScrollBar().resize(0, 0)
 
     # tarallo utilities
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
@@ -350,33 +374,44 @@ class Ui(QtWidgets.QMainWindow):
             self.encountered_types_count[type] += 1
 
             data = {"type": self.addItemComboBox.currentText().lower()}
-            self.toolBox.addItem(
+            self.itemToolBox.addItem(
                 ToolBoxWidget(data, self.useful_default_features),
                 f"{self.print_type_cool(type)}{counter}",
             )
             icon = QtGui.QIcon(ICON[type])
-            self.toolBox.setItemIcon(self.toolBox.count() - 1, icon)
+            self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
             if self.data is None:
                 self.data = []
             self.data.append({})
             self.addItemComboBox.setCurrentIndex(0)
 
     # menu actions
-    def open_json(self):
+    def open_json(self, path: str = ""):
         self.reset_toolbox()
-        the_dir = QtWidgets.QFileDialog.getOpenFileName(
-            self,
-            "title",
-            f"{expanduser('~')}",
-            f"JSON (*.json);;All Files (*)",
-        )
-        if the_dir[0] == "":
+        if not path:
+            the_dir = QtWidgets.QFileDialog.getOpenFileName(
+                self,
+                "Open JSON",
+                f"{expanduser('~')}",
+                f"JSON (*.json);;All Files (*)",
+            )
+            path = the_dir[0]
+        if path == "":
             self.data = None
             return
-        with open(the_dir[0], "r") as file:
+        with open(path, "r") as file:
             self.data = json.load(file)
 
+        self.settings.setValue("latest_json", path)
         self.peracotta_results(self.data)
+
+    def open_latest_json(self):
+        for key in self.settings.childKeys():
+            if "latest_json" in key:
+                self.open_json(self.settings.value("latest_json"))
+
+    def load_raw_files(self):
+        print("Loading raw files...")
 
     def show_json(self):
         if self.data is None:
@@ -422,6 +457,7 @@ class ToolBoxWidget(QtWidgets.QWidget):
         self.feature_line_edit = QtWidgets.QLineEdit()
         self.feature_selector = QtWidgets.QComboBox()
         self.add_feature_button = QtWidgets.QPushButton("Add")
+        self.add_feature_button.clicked.connect(self.add_feature)
 
         # setup
         self.table_setup(data, default_features)
@@ -430,11 +466,15 @@ class ToolBoxWidget(QtWidgets.QWidget):
 
     def table_setup(self, data: dict, default_features: dict):
         self.table.verticalHeader().hide()
-        self.table.setModel(CustomTableModel(data, default_features))
         self.table.horizontalHeader().setStretchLastSection(True)
+        self.table.setModel(CustomTableModel(data, default_features))
         self.table.setShowGrid(False)
         self.table.setAlternatingRowColors(True)
+        self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.table.verticalScrollBar().hide()
+        self.table.verticalScrollBar().resize(0, 0)
         self.main_layout.addWidget(self.table)
+        self.table.resizeColumnsToContents()
 
     def feature_adder(self, type: str):
         layout = QtWidgets.QHBoxLayout()
@@ -465,6 +505,11 @@ class ToolBoxWidget(QtWidgets.QWidget):
                 else:
                     self.feature_line_edit.setHidden(False)
                     self.feature_selector.setHidden(True)
+
+    def add_feature(self):
+        # if self.feature_line_edit.isVisible():
+        #     self.data[self.default_features["names"][self.feature_line_edit.text()]] = ""
+        pass
 
 
 class CustomTableModel(QAbstractTableModel):

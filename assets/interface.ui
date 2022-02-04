@@ -135,8 +135,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>231</width>
-                <height>324</height>
+                <width>248</width>
+                <height>298</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -230,13 +230,6 @@
                 </widget>
                </item>
                <item>
-                <widget class="QCheckBox" name="checkBox_12">
-                 <property name="text">
-                  <string>WiFi-Card</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QCheckBox" name="checkBox_8">
                  <property name="text">
                   <string>Monitor</string>
@@ -260,18 +253,6 @@
               </layout>
              </widget>
             </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox_4">
-          <property name="title">
-           <string>Add Item/Product</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QComboBox" name="addItemComboBox"/>
            </item>
           </layout>
          </widget>
@@ -340,10 +321,8 @@
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
          <widget class="QScrollArea" name="scrollArea">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
           </property>
           <property name="widgetResizable">
            <bool>true</bool>
@@ -353,13 +332,19 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>478</width>
-             <height>539</height>
+             <width>461</width>
+             <height>475</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="QToolBox" name="toolBox">
+             <widget class="QToolBox" name="itemToolBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="currentIndex">
                <number>0</number>
               </property>
@@ -368,8 +353,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>460</width>
-                 <height>488</height>
+                 <width>443</width>
+                 <height>427</height>
                 </rect>
                </property>
                <attribute name="label">
@@ -380,6 +365,24 @@
             </item>
            </layout>
           </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_4">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>Add Item/Product</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QComboBox" name="addItemComboBox"/>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
@@ -421,7 +424,9 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen"/>
-    <addaction name="actionOpenJson"/>
+    <addaction name="actionOpenLastJson"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoadRawFiles"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -445,13 +450,20 @@
     <addaction name="separator"/>
     <addaction name="actionVersion"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionOpenJson"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuTools"/>
    <addaction name="menuOptions"/>
    <addaction name="menuInfo"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Open JSON</string>
    </property>
   </action>
   <action name="actionExit">
@@ -471,7 +483,7 @@
   </action>
   <action name="actionOpenJson">
    <property name="text">
-    <string>View JSON</string>
+    <string>JSON</string>
    </property>
   </action>
   <action name="actionSourceCode">
@@ -482,6 +494,24 @@
   <action name="actionasd">
    <property name="text">
     <string>asd</string>
+   </property>
+  </action>
+  <action name="actionOpenLastJson">
+   <property name="text">
+    <string>Open last JSON</string>
+   </property>
+  </action>
+  <action name="actionOpen_output_directory">
+   <property name="text">
+    <string>Open output directory</string>
+   </property>
+  </action>
+  <action name="actionLoadRawFiles">
+   <property name="text">
+    <string>Load raw files</string>
+   </property>
+   <property name="toolTip">
+    <string>Select directory of raw files provided by generate_files.sh</string>
    </property>
   </action>
  </widget>
