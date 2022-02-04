@@ -50,6 +50,10 @@ class ParserComponents(Enum):
     HDD = "hdd"
     SSD = "ssd"
     PSU = "psu"
+    ODD = "odd"
+    MONITOR = "monitor"
+    KEYBOARD = "keyboard"
+    MOUSE = "mouse"
 
     @classmethod
     def all(cls):
@@ -57,7 +61,9 @@ class ParserComponents(Enum):
 
 
 def check_dependencies_for_generate_files():
-    retval = os.system("dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null")
+    retval = os.system(
+        "dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null"
+    )
     return retval == 0
 
 
@@ -136,7 +142,12 @@ def _find_all_components(component_type: str, result: list[dict]) -> list[dict]:
     return return_this
 
 
-def call_parsers(generated_files_path: str, components: set[ParserComponents], gpu_location: GpuLocation, interactive: bool = False) -> list:
+def call_parsers(
+    generated_files_path: str,
+    components: set[ParserComponents],
+    gpu_location: GpuLocation,
+    interactive: bool = False,
+) -> list:
     generated_files_path = generated_files_path.rstrip("/")
 
     def read_file(name: str) -> str:
@@ -151,21 +162,40 @@ def call_parsers(generated_files_path: str, components: set[ParserComponents], g
     result = []
 
     # TODO: if linux, else windows
-    if sys.platform == 'win32':
+    if sys.platform == "win32":
         pass
     else:
-        if not components.isdisjoint({ParserComponents.CASE, ParserComponents.MOTHERBOARD}):
-            result += parse_motherboard(read_file("baseboard.txt"), read_file("connector.txt"), read_file("net.txt"), interactive)
+        if not components.isdisjoint(
+            {ParserComponents.CASE, ParserComponents.MOTHERBOARD}
+        ):
+            result += parse_motherboard(
+                read_file("baseboard.txt"),
+                read_file("connector.txt"),
+                read_file("net.txt"),
+                interactive,
+            )
             if gpu_location == GpuLocation.MOTHERBOARD:
-                _merge_gpu(result, "motherboard", parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""))
+                _merge_gpu(
+                    result,
+                    "motherboard",
+                    parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""),
+                )
         if ParserComponents.CASE in components:
-            result += parse_case(read_file("chassis.txt"), _find_component("motherboard", result))
+            result += parse_case(
+                read_file("chassis.txt"), _find_component("motherboard", result)
+            )
         if ParserComponents.CPU in components:
             result += parse_lscpu(read_file("lscpu.txt"))
             if gpu_location == GpuLocation.CPU:
-                _merge_gpu(result, "cpu", parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""))
+                _merge_gpu(
+                    result,
+                    "cpu",
+                    parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""),
+                )
         if ParserComponents.GPU in components and gpu_location == GpuLocation.DISCRETE:
-            result += parse_lspci_and_glxinfo(True, read_file("lspci.txt"), read_file("glxinfo.txt"), interactive)
+            result += parse_lspci_and_glxinfo(
+                True, read_file("lspci.txt"), read_file("glxinfo.txt"), interactive
+            )
         if ParserComponents.RAM in components:
             result += parse_decode_dimms(read_file("dimms.txt"), interactive)
         if ParserComponents.HDD in components or ParserComponents.SSD in components:
@@ -213,19 +243,21 @@ def split_products(parsed: list[dict]) -> list[dict]:
         if can_be_product(item):
             if item.get("variant", "") == "":
                 item["variant"] = "default"
-            new_product = {
-                k: item.get(k) for k in bmv if k in item.keys()
-            }
+            new_product = {k: item.get(k) for k in bmv if k in item.keys()}
             found = False
             for old_product in products:
                 if new_product.items() <= old_product.items():
                     found = True
                     break
             if not found:
-                new_product.update({
-                    "type": "P",
-                    "features": {k: v for k, v in item.items() if k not in bmv + item_keys},
-                })
+                new_product.update(
+                    {
+                        "type": "P",
+                        "features": {
+                            k: v for k, v in item.items() if k not in bmv + item_keys
+                        },
+                    }
+                )
                 products.append(new_product)
         new_item = {
             "type": "I",
@@ -276,13 +308,18 @@ def _do_cleanup(result: list[dict], verbose: bool = False) -> list[dict]:
         by_type[the_type].append(item)
 
         if verbose and len(removed) > 0:
-            print(f"WARNING: Removed from {item.get('type', 'item with no type')}: {', '.join(removed)}.")
+            print(
+                f"WARNING: Removed from {item.get('type', 'item with no type')}: {', '.join(removed)}."
+            )
 
     for case in by_type.get("case", []):
         for mobo in by_type.get("motherboard", []):
             try:
-                if (case["model"], case["brand"], case["variant"]) ==\
-                        (mobo["brand"], mobo["model"], mobo["variant"]):
+                if (case["model"], case["brand"], case["variant"]) == (
+                    mobo["brand"],
+                    mobo["model"],
+                    mobo["variant"],
+                ):
                     case.pop("model")
             except KeyError:
                 pass
@@ -294,22 +331,33 @@ def _do_cleanup(result: list[dict], verbose: bool = False) -> list[dict]:
             for component2 in result[i:]:
                 if component1["type"] != component2["type"]:
                     if can_be_product(component1) and can_be_product(component2):
-                        if (component1["brand"], component2["model"]) ==\
-                                (component2["brand"], component2["model"]):
+                        if (component1["brand"], component2["model"]) == (
+                            component2["brand"],
+                            component2["model"],
+                        ):
                             variant1 = component1.get("variant", "")
                             variant2 = component2.get("variant", "")
                             if variant1 == variant2:
-                                component1["variant"] = variant1.rstrip().join(f"_{component1['type']}").lstrip('_')
-                                component2["variant"] = variant2.rstrip().join(f"_{component2['type']}").lstrip('_')
+                                component1["variant"] = (
+                                    variant1.rstrip()
+                                    .join(f"_{component1['type']}")
+                                    .lstrip("_")
+                                )
+                                component2["variant"] = (
+                                    variant2.rstrip()
+                                    .join(f"_{component2['type']}")
+                                    .lstrip("_")
+                                )
 
     return result
+
 
 def _should_be_in_motherboard(the_type: str, features: dict) -> bool:
     if the_type in ("cpu", "ram"):
         return True
-    if the_type.endswith('-card'):
+    if the_type.endswith("-card"):
         return True
-    if the_type == 'ssd':
+    if the_type == "ssd":
         if features.get("hdd-form-factor", None) in ("m2", "m2.2"):
             return True
     return False
@@ -327,7 +375,7 @@ def make_tree(items_and_products: list[dict]) -> list[dict]:
     products = []
 
     for thing in items_and_products:
-        if thing.get("type") == 'I':
+        if thing.get("type") == "I":
             if "features" in thing:
                 the_type = thing["features"].get("type")
                 if the_type not in by_type:
