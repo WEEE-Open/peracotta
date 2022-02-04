@@ -186,7 +186,16 @@ class Ui(QtWidgets.QMainWindow):
 
     def setup(self):
         self.reset_toolbox()
-        self.load_features_file()
+        try:
+            self.load_features_file()
+        except Exception as e:
+            # TODO: display a message box instead
+            print(e)
+
+        if len(self.useful_default_features) <= 0:
+            # TODO: exit without breaking the message box
+            exit(1)
+            pass
         if self.data is None:
             return
 
@@ -220,6 +229,7 @@ class Ui(QtWidgets.QMainWindow):
             mtime = 0
 
         if time.time() - mtime > 60 * 60 * 12:
+            # TODO: etag/if-modified-since
             request = urllib.request.Request(url=f"{self.tarallo_url}/features.json")
             request.add_header("User-Agent", "peracotta")
             request.add_header("Accept", "application/json")
