@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import shutil
 import time
+from typing import Optional
 from urllib.error import URLError
 
+import PyQt5.QtWidgets
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
@@ -643,9 +645,49 @@ class Peracotta(QtCore.QThread):
                 self.filters.append(peracommon.ParserComponents(checkbox.text()))
 
 
+class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        the_type = str(index.model().data(index, QtCore.Qt.UserRole))
+        if the_type == "e":
+            editor = QtWidgets.QComboBox(parent)
+            editor.currentTextChanged.connect(self.handle_editor_change)
+        else:
+            editor = QtWidgets.QLineEdit(parent)
+            editor.textChanged.connect(self.handle_editor_change)
+        return editor
+
+    def setEditorData(self, editor, index):
+        model: CustomTableModel = index.model()
+        if isinstance(editor, QtWidgets.QComboBox):
+            values = model.row_all_enum_values_for_editor(index.row())
+            current = model.row_current_enum_value_for_editor(index.row())
+            if values and current:
+                for k, v in values.items():
+                    editor.addItem(v, k)
+                    if current == k:
+                        editor.setCurrentIndex(editor.count() - 1)
+        else:
+            editor: QtWidgets.QLineEdit
+            editor.setText(str(index.model().data(index, QtCore.Qt.EditRole)))
+
+    def setModelData(self, editor, model, index):
+        if isinstance(editor, QtWidgets.QComboBox):
+            model.setData(index, editor.currentData(), QtCore.Qt.EditRole)
+        else:
+            editor: QtWidgets.QLineEdit
+            model.setData(index, editor.text(), QtCore.Qt.EditRole)
+
+    def handle_editor_change(self):
+        editor = self.sender()
+        if isinstance(editor, QtWidgets.QWidget):
+            self.commitData.emit(editor)
+            self.closeEditor.emit(editor)
+
+
 class CustomTableView(QtWidgets.QTableView):
     def __init__(self):
         super().__init__()
+        self.setItemDelegateForColumn(1, ItemEnumDelegate())
 
     def minimumSizeHint(self) -> QtCore.QSize:
         default_size = super().minimumSizeHint()
@@ -758,18 +800,37 @@ class CustomTableModel(QAbstractTableModel):
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
+    def row_all_enum_values_for_editor(self, row: int) -> Optional[dict[str, str]]:
+        if row < 0 or row >= len(self.feature_keys):
+            return None
+
+        name = self.feature_keys[row]
+        feature_type = self._get_feature_type(name)
+        if feature_type == "e":
+            return self.default_features["values"][name]
+        return None
+
+    def row_current_enum_value_for_editor(self, row: int):
+        if row < 0 or row >= len(self.feature_keys):
+            return None
+
+        name = self.feature_keys[row]
+        return self.features.get(name)
+
     def data(self, index, role=QtCore.Qt.DisplayRole):
         row = index.row()
         if row < 0 or row >= len(self.feature_keys):
             return None
 
-        if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole:
+        if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole or role == QtCore.Qt.UserRole:
             column = index.column()
             name = self.feature_keys[row]
             if column == 0:
                 return self.default_features["names"].get(name, name)
             elif column == 1:
                 feature_type = self._get_feature_type(name)
+                if role == QtCore.Qt.UserRole:
+                    return feature_type
                 value = self.features[name]
                 if feature_type == "e":
                     return self.default_features["values"][name].get(value, value)
