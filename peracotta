@@ -127,10 +127,12 @@ class Ui(QtWidgets.QMainWindow):
 
         self.addItemComboBox = self.findChild(QtWidgets.QComboBox, "addItemComboBox")
         self.addItemComboBox.addItem("Select Type --")
-        for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
-            self.addItemComboBox.addItem(checkbox.text())
-            icon = QtGui.QIcon(ICON[checkbox.text().lower()])
-            self.addItemComboBox.setItemIcon(self.addItemComboBox.count() - 1, icon)
+        for the_type in self.useful_default_features["values"]["type"]:
+            tye_type_fancy = self.useful_default_features["values"]["type"][the_type]
+            self.addItemComboBox.addItem(tye_type_fancy)
+            if the_type in ICON:
+                icon = QtGui.QIcon(ICON[the_type])
+                self.addItemComboBox.setItemIcon(self.addItemComboBox.count() - 1, icon)
         self.addItemComboBox.currentTextChanged.connect(self.add_toolbox_item)
         self.addItemComboBox.wheelEvent = lambda stop_wheel_event: None
 
@@ -497,8 +499,9 @@ class Ui(QtWidgets.QMainWindow):
                 ToolBoxWidget(data, self.useful_default_features),
                 f"{self.print_type_cool(type)}{counter}",
             )
-            icon = QtGui.QIcon(ICON[type])
-            self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
+            if type in ICON:
+                icon = QtGui.QIcon(ICON[type])
+                self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
             if self.data is None:
                 self.data = []
             self.data.append({})
