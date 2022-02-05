@@ -122,6 +122,12 @@ class Ui(QtWidgets.QMainWindow):
         self.addItemComboBox.currentTextChanged.connect(self.add_toolbox_item)
         self.addItemComboBox.wheelEvent = lambda stop_wheel_event: None
 
+        # select/deselect all buttons
+        self.selectAllBtn = self.findChild(QtWidgets.QPushButton, "selectBtn")
+        self.selectAllBtn.clicked.connect(self.select_all_checkboxes)
+        self.deselectAllBtn = self.findChild(QtWidgets.QPushButton, "deselectBtn")
+        self.deselectAllBtn.clicked.connect(self.deselect_all_checkboxes)
+
         # Owner line edit
         self.ownerLineEdit = self.findChild(QtWidgets.QLineEdit, "ownerLineEdit")
 
@@ -359,6 +365,14 @@ class Ui(QtWidgets.QMainWindow):
                 continue
             the_type = entry["features"]["type"]
             self.encountered_types_count[the_type] += 1
+
+    def select_all_checkboxes(self):
+        for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
+            checkbox.setChecked(True)
+
+    def deselect_all_checkboxes(self):
+        for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
+            checkbox.setChecked(False)
 
     # tarallo utilities
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
