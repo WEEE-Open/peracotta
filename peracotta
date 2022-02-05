@@ -165,12 +165,13 @@ class Ui(QtWidgets.QMainWindow):
 
         # Options actions
         self.menuTheme = self.findChild(QtWidgets.QMenu, "menuTheme")
-        action = self.menuTheme.addAction("Default")
-        action.triggered.connect(lambda: self.set_theme("default"))
+        action = list()
+        action.append(self.menuTheme.addAction("Default"))
+        action[-1].triggered.connect(lambda: self.set_theme("default"))
         for theme_file in os.listdir(PATH["THEMES"]):
             theme = theme_file.rstrip(".css")
-            action = self.menuTheme.addAction(theme.title())
-            action.triggered.connect(lambda: self.set_theme(theme))
+            action.append(self.menuTheme.addAction(theme.title()))
+            action[-1].triggered.connect((lambda t: lambda: self.set_theme(t))(theme))
 
         # Help actions
         self.actionAboutUs = self.findChild(QtWidgets.QAction, "actionAboutUs")
