@@ -25,15 +25,19 @@ def main(the_args):
         generated_files_path = the_args.path
 
     if the_args.files is not None:
-        check_required_files(generated_files_path)
+        peracommon.check_required_files(generated_files_path)
 
     if not the_args.files:
         if os.path.isdir(generated_files_path):
-            sel = input(f"Overwrite existing files in {generated_files_path} dir? y/N ").lower()
+            sel = input(
+                f"Overwrite existing files in {generated_files_path} dir? y/N "
+            ).lower()
             if sel == "y":
                 print("Overwriting...")
             else:
-                sel = input("Output files to current working directory instead? y/N ").lower()
+                sel = input(
+                    "Output files to current working directory instead? y/N "
+                ).lower()
                 if sel == "y":
                     generated_files_path = os.getcwd()
                     print("Outputting files to working directory...")
@@ -55,7 +59,9 @@ def main(the_args):
     gpu_location = get_gpu(the_args)
 
     # List of items only
-    result = peracommon.call_parsers(generated_files_path, set(peracommon.ParserComponents.all()), gpu_location, True)
+    result = peracommon.call_parsers(
+        generated_files_path, set(peracommon.ParserComponents.all()), gpu_location, True
+    )
 
     owner = get_owner()
     if owner:
@@ -76,7 +82,9 @@ def main(the_args):
 
 
 def ask_install_depdendencies():
-    ans = input("You need to install some packages. Do you want to install them? y/N ").lower()
+    ans = input(
+        "You need to install some packages. Do you want to install them? y/N "
+    ).lower()
     if ans == "y":
         install_cmd = "apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode < /dev/null"
         if os.geteuid() != 0:
@@ -250,27 +258,17 @@ def print_output(output: str, path: str):
     with open(os.path.join(path, "copy_this_to_tarallo.json"), "w") as f:
         f.write(output)
 
-    path = path.rstrip('/')
+    path = path.rstrip("/")
     print(
         f"You can also transfer the generated JSON file {path}/copy_this_to_tarallo.json to your PC with 'scp {path}/copy_this_to_tarallo.json <user>@<your_PC's_IP>:/path/on/your/PC' right from this terminal."
     )
 
 
-def check_required_files(path):
-    files_in_dir = os.listdir(path)
-    for file in peracommon.required_files():
-        for file_in_dir in files_in_dir:
-            if file_in_dir == file:
-                break
-        else:
-            print(f"[bold red]Missing file {file}\n"
-                  f"Please re-run this script without the -f or --files option.[/]")
-            exit(1)
-
-
 def get_code(the_args) -> Optional[str]:
     if not the_args.code:
-        code = input("Does this have a code already? (optional, ENTER to skip): ").strip()
+        code = input(
+            "Does this have a code already? (optional, ENTER to skip): "
+        ).strip()
     else:
         code = the_args.code
 
