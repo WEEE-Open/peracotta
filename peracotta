@@ -958,7 +958,7 @@ def main():
 
 
 def _env_to_bool(auto_download):
-    if auto_download.lower() in ("1", "true", "", "yes"):
+    if auto_download.lower() in ("1", "true", "t", "", "yes", "y"):
         auto_download = True
     else:
         auto_download = False
