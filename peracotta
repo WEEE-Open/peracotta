@@ -15,12 +15,11 @@ import json
 import prettyprinter
 import peracommon
 
-# TODO: peracruda/28 check if file already exists
-# TODO: peracruda/53 file generation
 # TODO: peracruda/58 call parsers
 # TODO: peracruda/63 set owner to everything
 # TODO: peracruda/66 split_products returns the list of product
-# TODO: peracruda/69
+# TODO: peracommon.unmake_tree if JSON loaded
+# TODO: peracommon.make_tree before upload
 
 
 VERSION = "2.0"
@@ -36,13 +35,14 @@ PATH = {
     "JSON": "copy_this_to_tarallo.json",
     "FEATURES": "features.json",
     "THEMES": "assets/themes/",
+    "TMP_FILES": "tmp/",
 }
 
 ICON = {
     "case": "assets/toolbox/case.png",
     "ram": "assets/toolbox/ram.png",
     "cpu": "assets/toolbox/cpu.png",
-    "gpu": "assets/toolbox/gpu.png",
+    "graphics-card": "assets/toolbox/gpu.png",
     "odd": "assets/toolbox/odd.png",
     "hard disk": "assets/toolbox/hard disk.png",
     "motherboard": "assets/toolbox/motherboard.png",
@@ -100,9 +100,13 @@ class Ui(QtWidgets.QMainWindow):
             QtWidgets.QRadioButton, "discreteRadioBtn"
         )
         self.intCpuRadioBtn = self.findChild(QtWidgets.QRadioButton, "intCpuRadioBtn")
+        self.intMoboRadioBtn = self.findChild(QtWidgets.QRadioButton, "intMoboRadioBtn")
 
         # Selectors area
         self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
+        self.selectorsScrollArea = self.findChild(
+            QtWidgets.QScrollArea, "selectorsScrollArea"
+        )
 
         self.addItemComboBox = self.findChild(QtWidgets.QComboBox, "addItemComboBox")
         self.addItemComboBox.addItem("Select Type --")
@@ -172,7 +176,12 @@ class Ui(QtWidgets.QMainWindow):
         # self.statusBar().setStyleSheet(DEFAULT_PROGRESS_BAR_STYLE)
 
         # Setup peracotta QThread
-        self.peracotta = Peracotta(self.discreteRadioBtn, self.intCpuRadioBtn)
+        self.peracotta = Peracotta(
+            self.discreteRadioBtn,
+            self.intCpuRadioBtn,
+            self.ownerLineEdit,
+            PATH["TMP_FILES"],
+        )
         self.peracotta.updateEvent.connect(self.peracotta_results)
         self.peracotta.startEvent.connect(self.show_busy_progress_bar)
 
@@ -199,6 +208,11 @@ class Ui(QtWidgets.QMainWindow):
                     "types": default_feature_types,
                     "values": default_feature_values,
                 }
+                layout = self.selectorsWidget.layout()
+                for item in peracommon.ParserComponents:
+                    layout.addWidget(QtWidgets.QCheckBox(item.value))
+
+                self.reset_setup_group()
 
         except FileNotFoundError:
             print("DOWNLOAD THE THING FROM TARALLO NOW!")
@@ -208,6 +222,34 @@ class Ui(QtWidgets.QMainWindow):
             return
 
     # gui utilities
+    def set_toolbox(self, data: list = None):
+        if data is not None:
+            self.data = data
+        self.types_count()
+
+        # insert items into toolbox widget
+        for entry in self.data:
+            if entry["type"] != "I":
+                continue
+            counter = ""
+            type = entry["features"]["type"]
+            if self.encountered_types_count[type] > 1:
+                self.encountered_types_current_count[type] += 1
+                counter = f" #{self.encountered_types_current_count[type]}"
+            self.itemToolBox.addItem(
+                ToolBoxWidget(entry["features"], self.useful_default_features),
+                f"{self.print_type_cool(type)}{counter}",
+            )
+            if type in ICON:
+                icon = QtGui.QIcon(ICON[type])
+                self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
+
+        # remove scroll in toolbox's scrollAreas
+        for scroll_area in self.itemToolBox.findChildren(QtWidgets.QScrollArea):
+            scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            scroll_area.verticalScrollBar().hide()
+            scroll_area.verticalScrollBar().resize(0, 0)
+
     def reset_toolbox(self):
         for idx in range(self.itemToolBox.count()):
             self.itemToolBox.removeItem(0)
@@ -226,10 +268,9 @@ class Ui(QtWidgets.QMainWindow):
         with open(f"{PATH['THEMES']}{theme}.css", "r") as file:
             self.app.setStyleSheet(file.read())
 
-    @staticmethod
-    def print_type_cool(the_type: str) -> str:
-        if the_type in ("cpu", "ram", "hdd", "odd"):
-            return the_type.upper()
+    def print_type_cool(self, the_type: str) -> str:
+        if the_type in self.useful_default_features["values"]["type"]:
+            return self.useful_default_features["values"]["type"][the_type]
         else:
             return the_type.title()
 
@@ -237,48 +278,14 @@ class Ui(QtWidgets.QMainWindow):
         self.progressBar.setRange(0, 0)
         self.progressBar.show()
 
-    def type_count(self, data: list):
-        for entry in data:
-            if entry == {}:
-                continue
-            if "features" in entry and entry["features"] == {}:
-                continue
-            if "type" in entry and entry["type"] == "P":
+    def types_count(self, data: list = None):
+        if data is not None:
+            self.data = data
+        for entry in self.data:
+            if entry["type"] != "I":
                 continue
             the_type = entry["features"]["type"]
             self.encountered_types_count[the_type] += 1
-
-    def recursive_item_content_finder(self, data: list):
-        for entry in data:
-            if entry == {}:
-                continue
-            if "features" in entry and entry["features"] == {}:
-                continue
-            if "type" in entry and entry["type"] == "P":
-                continue
-
-            self.type_count(data)
-            the_type = entry["features"]["type"]
-            # if not self.selectors.get(the_type):
-            #     continue
-            counter = ""
-            if self.encountered_types_count[the_type] > 1:
-                self.encountered_types_current_count[the_type] += 1
-                counter = f" #{self.encountered_types_current_count[the_type]}"
-            self.itemToolBox.addItem(
-                ToolBoxWidget(entry["features"], self.useful_default_features),
-                f"{self.print_type_cool(the_type)}{counter}",
-            )
-            if the_type in ICON:
-                icon = QtGui.QIcon(ICON[the_type])
-                self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
-
-            if "contents" in entry:
-                self.recursive_item_content_finder(entry["contents"])
-        for scroll_area in self.itemToolBox.findChildren(QtWidgets.QScrollArea):
-            scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-            scroll_area.verticalScrollBar().hide()
-            scroll_area.verticalScrollBar().resize(0, 0)
 
     # tarallo utilities
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
@@ -318,9 +325,14 @@ class Ui(QtWidgets.QMainWindow):
             radioBtn.setAutoExclusive(True)
 
         # reset checkboxes
-        defaults = ["case", "motherboard", "cpu", "gpu", "ram", "hard disk", "odd"]
+        defaults = []
+        for component in peracommon.ParserComponents:
+            if component.name in ["MONITOR", "KEYBOARD", "MOUSE"]:
+                continue
+            defaults.append(component.value)
+
         for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
-            if checkbox.text().lower() in defaults:
+            if checkbox.text() in defaults:
                 checkbox.setChecked(True)
             else:
                 checkbox.setChecked(False)
@@ -329,7 +341,21 @@ class Ui(QtWidgets.QMainWindow):
         self.ownerLineEdit.clear()
 
     def generate(self):
+        def warning():
+            QtWidgets.QMessageBox.warning(
+                self, "Warning", "Please, select one of the GPU locations to proceed."
+            )
+
+        if not (
+            self.discreteRadioBtn.isChecked()
+            or self.intCpuRadioBtn.isChecked()
+            or self.intMoboRadioBtn.isChecked()
+        ):
+            warning()
+            return
+
         self.peracotta.generate_files = True
+        self.peracotta.set_filters(self.selectorsWidget)
         self.peracotta.start()
         self.reset_toolbox()
 
@@ -403,8 +429,9 @@ class Ui(QtWidgets.QMainWindow):
         with open(path, "r") as file:
             self.data = json.load(file)
 
+        self.data = peracommon.unmake_tree(self.data)
         self.settings.setValue("latest_json", path)
-        self.peracotta_results(self.data)
+        self.set_toolbox()
 
     def open_latest_json(self):
         for key in self.settings.childKeys():
@@ -430,21 +457,92 @@ class Ui(QtWidgets.QMainWindow):
 
     # multithread
     def peracotta_results(self, data: list):
-        self.progressBar.setRange(0, 1)
+        self.progressBar.setRange(0, 1)  # disable statusBar's progressBar
         self.progressBar.hide()
         self.data = data
-
+        self.set_toolbox()
         # checks for wanted items
         # for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
         #     self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
 
         # toolbox fill
-        self.recursive_item_content_finder(self.data)
 
     # close event
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         if self.peracotta.isRunning():
             self.peracotta.terminate()
+
+
+class Peracotta(QtCore.QThread):
+    updateEvent = QtCore.pyqtSignal(list, name="update")
+    startEvent = QtCore.pyqtSignal()
+
+    def __init__(
+        self,
+        discrete_radio_btn: QtWidgets.QRadioButton,
+        int_cpu_radio_btn: QtWidgets.QRadioButton,
+        owner_line_edit: QtWidgets.QLineEdit,
+        generated_files_path: str,
+    ):
+        super().__init__()
+        self.gpu_location = (
+            peracommon.GpuLocation.DISCRETE
+            if discrete_radio_btn
+            else peracommon.GpuLocation.CPU
+            if int_cpu_radio_btn
+            else peracommon.GpuLocation.MOTHERBOARD
+        )
+        self.owner = owner_line_edit.text()
+        self.generated_files_path = generated_files_path
+        self.generate_files = None
+
+        self.filters = []
+        self.the_dir = None
+        self.set_default_values()
+
+        self.is_running = False
+
+    def run(self) -> None:
+        self.is_running = True
+        self.startEvent.emit()
+        result = []
+        if self.generate_files:
+            if sys.platform == "win32":
+                from scripts.get_windows_specs import generate_win_files
+
+                generate_win_files()
+                self.process_win_files()
+            else:
+                peracommon.check_required_files(self.generated_files_path)
+                self.generated_files_path = peracommon.generate_files(self.the_dir)
+                result = peracommon.call_parsers(
+                    self.generated_files_path,
+                    set(self.filters),
+                    self.gpu_location,
+                    True,
+                )
+                if self.owner != "":
+                    result = peracommon.add_owner(result, self.owner)
+                result = peracommon.split_products(result)
+        self.updateEvent.emit(result)
+        self.set_default_values()
+
+    def set_default_values(self):
+        self.filters = []
+        self.generate_files = False
+        self.the_dir = "tmp"
+        self.is_running = True
+
+    def process_files(self):
+        pass
+
+    def process_win_files(self):
+        pass
+
+    def set_filters(self, widget: QtWidgets.QWidget):
+        for checkbox in widget.findChildren(QtWidgets.QCheckBox):
+            if checkbox.isChecked():
+                self.filters.append(peracommon.ParserComponents(checkbox.text()))
 
 
 class CustomTableView(QtWidgets.QTableView):
@@ -679,44 +777,6 @@ class TaralloUploadDialog(QtWidgets.QDialog):
 
     def cancel_signal(self):
         self.close()
-
-
-class Peracotta(QtCore.QThread):
-    updateEvent = QtCore.pyqtSignal(list, name="update")
-    startEvent = QtCore.pyqtSignal()
-
-    def __init__(
-        self,
-        discreteRadioBtn: QtWidgets.QRadioButton,
-        intCpuRadioBtn: QtWidgets.QRadioButton,
-    ):
-        super().__init__()
-        self.discreteRadioBtn = discreteRadioBtn
-        self.intCpuRadioBtn = intCpuRadioBtn
-        self.generate_files = None
-        self.the_dir = None
-        self.set_default_values()
-        self.is_running = False
-
-    def run(self) -> None:
-        self.is_running = True
-        self.startEvent.emit()
-        if self.generate_files:
-            if sys.platform == "win32":
-                from scripts.get_windows_specs import generate_win_files
-
-                generate_win_files()
-            else:
-                peracommon.generate_files(self.the_dir)
-        # TODO: parse everything, remove '[]' from updateEvent
-
-        self.updateEvent.emit([])
-        self.set_default_values()
-
-    def set_default_values(self):
-        self.generate_files = False
-        self.the_dir = "tmp"
-        self.is_running = True
 
 
 class Uploader(QtCore.QThread):
