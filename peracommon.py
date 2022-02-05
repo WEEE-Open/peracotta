@@ -42,18 +42,18 @@ class GpuLocation(Enum):
 
 
 class ParserComponents(Enum):
-    CASE = "case"
-    MOTHERBOARD = "motherboard"
-    CPU = "cpu"
-    RAM = "ram"
-    GPU = "gpu"
-    HDD = "hdd"
-    SSD = "ssd"
-    PSU = "psu"
-    ODD = "odd"
-    MONITOR = "monitor"
-    KEYBOARD = "keyboard"
-    MOUSE = "mouse"
+    CASE = "Case"
+    MOTHERBOARD = "Motherboard"
+    CPU = "CPU"
+    RAM = "RAM"
+    GPU = "GPU"
+    HDD = "HDD"
+    SSD = "SSD"
+    PSU = "Power supply"
+    ODD = "ODD"
+    MONITOR = "Monitor"
+    KEYBOARD = "Keyboard"
+    MOUSE = "Mouse"
 
     @classmethod
     def all(cls):
@@ -375,7 +375,7 @@ def unmake_tree(items_and_products: list[dict]) -> list[dict]:
 
     for thing in items_and_products:
         result.append(thing)
-        if thing.get("type") == 'I':
+        if thing.get("type") == "I":
             if "contents" in thing:
                 result += unmake_tree(thing["contents"])
                 thing["contents"] = []
@@ -442,3 +442,17 @@ def make_tree(items_and_products: list[dict]) -> list[dict]:
         top_items += by_type[the_type]
 
     return top_items + products
+
+
+def check_required_files(path):
+    files_in_dir = os.listdir(path)
+    for file in required_files():
+        for file_in_dir in files_in_dir:
+            if file_in_dir == file:
+                break
+        else:
+            print(
+                f"[bold red]Missing file {file}\n"
+                f"Please re-run this script without the -f or --files option.[/]"
+            )
+            exit(1)
