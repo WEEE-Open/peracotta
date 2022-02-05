@@ -52,12 +52,26 @@ class ParserComponents(Enum):
     PSU = "Power supply"
     ODD = "ODD"
     MONITOR = "Monitor"
-    KEYBOARD = "Keyboard"
-    MOUSE = "Mouse"
+    INPUT = "Input devices"
 
     @classmethod
     def all(cls):
         return list(cls)
+
+    @classmethod
+    def all_names(cls):
+        res = []
+        for thing in cls:
+            res.append(thing.value)
+        return res
+
+    @classmethod
+    def not_implemented_yet(cls):
+        return {
+            ParserComponents.ODD,
+            ParserComponents.MONITOR,
+            ParserComponents.INPUT,
+        }
 
 
 def check_dependencies_for_generate_files():

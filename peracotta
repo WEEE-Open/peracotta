@@ -218,8 +218,12 @@ class Ui(QtWidgets.QMainWindow):
         self.reset_toolbox()
 
         layout = self.selectorsWidget.layout()
+        niy = peracommon.ParserComponents.not_implemented_yet()
         for item in peracommon.ParserComponents:
-            layout.addWidget(QtWidgets.QCheckBox(item.value))
+            checkbox = QtWidgets.QCheckBox(item.value)
+            if item in niy:
+                checkbox.setEnabled(False)
+            layout.addWidget(checkbox)
         self.reset_setup_group()
 
     @staticmethod
@@ -419,14 +423,13 @@ class Ui(QtWidgets.QMainWindow):
             radioBtn.setAutoExclusive(True)
 
         # reset checkboxes
-        defaults = []
-        for component in peracommon.ParserComponents:
-            if component.name in ["MONITOR", "KEYBOARD", "MOUSE"]:
-                continue
-            defaults.append(component.value)
+        defaults = set(peracommon.ParserComponents.all_names()) - {
+            peracommon.ParserComponents.MONITOR.value,
+            peracommon.ParserComponents.INPUT.value,
+        }
 
         for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
-            if checkbox.text() in defaults:
+            if checkbox.text() in defaults and checkbox.isEnabled():
                 checkbox.setChecked(True)
             else:
                 checkbox.setChecked(False)
