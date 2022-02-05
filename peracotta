@@ -201,7 +201,7 @@ class Ui(QtWidgets.QMainWindow):
             # TODO: display a message box instead
             print(e)
 
-        if len(self.useful_default_features) <= 0:
+        if self.useful_default_features == {}:
             # TODO: exit without breaking the message box
             exit(1)
             pass
@@ -260,7 +260,7 @@ class Ui(QtWidgets.QMainWindow):
                         has_file = True
             except URLError as e:
                 if hasattr(e, "reason"):
-                    error = "Connection error: " + e.reason
+                    error = "Connection error: " + str(e.reason)
                 elif hasattr(e, "code"):
                     error = "Server error: " + str(e.code)
             except BaseException as e:
