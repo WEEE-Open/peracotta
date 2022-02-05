@@ -362,6 +362,9 @@
    <property name="text">
     <string>Open JSON</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionExit">
    <property name="text">
@@ -397,6 +400,9 @@
    <property name="text">
     <string>Open last JSON</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
+   </property>
   </action>
   <action name="actionOpen_output_directory">
    <property name="text">
@@ -409,6 +415,9 @@
    </property>
    <property name="toolTip">
     <string>Select directory of raw files provided by generate_files.sh</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
    </property>
   </action>
  </widget>
