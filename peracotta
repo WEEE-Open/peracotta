@@ -646,15 +646,19 @@ class Peracotta(QtCore.QThread):
 
 
 class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
+    # class ItemEnumAlignDelegate(QtWidgets.QStyledItemDelegate):
+    #     def initStyleOption(self, option, index):
+    #         super().initStyleOption(option, index)
+    #         option.displayAlignment = QtCore.Qt.AlignLeft
+
     def createEditor(self, parent, option, index):
         the_type = str(index.model().data(index, QtCore.Qt.UserRole))
         if the_type == "e":
             editor = QtWidgets.QComboBox(parent)
             editor.currentTextChanged.connect(self.handle_editor_change)
+            return editor
         else:
-            editor = QtWidgets.QLineEdit(parent)
-            editor.textChanged.connect(self.handle_editor_change)
-        return editor
+            return super().createEditor(parent, option, index)
 
     def setEditorData(self, editor, index):
         model: CustomTableModel = index.model()
@@ -662,26 +666,25 @@ class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
             values = model.row_all_enum_values_for_editor(index.row())
             current = model.row_current_enum_value_for_editor(index.row())
             if values and current:
+                # editor.setItemDelegate(self.ItemEnumAlignDelegate(editor))
                 for k, v in values.items():
                     editor.addItem(v, k)
+                    i = editor.count() - 1
                     if current == k:
-                        editor.setCurrentIndex(editor.count() - 1)
+                        editor.setCurrentIndex(i)
         else:
-            editor: QtWidgets.QLineEdit
-            editor.setText(str(index.model().data(index, QtCore.Qt.EditRole)))
+            return super().setEditorData(editor, index)
 
     def setModelData(self, editor, model, index):
         if isinstance(editor, QtWidgets.QComboBox):
             model.setData(index, editor.currentData(), QtCore.Qt.EditRole)
         else:
-            editor: QtWidgets.QLineEdit
-            model.setData(index, editor.text(), QtCore.Qt.EditRole)
+            return super().setModelData(editor, model, index)
 
     def handle_editor_change(self):
         editor = self.sender()
-        if isinstance(editor, QtWidgets.QWidget):
-            self.commitData.emit(editor)
-            self.closeEditor.emit(editor)
+        self.commitData.emit(editor)
+        self.closeEditor.emit(editor)
 
 
 class CustomTableView(QtWidgets.QTableView):
@@ -843,7 +846,7 @@ class CustomTableModel(QAbstractTableModel):
             if column == 0:
                 return QtCore.Qt.AlignLeft + QtCore.Qt.AlignVCenter
             elif column == 1:
-                return QtCore.Qt.AlignRight + QtCore.Qt.AlignVCenter
+                return QtCore.Qt.AlignLeft + QtCore.Qt.AlignVCenter
 
         return None
 
