@@ -76,7 +76,7 @@ DEFAULT_PROGRESS_BAR_STYLE = (
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(
-        self, app: QtWidgets.QApplication, tarallo_url: str, tarallo_token: str
+        self, app: QtWidgets.QApplication, tarallo_url: str, tarallo_token: str, tarallo_auto_download: bool
     ) -> None:
         super(Ui, self).__init__()
         uic.loadUi(PATH["UI"], self)
@@ -90,6 +90,18 @@ class Ui(QtWidgets.QMainWindow):
         self.encountered_types_count = defaultdict(lambda: 0)
         self.encountered_types_current_count = defaultdict(lambda: 0)
         # self.app.setStyle("Fusion")
+
+        # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
+        try:
+            self.load_features_file(tarallo_auto_download)
+        except Exception as e:
+            title = "Cannot download features"
+            message = f"Failed to download features from TARALLO: {str(e)}"
+            if self.useful_default_features == {}:
+                QtWidgets.QMessageBox.critical(self, title, message + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.")
+                exit(1)
+            else:
+                QtWidgets.QMessageBox.warning(self, title, message)
 
         # Output toolbox
         self.itemToolBox = self.findChild(QtWidgets.QToolBox, "itemToolBox")
@@ -202,16 +214,6 @@ class Ui(QtWidgets.QMainWindow):
 
     def setup(self):
         self.reset_toolbox()
-        try:
-            self.load_features_file()
-        except Exception as e:
-            # TODO: display a message box instead
-            print(e)
-
-        if self.useful_default_features == {}:
-            # TODO: exit without breaking the message box
-            exit(1)
-            pass
 
         layout = self.selectorsWidget.layout()
         for item in peracommon.ParserComponents:
@@ -242,7 +244,7 @@ class Ui(QtWidgets.QMainWindow):
             return False
         return True
 
-    def load_features_file(self):
+    def load_features_file(self, auto_update: bool):
         self.useful_default_features = {}
         has_file = False
         error = None
@@ -253,7 +255,7 @@ class Ui(QtWidgets.QMainWindow):
         except FileNotFoundError:
             mtime = 0
 
-        if time.time() - mtime > 60 * 60 * 12:
+        if auto_update and time.time() - mtime > 60 * 60 * 12:
             # TODO: etag/if-modified-since
             request = urllib.request.Request(url=f"{self.tarallo_url}/features.json")
             request.add_header("User-Agent", "peracotta")
@@ -281,6 +283,8 @@ class Ui(QtWidgets.QMainWindow):
 
         if error:
             raise Exception(error)
+        if not has_file and not auto_update:
+            raise Exception("features.json file not present and automatic download is disabled")
 
     def _parse_features_file(self):
         with open(PATH["FEATURES"], "r") as file:
@@ -936,10 +940,11 @@ def main():
         load_dotenv()
         tarallo_url = env["TARALLO_URL"]
         tarallo_token = env["TARALLO_TOKEN"]
+        auto_download = _env_to_bool(env.get("TARALLO_FEATURES_AUTO_DOWNLOAD", "1"))
         app = QtWidgets.QApplication(sys.argv)
         # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
         # noinspection PyUnusedLocal
-        window = Ui(app, tarallo_url, tarallo_token)
+        window = Ui(app, tarallo_url, tarallo_token, auto_download)
         app.exec_()
 
     except KeyboardInterrupt:
@@ -947,6 +952,14 @@ def main():
 
     except BaseException:
         print(traceback.print_exc(file=sys.stdout))
+
+
+def _env_to_bool(auto_download):
+    if auto_download.lower() in ("1", "true", "", "yes"):
+        auto_download = True
+    else:
+        auto_download = False
+    return auto_download
 
 
 if __name__ == "__main__":
