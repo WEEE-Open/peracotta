@@ -87,11 +87,9 @@ class Ui(QtWidgets.QMainWindow):
         self.data = None
         self.tarallo_url = tarallo_url
         self.tarallo_token = tarallo_token
-        # self.selectors = dict()
         self.useful_default_features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
         self.encountered_types_current_count = defaultdict(lambda: 0)
-        # self.app.setStyle("Fusion")
 
         # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
         try:
@@ -205,6 +203,7 @@ class Ui(QtWidgets.QMainWindow):
 
         # Setup peracotta QThread
         self.peracotta = Peracotta(
+            self,
             self.discreteRadioBtn,
             self.intCpuRadioBtn,
             self.ownerLineEdit,
@@ -446,13 +445,18 @@ class Ui(QtWidgets.QMainWindow):
             )
 
         if not (
-            self.discreteRadioBtn.isChecked()
-            or self.intCpuRadioBtn.isChecked()
-            or self.intMoboRadioBtn.isChecked()
+                self.discreteRadioBtn.isChecked()
+                or self.intCpuRadioBtn.isChecked()
+                or self.intMoboRadioBtn.isChecked()
         ):
             warning()
             return
 
+        sudo_passwd, ok = QtWidgets.QInputDialog.getText(self, "Insert root password", "Insert root password:", QtWidgets.QLineEdit.Password)
+        if ok:
+            self.peracotta.sudo_passwd = sudo_passwd
+        else:
+            return
         self.peracotta.generate_files = True
         self.peracotta.set_filters(self.selectorsWidget)
         self.peracotta.start()
@@ -579,19 +583,17 @@ class Peracotta(QtCore.QThread):
 
     def __init__(
         self,
+        main_window: QtWidgets.QMainWindow,
         discrete_radio_btn: QtWidgets.QRadioButton,
         int_cpu_radio_btn: QtWidgets.QRadioButton,
         owner_line_edit: QtWidgets.QLineEdit,
         generated_files_path: str,
     ):
         super().__init__()
-        self.gpu_location = (
-            peracommon.GpuLocation.DISCRETE
-            if discrete_radio_btn
-            else peracommon.GpuLocation.CPU
-            if int_cpu_radio_btn
-            else peracommon.GpuLocation.MOTHERBOARD
-        )
+        self.main_window = main_window
+        self.discrete_radio_btn = discrete_radio_btn
+        self.int_cpu_radio_btn = int_cpu_radio_btn
+        self.gpu_location = None
         self.owner = owner_line_edit.text()
         self.generated_files_path = generated_files_path
         self.generate_files = None
@@ -599,12 +601,20 @@ class Peracotta(QtCore.QThread):
         self.filters = []
         self.the_dir = None
         self.set_default_values()
+        self.sudo_passwd = None
 
         self.is_running = False
 
     def run(self) -> None:
         self.is_running = True
         self.startEvent.emit()
+        self.gpu_location = (
+            peracommon.GpuLocation.DISCRETE
+            if self.discrete_radio_btn.isChecked()
+            else peracommon.GpuLocation.CPU
+            if self.int_cpu_radio_btn.isChecked()
+            else peracommon.GpuLocation.MOTHERBOARD
+        )
         result = []
         if self.generate_files:
             if sys.platform == "win32":
@@ -613,13 +623,18 @@ class Peracotta(QtCore.QThread):
                 generate_win_files()
                 self.process_win_files()
             else:
-                peracommon.check_required_files(self.generated_files_path)
-                self.generated_files_path = peracommon.generate_files(self.the_dir)
+                message = peracommon.check_required_files(self.generated_files_path, is_gui=True)
+                if message != '':
+                    QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
+                self.generated_files_path = peracommon.generate_files(self.the_dir, self.sudo_passwd)
+                if self.generated_files_path is None:
+                    print("Wrong root password. Terminating peracotta...")
+                    return
                 result = peracommon.call_parsers(
                     self.generated_files_path,
                     set(self.filters),
                     self.gpu_location,
-                    True,
+                    False,
                 )
                 if self.owner != "":
                     result = peracommon.add_owner(result, self.owner)
@@ -632,6 +647,7 @@ class Peracotta(QtCore.QThread):
         self.generate_files = False
         self.the_dir = "tmp"
         self.is_running = True
+        self.sudo_passwd = None
 
     def process_files(self):
         pass
@@ -656,6 +672,7 @@ class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
         if the_type == "e":
             editor = QtWidgets.QComboBox(parent)
             editor.currentTextChanged.connect(self.handle_editor_change)
+            editor.setEditable(True)
             return editor
         else:
             return super().createEditor(parent, option, index)
@@ -753,7 +770,7 @@ class ToolBoxWidget(QtWidgets.QWidget):
                 self.default_features["names"][type]
                 == self.features_combo_box.currentText()
             ):
-                if self.default_features["types"][type] != "s":
+                if self.default_features["types"][type] == "e":
                     self.feature_line_edit.setHidden(True)
                     self.feature_selector.setHidden(False)
                     self.feature_selector.clear()
@@ -1004,6 +1021,15 @@ def tarallo_success_dialog(url: str):
     return False
 
 
+def _env_to_bool(auto_download):
+    if auto_download.lower() in ("1", "true", "t", "", "yes", "y"):
+        auto_download = True
+    else:
+        auto_download = False
+    return auto_download
+
+
+
 def main():
     # noinspection PyBroadException
     try:
@@ -1022,14 +1048,6 @@ def main():
 
     except BaseException:
         print(traceback.print_exc(file=sys.stdout))
-
-
-def _env_to_bool(auto_download):
-    if auto_download.lower() in ("1", "true", "t", "", "yes", "y"):
-        auto_download = True
-    else:
-        auto_download = False
-    return auto_download
 
 
 if __name__ == "__main__":

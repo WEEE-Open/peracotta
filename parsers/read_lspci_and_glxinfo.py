@@ -125,7 +125,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
                     "logging into the TARALLO afterwards. The information you're looking for should be in the "
                     f"following 2 lines:\n{first_line}\n{second_line}\n")
 
-            if gpu.get("model"):
+            if gpu.get("model") and gpu.get("brand"):
                 # Try to remove duplicate information
                 gpu["brand"] = gpu["brand"].replace(gpu["model"], "").strip()
             else:
@@ -140,7 +140,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
 
             break
             
-    if gpu["brand-manufacturer"] is not None and gpu["brand"] is not None:
+    if gpu.get("brand-manufacturer") and gpu.get("brand"):
         if gpu["brand-manufacturer"].lower() == gpu["brand"].lower():
             del gpu["brand-manufacturer"]
 
@@ -183,12 +183,14 @@ def _read_glxinfo_output(gpu: dict, glxinfo_file: str):
             capacity = _convert_video_memory_size(tmp_vram, tmp_vram_multiplier)
             if "notes" in gpu:
                 gpu["notes"] += "\n"
+            else:
+                gpu["notes"] = ""
             if capacity < 0:
                 gpu["notes"] += "Could not find dedicated video memory"
                 if gpu["capacity-byte"] < 0:
                     gpu["notes"] += ". The value cannot be trusted."
             else:
-                gpu["notes"] += capacity
+                gpu["notes"] += f"Raw value is: {capacity}"
             break
 
     if "capacity-byte" in gpu and gpu["capacity-byte"] > 0:

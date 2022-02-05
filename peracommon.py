@@ -81,13 +81,21 @@ def check_dependencies_for_generate_files():
     return retval == 0
 
 
-def generate_files(path: str):
+def generate_files(path: str, sudo_passwd: str = None):
     os.makedirs(path, exist_ok=True)
 
-    if os.geteuid() != 0:
-        subprocess.run(["sudo", "scripts/generate_files.sh", path])
+    if os.geteuid() != 0 and sudo_passwd is not None:
+        p = subprocess.Popen(["sudo", "-S", "scripts/generate_files.sh", path], stderr=subprocess.PIPE, stdout=subprocess.PIPE,  stdin=subprocess.PIPE)
+        try:
+            out, err = p.communicate(input=(sudo_passwd + '\n').encode(), timeout=5)
+            if out == b'':
+                return None
+        except subprocess.TimeoutExpired:
+            p.kill()
     else:
         subprocess.run(["scripts/generate_files.sh", path])
+
+    return path
 
 
 def required_files():
@@ -458,15 +466,21 @@ def make_tree(items_and_products: list[dict]) -> list[dict]:
     return top_items + products
 
 
-def check_required_files(path):
+def check_required_files(path, is_gui: bool = False):
     files_in_dir = os.listdir(path)
     for file in required_files():
         for file_in_dir in files_in_dir:
             if file_in_dir == file:
                 break
         else:
-            print(
-                f"[bold red]Missing file {file}\n"
-                f"Please re-run this script without the -f or --files option.[/]"
-            )
-            exit(1)
+            if is_gui:
+                error = f"Missing file {file}\n"\
+                        f"Please re-run this script without the -f or --files option.[/]"
+                return error
+            else:
+                print(
+                    f"[bold red]Missing file {file}\n"
+                    f"Please re-run this script without the -f or --files option.[/]"
+                )
+                exit(1)
+    return ''

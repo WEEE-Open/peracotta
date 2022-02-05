@@ -41,7 +41,7 @@ lscpu > "$OUTPATH/lscpu.txt"
 lspci -v > "$OUTPATH/lspci.txt"
 glxinfo > "$OUTPATH/glxinfo.txt"
 
-DISKZ=($(lsblk -d -I 8 -o NAME -n))
+DISKZ=($(lsblk -d -I 8,259 -o NAME -n))
 COUNTER=${#DISKZ[@]}
 echo Found $COUNTER disks
 echo "[" > "$OUTPATH/smartctl.txt"
@@ -49,7 +49,7 @@ for d in "${DISKZ[@]}"; do
   smartctl -j /dev/"$d" >> "$OUTPATH/smartctl.txt"
   if [[ ! $COUNTER == 1 ]]; then
 	  echo "," >> "$OUTPATH/smartctl.txt"
-	  COUNTER=(( $COUNTER - 1 ))
+	  COUNTER=$(( $COUNTER - 1 ))
   fi
 done
 echo "]" >> "$OUTPATH/smartctl.txt"
