@@ -235,7 +235,7 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <widget class="QToolBox" name="itemToolBox">
+             <widget class="ToolBoxOverride" name="itemToolBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -421,6 +421,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ToolBoxOverride</class>
+   <extends>QToolBox</extends>
+   <header>toolboxoverride.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
