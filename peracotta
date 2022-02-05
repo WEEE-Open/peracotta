@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+import shutil
+import time
+from urllib.error import URLError
+
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
@@ -9,6 +13,7 @@ from dotenv import load_dotenv
 from os import environ as env
 import os
 import urllib.parse
+import urllib.request
 import sys
 import traceback
 import json
@@ -189,37 +194,105 @@ class Ui(QtWidgets.QMainWindow):
         self.setup()
 
     def setup(self):
+        self.reset_toolbox()
         try:
-            self.reset_toolbox()
-            with open(PATH["FEATURES"], "r") as file:
-                default_feature_names = {}
-                default_feature_types = {}
-                default_feature_values = {}
-                default_features = json.load(file)
-                for group in default_features["features"]:
-                    for feature in default_features["features"][group]:
-                        name = feature["name"]
-                        default_feature_names[name] = feature["printableName"]
-                        default_feature_types[name] = feature["type"]
-                        if "values" in feature:
-                            default_feature_values[name] = feature["values"]
-                self.useful_default_features = {
-                    "names": default_feature_names,
-                    "types": default_feature_types,
-                    "values": default_feature_values,
-                }
-                layout = self.selectorsWidget.layout()
-                for item in peracommon.ParserComponents:
-                    layout.addWidget(QtWidgets.QCheckBox(item.value))
+            self.load_features_file()
+        except Exception as e:
+            # TODO: display a message box instead
+            print(e)
 
-                self.reset_setup_group()
+        if len(self.useful_default_features) <= 0:
+            # TODO: exit without breaking the message box
+            exit(1)
+            pass
 
+        layout = self.selectorsWidget.layout()
+        for item in peracommon.ParserComponents:
+            layout.addWidget(QtWidgets.QCheckBox(item.value))
+        self.reset_setup_group()
+
+    @staticmethod
+    def _backup_features_json() -> bool:
+        here = os.path.dirname(os.path.realpath(__file__))
+        try:
+            shutil.copy2(
+                os.path.join(here, "features.json"),
+                os.path.join(here, "features.json.bak"),
+            )
         except FileNotFoundError:
-            print("DOWNLOAD THE THING FROM TARALLO NOW!")
-            useful_default_features = {}
+            return False
+        return True
 
-        if self.data is None:
-            return
+    @staticmethod
+    def _restore_features_json() -> bool:
+        here = os.path.dirname(os.path.realpath(__file__))
+        try:
+            shutil.move(
+                os.path.join(here, "features.json.bak"),
+                os.path.join(here, "features.json"),
+            )
+        except FileNotFoundError:
+            return False
+        return True
+
+    def load_features_file(self):
+        self.useful_default_features = {}
+        has_file = False
+        error = None
+
+        try:
+            mtime = os.path.getmtime(PATH["FEATURES"])
+            has_file = True
+        except FileNotFoundError:
+            mtime = 0
+
+        if time.time() - mtime > 60 * 60 * 12:
+            # TODO: etag/if-modified-since
+            request = urllib.request.Request(url=f"{self.tarallo_url}/features.json")
+            request.add_header("User-Agent", "peracotta")
+            request.add_header("Accept", "application/json")
+            self._backup_features_json()
+            # noinspection PyBroadException
+            try:
+                with urllib.request.urlopen(request) as response:
+                    with open("features.json", "w") as out:
+                        shutil.copyfileobj(response, out)
+                        has_file = True
+            except URLError as e:
+                if hasattr(e, "reason"):
+                    error = "Connection error: " + e.reason
+                elif hasattr(e, "code"):
+                    error = "Server error: " + str(e.code)
+            except BaseException as e:
+                error = "Some error: " + str(e)
+
+            if error:
+                has_file = self._restore_features_json()
+
+        if has_file:
+            self._parse_features_file()
+
+        if error:
+            raise Exception(error)
+
+    def _parse_features_file(self):
+        with open(PATH["FEATURES"], "r") as file:
+            default_feature_names = {}
+            default_feature_types = {}
+            default_feature_values = {}
+            default_features = json.load(file)
+            for group in default_features["features"]:
+                for feature in default_features["features"][group]:
+                    name = feature["name"]
+                    default_feature_names[name] = feature["printableName"]
+                    default_feature_types[name] = feature["type"]
+                    if "values" in feature:
+                        default_feature_values[name] = feature["values"]
+            self.useful_default_features = {
+                "names": default_feature_names,
+                "types": default_feature_types,
+                "values": default_feature_values,
+            }
 
     # gui utilities
     def set_toolbox(self, data: list = None):
