@@ -78,7 +78,11 @@ DEFAULT_PROGRESS_BAR_STYLE = (
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(
-        self, app: QtWidgets.QApplication, tarallo_url: str, tarallo_token: str, tarallo_auto_download: bool
+        self,
+        app: QtWidgets.QApplication,
+        tarallo_url: str,
+        tarallo_token: str,
+        tarallo_auto_download: bool,
     ) -> None:
         super(Ui, self).__init__()
         uic.loadUi(PATH["UI"], self)
@@ -98,7 +102,12 @@ class Ui(QtWidgets.QMainWindow):
             title = "Cannot download features"
             message = f"Failed to download features from TARALLO: {str(e)}"
             if self.useful_default_features == {}:
-                QtWidgets.QMessageBox.critical(self, title, message + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.")
+                QtWidgets.QMessageBox.critical(
+                    self,
+                    title,
+                    message
+                    + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.",
+                )
                 exit(1)
             else:
                 QtWidgets.QMessageBox.warning(self, title, message)
@@ -291,7 +300,9 @@ class Ui(QtWidgets.QMainWindow):
         if error:
             raise Exception(error)
         if not has_file and not auto_update:
-            raise Exception("features.json file not present and automatic download is disabled")
+            raise Exception(
+                "features.json file not present and automatic download is disabled"
+            )
 
     def _parse_features_file(self):
         with open(PATH["FEATURES"], "r") as file:
@@ -445,14 +456,19 @@ class Ui(QtWidgets.QMainWindow):
             )
 
         if not (
-                self.discreteRadioBtn.isChecked()
-                or self.intCpuRadioBtn.isChecked()
-                or self.intMoboRadioBtn.isChecked()
+            self.discreteRadioBtn.isChecked()
+            or self.intCpuRadioBtn.isChecked()
+            or self.intMoboRadioBtn.isChecked()
         ):
             warning()
             return
 
-        sudo_passwd, ok = QtWidgets.QInputDialog.getText(self, "Insert root password", "Insert root password:", QtWidgets.QLineEdit.Password)
+        sudo_passwd, ok = QtWidgets.QInputDialog.getText(
+            self,
+            "Insert root password",
+            "Insert root password:",
+            QtWidgets.QLineEdit.Password,
+        )
         if ok:
             self.peracotta.sudo_passwd = sudo_passwd
         else:
@@ -623,10 +639,14 @@ class Peracotta(QtCore.QThread):
                 generate_win_files()
                 self.process_win_files()
             else:
-                message = peracommon.check_required_files(self.generated_files_path, is_gui=True)
-                if message != '':
+                message = peracommon.check_required_files(
+                    self.generated_files_path, is_gui=True
+                )
+                if message != "":
                     QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
-                self.generated_files_path = peracommon.generate_files(self.the_dir, self.sudo_passwd)
+                self.generated_files_path = peracommon.generate_files(
+                    self.the_dir, self.sudo_passwd
+                )
                 if self.generated_files_path is None:
                     print("Wrong root password. Terminating peracotta...")
                     return
@@ -721,6 +741,20 @@ class CustomTableView(QtWidgets.QTableView):
 
         return QtCore.QSize(default_size.width(), h)
 
+    def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
+        self.menu = QtWidgets.QMenu(self)
+        remove_action = QtWidgets.QAction("Remove feature", self)
+        remove_action.triggered.connect(self.remove_row)
+        self.menu.addAction(remove_action)
+        self.menu.popup(QtGui.QCursor.pos())
+
+    def remove_row(self):
+        print(f"{self.selectedIndexes()[1].row()}")
+        print(f"{self.selectedIndexes()[1].parent()}")
+        self.model().removeRow(
+            self.selectedIndexes()[1].row(), self.selectedIndexes()[1].parent()
+        )
+
 
 class ToolBoxWidget(QtWidgets.QWidget):
     def __init__(self, data: dict, default_features: dict):
@@ -751,6 +785,7 @@ class ToolBoxWidget(QtWidgets.QWidget):
         self.table.verticalScrollBar().resize(0, 0)
         self.main_layout.addWidget(self.table)
         self.table.resizeColumnsToContents()
+        self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
     def feature_adder(self, type: str):
         layout = QtWidgets.QHBoxLayout()
@@ -842,7 +877,11 @@ class CustomTableModel(QAbstractTableModel):
         if row < 0 or row >= len(self.feature_keys):
             return None
 
-        if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole or role == QtCore.Qt.UserRole:
+        if (
+            role == QtCore.Qt.DisplayRole
+            or role == QtCore.Qt.EditRole
+            or role == QtCore.Qt.UserRole
+        ):
             column = index.column()
             name = self.feature_keys[row]
             if column == 0:
@@ -902,6 +941,13 @@ class CustomTableModel(QAbstractTableModel):
             self.features[name] = value
             return True
         return False
+
+    def removeRow(self, row: int, parent: QtCore.QModelIndex() = ...) -> bool:
+        self.beginRemoveRows(parent, row, row)
+        del self.features[list(self.features)[row]]
+        del self.feature_keys[row]
+        self.endRemoveRows()
+        return True
 
     @staticmethod
     def _printable_to_value(name, value):
@@ -1027,7 +1073,6 @@ def _env_to_bool(auto_download):
     else:
         auto_download = False
     return auto_download
-
 
 
 def main():
