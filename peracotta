@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-import shutil
-import time
 from typing import Optional
 from urllib.error import URLError
-
-import PyQt5.QtWidgets
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
@@ -13,6 +9,8 @@ from pytarallo import Tarallo
 from pytarallo.Errors import NoInternetConnectionError
 from dotenv import load_dotenv
 from os import environ as env
+import shutil
+import time
 import os
 import urllib.parse
 import urllib.request
@@ -88,12 +86,11 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi(PATH["UI"], self)
         self.app = app
         self.taralloDialog = None
-        self.data = None
+        self.data = list(dict())
         self.tarallo_url = tarallo_url
         self.tarallo_token = tarallo_token
         self.useful_default_features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
-        self.encountered_types_current_count = defaultdict(lambda: 0)
 
         # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
         try:
@@ -113,7 +110,11 @@ class Ui(QtWidgets.QMainWindow):
                 QtWidgets.QMessageBox.warning(self, title, message)
 
         # Output toolbox
-        self.itemToolBox = self.findChild(QtWidgets.QToolBox, "itemToolBox")
+        self.outputWidget = self.findChild(QtWidgets.QWidget, "outputWidget")
+        self.itemToolBox = ToolBoxWidget(
+            self.data, self.useful_default_features, self.encountered_types_count
+        )
+        self.outputWidget.layout().addWidget(self.itemToolBox)
 
         # App settings
         self.settings = QtCore.QSettings("WEEE Open", "PERACOTTA")
@@ -324,33 +325,8 @@ class Ui(QtWidgets.QMainWindow):
             }
 
     # gui utilities
-    def set_toolbox(self, data: list = None):
-        if data is not None:
-            self.data = data
+    def set_toolbox(self):
         self.types_count()
-
-        # insert items into toolbox widget
-        for entry in self.data:
-            if entry["type"] != "I":
-                continue
-            counter = ""
-            type = entry["features"]["type"]
-            if self.encountered_types_count[type] > 1:
-                self.encountered_types_current_count[type] += 1
-                counter = f" #{self.encountered_types_current_count[type]}"
-            self.itemToolBox.addItem(
-                ToolBoxWidget(entry["features"], self.useful_default_features),
-                f"{self.print_type_cool(type)}{counter}",
-            )
-            if type in ICON:
-                icon = QtGui.QIcon(ICON[type])
-                self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
-
-        # remove scroll in toolbox's scrollAreas
-        for scroll_area in self.itemToolBox.findChildren(QtWidgets.QScrollArea):
-            scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-            scroll_area.verticalScrollBar().hide()
-            scroll_area.verticalScrollBar().resize(0, 0)
 
     def reset_toolbox(self):
         for idx in range(self.itemToolBox.count()):
@@ -370,24 +346,9 @@ class Ui(QtWidgets.QMainWindow):
         with open(f"{PATH['THEMES']}{theme}.css", "r") as file:
             self.app.setStyleSheet(file.read())
 
-    def print_type_cool(self, the_type: str) -> str:
-        if the_type in self.useful_default_features["values"]["type"]:
-            return self.useful_default_features["values"]["type"][the_type]
-        else:
-            return the_type.title()
-
     def show_busy_progress_bar(self):
         self.progressBar.setRange(0, 0)
         self.progressBar.show()
-
-    def types_count(self, data: list = None):
-        if data is not None:
-            self.data = data
-        for entry in self.data:
-            if entry["type"] != "I":
-                continue
-            the_type = entry["features"]["type"]
-            self.encountered_types_count[the_type] += 1
 
     def select_all_checkboxes(self):
         for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
@@ -521,7 +482,7 @@ class Ui(QtWidgets.QMainWindow):
 
             data = {"type": self.addItemComboBox.currentText().lower()}
             self.itemToolBox.addItem(
-                ToolBoxWidget(data, self.useful_default_features),
+                ToolBoxItem(data, self.useful_default_features),
                 f"{self.print_type_cool(type)}{counter}",
             )
             if type in ICON:
@@ -534,7 +495,8 @@ class Ui(QtWidgets.QMainWindow):
 
     # menu actions
     def open_json(self, path: str = ""):
-        self.reset_toolbox()
+        self.itemToolBox.clear()
+
         if not path:
             the_dir = QtWidgets.QFileDialog.getOpenFileName(
                 self,
@@ -551,7 +513,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.data = peracommon.unmake_tree(self.data)
         self.settings.setValue("latest_json", path)
-        self.set_toolbox()
+        self.itemToolBox.load_items(self.data)
 
     def open_latest_json(self):
         for key in self.settings.childKeys():
@@ -756,7 +718,7 @@ class CustomTableView(QtWidgets.QTableView):
         )
 
 
-class ToolBoxWidget(QtWidgets.QWidget):
+class ToolBoxItem(QtWidgets.QWidget):
     def __init__(self, data: dict, default_features: dict):
         super().__init__()
         self.default_features = default_features
@@ -821,6 +783,125 @@ class ToolBoxWidget(QtWidgets.QWidget):
         # if self.feature_line_edit.isVisible():
         #     self.data[self.default_features["names"][self.feature_line_edit.text()]] = ""
         pass
+
+    def remove_feature(self):
+        print(f"removing row {self.table.selectedIndexes()}")
+
+
+class ToolBoxWidget(QtWidgets.QToolBox):
+    def __init__(
+        self, data: list[dict], default_features: dict, encountered_types_count: dict
+    ):
+        super().__init__()
+        self.clear()
+        self.data = data
+        self.default_features = default_features
+        self.encountered_types_count = encountered_types_count
+
+        # variables
+        self.encountered_types_current_count = defaultdict(lambda: 0)
+
+    def clear(self):
+        for idx in range(self.count()):
+            self.removeItem(0)
+
+    def load_items(self, data: list[dict]):
+        if data:
+            self.data = data
+        self.types_count()
+        for entry in self.data:
+            if entry["type"] != "I":
+                continue
+            counter = ""
+            type = entry["features"]["type"]
+            if self.encountered_types_count[type] > 1:
+                self.encountered_types_current_count[type] += 1
+                counter = f" #{self.encountered_types_current_count[type]}"
+            self.addItem(
+                ToolBoxItem(entry["features"], self.default_features),
+                f"{self.print_type_cool(type)}{counter}",
+            )
+            if type in ICON:
+                icon = QtGui.QIcon(ICON[type])
+                self.setItemIcon(self.count() - 1, icon)
+
+            self.set_context_menu()
+
+        # remove scroll in toolbox's scrollAreas
+        for scroll_area in self.findChildren(QtWidgets.QScrollArea):
+            scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            scroll_area.verticalScrollBar().hide()
+            scroll_area.verticalScrollBar().resize(0, 0)
+
+    def set_context_menu(self):
+        counter = 0
+        for item in self.children():
+            if type(item) == QtWidgets.QAbstractButton:
+                item: QtWidgets.QAbstractButton
+                item.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                item.customContextMenuRequested.connect(self.show_menu)
+                counter += 1
+
+    def print_type_cool(self, the_type: str) -> str:
+        if the_type in self.default_features["values"]["type"]:
+            return self.default_features["values"]["type"][the_type]
+        else:
+            return the_type.title()
+
+    def show_menu(self):
+        button = self.sender()
+        self.menu = QtWidgets.QMenu()
+        remove_action = QtWidgets.QAction("Remove item", self)
+        remove_action.triggered.connect(lambda: self.remove_item_from_toolbox(button))
+        self.menu.addAction(remove_action)
+        self.menu.popup(QtGui.QCursor.pos())
+
+    def minimumSizeHint(self) -> QtCore.QSize:
+        h = 0
+        for child in self.children():
+            if isinstance(child, QtWidgets.QScrollArea):
+                if child.isHidden():
+                    h += child.minimumSizeHint().height()
+                else:
+                    h += child.sizeHint().height()
+            elif isinstance(child, QtWidgets.QWidget):
+                # print(f"{child}: {child.sizeHint().height()} vs {child.minimumSizeHint().height()}")
+                # Buttons and anything else
+                h += child.sizeHint().height()
+        old = super().minimumSizeHint()
+        if h > old.height():
+            old.setHeight(h)
+        return old
+
+    def remove_item_from_toolbox(self, button):
+        i = 0
+        for item in self.children():
+            if type(item) == QtWidgets.QAbstractButton:
+                if item == button:
+                    self.removeItem(i)
+                    break
+                else:
+                    i += 1
+
+    def removeItem(self, index: int) -> None:
+        super().removeItem(index)
+        i = 0
+        for idx, entry in enumerate(self.data):
+            if entry["type"] != "I":
+                continue
+            if index == i:
+                del self.data[idx]
+                break
+            i += 1
+
+    def types_count(self, data: list = None):
+        if data is not None:
+            self.data = data
+        for entry in self.data:
+            if entry["type"] != "I":
+                continue
+            the_type = entry["features"]["type"]
+            self.encountered_types_count[the_type] += 1
 
 
 class CustomTableModel(QAbstractTableModel):
@@ -1010,7 +1091,7 @@ class Uploader(QtCore.QThread):
 
     def __init__(
         self,
-        data: list,
+        data: list[dict],
         tarallo_url: str,
         tarallo_token: str,
         bulk_identifier: str,

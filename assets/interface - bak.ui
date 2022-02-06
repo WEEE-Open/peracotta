@@ -89,8 +89,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>248</width>
-                <height>361</height>
+                <width>253</width>
+                <height>306</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -227,16 +227,43 @@
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
-          <widget class="QWidget" name="outputWidget">
+          <widget class="QWidget" name="scrollAreaWidgetContents">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>461</width>
-             <height>545</height>
+             <width>473</width>
+             <height>520</height>
             </rect>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2"/>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="ToolBoxOverride" name="itemToolBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="default_page">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>455</width>
+                 <height>470</height>
+                </rect>
+               </property>
+               <attribute name="label">
+                <string>...</string>
+               </attribute>
+              </widget>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>
@@ -295,7 +322,7 @@
      <x>0</x>
      <y>0</y>
      <width>813</width>
-     <height>23</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -406,6 +433,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ToolBoxOverride</class>
+   <extends>QToolBox</extends>
+   <header>toolboxoverride.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
