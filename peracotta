@@ -944,8 +944,15 @@ class CustomTableModel(QAbstractTableModel):
 
     def removeRow(self, row: int, parent: QtCore.QModelIndex() = ...) -> bool:
         self.beginRemoveRows(parent, row, row)
-        del self.features[list(self.features)[row]]
-        del self.feature_keys[row]
+        try:
+            removed = self.feature_keys.pop(row)
+            try:
+                del self.features[removed]
+            except IndexError:
+                pass
+        except IndexError:
+            self.endRemoveRows()
+            return False
         self.endRemoveRows()
         return True
 
