@@ -325,8 +325,6 @@ class Ui(QtWidgets.QMainWindow):
             }
 
     # gui utilities
-    def set_toolbox(self):
-        self.types_count()
 
     def reset_toolbox(self):
         for idx in range(self.itemToolBox.count()):
@@ -542,12 +540,7 @@ class Ui(QtWidgets.QMainWindow):
         self.progressBar.setRange(0, 1)  # disable statusBar's progressBar
         self.progressBar.hide()
         self.data = data
-        self.set_toolbox()
-        # checks for wanted items
-        # for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
-        #     self.selectors.update({checkbox.text().lower(): checkbox.isChecked()})
-
-        # toolbox fill
+        self.itemToolBox.load_items(self.data)
 
     # close event
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
@@ -719,10 +712,11 @@ class CustomTableView(QtWidgets.QTableView):
 
 
 class ToolBoxItem(QtWidgets.QWidget):
-    def __init__(self, data: dict, default_features: dict):
+    def __init__(self, data: dict, product: Optional[dict], default_features: dict):
         super().__init__()
-        self.default_features = default_features
         self.data = data
+        self.product = product
+        self.default_features = default_features
 
         self.main_layout = QtWidgets.QVBoxLayout()
         self.table = CustomTableView()
@@ -732,17 +726,17 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.add_feature_button = QtWidgets.QPushButton("Add")
         self.add_feature_button.clicked.connect(self.add_feature)
 
-        self.disabled_features = list(data)
-
         # setup
-        self.table_setup(data, default_features)
+        self.table_setup()
         self.feature_adder(data["type"])
         self.setLayout(self.main_layout)
 
-    def table_setup(self, data: dict, default_features: dict):
+    def table_setup(self):
         self.table.verticalHeader().hide()
         self.table.horizontalHeader().setStretchLastSection(True)
-        self.table.setModel(CustomTableModel(data, default_features))
+        self.table.setModel(
+            CustomTableModel(self.data, self.product, self.default_features)
+        )
         self.table.setShowGrid(False)
         self.table.setAlternatingRowColors(True)
         self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -783,7 +777,7 @@ class ToolBoxItem(QtWidgets.QWidget):
                     self.feature_line_edit.setHidden(False)
                     self.feature_selector.setHidden(True)
                 # disable button if feature already in table
-                if type in self.disabled_features:
+                if type in self.table.model().features_in_table():
                     self.set_add_control_enabled(False)
                 else:
                     self.set_add_control_enabled(True)
@@ -802,7 +796,6 @@ class ToolBoxItem(QtWidgets.QWidget):
         model: CustomTableModel = self.table.model()
         ok = model.insert_row(feature, value)
         if ok:
-            self.disabled_features.append(feature)
             self.set_add_control_enabled(False)
 
     def set_add_control_enabled(self, flag: bool):
@@ -832,16 +825,37 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         if data:
             self.data = data
         self.types_count()
+
+        # find brand, model and variant of all products in data
+        products = {}
+        for idx, entry in enumerate(self.data):
+            if entry["type"] == "P":
+                products[idx] = (entry["brand"], entry["model"], entry["variant"])
+
         for entry in self.data:
             if entry["type"] != "I":
                 continue
             counter = ""
             type = entry["features"]["type"]
+            found_product = None
+            if (
+                "model" in entry["features"]
+                and "brand" in entry["features"]
+                and "variant" in entry["features"]
+            ):
+                bind_features = (
+                    entry["features"]["brand"],
+                    entry["features"]["model"],
+                    entry["features"]["variant"],
+                )
+                for product in products:
+                    if products[product] == bind_features:
+                        found_product = self.data[product]
             if self.encountered_types_count[type] > 1:
                 self.encountered_types_current_count[type] += 1
                 counter = f" #{self.encountered_types_current_count[type]}"
             self.addItem(
-                ToolBoxItem(entry["features"], self.default_features),
+                ToolBoxItem(entry["features"], found_product, self.default_features),
                 f"{self.print_type_cool(type)}{counter}",
             )
             if type in ICON:
@@ -928,9 +942,10 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
 
 class CustomTableModel(QAbstractTableModel):
-    def __init__(self, data: dict, default_features: dict):
+    def __init__(self, item: dict, product: dict, default_features: dict):
         super().__init__()
-        self.features = data
+        self.features = item
+        self.product = product
         self.feature_keys = list(self.features.keys())
         self.default_features = default_features
 
@@ -1094,6 +1109,9 @@ class CustomTableModel(QAbstractTableModel):
             self.features[feature] = value
         self.endInsertRows()
         return ok
+
+    def features_in_table(self):
+        return self.feature_keys
 
 
 class JsonWidget(QtWidgets.QDialog):
