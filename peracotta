@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import Optional
+from typing import Optional, Any
 from urllib.error import URLError
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
@@ -722,6 +722,7 @@ class ToolBoxItem(QtWidgets.QWidget):
     def __init__(self, data: dict, default_features: dict):
         super().__init__()
         self.default_features = default_features
+        self.data = data
 
         self.main_layout = QtWidgets.QVBoxLayout()
         self.table = CustomTableView()
@@ -730,6 +731,8 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.feature_selector = QtWidgets.QComboBox()
         self.add_feature_button = QtWidgets.QPushButton("Add")
         self.add_feature_button.clicked.connect(self.add_feature)
+
+        self.disabled_features = list(data)
 
         # setup
         self.table_setup(data, default_features)
@@ -767,6 +770,7 @@ class ToolBoxItem(QtWidgets.QWidget):
                 self.default_features["names"][type]
                 == self.features_combo_box.currentText()
             ):
+                # set input type
                 if self.default_features["types"][type] == "e":
                     self.feature_line_edit.setHidden(True)
                     self.feature_selector.setHidden(False)
@@ -778,14 +782,33 @@ class ToolBoxItem(QtWidgets.QWidget):
                 else:
                     self.feature_line_edit.setHidden(False)
                     self.feature_selector.setHidden(True)
+                # disable button if feature already in table
+                if type in self.disabled_features:
+                    self.set_add_control_enabled(False)
+                else:
+                    self.set_add_control_enabled(True)
 
     def add_feature(self):
-        # if self.feature_line_edit.isVisible():
-        #     self.data[self.default_features["names"][self.feature_line_edit.text()]] = ""
-        pass
+        feature = list(self.default_features["types"])[
+            self.features_combo_box.currentIndex()
+        ]
+        if self.feature_line_edit.isVisible():
+            value = self.feature_line_edit.text()
+        elif self.feature_selector.isVisible():
+            value = self.feature_selector.currentText()
+        else:
+            return
+        self.data[feature] = value
+        model: CustomTableModel = self.table.model()
+        ok = model.insert_row(feature, value)
+        if ok:
+            self.disabled_features.append(feature)
+            self.set_add_control_enabled(False)
 
-    def remove_feature(self):
-        print(f"removing row {self.table.selectedIndexes()}")
+    def set_add_control_enabled(self, flag: bool):
+        self.add_feature_button.setEnabled(flag)
+        self.feature_line_edit.setEnabled(flag)
+        self.feature_selector.setEnabled(flag)
 
 
 class ToolBoxWidget(QtWidgets.QToolBox):
@@ -998,30 +1021,36 @@ class CustomTableModel(QAbstractTableModel):
                 return False
 
             name = self.feature_keys[row]
-            feature_type = self._get_feature_type(name)
-            if isinstance(value, str):
-                value = value.strip()
-
-            if feature_type == "e":
-                value = str(value).lower()
-                if value not in self.default_features["values"][name]:
-                    return False
-            elif feature_type == "d":
-                value = self._printable_to_value(name, value)
-                value = float(value)
-                if value <= 0:
-                    return False
-            elif feature_type == "i":
-                value = self._printable_to_value(name, value)
-                value = int(round(value))
-                if value <= 0:
-                    return False
-            else:
-                if len(value) <= 0:
-                    return False
-            self.features[name] = value
-            return True
+            ok, value = self.extreme_validation(name, value)
+            if ok:
+                self.features[name] = value
+            return ok
         return False
+
+    def extreme_validation(
+        self, name: str, value: [str, int, float]
+    ) -> [bool, [str, int, float]]:
+        feature_type = self._get_feature_type(name)
+        if isinstance(value, str):
+            value = value.strip()
+        if feature_type == "e":
+            value = str(value).lower()
+            if value not in self.default_features["values"][name]:
+                return False, None
+        elif feature_type == "d":
+            value = self._printable_to_value(name, value)
+            value = float(value)
+            if value <= 0:
+                return False, None
+        elif feature_type == "i":
+            value = self._printable_to_value(name, value)
+            value = int(round(value))
+            if value <= 0:
+                return False, None
+        else:
+            if len(value) <= 0:
+                return False, None
+        return True, value
 
     def removeRow(self, row: int, parent: QtCore.QModelIndex() = ...) -> bool:
         self.beginRemoveRows(parent, row, row)
@@ -1051,6 +1080,20 @@ class CustomTableModel(QAbstractTableModel):
     def _get_feature_type(self, name):
         feature_type = self.default_features["types"].get(name, "s")
         return feature_type
+
+    def insert_row(self, feature: str, value: str) -> bool:
+        if feature in self.feature_keys:
+            return False
+
+        row_index = self.rowCount()
+
+        self.beginInsertRows(QtCore.QModelIndex(), row_index, row_index)
+        ok, value = self.extreme_validation(feature, value)
+        if ok:
+            self.feature_keys.append(feature)
+            self.features[feature] = value
+        self.endInsertRows()
+        return ok
 
 
 class JsonWidget(QtWidgets.QDialog):
