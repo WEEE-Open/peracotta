@@ -232,25 +232,7 @@ def call_parsers(
 
 
 def split_products(parsed: list[dict]) -> list[dict]:
-    item_keys = [
-        "arrival-batch",
-        "cib",
-        "cib-old",
-        "cib-qr",
-        "data-erased",
-        "mac",
-        "notes",
-        "os-license-code",
-        "os-license-version",
-        "other-code",
-        "owner",
-        "smart-data",
-        "sn",
-        "software",
-        "surface-scan",
-        "working",
-        "wwn",
-    ]
+    item_keys = item_only_features()
     bmv = [
         "brand",
         "model",
@@ -292,6 +274,29 @@ def split_products(parsed: list[dict]) -> list[dict]:
 
     final_result += products
     return final_result
+
+
+def item_only_features():
+    item_keys = [
+        "arrival-batch",
+        "cib",
+        "cib-old",
+        "cib-qr",
+        "data-erased",
+        "mac",
+        "notes",
+        "os-license-code",
+        "os-license-version",
+        "other-code",
+        "owner",
+        "smart-data",
+        "sn",
+        "software",
+        "surface-scan",
+        "working",
+        "wwn",
+    ]
+    return item_keys
 
 
 def add_owner(parsed: list[dict], owner: str) -> list[dict]:

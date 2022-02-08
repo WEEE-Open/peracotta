@@ -942,15 +942,22 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
 
 class CustomTableModel(QAbstractTableModel):
-    def __init__(self, item: dict, product: dict, default_features: dict):
+    def __init__(self, item: dict, product: Optional[dict], default_features: dict):
         super().__init__()
-        self.features = item
-        self.product = product
-        self.feature_keys = list(self.features.keys())
+
+        self.ref_features = item
+        self.ref_product = product
+
+        if product:
+            self.features = product["features"].copy()
+        else:
+            self.features = {}
+        self.features.update(item)
+        self.feature_keys = list(self.features)
         self.default_features = default_features
 
     def rowCount(self, parent=QtCore.QModelIndex()):
-        return len(self.features)
+        return len(self.feature_keys)
 
     def columnCount(self, parent=QtCore.QModelIndex()):
         return 2
@@ -966,11 +973,7 @@ class CustomTableModel(QAbstractTableModel):
 
     def flags(self, index):
         if index.column() == 1:
-            return (
-                QtCore.Qt.ItemIsEditable
-                | QtCore.Qt.ItemIsEnabled
-                | QtCore.Qt.ItemIsSelectable
-            )
+            return QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
@@ -985,11 +988,18 @@ class CustomTableModel(QAbstractTableModel):
         return None
 
     def row_current_enum_value_for_editor(self, row: int):
-        if row < 0 or row >= len(self.feature_keys):
+        if row < 0 or row >= len(self.features):
             return None
 
         name = self.feature_keys[row]
         return self.features.get(name)
+
+    # def _row_to_name(self, row) -> Optional[str]:
+    #     for i, name in enumerate(self.combined):
+    #         if i == row:
+    #             return name
+    #         else:
+    #             return None
 
     def data(self, index, role=QtCore.Qt.DisplayRole):
         row = index.row()
@@ -1039,6 +1049,12 @@ class CustomTableModel(QAbstractTableModel):
             ok, value = self.extreme_validation(name, value)
             if ok:
                 self.features[name] = value
+                if self.ref_product and name in self.ref_product["features"]:
+                    self.ref_product["features"][name] = value
+                elif name in self.ref_features:
+                    self.ref_features[name] = value
+                else:
+                    self._add_to_ref(name, value)
             return ok
         return False
 
@@ -1072,7 +1088,13 @@ class CustomTableModel(QAbstractTableModel):
         try:
             removed = self.feature_keys.pop(row)
             try:
+                del self.feature_keys[removed]
                 del self.features[removed]
+                # TODO: remove from features but show product one if it exists
+                if removed in self.ref_features:
+                    del self.ref_features[removed]
+                if self.ref_product and removed in self.ref_product["features"]:
+                    del self.ref_product["features"][removed]
             except IndexError:
                 pass
         except IndexError:
@@ -1107,11 +1129,21 @@ class CustomTableModel(QAbstractTableModel):
         if ok:
             self.feature_keys.append(feature)
             self.features[feature] = value
+            self._add_to_ref(feature, value)
         self.endInsertRows()
         return ok
 
     def features_in_table(self):
         return self.feature_keys
+
+    def _add_to_ref(self, name: str, value):
+        if name in peracommon.item_only_features():
+            target = self.ref_features
+        elif self.ref_product:
+            target = self.ref_product["features"]
+        else:
+            target = self.ref_features
+        target[name] = value
 
 
 class JsonWidget(QtWidgets.QDialog):
