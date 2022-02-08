@@ -102,8 +102,7 @@ class Ui(QtWidgets.QMainWindow):
                 QtWidgets.QMessageBox.critical(
                     self,
                     title,
-                    message
-                    + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.",
+                    message + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.",
                 )
                 exit(1)
             else:
@@ -111,9 +110,7 @@ class Ui(QtWidgets.QMainWindow):
 
         # Output toolbox
         self.outputWidget = self.findChild(QtWidgets.QWidget, "outputWidget")
-        self.itemToolBox = ToolBoxWidget(
-            self.data, self.useful_default_features, self.encountered_types_count
-        )
+        self.itemToolBox = ToolBoxWidget(self.data, self.useful_default_features, self.encountered_types_count)
         self.outputWidget.layout().addWidget(self.itemToolBox)
 
         # App settings
@@ -123,17 +120,13 @@ class Ui(QtWidgets.QMainWindow):
         self.gpuGroupBox = self.findChild(QtWidgets.QGroupBox, "gpuGroupBox")
 
         # Radio buttons
-        self.discreteRadioBtn = self.findChild(
-            QtWidgets.QRadioButton, "discreteRadioBtn"
-        )
+        self.discreteRadioBtn = self.findChild(QtWidgets.QRadioButton, "discreteRadioBtn")
         self.intCpuRadioBtn = self.findChild(QtWidgets.QRadioButton, "intCpuRadioBtn")
         self.intMoboRadioBtn = self.findChild(QtWidgets.QRadioButton, "intMoboRadioBtn")
 
         # Selectors area
         self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
-        self.selectorsScrollArea = self.findChild(
-            QtWidgets.QScrollArea, "selectorsScrollArea"
-        )
+        self.selectorsScrollArea = self.findChild(QtWidgets.QScrollArea, "selectorsScrollArea")
 
         self.addItemComboBox = self.findChild(QtWidgets.QComboBox, "addItemComboBox")
         self.addItemComboBox.addItem("Select Type --")
@@ -174,15 +167,11 @@ class Ui(QtWidgets.QMainWindow):
         # File actions
         self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
         self.actionOpen.triggered.connect(self.open_json)
-        self.actionOpenLastJson = self.findChild(
-            QtWidgets.QAction, "actionOpenLastJson"
-        )
+        self.actionOpenLastJson = self.findChild(QtWidgets.QAction, "actionOpenLastJson")
         self.actionOpenLastJson.triggered.connect(self.open_latest_json)
         self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
-        self.actionLoadRawFiles = self.findChild(
-            QtWidgets.QAction, "actionLoadRawFiles"
-        )
+        self.actionLoadRawFiles = self.findChild(QtWidgets.QAction, "actionLoadRawFiles")
         self.actionLoadRawFiles.triggered.connect(self.load_raw_files)
         self.actionExit = self.findChild(QtWidgets.QAction, "actionExit")
         self.actionExit.triggered.connect(self.close)
@@ -301,9 +290,7 @@ class Ui(QtWidgets.QMainWindow):
         if error:
             raise Exception(error)
         if not has_file and not auto_update:
-            raise Exception(
-                "features.json file not present and automatic download is disabled"
-            )
+            raise Exception("features.json file not present and automatic download is disabled")
 
     def _parse_features_file(self):
         with open(PATH["FEATURES"], "r") as file:
@@ -333,9 +320,7 @@ class Ui(QtWidgets.QMainWindow):
     def open_url(self, url_type: str):
         url = QtCore.QUrl(url_type)
         if not QtGui.QDesktopServices.openUrl(url):
-            QtWidgets.QMessageBox.warning(
-                self, "Cannot Open Url", f"Could not open url {url_type}"
-            )
+            QtWidgets.QMessageBox.warning(self, "Cannot Open Url", f"Could not open url {url_type}")
 
     def set_theme(self, theme: str):
         if theme == "default":
@@ -360,9 +345,7 @@ class Ui(QtWidgets.QMainWindow):
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
         if bulk_id == "":
             bulk_id = None
-        uploader = Uploader(
-            self.data, self.tarallo_url, self.tarallo_token, bulk_id, checkbox
-        )
+        uploader = Uploader(peracommon.make_tree(self.data), self.tarallo_url, self.tarallo_token, bulk_id, checkbox)
         uploader.successEvent.connect(self.tarallo_success)
         uploader.failureEvent.connect(self.tarallo_failure)
 
@@ -410,15 +393,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def generate(self):
         def warning():
-            QtWidgets.QMessageBox.warning(
-                self, "Warning", "Please, select one of the GPU locations to proceed."
-            )
+            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
 
-        if not (
-            self.discreteRadioBtn.isChecked()
-            or self.intCpuRadioBtn.isChecked()
-            or self.intMoboRadioBtn.isChecked()
-        ):
+        if not (self.discreteRadioBtn.isChecked() or self.intCpuRadioBtn.isChecked() or self.intMoboRadioBtn.isChecked()):
             warning()
             return
 
@@ -439,9 +416,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def save_json(self):
         if self.data is None:
-            QtWidgets.QMessageBox.warning(
-                self, "Warning", "There is nothing to be saved"
-            )
+            QtWidgets.QMessageBox.warning(self, "Warning", "There is nothing to be saved")
             return
         the_dir = QtWidgets.QFileDialog.getSaveFileName(
             self,
@@ -452,15 +427,11 @@ class Ui(QtWidgets.QMainWindow):
         if the_dir[0] == "":
             return
         with open(the_dir[0], "w") as file:
-            file.write(f"{json.dumps(self.data)}")
-            file.flush()
-            file.close()
+            file.write(f"{json.dumps(peracommon.make_tree(self.data))}")
 
     def tarallo_dialog(self, bulk_id=str()):
         if self.data is None:
-            QtWidgets.QMessageBox.warning(
-                self, "Warning", "There is nothing to be uploaded"
-            )
+            QtWidgets.QMessageBox.warning(self, "Warning", "There is nothing to be uploaded")
             return
         if not bulk_id:
             bulk_id = ""
@@ -471,21 +442,8 @@ class Ui(QtWidgets.QMainWindow):
         if self.addItemComboBox.currentIndex() == 0:
             return
         else:
-            type = self.addItemComboBox.currentText().lower()
-            if not self.encountered_types_count[type]:
-                counter = ""
-            else:
-                counter = f" #{self.encountered_types_count[type] + 1}"
-            self.encountered_types_count[type] += 1
-
-            data = {"type": self.addItemComboBox.currentText().lower()}
-            self.itemToolBox.addItem(
-                ToolBoxItem(data, self.useful_default_features),
-                f"{self.print_type_cool(type)}{counter}",
-            )
-            if type in ICON:
-                icon = QtGui.QIcon(ICON[type])
-                self.itemToolBox.setItemIcon(self.itemToolBox.count() - 1, icon)
+            item_type = self.addItemComboBox.currentText().lower()
+            self.itemToolBox.add_item(item_type=item_type, single_item=True)
             if self.data is None:
                 self.data = []
             self.data.append({})
@@ -524,7 +482,7 @@ class Ui(QtWidgets.QMainWindow):
     def show_json(self):
         if self.data is None:
             return
-        JsonWidget(self.data)
+        JsonWidget(peracommon.make_tree(self.data), self.size())
 
     def open_website(self):
         self.open_url(URL["website"])
@@ -594,14 +552,10 @@ class Peracotta(QtCore.QThread):
                 generate_win_files()
                 self.process_win_files()
             else:
-                message = peracommon.check_required_files(
-                    self.generated_files_path, is_gui=True
-                )
+                message = peracommon.check_required_files(self.generated_files_path, is_gui=True)
                 if message != "":
                     QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
-                self.generated_files_path = peracommon.generate_files(
-                    self.the_dir, self.sudo_passwd
-                )
+                self.generated_files_path = peracommon.generate_files(self.the_dir, self.sudo_passwd)
                 if self.generated_files_path is None:
                     print("Wrong root password. Terminating peracotta...")
                     return
@@ -706,9 +660,7 @@ class CustomTableView(QtWidgets.QTableView):
     def remove_row(self):
         print(f"{self.selectedIndexes()[1].row()}")
         print(f"{self.selectedIndexes()[1].parent()}")
-        self.model().removeRow(
-            self.selectedIndexes()[1].row(), self.selectedIndexes()[1].parent()
-        )
+        self.model().removeRow(self.selectedIndexes()[1].row(), self.selectedIndexes()[1].parent())
 
 
 class ToolBoxItem(QtWidgets.QWidget):
@@ -734,9 +686,7 @@ class ToolBoxItem(QtWidgets.QWidget):
     def table_setup(self):
         self.table.verticalHeader().hide()
         self.table.horizontalHeader().setStretchLastSection(True)
-        self.table.setModel(
-            CustomTableModel(self.data, self.product, self.default_features)
-        )
+        self.table.setModel(CustomTableModel(self.data, self.product, self.default_features))
         self.table.setShowGrid(False)
         self.table.setAlternatingRowColors(True)
         self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -760,19 +710,14 @@ class ToolBoxItem(QtWidgets.QWidget):
 
     def set_input_type(self):
         for type in self.default_features["types"]:
-            if (
-                self.default_features["names"][type]
-                == self.features_combo_box.currentText()
-            ):
+            if self.default_features["names"][type] == self.features_combo_box.currentText():
                 # set input type
                 if self.default_features["types"][type] == "e":
                     self.feature_line_edit.setHidden(True)
                     self.feature_selector.setHidden(False)
                     self.feature_selector.clear()
                     for value in self.default_features["values"][type]:
-                        self.feature_selector.addItem(
-                            self.default_features["values"][type][value]
-                        )
+                        self.feature_selector.addItem(self.default_features["values"][type][value])
                 else:
                     self.feature_line_edit.setHidden(False)
                     self.feature_selector.setHidden(True)
@@ -783,9 +728,7 @@ class ToolBoxItem(QtWidgets.QWidget):
                     self.set_add_control_enabled(True)
 
     def add_feature(self):
-        feature = list(self.default_features["types"])[
-            self.features_combo_box.currentIndex()
-        ]
+        feature = list(self.default_features["types"])[self.features_combo_box.currentIndex()]
         if self.feature_line_edit.isVisible():
             value = self.feature_line_edit.text()
         elif self.feature_selector.isVisible():
@@ -805,9 +748,7 @@ class ToolBoxItem(QtWidgets.QWidget):
 
 
 class ToolBoxWidget(QtWidgets.QToolBox):
-    def __init__(
-        self, data: list[dict], default_features: dict, encountered_types_count: dict
-    ):
+    def __init__(self, data: list[dict], default_features: dict, encountered_types_count: dict):
         super().__init__()
         self.clear()
         self.data = data
@@ -833,42 +774,59 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                 products[idx] = (entry["brand"], entry["model"], entry["variant"])
 
         for entry in self.data:
-            if entry["type"] != "I":
-                continue
-            counter = ""
-            type = entry["features"]["type"]
-            found_product = None
-            if (
-                "model" in entry["features"]
-                and "brand" in entry["features"]
-                and "variant" in entry["features"]
-            ):
-                bind_features = (
-                    entry["features"]["brand"],
-                    entry["features"]["model"],
-                    entry["features"]["variant"],
-                )
-                for product in products:
-                    if products[product] == bind_features:
-                        found_product = self.data[product]
-            if self.encountered_types_count[type] > 1:
-                self.encountered_types_current_count[type] += 1
-                counter = f" #{self.encountered_types_current_count[type]}"
-            self.addItem(
-                ToolBoxItem(entry["features"], found_product, self.default_features),
-                f"{self.print_type_cool(type)}{counter}",
-            )
-            if type in ICON:
-                icon = QtGui.QIcon(ICON[type])
-                self.setItemIcon(self.count() - 1, icon)
-
-            self.set_context_menu()
+            self.add_item(products, entry)
 
         # remove scroll in toolbox's scrollAreas
         for scroll_area in self.findChildren(QtWidgets.QScrollArea):
             scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
             scroll_area.verticalScrollBar().hide()
             scroll_area.verticalScrollBar().resize(0, 0)
+
+    def add_item(self, products: Optional[dict] = None, item: Optional[dict] = None, item_type: Optional[str] = None, single_item: Optional[bool] = False):
+        if single_item:
+            self.data.append(
+                {
+                    "type": "I",
+                    "features": {
+                        "type": item_type,
+                    },
+                }
+            )
+
+        if item and item["type"] != "I":
+            return
+
+        counter = ""
+        found_product = None
+
+        if item_type is None and item:
+            item_type = item["features"]["type"]
+            if "model" in item["features"] and "brand" in item["features"] and "variant" in item["features"]:
+                bind_features = (
+                    item["features"]["brand"],
+                    item["features"]["model"],
+                    item["features"]["variant"],
+                )
+                if products is not None:
+                    for product in products:
+                        if products[product] == bind_features:
+                            found_product = self.data[product]
+        if self.encountered_types_count[item_type] > 1:
+            self.encountered_types_current_count[item_type] += 1
+            counter = f" #{self.encountered_types_current_count[item_type]}"
+        if single_item:
+            features = self.data[-1]["features"]
+        else:
+            features = item["features"]
+        self.addItem(
+            ToolBoxItem(features, found_product, self.default_features),
+            f"{self.print_type_cool(item_type)}{counter}",
+        )
+        if item_type in ICON:
+            icon = QtGui.QIcon(ICON[item_type])
+            self.setItemIcon(self.count() - 1, icon)
+
+        self.set_context_menu()
 
     def set_context_menu(self):
         counter = 0
@@ -921,15 +879,55 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                     i += 1
 
     def removeItem(self, index: int) -> None:
-        super().removeItem(index)
         i = 0
-        for idx, entry in enumerate(self.data):
+        data_index = None
+        for data_index, entry in enumerate(self.data):
             if entry["type"] != "I":
                 continue
             if index == i:
-                del self.data[idx]
                 break
             i += 1
+
+        item_to_remove = self.data[data_index]
+        item_b = item_to_remove["features"].get("brand")
+        item_m = item_to_remove["features"].get("model")
+        item_v = item_to_remove["features"].get("variant")
+        counter = 0
+        product_index = None
+        deleted = False
+        if item_b and item_m and item_v:
+            for idx, entry in enumerate(self.data):
+                # count items with the same product
+                if entry["type"] == "I" and idx != data_index:
+                    test_b = entry["features"].get("brand")
+                    test_m = entry["features"].get("model")
+                    test_v = entry["features"].get("variant")
+                    if item_b == test_b and item_m == test_m and item_v == test_v:
+                        counter += 1
+                # find the product itself
+                elif entry["type"] == "P":
+                    p_test_b = entry.get("brand")
+                    p_test_m = entry.get("model")
+                    p_test_v = entry.get("variant")
+                    if item_b == p_test_b and item_m == p_test_m and item_v == p_test_v:
+                        product_index = idx
+            if counter <= 0 and product_index:
+                # If both item and product have to be deleted, delete them
+                # without f...messing up indexes
+                if data_index >= product_index:
+                    del self.data[data_index]
+                    del self.data[product_index]
+                else:
+                    del self.data[product_index]
+                    del self.data[data_index]
+                deleted = True
+
+        # All other cases (item with no product, product not found, other items linked to product):
+        # just delete the product
+        if not deleted:
+            del self.data[data_index]
+
+        super().removeItem(index)
 
     def types_count(self, data: list = None):
         if data is not None:
@@ -1006,11 +1004,7 @@ class CustomTableModel(QAbstractTableModel):
         if row < 0 or row >= len(self.feature_keys):
             return None
 
-        if (
-            role == QtCore.Qt.DisplayRole
-            or role == QtCore.Qt.EditRole
-            or role == QtCore.Qt.UserRole
-        ):
+        if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole or role == QtCore.Qt.UserRole:
             column = index.column()
             name = self.feature_keys[row]
             if column == 0:
@@ -1058,9 +1052,7 @@ class CustomTableModel(QAbstractTableModel):
             return ok
         return False
 
-    def extreme_validation(
-        self, name: str, value: [str, int, float]
-    ) -> [bool, [str, int, float]]:
+    def extreme_validation(self, name: str, value: [str, int, float]) -> [bool, [str, int, float]]:
         feature_type = self._get_feature_type(name)
         if isinstance(value, str):
             value = value.strip()
@@ -1084,6 +1076,10 @@ class CustomTableModel(QAbstractTableModel):
         return True, value
 
     def removeRow(self, row: int, parent: QtCore.QModelIndex() = ...) -> bool:
+        # TODO: remove this limitation asd
+        if not self._pre_delete_check(row):
+            return False
+
         self.beginRemoveRows(parent, row, row)
         try:
             removed = self.feature_keys.pop(row)
@@ -1103,13 +1099,18 @@ class CustomTableModel(QAbstractTableModel):
         self.endRemoveRows()
         return True
 
+    def _pre_delete_check(self, row) -> bool:
+        feature_name = self.feature_keys[row]
+        if self.features.get(feature_name) in ("brand", "model", "variant"):
+            if self.ref_product:
+                return False
+        return True
+
     @staticmethod
     def _printable_to_value(name, value):
         # noinspection PyBroadException
         try:
-            value = prettyprinter.printable_to_value(
-                prettyprinter.name_to_unit(name), value
-            )
+            value = prettyprinter.printable_to_value(prettyprinter.name_to_unit(name), value)
         except BaseException:
             value = 0
         return value
@@ -1147,7 +1148,7 @@ class CustomTableModel(QAbstractTableModel):
 
 
 class JsonWidget(QtWidgets.QDialog):
-    def __init__(self, data):
+    def __init__(self, data: list[dict], window_size: QtCore.QSize):
         super().__init__()
         layout = QtWidgets.QVBoxLayout()
         text_edit = QtWidgets.QPlainTextEdit()
@@ -1156,6 +1157,8 @@ class JsonWidget(QtWidgets.QDialog):
         text_edit.setReadOnly(True)
         layout.addWidget(text_edit)
         self.setLayout(layout)
+        new_size = QtCore.QSize(int(window_size.width() * 0.8), int(window_size.height() * 0.8))
+        self.resize(new_size)
         self.exec_()
 
 
@@ -1173,9 +1176,7 @@ class TaralloUploadDialog(QtWidgets.QDialog):
         self.okButton.clicked.connect(self.ok_signal)
         self.cancelButton = self.findChild(QtWidgets.QPushButton, "cancelButton")
         self.cancelButton.clicked.connect(self.cancel_signal)
-        self.overwriteCheckBox = self.findChild(
-            QtWidgets.QCheckBox, "overwriteCheckBox"
-        )
+        self.overwriteCheckBox = self.findChild(QtWidgets.QCheckBox, "overwriteCheckBox")
 
     def ok_signal(self):
         self.signal.emit(self.overwriteCheckBox.isChecked(), self.bulkLineEdit.text())
@@ -1224,26 +1225,15 @@ def tarallo_success_dialog(url: str):
         "Upload successful",
         "Upload successful! Now go to TARALLO and finish the job.",
     )
-    std_width = (
-        QtWidgets.QApplication.style()
-        .standardIcon(QtWidgets.QStyle.SP_MessageBoxWarning)
-        .availableSizes()[-1]
-        .width()
-    )
-    dialog.setIconPixmap(
-        QtGui.QPixmap("data/pear_emoji.png").scaledToWidth(
-            std_width, QtCore.Qt.SmoothTransformation
-        )
-    )
+    std_width = QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxWarning).availableSizes()[-1].width()
+    dialog.setIconPixmap(QtGui.QPixmap("data/pear_emoji.png").scaledToWidth(std_width, QtCore.Qt.SmoothTransformation))
     dialog.setStandardButtons(QtWidgets.QMessageBox.Ok)
     view_on_tarallo_button = dialog.addButton("View on TARALLO", dialog.ActionRole)
     dialog.exec_()
     if dialog.clickedButton() == view_on_tarallo_button:
         url = QtCore.QUrl(url)
         if not QtGui.QDesktopServices.openUrl(url):
-            QtWidgets.QMessageBox.warning(
-                dialog, "Cannot Open Url", f"Could not open url {url}"
-            )
+            QtWidgets.QMessageBox.warning(dialog, "Cannot Open Url", f"Could not open url {url}")
         return True
     return False
 
