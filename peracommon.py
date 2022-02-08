@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import copy
 import os
 import subprocess
 import sys
@@ -77,9 +78,7 @@ class ParserComponents(Enum):
 
 
 def check_dependencies_for_generate_files():
-    retval = os.system(
-        "dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null"
-    )
+    retval = os.system("dpkg -s pciutils i2c-tools mesa-utils smartmontools dmidecode > /dev/null")
     return retval == 0
 
 
@@ -87,10 +86,10 @@ def generate_files(path: str, sudo_passwd: str = None):
     os.makedirs(path, exist_ok=True)
 
     if os.geteuid() != 0 and sudo_passwd is not None:
-        p = subprocess.Popen(["sudo", "-S", "scripts/generate_files.sh", path], stderr=subprocess.PIPE, stdout=subprocess.PIPE,  stdin=subprocess.PIPE)
+        p = subprocess.Popen(["sudo", "-S", "scripts/generate_files.sh", path], stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
         try:
-            out, err = p.communicate(input=(sudo_passwd + '\n').encode(), timeout=5)
-            if out == b'':
+            out, err = p.communicate(input=(sudo_passwd + "\n").encode(), timeout=5)
+            if out == b"":
                 return None
         except subprocess.TimeoutExpired:
             p.kill()
@@ -189,9 +188,7 @@ def call_parsers(
     if sys.platform == "win32":
         pass
     else:
-        if not components.isdisjoint(
-            {ParserComponents.CASE, ParserComponents.MOTHERBOARD}
-        ):
+        if not components.isdisjoint({ParserComponents.CASE, ParserComponents.MOTHERBOARD}):
             result += parse_motherboard(
                 read_file("baseboard.txt"),
                 read_file("connector.txt"),
@@ -205,9 +202,7 @@ def call_parsers(
                     parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""),
                 )
         if ParserComponents.CASE in components:
-            result += parse_case(
-                read_file("chassis.txt"), _find_component("motherboard", result)
-            )
+            result += parse_case(read_file("chassis.txt"), _find_component("motherboard", result))
         if ParserComponents.CPU in components:
             result += parse_lscpu(read_file("lscpu.txt"))
             if gpu_location == GpuLocation.CPU:
@@ -217,9 +212,7 @@ def call_parsers(
                     parse_lspci_and_glxinfo(False, read_file("lspci.txt"), ""),
                 )
         if ParserComponents.GPU in components and gpu_location == GpuLocation.DISCRETE:
-            result += parse_lspci_and_glxinfo(
-                True, read_file("lspci.txt"), read_file("glxinfo.txt"), interactive
-            )
+            result += parse_lspci_and_glxinfo(True, read_file("lspci.txt"), read_file("glxinfo.txt"), interactive)
         if ParserComponents.RAM in components:
             result += parse_decode_dimms(read_file("dimms.txt"), interactive)
         if ParserComponents.HDD in components or ParserComponents.SSD in components:
@@ -259,9 +252,7 @@ def split_products(parsed: list[dict]) -> list[dict]:
                 new_product.update(
                     {
                         "type": "P",
-                        "features": {
-                            k: v for k, v in item.items() if k not in bmv + item_keys
-                        },
+                        "features": {k: v for k, v in item.items() if k not in bmv + item_keys},
                     }
                 )
                 products.append(new_product)
@@ -337,9 +328,7 @@ def _do_cleanup(result: list[dict], verbose: bool = False) -> list[dict]:
         by_type[the_type].append(item)
 
         if verbose and len(removed) > 0:
-            print(
-                f"WARNING: Removed from {item.get('type', 'item with no type')}: {', '.join(removed)}."
-            )
+            print(f"WARNING: Removed from {item.get('type', 'item with no type')}: {', '.join(removed)}.")
 
     for case in by_type.get("case", []):
         for mobo in by_type.get("motherboard", []):
@@ -367,16 +356,8 @@ def _do_cleanup(result: list[dict], verbose: bool = False) -> list[dict]:
                             variant1 = component1.get("variant", "")
                             variant2 = component2.get("variant", "")
                             if variant1 == variant2:
-                                component1["variant"] = (
-                                    variant1.rstrip()
-                                    .join(f"_{component1['type']}")
-                                    .lstrip("_")
-                                )
-                                component2["variant"] = (
-                                    variant2.rstrip()
-                                    .join(f"_{component2['type']}")
-                                    .lstrip("_")
-                                )
+                                component1["variant"] = variant1.rstrip().join(f"_{component1['type']}").lstrip("_")
+                                component2["variant"] = variant2.rstrip().join(f"_{component2['type']}").lstrip("_")
 
     return result
 
@@ -412,6 +393,7 @@ def unmake_tree(items_and_products: list[dict]) -> list[dict]:
 
 
 def make_tree(items_and_products: list[dict]) -> list[dict]:
+    items_and_products = copy.deepcopy(items_and_products)
     by_type = {}
     products = []
 
@@ -481,13 +463,9 @@ def check_required_files(path, is_gui: bool = False):
                 break
         else:
             if is_gui:
-                error = f"Missing file {file}\n"\
-                        f"Please re-run this script without the -f or --files option.[/]"
+                error = f"Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]"
                 return error
             else:
-                print(
-                    f"[bold red]Missing file {file}\n"
-                    f"Please re-run this script without the -f or --files option.[/]"
-                )
+                print(f"[bold red]Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]")
                 exit(1)
-    return ''
+    return ""
