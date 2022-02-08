@@ -1,34 +1,32 @@
 #!/usr/bin/env python3
-import os
 
 from parsers import read_smartctl
 from parsers import read_decode_dimms
 from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
+from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/Thinkpad-R500/"
 
 
 def test_lspci():
-    expect = {
+    expect = [{
         "type": "graphics-card",
         "working": "yes",
         "brand": "Lenovo",
         "model": "Mobile 4 Series Chipset",
-        "internal-name": "",
-        "capacity-byte": None,
         "brand-manufacturer": "Intel",
-    }
+    }]
     output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, os.path.join(filedir, "lspci.txt"), os.path.join(filedir, "glxinfo.txt")
+        False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
     )
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = {
+    expect = [{
         "type": "cpu",
         "working": "yes",
         "isa": "x86-64",
@@ -37,14 +35,14 @@ def test_lscpu():
         "core-n": 2,
         "thread-n": 2,
         "frequency-hertz": 2400000000,
-    }
-    output = read_lscpu.parse_lscpu(os.path.join(filedir, "lscpu.txt"))
+    }]
+    output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
 
 
 def test_ram():
-    output = read_decode_dimms.parse_decode_dimms(os.path.join(filedir, "dimms.txt"))
+    output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "dimms.txt"))
 
     assert len(output) == 0
 
@@ -57,13 +55,13 @@ def test_baseboard():
         "model": "2718V8C",
         "sn": "VQ1FF05G1WA",
     }
-    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(read_file(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(read_file(filedir, "baseboard.txt"))
 
     expect = {
         "type": "motherboard",
@@ -77,24 +75,22 @@ def test_connector():
         "ethernet-ports-n": 1,
         "firewire-ports-n": 1,
         "rj11-ports-n": 1,
-        "notes": "",
-    }
+            }
     output = read_dmidecode._get_connectors(
-        os.path.join(filedir, "connector.txt"), baseboard
+        read_file(filedir, "connector.txt"), baseboard
     )
 
     assert output == expect
 
 
 def test_chassis():
-    expect = {
+    expect = [{
         "type": "case",
         "brand": "LENOVO",
-        "model": "",
         "sn": "Not Available",
         "motherboard-form-factor": "proprietary-laptop",
-    }
-    output = read_dmidecode.parse_case(os.path.join(filedir, "chassis.txt"))
+    }]
+    output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
 
@@ -112,10 +108,9 @@ def test_smartctl():
             "spin-rate-rpm": 5400,
             "smart-data": "ok",
             "sata-ports-n": 1,
-            "notes": "Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  1 Raw_Read_Error_Rate     POSR--   100   100   046    -    50270\n  2 Throughput_Performance  P-S---   100   100   030    -    25231360\n  3 Spin_Up_Time            PO----   100   100   025    -    0\n  4 Start_Stop_Count        -O--CK   099   099   000    -    3215\n  5 Reallocated_Sector_Ct   PO--CK   100   100   024    -    0 (2100 0)\n  7 Seek_Error_Rate         POSR--   100   100   047    -    1565\n  8 Seek_Time_Performance   P-S---   100   100   019    -    0\n  9 Power_On_Hours          -O--CK   088   088   000    -    6251\n 10 Spin_Retry_Count        PO--C-   100   100   020    -    0\n 12 Power_Cycle_Count       -O--CK   100   100   000    -    3007\n192 Power-Off_Retract_Count -O--CK   100   100   000    -    85\n193 Load_Cycle_Count        -O--CK   100   100   000    -    19460\n194 Temperature_Celsius     -O---K   100   100   000    -    33 (Min/Max 9/45)\n195 Hardware_ECC_Recovered  -O-RC-   100   100   000    -    185\n196 Reallocated_Event_Count -O--CK   100   100   000    -    0 (0 15680)\n197 Current_Pending_Sector  -O--C-   100   100   000    -    0\n198 Offline_Uncorrectable   ----C-   100   100   000    -    0\n199 UDMA_CRC_Error_Count    -OSRCK   200   253   000    -    1\n200 Multi_Zone_Error_Rate   POSR--   100   100   060    -    15690\n203 Run_Out_Cancel          -O----   100   100   000    -    1529060392964\n240 Head_Flying_Hours       -OSRCK   200   200   000    -    0\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning",
             "hdd-form-factor": "2.5-7mm",
         }
     ]
-    output = read_smartctl.read_smartctl(filedir)
+    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
 
     assert output == expect

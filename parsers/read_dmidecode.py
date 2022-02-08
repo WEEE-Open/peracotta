@@ -162,7 +162,6 @@ def _get_connectors(connectors_file: str, baseboard: dict, interactive: bool = F
                     print(warning)
                 warnings.append(warning)
 
-    warnings = "\n".join(warnings)
     connectors_clean = {}
     # Keys to avoid changing dict size at runtime (raises an exception)
     for connector in connectors:
@@ -172,9 +171,13 @@ def _get_connectors(connectors_file: str, baseboard: dict, interactive: bool = F
         else:
             connectors_clean[connector] = connectors[connector]
 
-    # Dark magic: https://stackoverflow.com/a/26853961
-    return {**baseboard, **connectors_clean, **{"notes": warnings}}
-
+    if len(warnings) > 0:
+        warnings = "\n".join(warnings)
+        # Dark magic: https://stackoverflow.com/a/26853961
+        return {**baseboard, **connectors_clean, **{"notes": warnings}}
+    else:
+        # Somewhat less dark magic
+        return {**baseboard, **connectors_clean}
 
 def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]:
     mergeit = {
@@ -288,7 +291,9 @@ def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> list[dict]:
 
     for line in chassis_file.splitlines():
         if "Manufacturer" in line:
-            chassis["brand"] = line.split("Manufacturer:")[1].strip()
+            manufacturer = line.split("Manufacturer:")[1].strip()
+            if len(manufacturer) > 0:
+                chassis["brand"] = manufacturer
 
         # This is Desktop, Laptop, etc...
         elif "Type: " in line:
@@ -301,7 +306,11 @@ def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> list[dict]:
                     mobo["motherboard-form-factor"] = "proprietary-laptop"
 
         elif "Serial Number" in line:
-            chassis["sn"] = line.split("Serial Number:")[1].strip().strip(".")
+            sn = line.split("Serial Number:")[1].strip().strip(".")
+            if len(sn.strip("0")) <= 0:
+                sn = ""
+            if len(sn) > 0:
+                chassis["sn"] = sn
 
     for key, value in chassis.items():
         if value == "Unknown":

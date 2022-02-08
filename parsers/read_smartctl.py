@@ -57,7 +57,7 @@ def parse_smartctl(file: str, interactive: bool = False) -> list[dict]:
 
 # TODO: rewrite this entirely
 
-# THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl-dev-sda.txt,
+# THE PATH HERE ONLY POINTS TO THE DIRECTORY, eg. tmp, AND NOT TO THE FILE, e.g. tmp/smartctl.txt,
 # SINCE THERE MAY BE MULTIPLE FILES
 def read_smartctl(path: str, interactive: bool = False):
     disks = []

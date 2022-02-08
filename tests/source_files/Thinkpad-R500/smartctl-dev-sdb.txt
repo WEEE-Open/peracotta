@@ -1,8 +1,0 @@
-smartctl 6.6 2016-05-31 r4324 [i686-linux-4.18.0-15-generic] (local build)
-Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
-
-/dev/sdb: Unknown USB bridge [0x090c:0x3267 (0x1100)]
-Please specify device type with the -d option.
-
-Use smartctl -h to get a usage summary
-

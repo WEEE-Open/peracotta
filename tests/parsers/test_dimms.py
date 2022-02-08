@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
-import os
 
-from parsers import read_smartctl
 from parsers import read_decode_dimms
-from parsers import read_dmidecode
-from parsers import read_lspci_and_glxinfo
-from parsers import read_lscpu
+from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/decode-dimms/"
 
@@ -38,7 +34,7 @@ def test_ecc_ram1():
         },
     ]
     output = read_decode_dimms.parse_decode_dimms(
-        os.path.join(filedir, "ECC/R451-R450.txt")
+        read_file(filedir, "ECC/R451-R450.txt")
     )
 
     assert output == expect
@@ -72,7 +68,7 @@ def test_ecc_ram1_not_an_hex():
         },
     ]
     output = read_decode_dimms.parse_decode_dimms(
-        os.path.join(filedir, "ECC/R451-R450-notanhex.txt")
+        read_file(filedir, "ECC/R451-R450-notanhex.txt")
     )
 
     assert output == expect
@@ -84,7 +80,6 @@ def test_ecc_ram2():
             "type": "ram",
             "working": "yes",
             "brand": "Kingston",
-            "model": "Undefined",
             "sn": "2853609420",
             "frequency-hertz": 667000000,
             "capacity-byte": 1073741824,
@@ -96,7 +91,6 @@ def test_ecc_ram2():
             "type": "ram",
             "working": "yes",
             "brand": "Kingston",
-            "model": "Undefined",
             "sn": "2836829644",
             "frequency-hertz": 667000000,
             "capacity-byte": 1073741824,
@@ -106,7 +100,7 @@ def test_ecc_ram2():
         },
     ]
     output = read_decode_dimms.parse_decode_dimms(
-        os.path.join(filedir, "ECC/R480-R479.txt")
+        read_file(filedir, "ECC/R480-R479.txt")
     )
 
     assert output == expect
@@ -164,7 +158,7 @@ def test_ram1():
         },
     ]
     output = read_decode_dimms.parse_decode_dimms(
-        os.path.join(filedir, "non ECC/R469-R470-R471-R472.txt")
+        read_file(filedir, "non ECC/R469-R470-R471-R472.txt")
     )
 
     assert output == expect

@@ -28,7 +28,9 @@ MEANINGLESS_VALUES = (
     "unknown",
     "undefined",
     "no enclosure",
+    "not available",
     "chassis manufacture",
+    "chassis serial number",
     "to be filled by o.e.m",
     "to be filled by o.e.m.",
 )
@@ -173,7 +175,7 @@ def call_parsers(
     generated_files_path = generated_files_path.rstrip("/")
 
     def read_file(name: str) -> str:
-        path = f"{generated_files_path}/{name}"
+        path = os.path.join(generated_files_path, name)
         try:
             with open(path, "r") as f:
                 output = f.read()

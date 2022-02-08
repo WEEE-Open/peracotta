@@ -5,30 +5,28 @@ from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
 from parsers import read_smartctl
-import os
+from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/77/"
 
 
 def test_77_lspci():
-    expect = {
+    expect = [{
         "type": "graphics-card",
         "working": "yes",
         "brand-manufacturer": "SiS",
         "brand": "ASUSTeK Computer Inc.",
-        "internal-name": "",
         "model": "771/671",
-        "capacity-byte": None,
-    }
+    }]
     output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, os.path.join(filedir, "lspci.txt"), os.path.join(filedir, "glxinfo.txt")
+        False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
     )
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = {
+    expect = [{
         "type": "cpu",
         "working": "yes",
         "isa": "x86-32",
@@ -37,8 +35,8 @@ def test_lscpu():
         "core-n": 1,
         "thread-n": 1,
         "frequency-hertz": 2800000000,
-    }
-    output = read_lscpu.parse_lscpu(os.path.join(filedir, "lscpu.txt"))
+    }]
+    output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
 
@@ -51,13 +49,13 @@ def test_77_baseboard():
         "type": "motherboard",
         "working": "yes",
     }
-    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(read_file(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_77_connector():
-    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(read_file(filedir, "baseboard.txt"))
 
     expect = {
         "brand": "ASUSTeK Computer INC.",
@@ -76,27 +74,25 @@ def test_77_connector():
         "notes": "Unknown connector: Other / None (AAFP / Not Specified)",
     }
     output = read_dmidecode._get_connectors(
-        os.path.join(filedir, "connector.txt"), baseboard
+        read_file(filedir, "connector.txt"), baseboard
     )
 
     assert output == expect
 
 
 def test_77_chassis():
-    expect = {
+    expect = [{
         "brand": "Chassis Manufacture",
-        "model": "",
         "sn": "Chassis Serial Number",
         "type": "case",
-        "motherboard-form-factor": "",
-    }
-    output = read_dmidecode.parse_case(os.path.join(filedir, "chassis.txt"))
+    }]
+    output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
 
 
 def test_77_no_disks_disk_that_doesnt_exist():
     expect = []
-    output = read_smartctl.read_smartctl(os.path.join(filedir))
+    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
 
     assert output == expect

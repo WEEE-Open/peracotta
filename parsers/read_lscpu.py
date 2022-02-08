@@ -76,12 +76,12 @@ def parse_lscpu(lscpu: str) -> list[dict]:
             cpu["frequency-hertz"] = int(frequency_mhz * 1000 * 1000)
 
         elif "Thread(s) per core:" in line:
-            cpu["threads-n"] = int(line.split("Thread(s) per core:")[1].strip())
+            cpu["thread-n"] = int(line.split("Thread(s) per core:")[1].strip())
 
         elif "Core(s) per socket:" in line:
-            cpu["cores-n"] = int(line.split("Core(s) per socket:")[1].strip())
-            if cpu["threads-n"] != -1:
-                cpu["threads-n"] *= cpu["cores-n"]
+            cpu["core-n"] = int(line.split("Core(s) per socket:")[1].strip())
+            if "thread-n" in cpu:
+                cpu["thread-n"] *= cpu["core-n"]
 
         elif "Socket(s):" in line:
             sockets = int(line.split("Socket(s):")[1].strip())

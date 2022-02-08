@@ -11,11 +11,10 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
     lspci_sections = lspci_file.split("\n\n")
 
     for section in lspci_sections:
-        if "VGA compatible controller" in section:
-            first_line = section.splitlines()[0].split(": ", 1)[
-                1
-            ]  # removes "VGA compatible controller:"
-            second_line = section.splitlines()[1]
+        if "VGA compatible controller:" in section:
+            # removes "VGA compatible controller:"
+            first_line = section.splitlines()[0].split(": ", 1)[1].strip()
+            second_line = section.splitlines()[1].strip()
             part_between_square_brackets = None
             try:
                 # take the first string between [] from the first line
@@ -26,12 +25,8 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
 
             if "Subsystem:" in second_line:
                 # The model or model family is often repeated here, but removing it automatically is complicated
-                gpu["brand"] = (
-                    second_line.split("Subsystem: ")[1].split("[", 1)[0].strip()
-                )
-                gpu["brand"] = gpu["brand"].replace(
-                    "Integrated Graphics Controller", ""
-                )
+                gpu["brand"] = second_line.split("Subsystem: ")[1].split("[", 1)[0].strip()
+                gpu["brand"] = gpu["brand"].replace("Integrated Graphics Controller", "").strip()
 
             # -----------------------------------------------------------------
             # AMD/ATI
@@ -63,9 +58,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
             elif "INTEL" in first_line.upper():
                 gpu["brand-manufacturer"] = "Intel"
                 if "Integrated Graphics" in first_line:
-                    tmp_model = first_line.split("Intel Corporation ")[1].split(
-                        " Integrated Graphics"
-                    )[0]
+                    tmp_model = first_line.split("Intel Corporation ")[1].split(" Integrated Graphics")[0]
                     # if there are no numbers, e.g. "Core Processor", tmp_model is not a model number
                     if not re.search("\\d+", tmp_model):
                         tmp_model = ""
@@ -82,8 +75,6 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
 
                 if tmp_model != "":
                     gpu["model"] = tmp_model
-                else:
-                    gpu["model"] = ""
 
             # -----------------------------------------------------------------
             # VIA
@@ -131,15 +122,17 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
             else:
                 if interactive:
                     print("I couldn't find the Integrated Graphics model. The model was set to 'None' and is to be "
-                    "edited logging into the TARALLO afterwards. The information you're looking for should be in "
-                    f"the following 2 lines:\n{first_line}\n{second_line}\n")
-
-            if gpu.get("internal-name", None):
-                # Same
-                gpu["brand"] = gpu["brand"].replace(gpu["internal-name"], "").strip()
-
+                          "edited logging into the TARALLO afterwards. The information you're looking for should be in "
+                          f"the following 2 lines:\n{first_line}\n{second_line}\n")
             break
-            
+
+    if gpu.get("internal-name"):
+        # Same
+        gpu["brand"] = gpu["brand"].replace(gpu["internal-name"], "").strip()
+
+    if gpu.get("brand") == "":
+        del gpu["brand"]
+
     if gpu.get("brand-manufacturer") and gpu.get("brand"):
         if gpu["brand-manufacturer"].lower() == gpu["brand"].lower():
             del gpu["brand-manufacturer"]
@@ -158,7 +151,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
 
 
 def _read_glxinfo_output(gpu: dict, glxinfo_file: str):
-    for i, line in enumerate(glxinfo_file.splitlines()):
+    for line in glxinfo_file.splitlines():
         # this line comes before the "Dedicated video memory" line
         # this basically saves a default value if the dedicated memory line cannot be found
         if "Video memory" in line:
@@ -166,44 +159,41 @@ def _read_glxinfo_output(gpu: dict, glxinfo_file: str):
                 tmp_vid_mem = int(line.split(" ")[6].split(" ")[0][:-2])
                 tmp_vid_mem_multiplier = line[-2:]
             except ValueError:
-                exit(-1)
-                return  # To stop complaints from PyCharm
+                continue
 
-            gpu["capacity-byte"] = _convert_video_memory_size(
-                tmp_vid_mem, tmp_vid_mem_multiplier
-            )
+            _parse_capacity(gpu, tmp_vid_mem, tmp_vid_mem_multiplier)
+            break
 
         if "Dedicated video memory" in line:
             try:
                 tmp_vram = int(line.split(" ")[7].split(" ")[0])
                 tmp_vram_multiplier = line[-2:]
             except ValueError:
-                exit(-1)
-                return
-            capacity = _convert_video_memory_size(tmp_vram, tmp_vram_multiplier)
-            if "notes" in gpu:
-                gpu["notes"] += "\n"
-            else:
-                gpu["notes"] = ""
-            if capacity < 0:
-                gpu["notes"] += "Could not find dedicated video memory"
-                if gpu["capacity-byte"] < 0:
-                    gpu["notes"] += ". The value cannot be trusted."
-            else:
-                gpu["notes"] += f"Raw value is: {capacity}"
+                continue
+
+            _parse_capacity(gpu, tmp_vram, tmp_vram_multiplier)
             break
 
-    if "capacity-byte" in gpu and gpu["capacity-byte"] > 0:
-        # Round to the next power of 2
-        # this may be different from human readable capacity...
-        rounded = 2 ** (gpu["capacity-byte"] - 1).bit_length()
-        one_and_half = int(rounded / 2 * 1.5)
-        # Accounts for 3 GB VRAM cards and similar
-        # Yes they do exist, try to remove this part and watch tests fail (and the card was manually verified to be 3 GB)
-        if one_and_half >= gpu["capacity-byte"]:
-            gpu["capacity-byte"] = one_and_half
+    if not gpu.get("capacity-byte"):
+        if "notes" in gpu:
+            gpu["notes"] += "\n"
         else:
-            gpu["capacity-byte"] = rounded
+            gpu["notes"] = ""
+        gpu["notes"] += f"Could not find dedicated video memory, check glxinfo output"
+
+
+def _parse_capacity(gpu, tmp_vram, tmp_vram_multiplier):
+    capacity = _convert_video_memory_size(tmp_vram, tmp_vram_multiplier)
+    # Round to the next power of 2
+    # this may be different from human readable capacity...
+    rounded = 2 ** (capacity - 1).bit_length()
+    one_and_half = int(rounded / 2 * 1.5)
+    # Accounts for 3 GB VRAM cards and similar
+    # Yes they do exist, try to remove this part and watch tests fail (and the card was manually verified to be 3 GB)
+    if one_and_half >= capacity:
+        gpu["capacity-byte"] = one_and_half
+    else:
+        gpu["capacity-byte"] = rounded
 
 
 def _convert_video_memory_size(capacity, units_of_measure):
@@ -233,7 +223,8 @@ def parse_lspci_and_glxinfo(
         # integrated in mobo or cpu
         _read_lspci_output(gpu, lspci_file, interactive)
         # don't parse glxinfo because the VRAM is part of the RAM and varies
-        gpu["capacity-byte"] = None
+        if "capacity-byte" in gpu:
+            del gpu["capacity-byte"]
 
     return [gpu]
 

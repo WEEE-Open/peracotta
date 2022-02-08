@@ -72,7 +72,9 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> list[dict]:
 
             # This seems to always be the model (or at least never be the serial number)
             if line.startswith("Part Number"):
-                dimms[i]["model"] = _ignore_spaces(line, len("Part Number"))
+                model = _ignore_spaces(line, len("Part Number"))
+                if model.lower() != "undefined":
+                    dimms[i]["model"] = model
 
             # part number can be overwritten by serial number if present
             if line.startswith("Assembly Serial Number"):
@@ -88,18 +90,18 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> list[dict]:
                         # Ooops, this isn't an hex number after all...
                         pass
 
-            if line.startswith("Module Configuration Type") and (
-                "Data Parity" in line
-                or "Data ECC" in line
-                or "Address/Command Parity" in line
-            ):
-                dimms[i]["ram-ecc"] = "yes"
-            else:
-                dimms[i]["ram-ecc"] = "no"
+            if line.startswith("Module Configuration Type"):
+                if "Data Parity" in line or "Data ECC" in line or "Address/Command Parity" in line:
+                    dimms[i]["ram-ecc"] = "yes"
+                else:
+                    dimms[i]["ram-ecc"] = "no"
 
             # Two (or more) spaces after because there are lines like "tCL-tRCD-tRP-tRAS as ..."
             if line.startswith("tCL-tRCD-tRP-tRAS  "):
                 dimms[i]["ram-timings"] = _ignore_spaces(line, len("tCL-tRCD-tRP-tRAS"))
+
+        if "ram-ecc" not in dimms[i] and len(dimms[i]) > 2:
+            dimms[i]["ram-ecc"] = "no"
 
     return dimms
 

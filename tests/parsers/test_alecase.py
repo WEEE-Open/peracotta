@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-import os
 
 from parsers import read_decode_dimms
 from parsers import read_dmidecode
 from parsers import read_lscpu
 from parsers import read_lspci_and_glxinfo
 from parsers import read_smartctl
+from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/alecase/"
 
 
 def test_lspci():
-    expect = {
+    expect = [{
         "brand": "ASUSTeK Computer Inc.",
         "brand-manufacturer": "Nvidia",
         "capacity-byte": 1073741824,
@@ -19,16 +19,16 @@ def test_lspci():
         "model": "GeForce GTS 450",
         "type": "graphics-card",
         "working": "yes",
-    }
+    }]
     output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        True, os.path.join(filedir, "lspci.txt"), os.path.join(filedir, "glxinfo.txt")
+        True, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
     )
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = {
+    expect = [{
         "brand": "Intel",
         "core-n": 4,
         "frequency-hertz": 3400000000,
@@ -37,8 +37,8 @@ def test_lscpu():
         "thread-n": 8,
         "type": "cpu",
         "working": "yes",
-    }
-    output = read_lscpu.parse_lscpu(os.path.join(filedir, "lscpu.txt"))
+    }]
+    output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
 
@@ -70,7 +70,7 @@ def test_ram():
             "working": "yes",
         },
     ]
-    output = read_decode_dimms.parse_decode_dimms(os.path.join(filedir, "dimms.txt"))
+    output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "dimms.txt"))
 
     assert len(output) == 2, "2 RAM modules are found"
     assert output == expect
@@ -84,13 +84,13 @@ def test_baseboard():
         "type": "motherboard",
         "working": "yes",
     }
-    output = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(read_file(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode._get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(read_file(filedir, "baseboard.txt"))
 
     # This is entirely wrong and is not reflected by any means from reality and the real motherboard, but the manufacturer
     # dropped all this garbage into the DMI information, so here we go...
@@ -111,7 +111,7 @@ def test_connector():
         "working": "yes",
     }
     output = read_dmidecode._get_connectors(
-        os.path.join(filedir, "connector.txt"), baseboard
+        read_file(filedir, "connector.txt"), baseboard
     )
 
     assert output == expect
@@ -119,20 +119,18 @@ def test_connector():
 
 def test_chassis():
     # This is also wrong, but for pre-assembled computers it should be right
-    expect = {
+    expect = [{
         "brand": "Chassis Manufacture",
-        "model": "",
-        "motherboard-form-factor": "",
         "sn": "Chassis Serial Number",
         "type": "case",
-    }
-    output = read_dmidecode.parse_case(os.path.join(filedir, "chassis.txt"))
+    }]
+    output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
 
 
 def test_smartctl():
     expect = []
-    output = read_smartctl.read_smartctl(filedir)
+    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
 
     assert output == expect

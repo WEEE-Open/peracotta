@@ -1,6 +1,7 @@
-from main import extract_and_collect_data_from_generated_files as get_result
 import os
 import pytest
+
+import peracommon
 
 
 def is_product(component: dict):
@@ -22,22 +23,34 @@ for fold in set(test_folders):
 
 
 @pytest.fixture(scope="module", params=test_folders)
-def res(request):
+def do_it(request):
+    # noinspection DuplicatedCode
+    parsers = {
+        peracommon.ParserComponents.CPU,
+        peracommon.ParserComponents.GPU,
+        peracommon.ParserComponents.MOTHERBOARD,
+        peracommon.ParserComponents.RAM,
+        peracommon.ParserComponents.CASE,
+        peracommon.ParserComponents.PSU,
+    }
+
     path = f"tests/source_files/{request.param}"
-    with open(os.path.join(path, "gpu_location.txt"), "r") as f:
-        gpu_flag = f.readline()
-    has_dedicated_gpu = False
-    gpu_in_cpu = False
-    if gpu_flag == "cpu":
-        gpu_in_cpu = True
-    elif gpu_flag == "gpu":
-        has_dedicated_gpu = True
-    return get_result(
-        directory=path,
-        has_dedicated_gpu=has_dedicated_gpu,
-        gpu_in_cpu=gpu_in_cpu,
-        gui=False,
-    )
+    try:
+        with open(os.path.join(path, "gpu_location.txt"), "r") as f:
+            gpu_flag = f.readline()
+            if gpu_flag == "cpu":
+                where = peracommon.GpuLocation.CPU
+            elif gpu_flag == "gpu":
+                where = peracommon.GpuLocation.DISCRETE
+            else:
+                where = peracommon.GpuLocation.MOTHERBOARD
+    except FileNotFoundError:
+        where = peracommon.GpuLocation.NONE
+
+    result = peracommon.call_parsers(path, parsers, where)
+    result = peracommon.split_products(result)
+    result = peracommon.make_tree(result)
+    return result
 
 
 # checks about peracotta's output

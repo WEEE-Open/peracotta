@@ -1,8 +1,0 @@
-smartctl 7.0 2018-12-30 r4883 [x86_64-linux-5.0.5-1-MANJARO] (local build)
-Copyright (C) 2002-18, Bruce Allen, Christian Franke, www.smartmontools.org
-
-/dev/sdb: Unknown USB bridge [0x0781:0x5583 (0x100)]
-Please specify device type with the -d option.
-
-Use smartctl -h to get a usage summary
-

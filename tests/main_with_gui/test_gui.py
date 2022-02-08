@@ -1,7 +1,7 @@
 import pytest
 import os
 from PyQt5 import QtCore, QtTest, QtWidgets
-from main import extract_and_collect_data_from_generated_files
+import peracommon
 from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo
 
 gpu_loc_file = "gpu_location.txt"
