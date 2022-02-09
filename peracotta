@@ -651,11 +651,11 @@ class CustomTableView(QtWidgets.QTableView):
         return QtCore.QSize(default_size.width(), h)
 
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
-        self.menu = QtWidgets.QMenu(self)
+        menu = QtWidgets.QMenu(self)
         remove_action = QtWidgets.QAction("Remove feature", self)
         remove_action.triggered.connect(self.remove_row)
-        self.menu.addAction(remove_action)
-        self.menu.popup(QtGui.QCursor.pos())
+        menu.addAction(remove_action)
+        menu.popup(QtGui.QCursor.pos())
 
     def remove_row(self):
         print(f"{self.selectedIndexes()[1].row()}")
@@ -664,10 +664,8 @@ class CustomTableView(QtWidgets.QTableView):
 
 
 class ToolBoxItem(QtWidgets.QWidget):
-    def __init__(self, data: dict, product: Optional[dict], default_features: dict):
+    def __init__(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
         super().__init__()
-        self.data = data
-        self.product = product
         self.default_features = default_features
 
         self.main_layout = QtWidgets.QVBoxLayout()
@@ -679,14 +677,14 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.add_feature_button.clicked.connect(self.add_feature)
 
         # setup
-        self.table_setup()
-        self.feature_adder(data["type"])
+        self.table_setup(data, features, product, default_features)
+        self.feature_adder(features["type"])
         self.setLayout(self.main_layout)
 
-    def table_setup(self):
+    def table_setup(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
         self.table.verticalHeader().hide()
         self.table.horizontalHeader().setStretchLastSection(True)
-        self.table.setModel(CustomTableModel(self.data, self.product, self.default_features))
+        self.table.setModel(CustomTableModel(data, features, product, default_features))
         self.table.setShowGrid(False)
         self.table.setAlternatingRowColors(True)
         self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
@@ -696,7 +694,7 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.table.resizeColumnsToContents()
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
-    def feature_adder(self, type: str):
+    def feature_adder(self, the_type: str):
         layout = QtWidgets.QHBoxLayout()
         layout.addWidget(self.features_combo_box)
         layout.addWidget(self.feature_line_edit)
@@ -709,20 +707,20 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.set_input_type()
 
     def set_input_type(self):
-        for type in self.default_features["types"]:
-            if self.default_features["names"][type] == self.features_combo_box.currentText():
+        for the_type in self.default_features["types"]:
+            if self.default_features["names"][the_type] == self.features_combo_box.currentText():
                 # set input type
-                if self.default_features["types"][type] == "e":
+                if self.default_features["types"][the_type] == "e":
                     self.feature_line_edit.setHidden(True)
                     self.feature_selector.setHidden(False)
                     self.feature_selector.clear()
-                    for value in self.default_features["values"][type]:
-                        self.feature_selector.addItem(self.default_features["values"][type][value])
+                    for value in self.default_features["values"][the_type]:
+                        self.feature_selector.addItem(self.default_features["values"][the_type][value])
                 else:
                     self.feature_line_edit.setHidden(False)
                     self.feature_selector.setHidden(True)
                 # disable button if feature already in table
-                if type in self.table.model().features_in_table():
+                if the_type in self.table.model().features_in_table():
                     self.set_add_control_enabled(False)
                 else:
                     self.set_add_control_enabled(True)
@@ -735,7 +733,6 @@ class ToolBoxItem(QtWidgets.QWidget):
             value = self.feature_selector.currentText()
         else:
             return
-        self.data[feature] = value
         model: CustomTableModel = self.table.model()
         ok = model.insert_row(feature, value)
         if ok:
@@ -774,7 +771,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                 products[idx] = (entry["brand"], entry["model"], entry["variant"])
 
         for entry in self.data:
-            self.add_item(products, entry)
+            self.add_item(entry)
 
         # remove scroll in toolbox's scrollAreas
         for scroll_area in self.findChildren(QtWidgets.QScrollArea):
@@ -782,7 +779,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
             scroll_area.verticalScrollBar().hide()
             scroll_area.verticalScrollBar().resize(0, 0)
 
-    def add_item(self, products: Optional[dict] = None, item: Optional[dict] = None, item_type: Optional[str] = None, single_item: Optional[bool] = False):
+    def add_item(self, item: Optional[dict] = None, item_type: Optional[str] = None, single_item: Optional[bool] = False):
         if single_item:
             self.data.append(
                 {
@@ -797,20 +794,10 @@ class ToolBoxWidget(QtWidgets.QToolBox):
             return
 
         counter = ""
-        found_product = None
+        found_product = self.find_matching_product(self.data, item.get("features", {}))
 
         if item_type is None and item:
             item_type = item["features"]["type"]
-            if "model" in item["features"] and "brand" in item["features"] and "variant" in item["features"]:
-                bind_features = (
-                    item["features"]["brand"],
-                    item["features"]["model"],
-                    item["features"]["variant"],
-                )
-                if products is not None:
-                    for product in products:
-                        if products[product] == bind_features:
-                            found_product = self.data[product]
         if self.encountered_types_count[item_type] > 1:
             self.encountered_types_current_count[item_type] += 1
             counter = f" #{self.encountered_types_current_count[item_type]}"
@@ -818,8 +805,9 @@ class ToolBoxWidget(QtWidgets.QToolBox):
             features = self.data[-1]["features"]
         else:
             features = item["features"]
+
         self.addItem(
-            ToolBoxItem(features, found_product, self.default_features),
+            ToolBoxItem(self.data, features, found_product, self.default_features),
             f"{self.print_type_cool(item_type)}{counter}",
         )
         if item_type in ICON:
@@ -827,6 +815,17 @@ class ToolBoxWidget(QtWidgets.QToolBox):
             self.setItemIcon(self.count() - 1, icon)
 
         self.set_context_menu()
+
+    @staticmethod
+    def find_matching_product(data: list[dict], features: dict):
+        if "model" in features and "brand" in features and "variant" in features:
+            for maybe in data:
+                if maybe.get("type") == "P":
+                    if maybe.get("brand") == features["brand"] and \
+                       maybe.get("model") == features["model"] and \
+                       maybe.get("variant") == features["variant"]:
+                        return maybe
+        return None
 
     def set_context_menu(self):
         counter = 0
@@ -940,19 +939,25 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
 
 class CustomTableModel(QAbstractTableModel):
-    def __init__(self, item: dict, product: Optional[dict], default_features: dict):
+    def __init__(self, data: list[dict], item_features: dict, product: Optional[dict], default_features: dict):
         super().__init__()
 
-        self.ref_features = item
+        self._data = data
+        self.ref_features = item_features
         self.ref_product = product
+        self.default_features = default_features
 
+        self.features = {}
+        self.feature_keys = []
+        self._productize(item_features, product)
+
+    def _productize(self, item_features: dict, product: Optional[dict]):
         if product:
             self.features = product["features"].copy()
         else:
             self.features = {}
-        self.features.update(item)
+        self.features.update(item_features)
         self.feature_keys = list(self.features)
-        self.default_features = default_features
 
     def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.feature_keys)
@@ -1043,12 +1048,20 @@ class CustomTableModel(QAbstractTableModel):
             ok, value = self.extreme_validation(name, value)
             if ok:
                 self.features[name] = value
+                product_to_add = None
+                if not self.ref_product:
+                    product_to_add = ToolBoxWidget.find_matching_product(self._data, self.features)
+                    if product_to_add:
+                        self.beginResetModel()
+                        self._productize(self.features, product_to_add)
                 if self.ref_product and name in self.ref_product["features"]:
                     self.ref_product["features"][name] = value
                 elif name in self.ref_features:
                     self.ref_features[name] = value
                 else:
                     self._add_to_ref(name, value)
+                if product_to_add:
+                    self.endResetModel()
             return ok
         return False
 
@@ -1127,11 +1140,20 @@ class CustomTableModel(QAbstractTableModel):
 
         self.beginInsertRows(QtCore.QModelIndex(), row_index, row_index)
         ok, value = self.extreme_validation(feature, value)
+        product_to_add = None
         if ok:
             self.feature_keys.append(feature)
             self.features[feature] = value
+            if not self.ref_product:
+                product_to_add = ToolBoxWidget.find_matching_product(self._data, self.features)
             self._add_to_ref(feature, value)
         self.endInsertRows()
+
+        if product_to_add:
+            self.beginResetModel()
+            self._productize(self.features, product_to_add)
+            self.endResetModel()
+
         return ok
 
     def features_in_table(self):
@@ -1210,7 +1232,7 @@ class Uploader(QtCore.QThread):
             tarallo = Tarallo.Tarallo(self.tarallo_url, self.tarallo_token)
             ver = tarallo.bulk_add(self.data, self.bulk_identifier, self.overwrite)
             if ver:
-                # TODO: replace lollone with the actual code asd
+                # TODO: use generated identifier if none was provided
                 self.successEvent.emit(self.bulk_identifier)
             else:
                 self.failureEvent.emit("cannot_upload", self.bulk_identifier)
