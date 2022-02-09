@@ -682,17 +682,23 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.setLayout(self.main_layout)
 
     def table_setup(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
+        ctm = CustomTableModel(data, features, product, default_features)
+        ctm.emergency_resize.connect(self._do_the_emergency_resize)
         self.table.verticalHeader().hide()
         self.table.horizontalHeader().setStretchLastSection(True)
-        self.table.setModel(CustomTableModel(data, features, product, default_features))
+        self.table.setModel(ctm)
         self.table.setShowGrid(False)
         self.table.setAlternatingRowColors(True)
         self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.table.verticalScrollBar().hide()
         self.table.verticalScrollBar().resize(0, 0)
         self.main_layout.addWidget(self.table)
+        self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.table.resizeColumnsToContents()
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+
+    def _do_the_emergency_resize(self):
+        self.table.resizeColumnsToContents()
 
     def feature_adder(self, the_type: str):
         layout = QtWidgets.QHBoxLayout()
@@ -939,6 +945,8 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
 
 class CustomTableModel(QAbstractTableModel):
+    emergency_resize = QtCore.pyqtSignal(name="emergency_resize")
+
     def __init__(self, data: list[dict], item_features: dict, product: Optional[dict], default_features: dict):
         super().__init__()
 
@@ -1062,6 +1070,7 @@ class CustomTableModel(QAbstractTableModel):
                     self._add_to_ref(name, value)
                 if product_to_add:
                     self.endResetModel()
+                    self.emergency_resize.emit()
             return ok
         return False
 
@@ -1153,6 +1162,8 @@ class CustomTableModel(QAbstractTableModel):
             self.beginResetModel()
             self._productize(self.features, product_to_add)
             self.endResetModel()
+
+        self.emergency_resize.emit()
 
         return ok
 
