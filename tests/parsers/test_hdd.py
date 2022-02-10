@@ -255,6 +255,25 @@ results = [
          'type': 'ssd',
          'wwn': '0 0 0'}
     ]),
+    ("test25.txt", [
+        {'brand': 'Sun',
+  'capacity-decibyte': 73300000000,
+  'model': 'Linux',
+  'notes': 'This is a SCSI disk, however it is not possible to detect the '
+           'exact connector type. Please set the correct one manually.',
+  'sn': 'BAEBAE123',
+  'type': 'ssd'}
+    ]),
+    ("test26.txt", [
+        {'brand': 'Samsung',
+         'capacity-decibyte': 250000000000,
+         'model': '840 EVO 250GB',
+         'sata-ports-n': 1,
+         'smart-data': 'ok',
+         'sn': 'S1DBNSADA46541F',
+         'type': 'ssd',
+         'wwn': '5 9528 37044580212'}
+    ]),
 ]
 
 
@@ -300,4 +319,27 @@ def test_smartctl_triple():
     output = read_smartctl.parse_smartctl(read_file(filedir, "three.txt"))
 
     assert len(output) == 3
+    assert output == expected
+
+
+def test_smartctl_virtual_scsi():
+    expected = [
+        {'brand': 'Msft',
+          'capacity-decibyte': 275000000000,
+          'model': 'Virtual Disk',
+          'notes': 'This is a SCSI disk, however it is not possible to detect the '
+                   'exact connector type. Please set the correct one manually.',
+          'type': 'ssd'},
+         {'brand': 'Msft',
+          'capacity-decibyte': 275000000000,
+          'model': 'Virtual Disk',
+          'notes': 'This is a SCSI disk, however it is not possible to detect the '
+                   'exact connector type. Please set the correct one manually.',
+          'type': 'ssd'}
+    ]
+
+    filedir = "tests/source_files/smartctl/"
+    output = read_smartctl.parse_smartctl(read_file(filedir, "virtual_scsi.txt"))
+
+    assert len(output) == 2
     assert output == expected

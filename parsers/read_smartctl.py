@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
-import re
-from enum import Enum
-from dataclasses import dataclass
 
+from enum import Enum
 import json
 import sys
-import os
 from math import log10, floor
 
 """
@@ -40,23 +37,28 @@ def _parse_disk(file):
 
     port = None
 
-    if file.get("model_name"):
-        brand, model = _split_brand_and_other(file.get("model_name"))
-        disk["model"] = model
-        if "brand" not in disk and brand:
-            disk["brand"] = brand
+    if file.get("vendor") and file.get("product"):
+        # For SCSI disks only, apparently
+        disk["brand"] = file.get("vendor")
+        disk["model"] = file.get("product")
+    else:
+        if file.get("model_name"):
+            brand, model = _split_brand_and_other(file.get("model_name"))
+            disk["model"] = model
+            if "brand" not in disk and brand:
+                disk["brand"] = brand
 
-    if file.get("model_family"):
-        brand, family = _split_brand_and_other(file.get("model_family"))
-        disk["family"] = family
-        if "brand" not in disk and brand:
-            disk["brand"] = brand
+        if file.get("model_family"):
+            brand, family = _split_brand_and_other(file.get("model_family"))
+            disk["family"] = family
+            if "brand" not in disk and brand:
+                disk["brand"] = brand
 
-    if file.get("device_model"):  # TODO: does this exist?
-        brand, model = _split_brand_and_other(file.get("device_model"))
-        disk["model"] = model
-        if "brand" not in disk and brand:
-            disk["brand"] = brand
+        if file.get("device_model"):  # TODO: does this exist?
+            brand, model = _split_brand_and_other(file.get("device_model"))
+            disk["model"] = model
+            if "brand" not in disk and brand:
+                disk["brand"] = brand
 
     if disk.get("brand", "") == "WDC":
         disk["brand"] = "Western Digital"
@@ -120,6 +122,13 @@ def _parse_disk(file):
         if disk["type"] == "hdd":
             disk["type"] = "ssd"
 
+    if "SSD" in disk.get("family", ""):
+        if disk["type"] == "hdd":
+            disk["type"] = "ssd"
+        lowered = disk["family"].replace(" ", "").lower()
+        if lowered in ("basedssds", "basedssd"):
+            del disk["family"]
+
     # Unreliable port detection as a fallback
     if port is None:
         if "SATA" in disk.get("family", "") or "SATA" in disk.get("model", ""):
@@ -140,6 +149,8 @@ def _parse_disk(file):
                 disk["type"] = "ssd"
             if "hdd-form-factor" not in disk:
                 disk["hdd-form-factor"] = "m2"
+        if "device" in file and file["device"].get("type", "") == "scsi" and file["device"].get("protocol", "") == "SCSI":
+            disk["notes"] = "This is a SCSI disk, however it is not possible to detect the exact connector type. Please set the correct one manually."
 
     if port is not None:
         disk[port.value] = 1
@@ -317,9 +328,6 @@ def _remove_prefix(prefix, text):
 
 
 if __name__ == "__main__":
-    import sys
-    import json
-
     try:
         with open(sys.argv[1], "r") as f:
             input_file = f.read()
