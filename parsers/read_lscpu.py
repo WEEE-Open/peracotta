@@ -75,6 +75,13 @@ def parse_lscpu(lscpu: str) -> list[dict]:
             )
             cpu["frequency-hertz"] = int(frequency_mhz * 1000 * 1000)
 
+        elif "CPU MHz:" in line and "frequency-hertz" not in cpu:
+            # This may not exist anymore (?) but we should use it as a fallback
+            frequency_mhz = float(
+                line.split("CPU MHz:")[1].strip().replace(",", ".")
+            )
+            cpu["frequency-hertz"] = int(frequency_mhz * 1000 * 1000)
+
         elif "Thread(s) per core:" in line:
             cpu["thread-n"] = int(line.split("Thread(s) per core:")[1].strip())
 

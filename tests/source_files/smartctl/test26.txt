@@ -27,11 +27,11 @@
   },
   "model_family": "Samsung based SSDs",
   "model_name": "Samsung SSD 840 EVO 250GB",
-  "serial_number": "S1DBNSADA46541F",
+  "serial_number": "C140N333333",
   "wwn": {
     "naa": 5,
     "oui": 9528,
-    "id": 37044580212
+    "id": 9876543274
   },
   "firmware_version": "EXT0BB0Q",
   "user_capacity": {

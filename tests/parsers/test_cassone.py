@@ -33,7 +33,7 @@ def test_lscpu():
         "brand": "AMD",
         "core-n": 1,
         "thread-n": 1,
-        "frequency-hertz": "1.24 GHz",
+        "frequency-hertz": 1244733000,
     }]
 
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))

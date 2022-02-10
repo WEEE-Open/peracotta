@@ -270,9 +270,9 @@ results = [
          'model': '840 EVO 250GB',
          'sata-ports-n': 1,
          'smart-data': 'ok',
-         'sn': 'S1DBNSADA46541F',
+         'sn': 'C140N333333',
          'type': 'ssd',
-         'wwn': '5 9528 37044580212'}
+         'wwn': '5 9528 9876543274'}
     ]),
 ]
 
