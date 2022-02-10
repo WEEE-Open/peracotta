@@ -113,20 +113,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    expect = [{
-            "type": "hdd",
-            "brand": "Hitachi",
-            "model": "HDT725025VLA380",
-            "family": "Deskstar T7K500",
-            "wwn": "5 000cca 6904de32c",
-            "sn": "VFA100R24D8ELK",
-            "capacity-decibyte": 250000000000,
-            "smart-data": "ok",
-            "notes": "Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  1 Raw_Read_Error_Rate     PO-R--   100   100   016    -    0\n  2 Throughput_Performance  P-S---   100   100   050    -    0\n  3 Spin_Up_Time            POS---   115   115   024    -    330 (Average 321)\n  4 Start_Stop_Count        -O--C-   100   100   000    -    89\n  5 Reallocated_Sector_Ct   PO--CK   100   100   005    -    4\n  7 Seek_Error_Rate         PO-R--   100   100   067    -    0\n  8 Seek_Time_Performance   P-S---   100   100   020    -    0\n  9 Power_On_Hours          -O--C-   090   090   000    -    74780\n 10 Spin_Retry_Count        PO--C-   100   100   060    -    0\n 12 Power_Cycle_Count       -O--CK   100   100   000    -    89\n192 Power-Off_Retract_Count -O--CK   098   098   000    -    3201\n193 Load_Cycle_Count        -O--C-   098   098   000    -    3201\n194 Temperature_Celsius     -O----   176   176   000    -    34 (Min/Max 14/56)\n196 Reallocated_Event_Count -O--CK   100   100   000    -    4\n197 Current_Pending_Sector  -O---K   100   100   000    -    0\n198 Offline_Uncorrectable   ---R--   100   100   000    -    0\n199 UDMA_CRC_Error_Count    -O-R--   200   253   000    -    0\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning",
-    }]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect

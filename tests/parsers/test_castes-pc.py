@@ -106,33 +106,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    expect = [
-        {
-            "type": "ssd",
-            "model": "DREVO X1 SSD",
-            "hdd-form-factor": "2.5-7mm",
-            "sn": "TX1711901797",
-            "wwn": "0 000000 000000000",  # Nice
-            "capacity-byte": 240000000000,
-            "smart-data": "ok",
-            "sata-ports-n": 1,
-        },
-        {
-            "type": "hdd",
-            "brand": "Seagate",
-            "model": "ST9750420AS",
-            "family": "Momentus 7200.5",
-            "wwn": "5 000c50 0614757a2",
-            "sn": "6WS3155L",
-            "capacity-decibyte": 750000000000,
-            "spin-rate-rpm": 7200,
-            "smart-data": "ok",
-            "sata-ports-n": 1,
-        },
-    ]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect

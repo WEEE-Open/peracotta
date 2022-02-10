@@ -233,37 +233,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    expect = [
-        {
-            "type": "hdd",
-            "brand": "Western Digital",
-            "model": "WD5002ABYS-02B1B0",
-            "family": "RE3 Serial ATA",
-            "wwn": "5 0014ee 7bf4d152d",
-            "sn": "WCASYD636342",
-            "capacity-decibyte": 500000000000,
-            "spin-rate-rpm": 7200,
-            "smart-data": "ok",
-            "sata-ports-n": 1,
-            "notes": "Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  1 Raw_Read_Error_Rate     POSR-K   200   200   051    -    0\n  3 Spin_Up_Time            POS--K   239   230   021    -    1016\n  4 Start_Stop_Count        -O--CK   100   100   000    -    227\n  5 Reallocated_Sector_Ct   PO--CK   200   200   140    -    0\n  7 Seek_Error_Rate         -OSR-K   200   200   000    -    0\n  9 Power_On_Hours          -O--CK   035   035   000    -    47525\n 10 Spin_Retry_Count        -O--CK   100   100   000    -    0\n 11 Calibration_Retry_Count -O--CK   100   100   000    -    0\n 12 Power_Cycle_Count       -O--CK   100   100   000    -    224\n192 Power-Off_Retract_Count -O--CK   200   200   000    -    72\n193 Load_Cycle_Count        -O--CK   200   200   000    -    154\n194 Temperature_Celsius     -O---K   116   104   000    -    31\n196 Reallocated_Event_Count -O--CK   200   200   000    -    0\n197 Current_Pending_Sector  -O--CK   200   200   000    -    0\n198 Offline_Uncorrectable   ----CK   200   200   000    -    0\n199 UDMA_CRC_Error_Count    -O--CK   200   200   000    -    0\n200 Multi_Zone_Error_Rate   ---R--   200   200   000    -    0\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning",
-        },
-        {
-            "type": "hdd",
-            "brand": "Western Digital",
-            "model": "WD5002ABYS-02B1B0",
-            "family": "RE3 Serial ATA",
-            "wwn": "5 0014ee 3ef215d89",
-            "sn": "WCASYE636777",
-            "capacity-decibyte": 500000000000,
-            "spin-rate-rpm": 7200,
-            "smart-data": "ok",
-            "sata-ports-n": 1,
-            "notes": "Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  1 Raw_Read_Error_Rate     POSR-K   200   200   051    -    0\n  3 Spin_Up_Time            POS--K   239   228   021    -    1033\n  4 Start_Stop_Count        -O--CK   100   100   000    -    228\n  5 Reallocated_Sector_Ct   PO--CK   200   200   140    -    0\n  7 Seek_Error_Rate         -OSR-K   200   200   000    -    0\n  9 Power_On_Hours          -O--CK   044   044   000    -    41574\n 10 Spin_Retry_Count        -O--CK   100   100   000    -    0\n 11 Calibration_Retry_Count -O--CK   100   100   000    -    0\n 12 Power_Cycle_Count       -O--CK   100   100   000    -    224\n192 Power-Off_Retract_Count -O--CK   200   200   000    -    72\n193 Load_Cycle_Count        -O--CK   200   200   000    -    155\n194 Temperature_Celsius     -O---K   116   105   000    -    31\n196 Reallocated_Event_Count -O--CK   200   200   000    -    0\n197 Current_Pending_Sector  -O--CK   200   200   000    -    0\n198 Offline_Uncorrectable   ----CK   200   200   000    -    0\n199 UDMA_CRC_Error_Count    -O--CK   200   200   000    -    0\n200 Multi_Zone_Error_Rate   ---R--   200   200   000    -    0\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning",
-        },
-    ]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect

@@ -133,35 +133,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    expect = [
-        {
-            "type": "ssd",
-            "brand": "Samsung",
-            "family": "based SSDs",  # whatever.
-            "model": "840 EVO 120GB",
-            "sn": "S1F00F00F00F00",
-            "wwn": "5 002538 2c302d451",
-            "capacity-byte": 120000000000,
-            "smart-data": "ok",
-            "sata-ports-n": 1,
-        },
-        {
-            "type": "hdd",
-            "brand": "Western Digital",
-            "family": "Black",
-            "model": "WD1003FZEX-00MK2A0",
-            "wwn": "5 0014ee 21c4e201d",
-            "sn": "WCC3B4RB4RB4R",
-            "capacity-decibyte": 1000000000000,
-            "spin-rate-rpm": 7200,
-            "smart-data": "ok",
-            "sata-ports-n": 1,
-            "notes": "Vendor Specific SMART Attributes with Thresholds:\nID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE\n  1 Raw_Read_Error_Rate     POSR-K   200   200   051    -    0\n  3 Spin_Up_Time            POS--K   176   174   021    -    2200\n  4 Start_Stop_Count        -O--CK   094   094   000    -    6158\n  5 Reallocated_Sector_Ct   PO--CK   200   200   140    -    0\n  7 Seek_Error_Rate         -OSR-K   200   200   000    -    0\n  9 Power_On_Hours          -O--CK   084   084   000    -    12016\n 10 Spin_Retry_Count        -O--CK   100   100   000    -    0\n 11 Calibration_Retry_Count -O--CK   100   100   000    -    0\n 12 Power_Cycle_Count       -O--CK   097   097   000    -    3965\n192 Power-Off_Retract_Count -O--CK   200   200   000    -    71\n193 Load_Cycle_Count        -O--CK   198   198   000    -    6086\n194 Temperature_Celsius     -O---K   115   106   000    -    28\n196 Reallocated_Event_Count -O--CK   200   200   000    -    0\n197 Current_Pending_Sector  -O--CK   200   200   000    -    0\n198 Offline_Uncorrectable   ----CK   100   253   000    -    0\n199 UDMA_CRC_Error_Count    -O--CK   200   200   000    -    0\n200 Multi_Zone_Error_Rate   ---R--   100   253   000    -    0\n                            ||||||_ K auto-keep\n                            |||||__ C event count\n                            ||||___ R error rate\n                            |||____ S speed/performance\n                            ||_____ O updated online\n                            |______ P prefailure warning",
-        },
-    ]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect
