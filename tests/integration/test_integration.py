@@ -74,7 +74,6 @@ def args2(request):
     return path, parsers, where
 
 
-
 @pytest.mark.upload
 def test_upload_pytarallo(
     args2, monkeypatch, capsys

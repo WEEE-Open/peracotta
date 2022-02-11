@@ -93,24 +93,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    expect = [
-        {
-            "type": "hdd",
-            "brand": "Fujitsu",
-            "model": "MJA2160BH G2",
-            "family": "MJA BH",
-            "wwn": "5 00000e 0447dfa8d",
-            "sn": "K95BTA42BD8H",
-            "capacity-decibyte": 160000000000,
-            "spin-rate-rpm": 5400,
-            "smart-data": "ok",
-            "sata-ports-n": 1,
-            "hdd-form-factor": "2.5-7mm",
-        }
-    ]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect

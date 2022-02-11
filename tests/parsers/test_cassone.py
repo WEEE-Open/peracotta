@@ -33,7 +33,7 @@ def test_lscpu():
         "brand": "AMD",
         "core-n": 1,
         "thread-n": 1,
-        "frequency-hertz": "1.24 GHz",
+        "frequency-hertz": 1244733000,
     }]
 
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
@@ -82,9 +82,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert 0 == len(output)

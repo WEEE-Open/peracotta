@@ -110,23 +110,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    expect = [
-        {
-            "type": "hdd",
-            "brand": "Maxtor",
-            "model": "6V080E0",
-            "family": "DiamondMax 10 (SATA/300)",
-            "sn": "V66666BG",
-            "sata-ports-n": 1,
-            "wwn": "0 150500 2ae42de3c",
-            "spin-rate-rpm": -1,
-            "capacity-decibyte": 82000000000,
-            "smart-data": "ok",
-        }
-    ]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect

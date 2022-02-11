@@ -1,0 +1,1049 @@
+[
+{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      2
+    ],
+    "svn_revision": "5155",
+    "platform_info": "armv7l-linux-5.10.63-v7+",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-ja",
+      "/dev/sdx"
+    ],
+    "exit_status": 216
+  },
+  "device": {
+    "name": "/dev/sdx",
+    "info_name": "/dev/sdx [USB JMicron]",
+    "type": "usbjmicron",
+    "protocol": "ATA"
+  },
+  "model_family": "Hitachi Travelstar 5K500.B",
+  "model_name": "Hitachi HTS545050B9A300",
+  "serial_number": "12345AEIOU123LOL456",
+  "wwn": {
+    "naa": 5,
+    "oui": 3274,
+    "id": 67846875936
+  },
+  "firmware_version": "PB4OC64G",
+  "user_capacity": {
+    "blocks": 976773168,
+    "bytes": 500107862016
+  },
+  "logical_block_size": 512,
+  "physical_block_size": 512,
+  "rotation_rate": 5400,
+  "form_factor": {
+    "ata_value": 3,
+    "name": "2.5 inches"
+  },
+  "trim": {
+    "supported": false
+  },
+  "in_smartctl_database": true,
+  "ata_version": {
+    "string": "ATA8-ACS T13/1699-D revision 6",
+    "major_value": 508,
+    "minor_value": 40
+  },
+  "sata_version": {
+    "string": "SATA 2.6",
+    "value": 31
+  },
+  "interface_speed": {
+    "max": {
+      "sata_value": 6,
+      "string": "3.0 Gb/s",
+      "units_per_second": 30,
+      "bits_per_unit": 100000000
+    }
+  },
+  "local_time": {
+    "time_t": 1644510430,
+    "asctime": "Thu Feb 10 17:27:10 2022 CET"
+  },
+  "smart_status": {
+    "passed": false
+  },
+  "ata_smart_data": {
+    "offline_data_collection": {
+      "status": {
+        "value": 5,
+        "string": "was aborted by an interrupting command from host"
+      },
+      "completion_seconds": 645
+    },
+    "self_test": {
+      "status": {
+        "value": 0,
+        "string": "completed without error",
+        "passed": true
+      },
+      "polling_minutes": {
+        "short": 2,
+        "extended": 158
+      }
+    },
+    "capabilities": {
+      "values": [
+        91,
+        3
+      ],
+      "exec_offline_immediate_supported": true,
+      "offline_is_aborted_upon_new_cmd": false,
+      "offline_surface_scan_supported": true,
+      "self_tests_supported": true,
+      "conveyance_self_test_supported": false,
+      "selective_self_test_supported": true,
+      "attribute_autosave_enabled": true,
+      "error_logging_supported": true,
+      "gp_logging_supported": true
+    }
+  },
+  "ata_sct_capabilities": {
+    "value": 61,
+    "error_recovery_control_supported": true,
+    "feature_control_supported": true,
+    "data_table_supported": true
+  },
+  "ata_smart_attributes": {
+    "revision": 16,
+    "table": [
+      {
+        "id": 1,
+        "name": "Raw_Read_Error_Rate",
+        "value": 81,
+        "worst": 81,
+        "thresh": 62,
+        "when_failed": "",
+        "flags": {
+          "value": 11,
+          "string": "PO-R-- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 6160951,
+          "string": "6160951"
+        }
+      },
+      {
+        "id": 2,
+        "name": "Throughput_Performance",
+        "value": 100,
+        "worst": 100,
+        "thresh": 40,
+        "when_failed": "",
+        "flags": {
+          "value": 5,
+          "string": "P-S--- ",
+          "prefailure": true,
+          "updated_online": false,
+          "performance": true,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 3,
+        "name": "Spin_Up_Time",
+        "value": 141,
+        "worst": 141,
+        "thresh": 33,
+        "when_failed": "",
+        "flags": {
+          "value": 7,
+          "string": "POS--- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": true,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 98784247810,
+          "string": "2"
+        }
+      },
+      {
+        "id": 4,
+        "name": "Start_Stop_Count",
+        "value": 93,
+        "worst": 93,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 18,
+          "string": "-O--C- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 12603,
+          "string": "12603"
+        }
+      },
+      {
+        "id": 5,
+        "name": "Reallocated_Sector_Ct",
+        "value": 1,
+        "worst": 1,
+        "thresh": 5,
+        "when_failed": "now",
+        "flags": {
+          "value": 51,
+          "string": "PO--CK ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 7,
+        "name": "Seek_Error_Rate",
+        "value": 100,
+        "worst": 100,
+        "thresh": 67,
+        "when_failed": "",
+        "flags": {
+          "value": 11,
+          "string": "PO-R-- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 8,
+        "name": "Seek_Time_Performance",
+        "value": 100,
+        "worst": 100,
+        "thresh": 40,
+        "when_failed": "",
+        "flags": {
+          "value": 5,
+          "string": "P-S--- ",
+          "prefailure": true,
+          "updated_online": false,
+          "performance": true,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 9,
+        "name": "Power_On_Hours",
+        "value": 98,
+        "worst": 98,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 18,
+          "string": "-O--C- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 1065,
+          "string": "1065"
+        }
+      },
+      {
+        "id": 10,
+        "name": "Spin_Retry_Count",
+        "value": 100,
+        "worst": 100,
+        "thresh": 60,
+        "when_failed": "",
+        "flags": {
+          "value": 19,
+          "string": "PO--C- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 12,
+        "name": "Power_Cycle_Count",
+        "value": 93,
+        "worst": 93,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 12127,
+          "string": "12127"
+        }
+      },
+      {
+        "id": 191,
+        "name": "G-Sense_Error_Rate",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 10,
+          "string": "-O-R-- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 192,
+        "name": "Power-Off_Retract_Count",
+        "value": 40,
+        "worst": 40,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 12065,
+          "string": "12065"
+        }
+      },
+      {
+        "id": 193,
+        "name": "Load_Cycle_Count",
+        "value": 99,
+        "worst": 99,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 18,
+          "string": "-O--C- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 12649,
+          "string": "12649"
+        }
+      },
+      {
+        "id": 194,
+        "name": "Temperature_Celsius",
+        "value": 253,
+        "worst": 253,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 2,
+          "string": "-O---- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 197569413140,
+          "string": "20 (Min/Max 14/46)"
+        }
+      },
+      {
+        "id": 196,
+        "name": "Reallocated_Event_Count",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 5665,
+          "string": "5665"
+        }
+      },
+      {
+        "id": 197,
+        "name": "Current_Pending_Sector",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 34,
+          "string": "-O---K ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 13,
+          "string": "13"
+        }
+      },
+      {
+        "id": 198,
+        "name": "Offline_Uncorrectable",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 8,
+          "string": "---R-- ",
+          "prefailure": false,
+          "updated_online": false,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 199,
+        "name": "UDMA_CRC_Error_Count",
+        "value": 200,
+        "worst": 200,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 10,
+          "string": "-O-R-- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 223,
+        "name": "Load_Retry_Count",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 10,
+          "string": "-O-R-- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      }
+    ]
+  },
+  "power_on_time": {
+    "hours": 1065
+  },
+  "power_cycle_count": 12127,
+  "temperature": {
+    "current": 20
+  },
+  "ata_smart_error_log": {
+    "summary": {
+      "revision": 1,
+      "count": 2449,
+      "logged_count": 5,
+      "table": [
+        {
+          "error_number": 2449,
+          "lifetime_hours": 1064,
+          "completion_registers": {
+            "error": 64,
+            "status": 81,
+            "count": 109,
+            "lba": 2061235,
+            "device": 64
+          },
+          "error_description": "Error: UNC 109 sectors at LBA = 0x001f73b3 = 2061235",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 2061216,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1890000,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 2061088,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1888100,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 2060960,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1887000,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 2060832,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1886000,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 2060704,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1885600,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 2448,
+          "lifetime_hours": 1064,
+          "completion_registers": {
+            "error": 64,
+            "status": 81,
+            "count": 127,
+            "lba": 1399289,
+            "device": 64
+          },
+          "error_description": "Error: UNC 127 sectors at LBA = 0x001559f9 = 1399289",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 1399288,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1576000,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 120,
+                "lba": 1399928,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1574800,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 1399800,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1573200,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 1399672,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1572300,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 1399544,
+                "device": 64,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 1568400,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 2447,
+          "lifetime_hours": 1064,
+          "completion_registers": {
+            "error": 64,
+            "status": 81,
+            "count": 21,
+            "lba": 554211,
+            "device": 224
+          },
+          "error_description": "Error: UNC 21 sectors at LBA = 0x000874e3 = 554211",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 554104,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 58300,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 553976,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 56700,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 553848,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 56100,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 553720,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 55600,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 120,
+                "lba": 553600,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 54500,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 2446,
+          "lifetime_hours": 1064,
+          "completion_registers": {
+            "error": 64,
+            "status": 81,
+            "count": 76,
+            "lba": 11319740,
+            "device": 233
+          },
+          "error_description": "Error: UNC 76 sectors at LBA = 0x09acb9bc = 162314684",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 120,
+                "lba": 11319696,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 352600,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 229,
+                "features": 0,
+                "count": 0,
+                "lba": 0,
+                "device": 160,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 352600,
+              "command_name": "CHECK POWER MODE"
+            },
+            {
+              "registers": {
+                "command": 239,
+                "features": 3,
+                "count": 70,
+                "lba": 0,
+                "device": 160,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 352600,
+              "command_name": "SET FEATURES [Set transfer mode]"
+            },
+            {
+              "registers": {
+                "command": 229,
+                "features": 0,
+                "count": 0,
+                "lba": 0,
+                "device": 160,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 352600,
+              "command_name": "CHECK POWER MODE"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 40,
+                "lba": 11319776,
+                "device": 233,
+                "device_control": 255
+              },
+              "powerup_milliseconds": 351500,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 2445,
+          "lifetime_hours": 1064,
+          "completion_registers": {
+            "error": 64,
+            "status": 81,
+            "count": 80,
+            "lba": 11319616,
+            "device": 233
+          },
+          "error_description": "Error: UNC 80 sectors at LBA = 0x09acb940 = 162314560",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 11319568,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 319600,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 11319440,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 315600,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 11319312,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 314700,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 11319184,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 313500,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 0,
+                "count": 128,
+                "lba": 11319056,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 311700,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "ata_smart_self_test_log": {
+    "standard": {
+      "revision": 1,
+      "table": [
+        {
+          "type": {
+            "value": 1,
+            "string": "Short offline"
+          },
+          "status": {
+            "value": 33,
+            "string": "Interrupted (host reset)",
+            "remaining_percent": 10
+          },
+          "lifetime_hours": 592
+        },
+        {
+          "type": {
+            "value": 2,
+            "string": "Extended offline"
+          },
+          "status": {
+            "value": 41,
+            "string": "Interrupted (host reset)",
+            "remaining_percent": 90
+          },
+          "lifetime_hours": 592
+        },
+        {
+          "type": {
+            "value": 2,
+            "string": "Extended offline"
+          },
+          "status": {
+            "value": 41,
+            "string": "Interrupted (host reset)",
+            "remaining_percent": 90
+          },
+          "lifetime_hours": 592
+        },
+        {
+          "type": {
+            "value": 2,
+            "string": "Extended offline"
+          },
+          "status": {
+            "value": 41,
+            "string": "Interrupted (host reset)",
+            "remaining_percent": 90
+          },
+          "lifetime_hours": 97
+        },
+        {
+          "type": {
+            "value": 1,
+            "string": "Short offline"
+          },
+          "status": {
+            "value": 121,
+            "string": "Completed: read failure",
+            "remaining_percent": 90,
+            "passed": false
+          },
+          "lifetime_hours": 97,
+          "lba": 618079447
+        }
+      ],
+      "count": 5,
+      "error_count_total": 1,
+      "error_count_outdated": 0
+    }
+  },
+  "ata_smart_selective_self_test_log": {
+    "revision": 1,
+    "table": [
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      },
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      },
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      },
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      },
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      }
+    ],
+    "flags": {
+      "value": 0,
+      "remainder_scan_enabled": false
+    },
+    "power_up_scan_resume_minutes": 0
+  }
+}
+]

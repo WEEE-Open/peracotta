@@ -87,21 +87,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    # TODO: parse this thing
-    expect = [
-        {
-            "type": "hdd",  # Weird smarctl results here... there's no way in the file to tell this is a SSD and not an HDD
-            "brand": "Samsung",
-            "model": "MZFLV128HCGR-000MV",
-            "sn": "S244NX0H985438",
-            "capacity-decibyte": -1,  # This is also wrong because whatever
-            "spin-rate-rpm": -1,
-            "smart-data": "ok",
-        }
-    ]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect

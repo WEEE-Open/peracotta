@@ -109,17 +109,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    # RAID managed by motherboard
-    expect = [
-        {
-            "type": "hdd",
-            "capacity-decibyte": 996000000000,
-            "spin-rate-rpm": 20000,
-        }
-    ]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect

@@ -94,22 +94,3 @@ def test_chassis():
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
-
-
-def test_smartctl():
-    expect = [
-        {
-            "type": "ssd",
-            "brand": "Apple",
-            "family": "SD/SM/TS...E/F/G SSDs",
-            "model": "SM0512F",
-            "sn": "S1K5NYCF740776",
-            "capacity-byte": 500000000000,
-            "wwn": "5 002538 655584d30",
-            "smart-data": "ok",
-            "sata-ports-n": 1,
-        }
-    ]
-    output = read_smartctl.parse_smartctl(read_file(filedir, "smartctl.txt"))
-
-    assert output == expect

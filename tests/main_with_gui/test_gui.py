@@ -2,7 +2,7 @@ import pytest
 import os
 from PyQt5 import QtCore, QtTest, QtWidgets
 import peracommon
-from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo
+# from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo
 
 gpu_loc_file = "gpu_location.txt"
 
