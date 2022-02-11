@@ -41,6 +41,7 @@ PATH = {
     "FEATURES": "features.json",
     "THEMES": "assets/themes/",
     "TMP_FILES": "tmp/",
+    "ICON": "assets/pear_emoji.png",
 }
 
 ICON = {
@@ -91,7 +92,9 @@ class Ui(QtWidgets.QMainWindow):
         self.tarallo_token = tarallo_token
         self.useful_default_features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
+        self.active_theme = "default"
 
+        self.setWindowIcon(QtGui.QIcon(PATH["ICON"]))
         # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
         try:
             self.load_features_file(tarallo_auto_download)
@@ -107,6 +110,10 @@ class Ui(QtWidgets.QMainWindow):
                 exit(1)
             else:
                 QtWidgets.QMessageBox.warning(self, title, message)
+
+        # shortcuts
+        self.refreshThemeShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+R"), self)
+        self.refreshThemeShortcut.activated.connect(self.refresh_theme)
 
         # Output toolbox
         self.outputWidget = self.findChild(QtWidgets.QWidget, "outputWidget")
@@ -325,8 +332,16 @@ class Ui(QtWidgets.QMainWindow):
     def set_theme(self, theme: str):
         if theme == "default":
             self.app.setStyleSheet("")
+            self.active_theme = "default"
             return
         with open(f"{PATH['THEMES']}{theme}.css", "r") as file:
+            self.app.setStyleSheet(file.read())
+        self.active_theme = theme
+
+    def refresh_theme(self):
+        if self.active_theme == "default":
+            return
+        with open(f"{PATH['THEMES']}{self.active_theme}.css", "r") as file:
             self.app.setStyleSheet(file.read())
 
     def show_busy_progress_bar(self):
@@ -749,6 +764,9 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.feature_line_edit.setEnabled(flag)
         self.feature_selector.setEnabled(flag)
 
+    def minimumSizeHint(self) -> QtCore.QSize:
+        return self.table.minimumSizeHint()
+
 
 class ToolBoxWidget(QtWidgets.QToolBox):
     def __init__(self, data: list[dict], default_features: dict, encountered_types_count: dict):
@@ -795,12 +813,14 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                     },
                 }
             )
+            found_product = None
+        else:
+            found_product = self.find_matching_product(self.data, item.get("features", {}))
 
         if item and item["type"] != "I":
             return
 
         counter = ""
-        found_product = self.find_matching_product(self.data, item.get("features", {}))
 
         if item_type is None and item:
             item_type = item["features"]["type"]
@@ -827,9 +847,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         if "model" in features and "brand" in features and "variant" in features:
             for maybe in data:
                 if maybe.get("type") == "P":
-                    if maybe.get("brand") == features["brand"] and \
-                       maybe.get("model") == features["model"] and \
-                       maybe.get("variant") == features["variant"]:
+                    if maybe.get("brand") == features["brand"] and maybe.get("model") == features["model"] and maybe.get("variant") == features["variant"]:
                         return maybe
         return None
 
@@ -860,9 +878,8 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         h = 0
         for child in self.children():
             if isinstance(child, QtWidgets.QScrollArea):
-                if child.isHidden():
-                    h += child.minimumSizeHint().height()
-                else:
+                if not child.isHidden():
+                    print(f"Shown: {child.minimumSizeHint().height()}")
                     h += child.sizeHint().height()
             elif isinstance(child, QtWidgets.QWidget):
                 # print(f"{child}: {child.sizeHint().height()} vs {child.minimumSizeHint().height()}")
@@ -871,6 +888,9 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         old = super().minimumSizeHint()
         if h > old.height():
             old.setHeight(h)
+        print("----------------------------------------------------------")
+        print("----------------------------------------------------------")
+        print("----------------------------------------------------------")
         return old
 
     def remove_item_from_toolbox(self, button):
@@ -1259,7 +1279,7 @@ def tarallo_success_dialog(url: str):
         "Upload successful! Now go to TARALLO and finish the job.",
     )
     std_width = QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxWarning).availableSizes()[-1].width()
-    dialog.setIconPixmap(QtGui.QPixmap("data/pear_emoji.png").scaledToWidth(std_width, QtCore.Qt.SmoothTransformation))
+    dialog.setIconPixmap(QtGui.QPixmap(PATH["ICON"]).scaledToWidth(std_width, QtCore.Qt.SmoothTransformation))
     dialog.setStandardButtons(QtWidgets.QMessageBox.Ok)
     view_on_tarallo_button = dialog.addButton("View on TARALLO", dialog.ActionRole)
     dialog.exec_()
