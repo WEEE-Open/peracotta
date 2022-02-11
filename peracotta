@@ -795,12 +795,14 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                     },
                 }
             )
+            found_product = None
+        else:
+            found_product = self.find_matching_product(self.data, item.get("features", {}))
 
         if item and item["type"] != "I":
             return
 
         counter = ""
-        found_product = self.find_matching_product(self.data, item.get("features", {}))
 
         if item_type is None and item:
             item_type = item["features"]["type"]
