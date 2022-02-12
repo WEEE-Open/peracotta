@@ -692,13 +692,11 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.main_layout.addLayout(self.adder_layout)
         self.setLayout(self.main_layout)
 
-    # def external_size_hint_height(self):
-    #     h1 = max(self.table.minimumSizeHint().height(), self.table.sizeHint().height())
-    #     h2 = self.adder_layout.sizeHint().height()
-    #     print(f"H1: {self.table.minimumSizeHint().height()} {self.table.sizeHint().height()}")
-    #     print(f"H2: {self.adder_layout.sizeHint().height()}")
-    #
-    #     return h1 + h2 * 4
+    def external_size_hint_height(self):
+        h1 = max(self.table.minimumSizeHint().height(), self.table.sizeHint().height())
+        h2 = self.adder_layout.sizeHint().height()
+
+        return h1 + h2
 
     def table_setup(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
         ctm = CustomTableModel(data, features, product, default_features)
@@ -890,16 +888,17 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                 else:
                     the_widget = child.widget()
                     if the_widget and isinstance(the_widget, ToolBoxItem):
-                        print(f"{the_widget.sizeHint().height()}, {the_widget.minimumSizeHint().height()}")
                         h += the_widget.external_size_hint_height()
                     else:
-                        h += max(child.sizeHint().height(), child.minimumSizeHint().height())
+                        # h += max(child.sizeHint().height(), child.minimumSizeHint().height())
+                        pass
             elif isinstance(child, QtWidgets.QWidget):
-                # print(f"{child}: {child.sizeHint().height()} vs {child.minimumSizeHint().height()}")
-                # Buttons and anything else
-                h += child.sizeHint().height()
+                # print(f"{child}: {child.sizeHint().height()} {child.minimumSizeHint().height()}")
+                # Buttons and anything else.
+                # Why 1.5? Dunno, they're ~40 pixels and sizeHint is 25 (minimum 24).
+                h += int(child.sizeHint().height() * 1.5)
         old = super().minimumSizeHint()
-        print(f"------ {h} vs {old.height()}! ------")
+        # print(f"------ {h} vs {old.height()}! ------")
         if h > old.height():
             return QtCore.QSize(old.width(), h)
         return old
