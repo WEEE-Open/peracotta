@@ -10,10 +10,7 @@ def _ignore_spaces(line: str, initial_chars_to_ignore: int):
 
 def parse_decode_dimms(dimms: str, interactive: bool = False) -> list[dict]:
     # check based on output of decode-dimms v6250
-    if (
-        "Number of SDRAM DIMMs detected and decoded: 0" in dimms
-        or "Number of SDRAM DIMMs detected and decoded: " not in dimms
-    ):
+    if "Number of SDRAM DIMMs detected and decoded: 0" in dimms or "Number of SDRAM DIMMs detected and decoded: " not in dimms:
         if interactive:
             print("decode-dimms was not able to find any RAM details")
         return []
@@ -24,10 +21,13 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> list[dict]:
     del dimm_sections[0]
 
     # create list of as many dimms as there are dimm_sections
-    dimms = [{
-        "type": "ram",
-        "working": "yes",
-    } for _ in range(len(dimm_sections))]
+    dimms = [
+        {
+            "type": "ram",
+            "working": "yes",
+        }
+        for _ in range(len(dimm_sections))
+    ]
 
     for i, dimm in enumerate(dimm_sections):
         manufacturer_data_type = None
@@ -78,14 +78,10 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> list[dict]:
 
             # part number can be overwritten by serial number if present
             if line.startswith("Assembly Serial Number"):
-                dimms[i]["sn"] = _ignore_spaces(
-                    line, len("Assembly Serial Number")
-                )
+                dimms[i]["sn"] = _ignore_spaces(line, len("Assembly Serial Number"))
                 if dimms[i]["sn"].startswith("0x"):
                     try:
-                        dimms[i]["sn"] = str(
-                            int(dimms[i]["sn"][2:], base=16)
-                        )
+                        dimms[i]["sn"] = str(int(dimms[i]["sn"][2:], base=16))
                     except ValueError:
                         # Ooops, this isn't an hex number after all...
                         pass

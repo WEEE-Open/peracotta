@@ -43,7 +43,8 @@ def parse_lscpu(lscpu: str) -> list[dict]:
 
             # Remove some more lapalissades and assorted tautologies
             cpu["model"] = (
-                cpu["model"].replace("(R)", " ")
+                cpu["model"]
+                .replace("(R)", " ")
                 .replace("(TM)", " ")
                 .replace("(tm)", " ")
                 .replace("CPU", "")
@@ -70,16 +71,12 @@ def parse_lscpu(lscpu: str) -> list[dict]:
             # It's formatted with "%.4f" by lscpu, at the moment
             # https://github.com/karelzak/util-linux/blob/master/sys-utils/lscpu.c#L1246
             # .replace() needed because "ValueError: could not convert string to float: '3300,0000'"
-            frequency_mhz = float(
-                line.split("CPU max MHz:")[1].strip().replace(",", ".")
-            )
+            frequency_mhz = float(line.split("CPU max MHz:")[1].strip().replace(",", "."))
             cpu["frequency-hertz"] = int(frequency_mhz * 1000 * 1000)
 
         elif "CPU MHz:" in line and "frequency-hertz" not in cpu:
             # This may not exist anymore (?) but we should use it as a fallback
-            frequency_mhz = float(
-                line.split("CPU MHz:")[1].strip().replace(",", ".")
-            )
+            frequency_mhz = float(line.split("CPU MHz:")[1].strip().replace(",", "."))
             cpu["frequency-hertz"] = int(frequency_mhz * 1000 * 1000)
 
         elif "Thread(s) per core:" in line:

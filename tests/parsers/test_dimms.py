@@ -33,9 +33,7 @@ def test_ecc_ram1():
             "ram-timings": "5-5-5-15",
         },
     ]
-    output = read_decode_dimms.parse_decode_dimms(
-        read_file(filedir, "ECC/R451-R450.txt")
-    )
+    output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "ECC/R451-R450.txt"))
 
     assert output == expect
 
@@ -67,9 +65,7 @@ def test_ecc_ram1_not_an_hex():
             "ram-timings": "5-5-5-15",
         },
     ]
-    output = read_decode_dimms.parse_decode_dimms(
-        read_file(filedir, "ECC/R451-R450-notanhex.txt")
-    )
+    output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "ECC/R451-R450-notanhex.txt"))
 
     assert output == expect
 
@@ -99,9 +95,7 @@ def test_ecc_ram2():
             "ram-timings": "5-5-5-15",
         },
     ]
-    output = read_decode_dimms.parse_decode_dimms(
-        read_file(filedir, "ECC/R480-R479.txt")
-    )
+    output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "ECC/R480-R479.txt"))
 
     assert output == expect
 
@@ -157,8 +151,6 @@ def test_ram1():
             "ram-timings": "6-6-6-18",
         },
     ]
-    output = read_decode_dimms.parse_decode_dimms(
-        read_file(filedir, "non ECC/R469-R470-R471-R472.txt")
-    )
+    output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "non ECC/R469-R470-R471-R472.txt"))
 
     assert output == expect

@@ -11,31 +11,33 @@ filedir = "tests/source_files/77/"
 
 
 def test_77_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand-manufacturer": "SiS",
-        "brand": "ASUSTeK Computer Inc.",
-        "model": "771/671",
-    }]
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
-    )
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand-manufacturer": "SiS",
+            "brand": "ASUSTeK Computer Inc.",
+            "model": "771/671",
+        }
+    ]
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt"))
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-32",
-        "model": "Celeron 2.80GHz",
-        "brand": "Intel",
-        "core-n": 1,
-        "thread-n": 1,
-        "frequency-hertz": 2800000000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-32",
+            "model": "Celeron 2.80GHz",
+            "brand": "Intel",
+            "core-n": 1,
+            "thread-n": 1,
+            "frequency-hertz": 2800000000,
+        }
+    ]
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
@@ -73,19 +75,19 @@ def test_77_connector():
         "sata-ports-n": 2,
         "notes": "Unknown connector: Other / None (AAFP / Not Specified)",
     }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_77_chassis():
-    expect = [{
-        "brand": "Chassis Manufacture",
-        "sn": "Chassis Serial Number",
-        "type": "case",
-    }]
+    expect = [
+        {
+            "brand": "Chassis Manufacture",
+            "sn": "Chassis Serial Number",
+            "type": "case",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect

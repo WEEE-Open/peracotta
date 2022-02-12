@@ -11,31 +11,33 @@ filedir = "tests/source_files/Thinkpad-R500/"
 
 
 def test_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand": "Lenovo",
-        "model": "Mobile 4 Series Chipset",
-        "brand-manufacturer": "Intel",
-    }]
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
-    )
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand": "Lenovo",
+            "model": "Mobile 4 Series Chipset",
+            "brand-manufacturer": "Intel",
+        }
+    ]
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt"))
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-64",
-        "model": "Core 2 Duo P8600",
-        "brand": "Intel",
-        "core-n": 2,
-        "thread-n": 2,
-        "frequency-hertz": 2400000000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-64",
+            "model": "Core 2 Duo P8600",
+            "brand": "Intel",
+            "core-n": 2,
+            "thread-n": 2,
+            "frequency-hertz": 2400000000,
+        }
+    ]
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
@@ -75,21 +77,21 @@ def test_connector():
         "ethernet-ports-n": 1,
         "firewire-ports-n": 1,
         "rj11-ports-n": 1,
-            }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    }
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
-    expect = [{
-        "type": "case",
-        "brand": "LENOVO",
-        "sn": "Not Available",
-        "motherboard-form-factor": "proprietary-laptop",
-    }]
+    expect = [
+        {
+            "type": "case",
+            "brand": "LENOVO",
+            "sn": "Not Available",
+            "motherboard-form-factor": "proprietary-laptop",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect

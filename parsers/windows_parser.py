@@ -45,9 +45,7 @@ def parse_win_cpu_specs(cpu_dir: str, gpu_dir: str):
         data = json.load(file)
         for entry in data:
             if "Service" in entry and entry["Service"] == "igfx":
-                object[0]["features"]["integrated-graphics-brand"] = entry[
-                    "Manufacturer"
-                ]
+                object[0]["features"]["integrated-graphics-brand"] = entry["Manufacturer"]
                 object[0]["features"]["integrated-graphics-model"] = entry["Name"]
                 break
     return json.dumps(object)

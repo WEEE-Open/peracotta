@@ -13,11 +13,7 @@ def is_product(component: dict):
 
 
 # noinspection DuplicatedCode
-test_folders = [
-    entries
-    for entries in os.listdir("tests/source_files/")
-    if os.path.isdir(f"tests/source_files/{entries}")
-]
+test_folders = [entries for entries in os.listdir("tests/source_files/") if os.path.isdir(f"tests/source_files/{entries}")]
 for fold in set(test_folders):
     if "baseboard.txt" not in os.listdir(f"tests/source_files/{fold}"):
         test_folders.remove(fold)
@@ -94,8 +90,24 @@ def test_has_chassis_and_mobo(res):
 
 
 def test_check_product_keys(res):
-    here = {"brand", "model", "variant", "arrival-batch", "mac", "notes", "os-license-code", "os-license-version",
-            "other-code", "owner", "smart-data", "sn", "software", "surface-scan", "working", "wwn"}
+    here = {
+        "brand",
+        "model",
+        "variant",
+        "arrival-batch",
+        "mac",
+        "notes",
+        "os-license-code",
+        "os-license-version",
+        "other-code",
+        "owner",
+        "smart-data",
+        "sn",
+        "software",
+        "surface-scan",
+        "working",
+        "wwn",
+    }
 
     assert isinstance(res, list)
     for thing in res:
@@ -133,4 +145,3 @@ def _assert_value_makes_sense(v):
         assert v > 0
     elif isinstance(v, float):
         assert v > 0
-

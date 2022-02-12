@@ -67,9 +67,7 @@ def _parse_disk(file):
         disk["sn"] = file.get("serial_number")
 
     if file.get("wwn"):
-        disk["wwn"] = str(file["wwn"].get("naa", "")) + " " +\
-                      str(file["wwn"].get("oui", "")) + " " +\
-                      str(file["wwn"].get("id", ""))
+        disk["wwn"] = str(file["wwn"].get("naa", "")) + " " + str(file["wwn"].get("oui", "")) + " " + str(file["wwn"].get("id", ""))
 
     if file.get("form_factor", {}).get("name"):
         ff = file["form_factor"]["name"]
@@ -115,9 +113,7 @@ def _parse_disk(file):
             disk["sn"] = _remove_prefix("WD-", disk["sn"])
 
     if "SSD " in disk.get("model", "") or " SSD" in disk.get("model", ""):
-        disk["model"] = disk["model"]\
-            .replace("SSD ", "")\
-            .replace(" SSD", "")
+        disk["model"] = disk["model"].replace("SSD ", "").replace(" SSD", "")
         _mega_clean_disk_model(disk)
         if disk["type"] == "hdd":
             disk["type"] = "ssd"
@@ -315,7 +311,7 @@ def _split_brand_and_other(line):
     for possible in possibilities:
         if lowered.startswith(possible.lower()):
             brand = possible.strip()
-            other = line[len(possible):].lstrip("_").strip()
+            other = line[len(possible) :].lstrip("_").strip()
             break
 
     return brand, other

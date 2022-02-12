@@ -11,33 +11,35 @@ filedir = "tests/source_files/rottame/"
 
 
 def test_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand": "ASUSTeK Computer Inc.",
-        "model": "GeForce4 MX 440SE AGP 8x",
-        "internal-name": "NV18",  # Missing glxinfo :(
-        "brand-manufacturer": "Nvidia",
-    }]
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand": "ASUSTeK Computer Inc.",
+            "model": "GeForce4 MX 440SE AGP 8x",
+            "internal-name": "NV18",  # Missing glxinfo :(
+            "brand-manufacturer": "Nvidia",
+        }
+    ]
     # False to ignore missing glxinfo
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
-    )
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt"))
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-64",
-        "model": "Pentium D 2.66GHz",
-        "brand": "Intel",
-        "core-n": 2,
-        "thread-n": 2,
-        "frequency-hertz": 2660000000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-64",
+            "model": "Pentium D 2.66GHz",
+            "brand": "Intel",
+            "core-n": 2,
+            "thread-n": 2,
+            "frequency-hertz": 2660000000,
+        }
+    ]
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
@@ -93,20 +95,20 @@ def test_connector():
         "ethernet-ports-n": 1,
         "ide-ports-n": 2,
     }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
     # Generic Chassis is generic
-    expect = [{
-        "type": "case",
-        "brand": "Chassis Manufacture",
-        "sn": "Chassis Serial Number",
-    }]
+    expect = [
+        {
+            "type": "case",
+            "brand": "Chassis Manufacture",
+            "sn": "Chassis Serial Number",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect

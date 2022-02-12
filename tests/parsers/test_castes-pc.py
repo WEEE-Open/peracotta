@@ -11,33 +11,35 @@ filedir = "tests/source_files/castes-pc/"
 
 
 def test_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand": "ZOTAC International (MCO) Ltd.",
-        "model": "GeForce GTX 1060 6GB",
-        "internal-name": "GP106",
-        "capacity-byte": 6442450944,
-        "brand-manufacturer": "Nvidia",
-    }]
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        True, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
-    )
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand": "ZOTAC International (MCO) Ltd.",
+            "model": "GeForce GTX 1060 6GB",
+            "internal-name": "GP106",
+            "capacity-byte": 6442450944,
+            "brand-manufacturer": "Nvidia",
+        }
+    ]
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(True, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt"))
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-64",
-        "model": "Core i5-6500",
-        "brand": "Intel",
-        "core-n": 4,
-        "thread-n": 4,
-        "frequency-hertz": 3200000000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-64",
+            "model": "Core i5-6500",
+            "brand": "Intel",
+            "core-n": 4,
+            "thread-n": 4,
+            "frequency-hertz": 3200000000,
+        }
+    ]
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
@@ -89,20 +91,20 @@ def test_connector():
         "model": "H110M-ITX/ac",
         "sn": "M80-69017400518",
     }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
     # This is also wrong, but for pre-assembled computers it should be right
-    expect = [{
-        "type": "case",
-        "brand": "To Be Filled By O.E.M.",
-        "sn": "To Be Filled By O.E.M",
-    }]
+    expect = [
+        {
+            "type": "case",
+            "brand": "To Be Filled By O.E.M.",
+            "sn": "To Be Filled By O.E.M",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect

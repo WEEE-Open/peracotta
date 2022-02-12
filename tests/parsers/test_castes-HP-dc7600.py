@@ -10,15 +10,17 @@ filedir = "tests/source_files/castes-HP-dc7600/"
 
 
 def test_lspci_dedicated():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand": "PC Partner Limited / Sapphire Technology",
-        "internal-name": "G98",
-        "model": "GeForce G 100",
-        "capacity-byte": 536870912,  # This has 512 MB of VRAM, but glxinfo reports 496?
-        "brand-manufacturer": "Nvidia",
-    }]
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand": "PC Partner Limited / Sapphire Technology",
+            "internal-name": "G98",
+            "model": "GeForce G 100",
+            "capacity-byte": 536870912,  # This has 512 MB of VRAM, but glxinfo reports 496?
+            "brand-manufacturer": "Nvidia",
+        }
+    ]
     output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         True,
         read_file(filedir, "NVIDIA-G100/lspci.txt"),
@@ -29,13 +31,15 @@ def test_lspci_dedicated():
 
 
 def test_lspci_integrated():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand": "Hewlett-Packard Company",
-        "model": "82945G/GZ",
-        "brand-manufacturer": "Intel",
-    }]
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand": "Hewlett-Packard Company",
+            "model": "82945G/GZ",
+            "brand-manufacturer": "Intel",
+        }
+    ]
     output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
         read_file(filedir, "82945G/lspci.txt"),
@@ -46,16 +50,18 @@ def test_lspci_integrated():
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-64",
-        "model": "Pentium 4 2.80GHz",
-        "brand": "Intel",
-        "core-n": 1,
-        "thread-n": 2,
-        "frequency-hertz": 2800000000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-64",
+            "model": "Pentium 4 2.80GHz",
+            "brand": "Intel",
+            "core-n": 1,
+            "thread-n": 2,
+            "frequency-hertz": 2800000000,
+        }
+    ]
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
@@ -99,19 +105,19 @@ def test_connector():
         "sata-ports-n": 2,
         "vga-ports-n": 1,
     }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
-    expect = [{
-        "type": "case",
-        "brand": "Hewlett-Packard",
-        "sn": "CZC6203MC5",
-    }]
+    expect = [
+        {
+            "type": "case",
+            "brand": "Hewlett-Packard",
+            "sn": "CZC6203MC5",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect

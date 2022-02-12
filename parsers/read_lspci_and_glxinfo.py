@@ -31,10 +31,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
             # -----------------------------------------------------------------
             # AMD/ATI
             # -----------------------------------------------------------------
-            if part_between_square_brackets is not None and (
-                "AMD" in part_between_square_brackets
-                or "ATI" in part_between_square_brackets
-            ):
+            if part_between_square_brackets is not None and ("AMD" in part_between_square_brackets or "ATI" in part_between_square_brackets):
                 gpu["brand-manufacturer"] = part_between_square_brackets
                 # take second string between []
                 gpu["model"] = first_line.split("[")[2].split("]")[0]
@@ -63,11 +60,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
                     if not re.search("\\d+", tmp_model):
                         tmp_model = ""
                 elif "HD Graphics" in first_line:
-                    tmp_model = (
-                        first_line.split("Intel Corporation ")[1]
-                        .split("(", 1)[0]
-                        .strip()
-                    )
+                    tmp_model = first_line.split("Intel Corporation ")[1].split("(", 1)[0].strip()
                 elif "[" in first_line and "]" in first_line:
                     tmp_model = first_line.split("[")[1].split("]")[0]
                 else:
@@ -106,24 +99,26 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
                 elif " PCI/AGP" in gpu["model"]:
                     gpu["model"] = gpu["model"].split(" PCI/AGP", 1)[0].strip()
                 if gpu["model"] in gpu["brand"]:
-                    gpu["brand"] = gpu["brand"].split(gpu["model"], 1)[
-                        0
-                    ].strip()
+                    gpu["brand"] = gpu["brand"].split(gpu["model"], 1)[0].strip()
             else:
                 gpu["brand-manufacturer"] = None
                 if interactive:
-                    print("I couldn't find the Video Card brand. The model was set to 'None' and is to be edited "
-                    "logging into the TARALLO afterwards. The information you're looking for should be in the "
-                    f"following 2 lines:\n{first_line}\n{second_line}\n")
+                    print(
+                        "I couldn't find the Video Card brand. The model was set to 'None' and is to be edited "
+                        "logging into the TARALLO afterwards. The information you're looking for should be in the "
+                        f"following 2 lines:\n{first_line}\n{second_line}\n"
+                    )
 
             if gpu.get("model") and gpu.get("brand"):
                 # Try to remove duplicate information
                 gpu["brand"] = gpu["brand"].replace(gpu["model"], "").strip()
             else:
                 if interactive:
-                    print("I couldn't find the Integrated Graphics model. The model was set to 'None' and is to be "
-                          "edited logging into the TARALLO afterwards. The information you're looking for should be in "
-                          f"the following 2 lines:\n{first_line}\n{second_line}\n")
+                    print(
+                        "I couldn't find the Integrated Graphics model. The model was set to 'None' and is to be "
+                        "edited logging into the TARALLO afterwards. The information you're looking for should be in "
+                        f"the following 2 lines:\n{first_line}\n{second_line}\n"
+                    )
             break
 
     if gpu.get("internal-name"):
@@ -144,7 +139,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
                 "into the TARALLO afterwards. The information you're looking for should be in the following 2 lines:"
             )
         if "capacity-byte" not in gpu:
-            print (
+            print(
                 "A dedicated video memory couldn't be found. A generic video memory capacity was found instead, which "
                 "could be near the actual value. Please humans, fix this error by hand."
             )
@@ -209,9 +204,7 @@ def _convert_video_memory_size(capacity, units_of_measure):
     return capacity
 
 
-def parse_lspci_and_glxinfo(
-    has_dedicated: bool, lspci_file: str, glxinfo_file: str, interactive: bool = False
-) -> list[dict]:
+def parse_lspci_and_glxinfo(has_dedicated: bool, lspci_file: str, glxinfo_file: str, interactive: bool = False) -> list[dict]:
     gpu = {
         "type": "graphics-card",
         "working": "yes",

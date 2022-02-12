@@ -11,18 +11,18 @@ filedir = "tests/source_files/workstation/"
 
 
 def test_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand": "ASUSTeK Computer Inc.",
-        "model": "GeForce 9600 GT",
-        "internal-name": "G94",
-        "brand-manufacturer": "Nvidia",
-    }]
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand": "ASUSTeK Computer Inc.",
+            "model": "GeForce 9600 GT",
+            "internal-name": "G94",
+            "brand-manufacturer": "Nvidia",
+        }
+    ]
     # False to ignore missing glxinfo
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
-    )
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt"))
 
     assert output == expect
 
@@ -93,19 +93,19 @@ def test_connector():
         "mini-jack-ports-n": 4,
         "ethernet-ports-n": 1,
     }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
-    expect = [{
-        "type": "case",
-        "brand": "Dell Inc.",
-        "sn": "5ASDL3L",
-    }]
+    expect = [
+        {
+            "type": "case",
+            "brand": "Dell Inc.",
+            "sn": "5ASDL3L",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect

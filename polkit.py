@@ -26,9 +26,7 @@ dotpolicy_content = """<?xml version="1.0" encoding="UTF-8"?>
 
 </policyconfig>
 """
-path_to_dotpolicy = (
-    "/usr/share/polkit-1/actions/it.weeeopen.peracotta.generate-files.policy"
-)
+path_to_dotpolicy = "/usr/share/polkit-1/actions/it.weeeopen.peracotta.generate-files.policy"
 local_path_to_dotpolicy = "./it.weeeopen.peracotta.generate-files.policy"
 
 # path to generate_files.sh in between dquotes
@@ -45,17 +43,11 @@ def make_dotfiles(path_to_generate_files_sh: str):
     dotpkexec_split = 'pkexec "'
 
     dotpolicy_with_path = (
-        dotpolicy_content.split(dotpolicy_split)[0]
-        + dotpolicy_split
-        + path_to_generate_files_sh
-        + dotpolicy_content.split(dotpolicy_split)[1]
+        dotpolicy_content.split(dotpolicy_split)[0] + dotpolicy_split + path_to_generate_files_sh + dotpolicy_content.split(dotpolicy_split)[1]
     )
 
     dotpkexec_with_path = (
-        dotpkexec_content.split(dotpkexec_split)[0]
-        + dotpkexec_split
-        + path_to_generate_files_sh
-        + dotpkexec_content.split(dotpkexec_split)[1]
+        dotpkexec_content.split(dotpkexec_split)[0] + dotpkexec_split + path_to_generate_files_sh + dotpkexec_content.split(dotpkexec_split)[1]
     )
 
     # print(dotpolicy_with_path)
@@ -80,8 +72,6 @@ if __name__ == "__main__":
         os.makedirs(os.path.join(working_directory, "tmp"))
 
     folder_name = "tmp"
-    path_to_gen_files_sh = os.path.join(
-        working_directory, "scripts", "generate_files.sh"
-    )
+    path_to_gen_files_sh = os.path.join(working_directory, "scripts", "generate_files.sh")
     print(path_to_gen_files_sh)
     make_dotfiles(path_to_generate_files_sh=path_to_gen_files_sh)

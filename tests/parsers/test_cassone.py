@@ -10,31 +10,33 @@ filedir = "tests/source_files/cassone/"
 
 
 def test_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand": "SiS",
-        "model": "65x/M650/740",
-    }]
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand": "SiS",
+            "model": "65x/M650/740",
+        }
+    ]
 
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
-    )
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt"))
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-32",
-        "model": "Athlon 4",
-        "brand": "AMD",
-        "core-n": 1,
-        "thread-n": 1,
-        "frequency-hertz": 1244733000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-32",
+            "model": "Athlon 4",
+            "brand": "AMD",
+            "core-n": 1,
+            "thread-n": 1,
+            "frequency-hertz": 1244733000,
+        }
+    ]
 
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
@@ -66,18 +68,18 @@ def test_connector():
         "parallel-ports-n": 1,
     }
 
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
-    expect = [{
-        "type": "case",
-        "brand": "Matsonic",
-    }]
+    expect = [
+        {
+            "type": "case",
+            "brand": "Matsonic",
+        }
+    ]
 
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 

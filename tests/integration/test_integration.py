@@ -22,11 +22,7 @@ def import_executable(name):
 peracruda = import_executable("peracruda")
 
 
-test_folders = [
-    entries
-    for entries in os.listdir("tests/source_files/")
-    if os.path.isdir(f"tests/source_files/{entries}")
-]
+test_folders = [entries for entries in os.listdir("tests/source_files/") if os.path.isdir(f"tests/source_files/{entries}")]
 for fold in set(test_folders):
     if "baseboard.txt" not in os.listdir(f"tests/source_files/{fold}"):
         test_folders.remove(fold)
@@ -75,9 +71,7 @@ def args2(request):
 
 
 @pytest.mark.upload
-def test_upload_pytarallo(
-    args2, monkeypatch, capsys
-):  # testing pytarallo integration with peracotta
+def test_upload_pytarallo(args2, monkeypatch, capsys):  # testing pytarallo integration with peracotta
     def auto_bulk_id():  # testing straight upload with automatic bulk_id
         cli_input = io.StringIO(f"y\n\n")
         monkeypatch.setattr("sys.stdin", cli_input)

@@ -11,32 +11,34 @@ filedir = "tests/source_files/2018-castes-mbp/"
 
 
 def test_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand-manufacturer": "AMD/ATI",
-        "brand": "Apple Inc. Radeon Pro 560X",
-        "model": "Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X",
-        "capacity-byte": 4294967296,
-    }]
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        True, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
-    )
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand-manufacturer": "AMD/ATI",
+            "brand": "Apple Inc. Radeon Pro 560X",
+            "model": "Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X",
+            "capacity-byte": 4294967296,
+        }
+    ]
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(True, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt"))
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-64",
-        "model": "Core i7-8750H",
-        "brand": "Intel",
-        "core-n": 6,
-        "thread-n": 12,
-        "frequency-hertz": 2200000000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-64",
+            "model": "Core i7-8750H",
+            "brand": "Intel",
+            "core-n": 6,
+            "thread-n": 12,
+            "frequency-hertz": 2200000000,
+        }
+    ]
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
@@ -73,21 +75,21 @@ def test_connector():
         "usb-ports-n": 2,
         "mini-jack-ports-n": 1,
         "thunderbolt-ports-n": 1,
-            }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    }
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
-    expect = [{
-        "brand": "Apple Inc.",
-        "sn": "CENSORED",
-        "type": "case",
-        "motherboard-form-factor": "proprietary-laptop",
-    }]
+    expect = [
+        {
+            "brand": "Apple Inc.",
+            "sn": "CENSORED",
+            "type": "case",
+            "motherboard-form-factor": "proprietary-laptop",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect

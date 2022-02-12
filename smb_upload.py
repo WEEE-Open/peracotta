@@ -13,9 +13,7 @@ def main(parsed_args):
         smb_user = os.environ["UPLOAD_SMB_USER"]
         smb_pass = os.environ["UPLOAD_SMB_PASS"]
     except KeyError:
-        raise EnvironmentError(
-            "Missing definition of UPLOAD_SMB_* environment variables"
-        )
+        raise EnvironmentError("Missing definition of UPLOAD_SMB_* environment variables")
 
     tmpdirname = "/tmp/peracotta_smb_mount"
     destdirname = "peracotta-tmp-" + str(datetime.now().timestamp()).replace(".", "-")
@@ -35,9 +33,7 @@ def main(parsed_args):
         )
 
         if os.path.isdir(path):
-            shutil.copytree(
-                path, f"{tmpdirname}/{destdirname}", copy_function=shutil.copy
-            )
+            shutil.copytree(path, f"{tmpdirname}/{destdirname}", copy_function=shutil.copy)
         else:
             print(f"Source directory {os.path.abspath(path)} is not a directory")
             exit(1)

@@ -113,9 +113,7 @@ def _get_baseboard(baseboard: str) -> dict:
 
 
 def _get_connectors(connectors_file: str, baseboard: dict, interactive: bool = False) -> dict:
-    possible_connectors = set(connectors_map.values()) | set(
-        connectors_map_tuples.values()
-    )
+    possible_connectors = set(connectors_map.values()) | set(connectors_map_tuples.values())
     possible_connectors.remove(None)
     connectors = dict(zip(possible_connectors, [0] * len(connectors_map)))
 
@@ -153,9 +151,7 @@ def _get_connectors(connectors_file: str, baseboard: dict, interactive: bool = F
             # Dark magic: https://stackoverflow.com/a/26853961
             connectors = {**connectors, **(extra_connectors[connector])}
         else:
-            found = find_connector_from_tuple(
-                connectors, external, external_des, internal, internal_des
-            )
+            found = find_connector_from_tuple(connectors, external, external_des, internal, internal_des)
             if not found:
                 warning = f"Unknown connector: {internal} / {external} ({internal_des} / {external_des})"
                 if interactive:
@@ -179,6 +175,7 @@ def _get_connectors(connectors_file: str, baseboard: dict, interactive: bool = F
         # Somewhat less dark magic
         return {**baseboard, **connectors_clean}
 
+
 def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]:
     mergeit = {
         "ethernet-ports-100m-n": 0,
@@ -186,7 +183,7 @@ def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]
         "mac": [],
     }
     other_devices = []
-    
+
     for line in net.split("\n"):
         if "u" in line:
             # USB adapters, ignore them
@@ -194,9 +191,7 @@ def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]
         line = line.split(" ", 3)
         if line[0].startswith("en"):
             if interactive and len(line) <= 2:
-                print(
-                    f"Warning: cannot detect speed for Ethernet port {line[0]}, is it unconnected?"
-                )
+                print(f"Warning: cannot detect speed for Ethernet port {line[0]}, is it unconnected?")
             elif line[2] == "1000":
                 mergeit["ethernet-ports-1000m-n"] += 1
             elif line[2] == "100":
@@ -205,16 +200,12 @@ def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]
                 print(f"Warning: unknown speed for Ethernet port {line[0]}: {line[2]}")
             mergeit["mac"].append(line[1])
         if line[0].startswith("wl"):
-            other_devices.append(
-                {"type": "wifi-card", "mac": line[1], "notes": f"Device name {line[0]}"}
-            )
+            other_devices.append({"type": "wifi-card", "mac": line[1], "notes": f"Device name {line[0]}"})
 
     mergeit["mac"] = ", ".join(mergeit["mac"])
 
     if "ethernet-ports-n" in baseboard:
-        found_ports = (
-            mergeit["ethernet-ports-100m-n"] + mergeit["ethernet-ports-1000m-n"]
-        )
+        found_ports = mergeit["ethernet-ports-100m-n"] + mergeit["ethernet-ports-1000m-n"]
         baseboard["ethernet-ports-n"] -= found_ports
         if baseboard["ethernet-ports-n"] > 0:
             if baseboard["ethernet-ports-n"] > 1:
@@ -241,9 +232,7 @@ def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]
     return [baseboard] + other_devices
 
 
-def find_connector_from_tuple(
-    connectors, external, external_des, internal, internal_des
-):
+def find_connector_from_tuple(connectors, external, external_des, internal, internal_des):
     equal = False
     for tup in connectors_map_tuples:
         zipped = list(zip(tup, (internal, external, internal_des, external_des)))
@@ -285,9 +274,7 @@ def parse_psu(chassis: Optional[dict]):
 
 
 def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> list[dict]:
-    chassis = {
-        "type": "case"
-    }
+    chassis = {"type": "case"}
 
     for line in chassis_file.splitlines():
         if "Manufacturer" in line:
@@ -298,9 +285,7 @@ def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> list[dict]:
         # This is Desktop, Laptop, etc...
         elif "Type: " in line:
             ff = line.split("Type: ")[1].strip()
-            if (
-                ff == "Laptop" or ff == "Notebook"
-            ):  # Both exist in the wild and in tests, difference unknown
+            if ff == "Laptop" or ff == "Notebook":  # Both exist in the wild and in tests, difference unknown
                 chassis["motherboard-form-factor"] = "proprietary-laptop"
                 if mobo and "motherboard-form-factor" not in mobo:
                     mobo["motherboard-form-factor"] = "proprietary-laptop"

@@ -11,32 +11,34 @@ filedir = "tests/source_files/travasato/"
 
 
 def test_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand": "ASUSTeK Computer Inc.",
-        "model": "GeForce GT 610",
-        "internal-name": "GF119",  # Still no glxinfo :(
-        "brand-manufacturer": "Nvidia",
-    }]
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, read_file(filedir, "lspci.txt"), ""
-    )
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand": "ASUSTeK Computer Inc.",
+            "model": "GeForce GT 610",
+            "internal-name": "GF119",  # Still no glxinfo :(
+            "brand-manufacturer": "Nvidia",
+        }
+    ]
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(False, read_file(filedir, "lspci.txt"), "")
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-64",
-        "model": "Core 2 Quad Q6600",
-        "brand": "Intel",
-        "core-n": 4,
-        "thread-n": 4,
-        "frequency-hertz": 2400000000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-64",
+            "model": "Core 2 Quad Q6600",
+            "brand": "Intel",
+            "core-n": 4,
+            "thread-n": 4,
+            "frequency-hertz": 2400000000,
+        }
+    ]
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
@@ -98,18 +100,18 @@ def test_connector():
         "sn": "BAOB4B9001YY",
         "ide-ports-n": 2,
     }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
     # At least it's not assuming stuff it cannot know...
-    expect = [{
-        "type": "case",
-    }]
+    expect = [
+        {
+            "type": "case",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect

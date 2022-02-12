@@ -11,31 +11,33 @@ filedir = "tests/source_files/asdpc2/"
 
 
 def test_lspci():
-    expect = [{
-        "type": "graphics-card",
-        "working": "yes",
-        "brand-manufacturer": "Intel",
-        "brand": "ASUSTeK Computer Inc.",
-        "model": "HD Graphics 515",
-    }]
-    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
-        False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt")
-    )
+    expect = [
+        {
+            "type": "graphics-card",
+            "working": "yes",
+            "brand-manufacturer": "Intel",
+            "brand": "ASUSTeK Computer Inc.",
+            "model": "HD Graphics 515",
+        }
+    ]
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(False, read_file(filedir, "lspci.txt"), read_file(filedir, "glxinfo.txt"))
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = [{
-        "type": "cpu",
-        "working": "yes",
-        "isa": "x86-64",
-        "model": "Core m3-6Y30",
-        "brand": "Intel",
-        "core-n": 2,
-        "thread-n": 4,
-        "frequency-hertz": 900000000,
-    }]
+    expect = [
+        {
+            "type": "cpu",
+            "working": "yes",
+            "isa": "x86-64",
+            "model": "Core m3-6Y30",
+            "brand": "Intel",
+            "core-n": 2,
+            "thread-n": 4,
+            "frequency-hertz": 900000000,
+        }
+    ]
     output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
@@ -70,21 +72,21 @@ def test_connector():
         "brand": "ASUSTeK COMPUTER INC.",
         "model": "UX305CA",
         "sn": "BSN12345678901234567",
-            }
-    output = read_dmidecode._get_connectors(
-        read_file(filedir, "connector.txt"), baseboard
-    )
+    }
+    output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
     assert output == expect
 
 
 def test_chassis():
-    expect = [{
-        "type": "case",
-        "brand": "ASUSTeK COMPUTER INC.",
-        "sn": "G6M0DF00361708D",
-        "motherboard-form-factor": "proprietary-laptop",
-    }]
+    expect = [
+        {
+            "type": "case",
+            "brand": "ASUSTeK COMPUTER INC.",
+            "sn": "G6M0DF00361708D",
+            "motherboard-form-factor": "proprietary-laptop",
+        }
+    ]
     output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
