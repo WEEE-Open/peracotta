@@ -157,13 +157,7 @@ def _parse_disk(file):
         if "desktop" in disk.get("family", "").lower() and port == PORT.SATA:
             disk["hdd-form-factor"] = "3.5"
 
-    smart = {}
-    if file.get("ata_smart_attributes", {}).get("table"):
-        for line in file["ata_smart_attributes"]["table"]:
-            name = line["name"]
-            if name.lower() == "unknown_attribute":
-                name = f"name_{str(line['id'])}"
-            smart[name] = line["raw"]["value"]
+    smart = extract_smart_data(file)
 
     # TODO: failing now, uncorrectable error log, other stuff
     status = smart_health_status(smart, False)
@@ -178,6 +172,17 @@ def _parse_disk(file):
         pass
 
     return disk
+
+
+def extract_smart_data(parsed):
+    smart = {}
+    if parsed.get("ata_smart_attributes", {}).get("table"):
+        for line in parsed["ata_smart_attributes"]["table"]:
+            name = line["name"]
+            if name.lower() == "unknown_attribute":
+                name = f"{name}_{str(line['id'])}"
+            smart[name] = line["raw"]["value"]
+    return smart
 
 
 def _mega_clean_disk_model(disk: dict):
