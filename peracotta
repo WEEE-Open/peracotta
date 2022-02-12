@@ -20,14 +20,8 @@ import json
 import prettyprinter
 import peracommon
 
-# TODO: peracruda/58 call parsers
-# TODO: peracruda/63 set owner to everything
-# TODO: peracruda/66 split_products returns the list of product
-# TODO: peracommon.unmake_tree if JSON loaded
-# TODO: peracommon.make_tree before upload
 
-
-VERSION = "2.0"
+VERSION = "1.0.0"
 
 URL = {
     "website": "https://weeeopen.polito.it",
@@ -492,7 +486,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.open_json(self.settings.value("latest_json"))
 
     def load_raw_files(self):
-        print("Loading raw files...")
+        QtWidgets.QMessageBox.warning(self, "Oh no", "Not implemented yet!")
 
     def show_json(self):
         if self.data is None:
