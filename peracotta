@@ -660,6 +660,7 @@ class CustomTableView(QtWidgets.QTableView):
 
         header = self.verticalHeader().sizeHint().height()
         rows = self.verticalHeader().length()
+        # rows = self.model().rowCount() * self.horizontalHeader().defaultSectionSize()
         h = header + rows + frame
         # print(f"{header} + {rows} + {frame} = {h} > {default_size.height()}")
 
@@ -693,8 +694,17 @@ class ToolBoxItem(QtWidgets.QWidget):
 
         # setup
         self.table_setup(data, features, product, default_features)
-        self.feature_adder(features["type"])
+        self.adder_layout = self._create_feature_adder()
+        self.main_layout.addLayout(self.adder_layout)
         self.setLayout(self.main_layout)
+
+    # def external_size_hint_height(self):
+    #     h1 = max(self.table.minimumSizeHint().height(), self.table.sizeHint().height())
+    #     h2 = self.adder_layout.sizeHint().height()
+    #     print(f"H1: {self.table.minimumSizeHint().height()} {self.table.sizeHint().height()}")
+    #     print(f"H2: {self.adder_layout.sizeHint().height()}")
+    #
+    #     return h1 + h2 * 4
 
     def table_setup(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
         ctm = CustomTableModel(data, features, product, default_features)
@@ -715,17 +725,17 @@ class ToolBoxItem(QtWidgets.QWidget):
     def _do_the_emergency_resize(self):
         self.table.resizeColumnsToContents()
 
-    def feature_adder(self, the_type: str):
+    def _create_feature_adder(self):
         layout = QtWidgets.QHBoxLayout()
         layout.addWidget(self.features_combo_box)
         layout.addWidget(self.feature_line_edit)
         layout.addWidget(self.feature_selector)
         layout.addWidget(self.add_feature_button)
-        self.main_layout.addLayout(layout)
         for name in self.default_features["names"]:
             self.features_combo_box.addItem(self.default_features["names"][name])
         self.features_combo_box.currentTextChanged.connect(self.set_input_type)
         self.set_input_type()
+        return layout
 
     def set_input_type(self):
         for the_type in self.default_features["types"]:
@@ -878,19 +888,26 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         h = 0
         for child in self.children():
             if isinstance(child, QtWidgets.QScrollArea):
-                if not child.isHidden():
-                    print(f"Shown: {child.minimumSizeHint().height()}")
-                    h += child.sizeHint().height()
+                if child.isHidden():
+                    pass
+                    # print(f"Hidden min {child.minimumSizeHint().height()}")
+                    # print(f"Hidden {child.sizeHint().height()}")
+                    # h += child.minimumSizeHint().height()
+                else:
+                    the_widget = child.widget()
+                    if the_widget and isinstance(the_widget, ToolBoxItem):
+                        print(f"{the_widget.sizeHint().height()}, {the_widget.minimumSizeHint().height()}")
+                        h += the_widget.external_size_hint_height()
+                    else:
+                        h += max(child.sizeHint().height(), child.minimumSizeHint().height())
             elif isinstance(child, QtWidgets.QWidget):
                 # print(f"{child}: {child.sizeHint().height()} vs {child.minimumSizeHint().height()}")
                 # Buttons and anything else
                 h += child.sizeHint().height()
         old = super().minimumSizeHint()
+        print(f"------ {h} vs {old.height()}! ------")
         if h > old.height():
-            old.setHeight(h)
-        print("----------------------------------------------------------")
-        print("----------------------------------------------------------")
-        print("----------------------------------------------------------")
+            return QtCore.QSize(old.width(), h)
         return old
 
     def remove_item_from_toolbox(self, button):
