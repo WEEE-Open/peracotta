@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 from urllib.error import URLError
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
@@ -674,7 +674,7 @@ class CustomTableView(QtWidgets.QTableView):
 
 
 class ToolBoxItem(QtWidgets.QWidget):
-    def __init__(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
+    def __init__(self, data: List[dict], features: dict, product: Optional[dict], default_features: dict):
         super().__init__()
         self.default_features = default_features
 
@@ -698,7 +698,7 @@ class ToolBoxItem(QtWidgets.QWidget):
 
         return h1 + h2
 
-    def table_setup(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
+    def table_setup(self, data: List[dict], features: dict, product: Optional[dict], default_features: dict):
         ctm = CustomTableModel(data, features, product, default_features)
         ctm.emergency_resize.connect(self._do_the_emergency_resize)
         self.table.verticalHeader().hide()
@@ -771,7 +771,7 @@ class ToolBoxItem(QtWidgets.QWidget):
 
 
 class ToolBoxWidget(QtWidgets.QToolBox):
-    def __init__(self, data: list[dict], default_features: dict, encountered_types_count: dict):
+    def __init__(self, data: List[dict], default_features: dict, encountered_types_count: dict):
         super().__init__()
         self.clear()
         self.data = data
@@ -785,7 +785,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         for idx in range(self.count()):
             self.removeItem(0)
 
-    def load_items(self, data: list[dict]):
+    def load_items(self, data: List[dict]):
         if data:
             self.data = data
         self.types_count()
@@ -845,7 +845,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         self.set_context_menu()
 
     @staticmethod
-    def find_matching_product(data: list[dict], features: dict):
+    def find_matching_product(data: List[dict], features: dict):
         if "model" in features and "brand" in features and "variant" in features:
             for maybe in data:
                 if maybe.get("type") == "P":
@@ -977,7 +977,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 class CustomTableModel(QAbstractTableModel):
     emergency_resize = QtCore.pyqtSignal(name="emergency_resize")
 
-    def __init__(self, data: list[dict], item_features: dict, product: Optional[dict], default_features: dict):
+    def __init__(self, data: List[dict], item_features: dict, product: Optional[dict], default_features: dict):
         super().__init__()
 
         self._data = data
@@ -1211,7 +1211,7 @@ class CustomTableModel(QAbstractTableModel):
 
 
 class JsonWidget(QtWidgets.QDialog):
-    def __init__(self, data: list[dict], window_size: QtCore.QSize):
+    def __init__(self, data: List[dict], window_size: QtCore.QSize):
         super().__init__()
         layout = QtWidgets.QVBoxLayout()
         text_edit = QtWidgets.QPlainTextEdit()
@@ -1255,7 +1255,7 @@ class Uploader(QtCore.QThread):
 
     def __init__(
         self,
-        data: list[dict],
+        data: List[dict],
         tarallo_url: str,
         tarallo_token: str,
         bulk_identifier: str,

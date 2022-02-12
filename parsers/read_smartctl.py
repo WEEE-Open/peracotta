@@ -4,6 +4,7 @@ from enum import Enum
 import json
 import sys
 from math import log10, floor
+from typing import List
 
 """
 Read "smartctl" output:
@@ -19,7 +20,7 @@ class PORT(Enum):
     # TODO: add more, if they can even be detected
 
 
-def parse_smartctl(file: str, interactive: bool = False) -> list[dict]:
+def parse_smartctl(file: str, interactive: bool = False) -> List[dict]:
     disks = []
     jdisks = json.loads(file)
     for jdisk in jdisks:

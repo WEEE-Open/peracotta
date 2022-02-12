@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 from enum import Enum
-from typing import Optional
+from typing import Optional, List
 
 from parsers.read_decode_dimms import parse_decode_dimms
 from parsers.read_dmidecode import parse_motherboard, parse_case, parse_psu
@@ -113,7 +113,7 @@ def required_files():
     )
 
 
-def _merge_gpu(current_results: list[dict], target_type: str, gpus: list) -> None:
+def _merge_gpu(current_results: List[dict], target_type: str, gpus: list) -> None:
     if len(gpus) <= 0:
         return
     features = _extract_gpu_for_integrated(gpus[0])
@@ -150,14 +150,14 @@ def _extract_gpu_for_integrated(gpu: dict) -> dict:
     return result
 
 
-def _find_component(component_type: str, result: list[dict]) -> Optional[dict]:
+def _find_component(component_type: str, result: List[dict]) -> Optional[dict]:
     for component in result:
         if "type" in component and component["type"] == component_type:
             return component
     return None
 
 
-def _find_all_components(component_type: str, result: list[dict]) -> list[dict]:
+def _find_all_components(component_type: str, result: List[dict]) -> List[dict]:
     return_this = []
     for component in result:
         if "type" in component and component["type"] == component_type:
@@ -224,7 +224,7 @@ def call_parsers(
     return result
 
 
-def split_products(parsed: list[dict]) -> list[dict]:
+def split_products(parsed: List[dict]) -> List[dict]:
     item_keys = item_only_features()
     bmv = [
         "brand",
@@ -290,7 +290,7 @@ def item_only_features():
     return item_keys
 
 
-def add_owner(parsed: list[dict], owner: str) -> list[dict]:
+def add_owner(parsed: List[dict], owner: str) -> List[dict]:
     for item in parsed:
         item["owner"] = owner
     return parsed
@@ -304,7 +304,7 @@ def can_be_product(component: dict):
     return True
 
 
-def _do_cleanup(result: list[dict], verbose: bool = False) -> list[dict]:
+def _do_cleanup(result: List[dict], verbose: bool = False) -> List[dict]:
     by_type = {}
 
     for item in result:
@@ -380,7 +380,7 @@ def _should_be_in_case(the_type: str, features: dict) -> bool:
     return _should_be_in_motherboard(the_type, features)
 
 
-def unmake_tree(items_and_products: list[dict]) -> list[dict]:
+def unmake_tree(items_and_products: List[dict]) -> List[dict]:
     result = []
 
     for thing in items_and_products:
@@ -392,7 +392,7 @@ def unmake_tree(items_and_products: list[dict]) -> list[dict]:
     return result
 
 
-def make_tree(items_and_products: list[dict]) -> list[dict]:
+def make_tree(items_and_products: List[dict]) -> List[dict]:
     items_and_products = copy.deepcopy(items_and_products)
     by_type = {}
     products = []

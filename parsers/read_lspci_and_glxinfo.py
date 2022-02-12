@@ -5,6 +5,7 @@ Read "lspci -v" and "glxinfo" outputs
 """
 
 import re
+from typing import List
 
 
 def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
@@ -204,7 +205,7 @@ def _convert_video_memory_size(capacity, units_of_measure):
     return capacity
 
 
-def parse_lspci_and_glxinfo(has_dedicated: bool, lspci_file: str, glxinfo_file: str, interactive: bool = False) -> list[dict]:
+def parse_lspci_and_glxinfo(has_dedicated: bool, lspci_file: str, glxinfo_file: str, interactive: bool = False) -> List[dict]:
     gpu = {
         "type": "graphics-card",
         "working": "yes",

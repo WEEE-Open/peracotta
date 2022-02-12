@@ -4,9 +4,10 @@
 """
 Read "lscpu" output
 """
+from typing import List
 
 
-def parse_lscpu(lscpu: str) -> list[dict]:
+def parse_lscpu(lscpu: str) -> List[dict]:
     cpu = {
         "type": "cpu",
         "working": "yes",

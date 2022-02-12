@@ -3,12 +3,15 @@
 # initial_chars_to_ignore is the length of the feature whose name the line begins with
 # e.g. "Fundamental Memory Type" begins with 23 characters that are not all spaces, then n spaces to ignore,
 # and finally there's the value needed, e.g. "DDR3 SDRAM"
+from typing import List
+
+
 def _ignore_spaces(line: str, initial_chars_to_ignore: int):
     relevant_part = line[initial_chars_to_ignore:]
     return relevant_part.strip()
 
 
-def parse_decode_dimms(dimms: str, interactive: bool = False) -> list[dict]:
+def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
     # check based on output of decode-dimms v6250
     if "Number of SDRAM DIMMs detected and decoded: 0" in dimms or "Number of SDRAM DIMMs detected and decoded: " not in dimms:
         if interactive:

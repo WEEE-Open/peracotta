@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import Optional
+from typing import Optional, List
 
 connectors_map = {
     "PS/2": "ps2-ports-n",
@@ -78,7 +78,7 @@ extra_connectors = {
 }
 
 
-def parse_motherboard(baseboard_file: str, connectors_file: str, net_file: str, interactive: bool = False) -> list[dict]:
+def parse_motherboard(baseboard_file: str, connectors_file: str, net_file: str, interactive: bool = False) -> List[dict]:
     baseboard = _get_baseboard(baseboard_file)
     baseboard = _get_connectors(connectors_file, baseboard, interactive)
     baseboards = _get_net(net_file, baseboard, interactive)
@@ -176,7 +176,7 @@ def _get_connectors(connectors_file: str, baseboard: dict, interactive: bool = F
         return {**baseboard, **connectors_clean}
 
 
-def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]:
+def _get_net(net: str, baseboard: dict, interactive: bool = False) -> List[dict]:
     mergeit = {
         "ethernet-ports-100m-n": 0,
         "ethernet-ports-1000m-n": 0,
@@ -273,7 +273,7 @@ def parse_psu(chassis: Optional[dict]):
         return [{"type": "psu"}]
 
 
-def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> list[dict]:
+def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> List[dict]:
     chassis = {"type": "case"}
 
     for line in chassis_file.splitlines():
