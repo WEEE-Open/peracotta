@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 from enum import Enum
-from typing import Optional, List
+from typing import Optional, List, Set
 
 from parsers.read_decode_dimms import parse_decode_dimms
 from parsers.read_dmidecode import parse_motherboard, parse_case, parse_psu
@@ -167,7 +167,7 @@ def _find_all_components(component_type: str, result: List[dict]) -> List[dict]:
 
 def call_parsers(
     generated_files_path: str,
-    components: set[ParserComponents],
+    components: Set[ParserComponents],
     gpu_location: GpuLocation,
     interactive: bool = False,
 ) -> list:
