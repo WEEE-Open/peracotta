@@ -1,6 +1,7 @@
-from main import extract_and_collect_data_from_generated_files as get_result
 import os
 import pytest
+
+import peracommon
 
 
 def is_product(component: dict):
@@ -11,9 +12,10 @@ def is_product(component: dict):
     return True
 
 
+# noinspection DuplicatedCode
 test_folders = [
     entries
-    for entries in os.listdir("tests/source_files")
+    for entries in os.listdir("tests/source_files/")
     if os.path.isdir(f"tests/source_files/{entries}")
 ]
 for fold in set(test_folders):
@@ -21,120 +23,114 @@ for fold in set(test_folders):
         test_folders.remove(fold)
 
 
-@pytest.fixture(scope="module", params=test_folders)
+@pytest.fixture(params=test_folders)
 def res(request):
+    # noinspection DuplicatedCode
+    parsers = {
+        peracommon.ParserComponents.CPU,
+        peracommon.ParserComponents.GPU,
+        peracommon.ParserComponents.MOTHERBOARD,
+        peracommon.ParserComponents.RAM,
+        peracommon.ParserComponents.CASE,
+        peracommon.ParserComponents.PSU,
+    }
+
     path = f"tests/source_files/{request.param}"
-    with open(os.path.join(path, "gpu_location.txt"), "r") as f:
-        gpu_flag = f.readline()
-    has_dedicated_gpu = False
-    gpu_in_cpu = False
-    if gpu_flag == "cpu":
-        gpu_in_cpu = True
-    elif gpu_flag == "gpu":
-        has_dedicated_gpu = True
-    return get_result(
-        directory=path,
-        has_dedicated_gpu=has_dedicated_gpu,
-        gpu_in_cpu=gpu_in_cpu,
-        gui=False,
-    )
+    try:
+        with open(os.path.join(path, "gpu_location.txt"), "r") as f:
+            gpu_flag = f.readline()
+            if gpu_flag == "cpu":
+                where = peracommon.GpuLocation.CPU
+            elif gpu_flag == "gpu":
+                where = peracommon.GpuLocation.DISCRETE
+            else:
+                where = peracommon.GpuLocation.MOTHERBOARD
+    except FileNotFoundError:
+        where = peracommon.GpuLocation.NONE
+
+    result = peracommon.call_parsers(path, parsers, where, False)
+    result = peracommon.split_products(result)
+    result = peracommon.make_tree(result)
+
+    return result
 
 
-# checks about peracotta's output
 def test_type_check(res):
     assert isinstance(res, list)
-    assert res[0]["type"] == "I"
-    for comp in res[1:]:
-        assert comp["type"] == "P"
-        for name in (comp["brand"].lower(), comp["model"].lower()):
-            assert name not in ("", "null", "undefined", "unknown")
+    _recursive_type_check(res)
+
+
+def _recursive_type_check(res):
+    for thing in res:
+        assert thing["type"] in ("I", "P")
+        if thing["type"] == "I":
+            assert "brand" not in thing
+            assert "model" not in thing
+            assert "variant" not in thing
+            assert "contents" in thing
+            assert "features" in thing
+            _recursive_type_check(thing["contents"])
+        if thing["type"] == "P":
+            assert "brand" in thing
+            assert "model" in thing
+            assert "variant" in thing
+            assert "contents" not in thing
+            assert "features" in thing
+            for name in (thing["brand"].lower(), thing["model"].lower()):
+                assert name not in ("", "null", "undefined", "unknown")
 
 
 def test_has_chassis_and_mobo(res):
-    assert (
-        isinstance(res[0]["features"], dict)
-        and isinstance(res[0]["contents"], list)
-        and res[0]["contents"] != []
-    )
-    mobo = res[0]["contents"][0]
-    assert (
-        isinstance(mobo["features"], dict)
-        and mobo["features"] != {}
-        and isinstance(mobo["contents"], list)
-    )
+    components = set()
 
+    for thing in res:
+        assert "features" in thing
+        assert "type" in thing["features"]
+        components.add(thing["features"]["type"])
 
-item_keys = [
-    "arrival-batch",
-    "cib",
-    "cib-old",
-    "cib-qr",
-    "data-erased",
-    "mac",
-    "notes",
-    "os-license-code",
-    "os-license-version",
-    "other-code",
-    "owner",
-    "smart-data",
-    "sn",
-    "software",
-    "surface-scan",
-    "working",
-    "wwn",
-]
-both = ["brand", "model", "variant", "type"]
-
-
-def explore_item(param):
-    assert isinstance(param["features"], dict) and ("features" in param.keys())
-    for k in param["features"].keys():
-        if k == "type" and param["features"]["type"] == "I":
-            pass
-        # if is not a product (no brand or model) all the keys are in item
-        elif is_product(param["features"]):
-            assert k in (item_keys + both)
-
-    if "contents" in param.keys():
-        assert isinstance(param["contents"], list)
-        for new_param in param["contents"]:
-            explore_item(new_param)
+    assert len(components) > 0
+    assert "motherboard" in components
+    assert "case" in components
 
 
 def test_check_product_keys(res):
-    for product in res[1:]:
-        for k in product["features"].keys():
-            assert k not in item_keys or k == "type"
+    here = {"brand", "model", "variant", "arrival-batch", "mac", "notes", "os-license-code", "os-license-version",
+            "other-code", "owner", "smart-data", "sn", "software", "surface-scan", "working", "wwn"}
 
-
-def test_check_item_keys(res):
-    explore_item(res[0])
-
-
-def explore_cleanup(param):
-    if isinstance(param, list):
-        for p in param:
-            assert isinstance(p, dict)
-            explore_cleanup(p)
-
-    elif isinstance(param, dict):
-        assert param != dict()
-        for k, v in param.items():
-            if k == "features":
-                assert isinstance(param["features"], dict)
-                explore_cleanup(param["features"])
-            elif k == "contents":
-                assert isinstance(param["contents"], list)
-                explore_cleanup(param["contents"])
-            else:
-                assert "human_readable" not in k
-                assert v is not None
-                if isinstance(v, str):
-                    assert v != ""
-                elif isinstance(v, int):
-                    assert v > 0
+    assert isinstance(res, list)
+    for thing in res:
+        if thing["type"] == "P":
+            for k in thing["features"].keys():
+                assert k not in here
 
 
 def test_cleanup(res):
     assert isinstance(res, list)
-    explore_cleanup(res)
+    _assert_cleanup_recursive(res)
+
+
+def _assert_cleanup_recursive(res):
+    for thing in res:
+        for k, v in thing["features"].items():
+            _assert_value_makes_sense(v)
+
+            if "brand" in thing:
+                _assert_value_makes_sense(thing["brand"])
+            if "model" in thing:
+                _assert_value_makes_sense(thing["model"])
+            if "variant" in thing:
+                _assert_value_makes_sense(thing["variant"])
+
+            if "contents" in thing:
+                _assert_cleanup_recursive(thing["contents"])
+
+
+def _assert_value_makes_sense(v):
+    assert v is not None
+    if isinstance(v, str):
+        assert v != ""
+    elif isinstance(v, int):
+        assert v > 0
+    elif isinstance(v, float):
+        assert v > 0
+

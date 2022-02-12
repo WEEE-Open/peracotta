@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-
-
-# TODO: read lspci to figure out if Ethernet is 100 or 1000 or whatever
-from InputFileNotFoundError import InputFileNotFoundError
-from dataclasses import dataclass
+from typing import Optional
 
 connectors_map = {
     "PS/2": "ps2-ports-n",
@@ -82,77 +78,41 @@ extra_connectors = {
 }
 
 
-@dataclass
-class Baseboard:
-    type = "motherboard"
-    brand = ""
-    model = ""
-    serial_number = ""
-    # form_factor = "" # not detected by dmidecode
+def parse_motherboard(baseboard_file: str, connectors_file: str, net_file: str, interactive: bool = False) -> list[dict]:
+    baseboard = _get_baseboard(baseboard_file)
+    baseboard = _get_connectors(connectors_file, baseboard, interactive)
+    baseboards = _get_net(net_file, baseboard, interactive)
+    return baseboards
 
 
-@dataclass
-class Chassis:
-    type = "case"
-    brand = ""
-    model = ""
-    serial_number = ""
-    form_factor = ""
-
-
-# TODO: implement read of connector.txt into Baseboard
-
-# tmp/baseboard.txt
-def get_baseboard(path: str):
-    mobo = Baseboard()
-
-    # p = sp.Popen(['sudo dmidecode -t baseboard'], shell=True, stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
-    # out = p.communicate()
-    # strings = str.split(str(out[0]), sep="\\n")
-
-    try:
-        with open(path, "r") as f:
-            output = f.read()
-    except FileNotFoundError:
-        raise InputFileNotFoundError(path)
-
-    for line in output.splitlines():
-        if "Manufacturer:" in line:
-            mobo.brand = line.split("Manufacturer:")[1].strip()
-
-        elif "Product Name:" in line:
-            mobo.model = line.split("Product Name:")[1].strip()
-
-        elif "Serial Number:" in line:
-            mobo.serial_number = line.split("Serial Number:")[1].strip()
-            if "to be filled by o.e.m" in mobo.serial_number.lower():
-                mobo.serial_number = ""
-            else:
-                mobo.serial_number = mobo.serial_number.strip(".")
-
-    result = {
-        "type": mobo.type,
-        "brand": mobo.brand,
-        "model": mobo.model,
-        "sn": mobo.serial_number,
-        "working": "yes",  # Indeed it is working
+def _get_baseboard(baseboard: str) -> dict:
+    mobo = {
+        "type": "motherboard",
+        "working": "yes",
     }
 
-    for key, value in result.items():
-        if value == "Unknown":
-            del result[key]
-            result[key] = None
+    for line in baseboard.splitlines():
+        if "Manufacturer:" in line:
+            mobo["brand"] = line.split("Manufacturer:")[1].strip()
 
-    return result
+        elif "Product Name:" in line:
+            mobo["model"] = line.split("Product Name:")[1].strip()
+
+        elif "Serial Number:" in line:
+            mobo["sn"] = line.split("Serial Number:")[1].strip().strip(".")
+
+    # Get MSI internal codename
+    if mobo.get("brand", "").upper().startswith("MICRO-STAR INTERNATIONAL"):
+        model = mobo.get("model", "")
+        model_parts = model.split("(")
+        if len(model_parts) == 2:
+            mobo["model"] = model_parts[0].strip()
+            mobo["internal-name"] = model_parts[1].rstrip(")").strip()
+
+    return mobo
 
 
-def get_connectors(path: str, baseboard: dict, interactive: bool = False):
-    try:
-        with open(path, "r") as f:
-            output = f.read()
-    except FileNotFoundError:
-        raise InputFileNotFoundError(path)
-
+def _get_connectors(connectors_file: str, baseboard: dict, interactive: bool = False) -> dict:
     possible_connectors = set(connectors_map.values()) | set(
         connectors_map_tuples.values()
     )
@@ -168,7 +128,7 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
     # 		port_types.append(type[1].replace("\n", "").replace(" ", ""))
 
     warnings = []
-    for section in output.split("\n\n"):
+    for section in connectors_file.split("\n\n"):
         if not section.startswith("Handle "):
             continue
         internal = get_dmidecoded_value(section, "Internal Connector Type:")
@@ -202,7 +162,6 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
                     print(warning)
                 warnings.append(warning)
 
-    warnings = "\n".join(warnings)
     connectors_clean = {}
     # Keys to avoid changing dict size at runtime (raises an exception)
     for connector in connectors:
@@ -212,30 +171,29 @@ def get_connectors(path: str, baseboard: dict, interactive: bool = False):
         else:
             connectors_clean[connector] = connectors[connector]
 
-    # Dark magic: https://stackoverflow.com/a/26853961
-    return {**baseboard, **connectors_clean, **{"notes": warnings}}
+    if len(warnings) > 0:
+        warnings = "\n".join(warnings)
+        # Dark magic: https://stackoverflow.com/a/26853961
+        return {**baseboard, **connectors_clean, **{"notes": warnings}}
+    else:
+        # Somewhat less dark magic
+        return {**baseboard, **connectors_clean}
 
-
-def get_net(path: str, baseboard: dict, interactive: bool = False):
-    try:
-        with open(path, "r") as f:
-            output = f.read()
-    except FileNotFoundError:
-        raise InputFileNotFoundError(path)
-
+def _get_net(net: str, baseboard: dict, interactive: bool = False) -> list[dict]:
     mergeit = {
         "ethernet-ports-100m-n": 0,
         "ethernet-ports-1000m-n": 0,
         "mac": [],
     }
     other_devices = []
-    for line in output.split("\n"):
+    
+    for line in net.split("\n"):
         if "u" in line:
             # USB adapters, ignore them
             continue
         line = line.split(" ", 3)
         if line[0].startswith("en"):
-            if len(line) <= 2:
+            if interactive and len(line) <= 2:
                 print(
                     f"Warning: cannot detect speed for Ethernet port {line[0]}, is it unconnected?"
                 )
@@ -243,7 +201,7 @@ def get_net(path: str, baseboard: dict, interactive: bool = False):
                 mergeit["ethernet-ports-1000m-n"] += 1
             elif line[2] == "100":
                 mergeit["ethernet-ports-100m-n"] += 1
-            else:
+            elif interactive:
                 print(f"Warning: unknown speed for Ethernet port {line[0]}: {line[2]}")
             mergeit["mac"].append(line[1])
         if line[0].startswith("wl"):
@@ -277,10 +235,10 @@ def get_net(path: str, baseboard: dict, interactive: bool = False):
     if len(mergeit["mac"]) <= 0:
         del mergeit["mac"]
     baseboard = {**baseboard, **mergeit}
-    if len(other_devices) > 0:
-        return [baseboard] + other_devices
-    else:
-        return baseboard
+
+    # It even says the type is the exact same one it expects, however it's an error
+    # noinspection PyTypeChecker
+    return [baseboard] + other_devices
 
 
 def find_connector_from_tuple(
@@ -319,51 +277,47 @@ def get_dmidecoded_value(section: str, key: str) -> str:
     return section.split(key, 1)[1].split("\n", 1)[0].strip()
 
 
-# tmp/chassis.txt
-def get_chassis(path: str):
-    chassis = Chassis()
+def parse_psu(chassis: Optional[dict]):
+    if chassis.get("motherboard-form-factor") == "proprietary-laptop":
+        return [{"type": "external-psu"}]
+    else:
+        return [{"type": "psu"}]
 
-    try:
-        with open(path, "r") as f:
-            output = f.read()
-    except FileNotFoundError:
-        raise InputFileNotFoundError(path)
 
-    for line in output.splitlines():
+def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> list[dict]:
+    chassis = {
+        "type": "case"
+    }
+
+    for line in chassis_file.splitlines():
         if "Manufacturer" in line:
-            chassis.brand = line.split("Manufacturer:")[1].strip()
-            if "to be filled by o.e.m" in chassis.brand.lower():
-                chassis.brand = ""
+            manufacturer = line.split("Manufacturer:")[1].strip()
+            if len(manufacturer) > 0:
+                chassis["brand"] = manufacturer
 
         # This is Desktop, Laptop, etc...
         elif "Type: " in line:
             ff = line.split("Type: ")[1].strip()
             if (
                 ff == "Laptop" or ff == "Notebook"
-            ):  # Both exist in the wild and in tests, difference unknonw
-                chassis.form_factor = "proprietary-laptop"
+            ):  # Both exist in the wild and in tests, difference unknown
+                chassis["motherboard-form-factor"] = "proprietary-laptop"
+                if mobo and "motherboard-form-factor" not in mobo:
+                    mobo["motherboard-form-factor"] = "proprietary-laptop"
 
         elif "Serial Number" in line:
-            chassis.serial_number = line.split("Serial Number:")[1].strip()
-            if "to be filled by o.e.m" in chassis.serial_number.lower():
-                chassis.serial_number = ""
-            else:
-                chassis.serial_number = chassis.serial_number.strip(".")
+            sn = line.split("Serial Number:")[1].strip().strip(".")
+            if len(sn.strip("0")) <= 0:
+                sn = ""
+            if len(sn) > 0:
+                chassis["sn"] = sn
 
-    result = {
-        "type": chassis.type,
-        "brand": chassis.brand,
-        "model": chassis.model,
-        "sn": chassis.serial_number,
-        "motherboard-form-factor": chassis.form_factor,
-    }
-
-    for key, value in result.items():
+    for key, value in chassis.items():
         if value == "Unknown":
-            # Restore the default of empty string
-            result[key] = ""
+            # Remove pointless values
+            del chassis[key]
 
-    return result
+    return [chassis]
 
 
 if __name__ == "__main__":
@@ -379,22 +333,42 @@ if __name__ == "__main__":
 
     if args.ports is not None and args.baseboard is None:
         print("Provide a baseboard.txt file to detect connectors")
-        exit(1)
+        exit(2)
     if args.net is not None and args.baseboard is None:
         print("Provide a baseboard.txt file to detect network cards")
-        exit(1)
+        exit(2)
+    if args.baseboard is not None and args.ports is None:
+        print("Provide a connector.txt file to parse motherboard")
+        exit(2)
+    if args.baseboard is not None and args.net is None:
+        print("Provide a net.txt file to parse motherboard")
+        exit(2)
 
     try:
         if args.baseboard is not None:
-            bb = get_baseboard(args.baseboard)
-            if args.ports is not None:
-                bb = get_connectors(args.ports, bb, True)
-            if args.net is not None:
-                bb = get_net(args.net, bb, True)
+            with open(args.baseboard, "r") as f:
+                input_baseboard = f.read()
+            with open(args.ports, "r") as f:
+                input_ports = f.read()
+            with open(args.ports, "r") as f:
+                input_net = f.read()
+            bb = parse_motherboard(input_baseboard, input_ports, input_net, True)
             print(json.dumps(bb, indent=2))
         if args.chassis is not None:
-            print(json.dumps(get_chassis(args.chassis), indent=2))
+            with open(args.chassis, "r") as f:
+                input_chassis = f.read()
+            try:
+                # This pointless check triggers NameError if bb is not defined
+                # noinspection PyUnboundLocalVariable
+                if bb is None:
+                    pass
+            except NameError:
+                bb = None
 
-    except InputFileNotFoundError as e:
+            # bb is bery well defined, Pycharm doesn't believe it though
+            # noinspection PyUnboundLocalVariable
+            print(json.dumps(parse_case(input_chassis, bb), indent=2))
+
+    except FileNotFoundError as e:
         print(str(e))
         exit(1)

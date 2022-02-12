@@ -8,10 +8,10 @@
 # -x -> show every command that is run
 set -ux
 
-if [ $# -eq 0 ]; then
+if [[ $# -eq 0 ]]; then
     echo "No path given: outputting files to working directory"
     OUTPATH="."
-elif [ $# -eq 1 ]; then
+elif [[ $# -eq 1 ]]; then
     echo "Outputting files to $1"
     OUTPATH="$1"
 else
@@ -40,11 +40,16 @@ done
 lscpu > "$OUTPATH/lscpu.txt"
 lspci -v > "$OUTPATH/lspci.txt"
 glxinfo > "$OUTPATH/glxinfo.txt"
-DISKZ=($(lsblk -d -I 8 -o NAME -n))
-echo Found ${#DISKZ[@]} disks
-for d in "${DISKZ[@]}"; do
-	smartctl -x /dev/"$d" > "$OUTPATH/smartctl-dev-$d.txt"
-done
 
-# Add an empty file if no disk is detected
-[[ ${#DISKZ[@]} -eq 0 ]] && touch "$OUTPATH/smartctl-dev-nodisk.txt"
+DISKZ=($(lsblk -d --exclude 9,11 -o NAME -n))
+COUNTER=${#DISKZ[@]}
+echo Found $COUNTER disks
+echo "[" > "$OUTPATH/smartctl.txt"
+for d in "${DISKZ[@]}"; do
+  smartctl -j /dev/"$d" >> "$OUTPATH/smartctl.txt"
+  if [[ ! $COUNTER == 1 ]]; then
+	  echo "," >> "$OUTPATH/smartctl.txt"
+	  COUNTER=$(( $COUNTER - 1 ))
+  fi
+done
+echo "]" >> "$OUTPATH/smartctl.txt"

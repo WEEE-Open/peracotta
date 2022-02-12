@@ -1,0 +1,106 @@
+[{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      2
+    ],
+    "svn_revision": "5155",
+    "platform_info": "x86_64-linux-5.14.6-arch1-1",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-ja",
+      "/dev/nvme0n1"
+    ],
+    "exit_status": 0
+  },
+  "device": {
+    "name": "/dev/nvme0n1",
+    "info_name": "/dev/nvme0n1",
+    "type": "nvme",
+    "protocol": "NVMe"
+  },
+  "model_name": "WDC WDS100T2B0C-00PXH0",
+  "serial_number": "91341V57464",
+  "firmware_version": "211210WD",
+  "nvme_pci_vendor": {
+    "id": 5559,
+    "subsystem_id": 5559
+  },
+  "nvme_ieee_oui_identifier": 6980,
+  "nvme_total_capacity": 1000204886016,
+  "nvme_unallocated_capacity": 0,
+  "nvme_controller_id": 1,
+  "nvme_version": {
+    "string": "1.4",
+    "value": 66560
+  },
+  "nvme_number_of_namespaces": 1,
+  "nvme_namespaces": [
+    {
+      "id": 1,
+      "size": {
+        "blocks": 1953525168,
+        "bytes": 1000204886016
+      },
+      "capacity": {
+        "blocks": 1953525168,
+        "bytes": 1000204886016
+      },
+      "utilization": {
+        "blocks": 1953525168,
+        "bytes": 1000204886016
+      },
+      "formatted_lba_size": 512,
+      "eui64": {
+        "oui": 6980,
+        "ext_id": 319004982419
+      }
+    }
+  ],
+  "user_capacity": {
+    "blocks": 1953525168,
+    "bytes": 1000204886016
+  },
+  "logical_block_size": 512,
+  "local_time": {
+    "time_t": 0,
+    "asctime": "you don't want to know"
+  },
+  "smart_status": {
+    "passed": true,
+    "nvme": {
+      "value": 0
+    }
+  },
+  "nvme_smart_health_information_log": {
+    "critical_warning": 0,
+    "temperature": 55,
+    "available_spare": 100,
+    "available_spare_threshold": 10,
+    "percentage_used": 0,
+    "data_units_read": 1786784,
+    "data_units_written": 1614912,
+    "host_reads": 10806750,
+    "host_writes": 2315260,
+    "controller_busy_time": 52,
+    "power_cycles": 133,
+    "power_on_hours": 1868,
+    "unsafe_shutdowns": 6,
+    "media_errors": 0,
+    "num_err_log_entries": 1,
+    "warning_temp_time": 0,
+    "critical_comp_time": 0
+  },
+  "temperature": {
+    "current": 55
+  },
+  "power_cycle_count": 133,
+  "power_on_time": {
+    "hours": 1868
+  }
+}]

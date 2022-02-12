@@ -1,0 +1,105 @@
+[{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      2
+    ],
+    "svn_revision": "5155",
+    "platform_info": "x86_64-linux-5.4.157-1-pve",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-ja",
+      "/dev/nvme0n1"
+    ],
+    "exit_status": 0
+  },
+  "device": {
+    "name": "/dev/nvme0n1",
+    "info_name": "/dev/nvme0n1",
+    "type": "nvme",
+    "protocol": "NVMe"
+  },
+  "model_name": "KINGSTON SNVS500G",
+  "serial_number": "50026B7AB42CCC",
+  "firmware_version": "S8542105",
+  "nvme_pci_vendor": {
+    "id": 9798,
+    "subsystem_id": 9798
+  },
+  "nvme_ieee_oui_identifier": 9911,
+  "nvme_controller_id": 1,
+  "nvme_version": {
+    "string": "1.3",
+    "value": 66304
+  },
+  "nvme_number_of_namespaces": 1,
+  "nvme_namespaces": [
+    {
+      "id": 1,
+      "size": {
+        "blocks": 976773168,
+        "bytes": 500107862016
+      },
+      "capacity": {
+        "blocks": 976773168,
+        "bytes": 500107862016
+      },
+      "utilization": {
+        "blocks": 976773168,
+        "bytes": 500107862016
+      },
+      "formatted_lba_size": 512,
+      "eui64": {
+        "oui": 9911,
+        "ext_id": 516546223285
+      }
+    }
+  ],
+  "user_capacity": {
+    "blocks": 976773168,
+    "bytes": 500107862016
+  },
+  "logical_block_size": 512,
+  "local_time": {
+    "time_t": 1644515477,
+    "asctime": "Thu Feb 10 18:51:17 2022 CET"
+  },
+  "smart_status": {
+    "passed": true,
+    "nvme": {
+      "value": 0
+    }
+  },
+  "nvme_smart_health_information_log": {
+    "critical_warning": 0,
+    "temperature": 45,
+    "available_spare": 100,
+    "available_spare_threshold": 10,
+    "percentage_used": 9,
+    "data_units_read": 4468556,
+    "data_units_written": 15209164,
+    "host_reads": 87798866,
+    "host_writes": 327027525,
+    "controller_busy_time": 3974,
+    "power_cycles": 1,
+    "power_on_hours": 1827,
+    "unsafe_shutdowns": 0,
+    "media_errors": 0,
+    "num_err_log_entries": 0,
+    "warning_temp_time": 0,
+    "critical_comp_time": 0
+  },
+  "temperature": {
+    "current": 45
+  },
+  "power_cycle_count": 1,
+  "power_on_time": {
+    "hours": 1827
+  }
+}
+]

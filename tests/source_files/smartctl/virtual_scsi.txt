@@ -1,0 +1,80 @@
+[
+{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      1
+    ],
+    "svn_revision": "5022",
+    "platform_info": "x86_64-linux-5.10.60.1-microsoft-standard-WSL2",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-ja",
+      "/dev/sda"
+    ],
+    "exit_status": 2
+  },
+  "device": {
+    "name": "/dev/sda",
+    "info_name": "/dev/sda",
+    "type": "scsi",
+    "protocol": "SCSI"
+  },
+  "vendor": "Msft",
+  "product": "Virtual Disk",
+  "model_name": "Msft Virtual Disk",
+  "revision": "1.0",
+  "scsi_version": "SPC-3",
+  "user_capacity": {
+    "blocks": 536870912,
+    "bytes": 274877906944
+  },
+  "logical_block_size": 512,
+  "physical_block_size": 4096,
+  "rotation_rate": 0
+},
+{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      1
+    ],
+    "svn_revision": "5022",
+    "platform_info": "x86_64-linux-5.10.60.1-microsoft-standard-WSL2",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-ja",
+      "/dev/sdb"
+    ],
+    "exit_status": 2
+  },
+  "device": {
+    "name": "/dev/sdb",
+    "info_name": "/dev/sdb",
+    "type": "scsi",
+    "protocol": "SCSI"
+  },
+  "vendor": "Msft",
+  "product": "Virtual Disk",
+  "model_name": "Msft Virtual Disk",
+  "revision": "1.0",
+  "scsi_version": "SPC-3",
+  "user_capacity": {
+    "blocks": 536870912,
+    "bytes": 274877906944
+  },
+  "logical_block_size": 512,
+  "physical_block_size": 4096,
+  "rotation_rate": 0
+}
+]

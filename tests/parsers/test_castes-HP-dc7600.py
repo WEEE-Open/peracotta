@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
-import os
 
-from parsers import read_smartctl
 from parsers import read_decode_dimms
 from parsers import read_dmidecode
 from parsers import read_lspci_and_glxinfo
 from parsers import read_lscpu
+from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/castes-HP-dc7600/"
 
 
 def test_lspci_dedicated():
-    expect = {
+    expect = [{
         "type": "graphics-card",
         "working": "yes",
         "brand": "PC Partner Limited / Sapphire Technology",
@@ -19,37 +18,35 @@ def test_lspci_dedicated():
         "model": "GeForce G 100",
         "capacity-byte": 536870912,  # This has 512 MB of VRAM, but glxinfo reports 496?
         "brand-manufacturer": "Nvidia",
-    }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    }]
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         True,
-        os.path.join(filedir, "NVIDIA-G100/lspci.txt"),
-        os.path.join(filedir, "NVIDIA-G100/glxinfo.txt"),
+        read_file(filedir, "NVIDIA-G100/lspci.txt"),
+        read_file(filedir, "NVIDIA-G100/glxinfo.txt"),
     )
 
     assert output == expect
 
 
 def test_lspci_integrated():
-    expect = {
+    expect = [{
         "type": "graphics-card",
         "working": "yes",
         "brand": "Hewlett-Packard Company",
         "model": "82945G/GZ",
-        "internal-name": "",
-        "capacity-byte": None,
         "brand-manufacturer": "Intel",
-    }
-    output = read_lspci_and_glxinfo.read_lspci_and_glxinfo(
+    }]
+    output = read_lspci_and_glxinfo.parse_lspci_and_glxinfo(
         False,
-        os.path.join(filedir, "82945G/lspci.txt"),
-        os.path.join(filedir, "82945G/glxinfo.txt"),
+        read_file(filedir, "82945G/lspci.txt"),
+        read_file(filedir, "82945G/glxinfo.txt"),
     )
 
     assert output == expect
 
 
 def test_lscpu():
-    expect = {
+    expect = [{
         "type": "cpu",
         "working": "yes",
         "isa": "x86-64",
@@ -58,14 +55,14 @@ def test_lscpu():
         "core-n": 1,
         "thread-n": 2,
         "frequency-hertz": 2800000000,
-    }
-    output = read_lscpu.read_lscpu(os.path.join(filedir, "lscpu.txt"))
+    }]
+    output = read_lscpu.parse_lscpu(read_file(filedir, "lscpu.txt"))
 
     assert output == expect
 
 
 def test_ram():
-    output = read_decode_dimms.read_decode_dimms(os.path.join(filedir, "dimms.txt"))
+    output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "dimms.txt"))
 
     assert len(output) == 0
 
@@ -78,13 +75,13 @@ def test_baseboard():
         "model": "09F8h",
         "sn": "CZC6203MC5",
     }
-    output = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    output = read_dmidecode._get_baseboard(read_file(filedir, "baseboard.txt"))
 
     assert output == expect
 
 
 def test_connector():
-    baseboard = read_dmidecode.get_baseboard(os.path.join(filedir, "baseboard.txt"))
+    baseboard = read_dmidecode._get_baseboard(read_file(filedir, "baseboard.txt"))
 
     expect = {
         "type": "motherboard",
@@ -101,23 +98,20 @@ def test_connector():
         "parallel-ports-n": 1,
         "sata-ports-n": 2,
         "vga-ports-n": 1,
-        "notes": "",
     }
-    output = read_dmidecode.get_connectors(
-        os.path.join(filedir, "connector.txt"), baseboard
+    output = read_dmidecode._get_connectors(
+        read_file(filedir, "connector.txt"), baseboard
     )
 
     assert output == expect
 
 
 def test_chassis():
-    expect = {
+    expect = [{
         "type": "case",
         "brand": "Hewlett-Packard",
-        "model": "",
         "sn": "CZC6203MC5",
-        "motherboard-form-factor": "",
-    }
-    output = read_dmidecode.get_chassis(os.path.join(filedir, "chassis.txt"))
+    }]
+    output = read_dmidecode.parse_case(read_file(filedir, "chassis.txt"))
 
     assert output == expect
