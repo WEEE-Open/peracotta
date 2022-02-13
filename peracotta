@@ -710,7 +710,7 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.setLayout(self.main_layout)
 
     def external_size_hint_height(self):
-        h1 = max(self.table.minimumSizeHint().height(), self.table.sizeHint().height())
+        h1 = self.table.minimumSizeHint().height()
         h2 = self.adder_layout.sizeHint().height()
 
         return h1 + h2
@@ -794,6 +794,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         self.data = data
         self.default_features = default_features
         self.encountered_types_count = encountered_types_count
+        self.menu = None
 
         # variables
         self.encountered_types_current_count = defaultdict(lambda: 0)
@@ -887,17 +888,18 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
     def show_menu(self):
         button = self.sender()
-        menu = QtWidgets.QMenu()
+        self.menu = QtWidgets.QMenu()
         remove_action = QtWidgets.QAction("Remove item", self)
         remove_action.triggered.connect(lambda: self.remove_item_from_toolbox(button))
-        menu.addAction(remove_action)
-        menu.popup(QtGui.QCursor.pos())
+        self.menu.addAction(remove_action)
+        self.menu.popup(QtGui.QCursor.pos())
 
     def minimumSizeHint(self) -> QtCore.QSize:
         h = 0
         for child in self.children():
             if isinstance(child, QtWidgets.QScrollArea):
                 if child.isHidden():
+                    # print("Hidden!")
                     pass
                     # print(f"Hidden min {child.minimumSizeHint().height()}")
                     # print(f"Hidden {child.sizeHint().height()}")
@@ -905,13 +907,14 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                 else:
                     the_widget = child.widget()
                     if the_widget and isinstance(the_widget, ToolBoxItem):
-                        h += the_widget.external_size_hint_height()
+                        hinted = the_widget.external_size_hint_height()
+                        # print(f"Hinted: {hinted}")
+                        h += hinted
                     else:
                         # h += max(child.sizeHint().height(), child.minimumSizeHint().height())
                         pass
-            elif isinstance(child, QtWidgets.QWidget):
+            elif isinstance(child, QtWidgets.QAbstractButton):
                 # print(f"{child}: {child.sizeHint().height()} {child.minimumSizeHint().height()}")
-                # Buttons and anything else.
                 # Why 1.5? Dunno, they're ~40 pixels and sizeHint is 25 (minimum 24).
                 h += int(child.sizeHint().height() * 1.5)
         old = super().minimumSizeHint()
@@ -979,7 +982,9 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         if not deleted:
             del self.data[data_index]
 
+        widget_ref = self.widget(index)
         super().removeItem(index)
+        widget_ref.deleteLater()
 
     def types_count(self, data: list = None):
         if data is not None:
