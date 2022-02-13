@@ -53,6 +53,44 @@ cp .env.example .env
 nano .env
 ```
 
+### Privileges and sudo
+
+generate_files.sh requires root permissions. There are a few ways around this, none of which is terribly secure:
+
+#### Call the script through sudo
+
+This is what is done automatically: both peracruda and peracotta will run `sudo generate_files.sh` where needed.
+
+peracotta will also ask you the sudo password, however keep in mind that is done with a QMessageBox and the password is stored in memory in plaintext. If you don't trust our code, don't type it there.
+
+If you have configured sudo with NOPASSWD, at least for the generate_files.sh script, you can add this to .env:
+
+```bash
+export GENERATE_FILES_ASK_SUDO_PASSWORD=0
+```
+
+so it will not ask your password anymore but still use sudo.
+
+#### Run the script as root
+
+This is **not recommended**, but you can run everything as root and disable sudo. This is particularly useful if you don not have sudo at all.
+
+Add this to your .env:
+
+```bash
+export GENERATE_FILES_USE_SUDO=0
+```
+
+#### pkexec
+
+You can run `polkit.py` just once: it will configure pkexec to run generate_files.sh with root privileges. However, the configuration contains hardcoded absolute paths to your generate_files.sh script, so you cannot move it.
+
+Additionally, if anyone edits generate_files.sh, it will be executed with root privileges. Unless you move it to /sbin and change its owner to root:root, this is also not very secure.
+
+#### Manually
+
+Run `sudo generate_files.sh /path/to/output/directory` then load the raw files in peracruda or peracotta. This is probably the safest way, considering that generate_files.sh is pretty short so you can inspect it before running. Everything else will work as usual and won't require root permissions.
+
 ### How to develop
 
 Same as before, until the `pip install` part. Just install `requirements-dev.txt` instead:

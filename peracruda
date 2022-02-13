@@ -19,6 +19,8 @@ import peracommon
 
 
 def main(the_args):
+    load_dotenv()
+
     if the_args.path is None:
         generated_files_path = f"{os.getcwd()}/tmp"
     else:
@@ -54,7 +56,9 @@ def main(the_args):
 
         if not the_args.files:
             # now that I have a dest folder, I generate files
-            generated_files_path = peracommon.generate_files(generated_files_path)
+            use_sudo = peracommon.env_to_bool(env.get("GENERATE_FILES_USE_SUDO", "1"))
+            # ask_sudo_pass = peracommon.env_to_bool(env.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1"))
+            generated_files_path = peracommon.generate_files(generated_files_path, use_sudo, None)
 
     gpu_location = get_gpu(the_args)
 
@@ -152,7 +156,6 @@ def upload_to_tarallo(data):
         return
 
     try:
-        load_dotenv()
         t_url = env["TARALLO_URL"]
         t_token = env["TARALLO_TOKEN"]
     except KeyError:

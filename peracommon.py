@@ -5,6 +5,7 @@ import subprocess
 import sys
 from enum import Enum
 from typing import Optional, List, Set
+from os import environ as env
 
 from parsers.read_decode_dimms import parse_decode_dimms
 from parsers.read_dmidecode import parse_motherboard, parse_case, parse_psu
@@ -82,19 +83,27 @@ def check_dependencies_for_generate_files():
     return retval == 0
 
 
-def generate_files(path: str, sudo_passwd: str = None):
+def generate_files(path: str, use_sudo: bool = True, sudo_passwd: str = None):
+    if os.path.exists("scripts/generate_files.pxec"):
+        script = "scripts/generate_files.pkexec"
+    else:
+        script = "scripts/generate_files.sh"
     os.makedirs(path, exist_ok=True)
+    command = ["-S", "scripts/generate_files.pkexec", path]
+    if use_sudo:
+        command.insert(0, "sudo")
 
-    if os.geteuid() != 0 and sudo_passwd is not None:
-        p = subprocess.Popen(["sudo", "-S", "scripts/generate_files.sh", path], stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    p = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+
+    if sudo_passwd is not None:
         try:
             out, err = p.communicate(input=(sudo_passwd + "\n").encode(), timeout=5)
             if out == b"":
                 return None
         except subprocess.TimeoutExpired:
             p.kill()
-    else:
-        subprocess.run(["scripts/generate_files.sh", path])
+
+    # TODO: check p.returncode
 
     return path
 
@@ -478,3 +487,11 @@ def check_required_files(path, is_gui: bool = False):
                 print(f"[bold red]Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]")
                 exit(1)
     return ""
+
+
+def env_to_bool(value: str) -> bool:
+    if value.lower() in ("1", "true", "t", "", "yes", "y"):
+        value = True
+    else:
+        value = False
+    return value

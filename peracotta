@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-from typing import Optional, Any, List, Dict
+from typing import Optional, List
 from urllib.error import URLError
+# noinspection PyUnresolvedReferences
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
@@ -19,6 +20,7 @@ import traceback
 import json
 import prettyprinter
 import peracommon
+from peracommon import env_to_bool
 
 
 VERSION = "1.0.0"
@@ -401,27 +403,40 @@ class Ui(QtWidgets.QMainWindow):
         self.ownerLineEdit.clear()
 
     def generate(self):
-        def warning():
-            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
-
         if not (self.discreteRadioBtn.isChecked() or self.intCpuRadioBtn.isChecked() or self.intMoboRadioBtn.isChecked()):
-            warning()
+            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
             return
 
+        use_sudo = peracommon.env_to_bool(env.get("GENERATE_FILES_USE_SUDO", "1"))
+        ask_sudo_pass = peracommon.env_to_bool(env.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1"))
+
+        self.peracotta.use_sudo = use_sudo
+        self.peracotta.sudo_passwd = None
+
+        if use_sudo and ask_sudo_pass:
+            got_it = self._ask_sudo_pass()
+            if not got_it:
+                return
+
+        self.peracotta.generate_files = True
+        self.peracotta.set_filters(self.selectorsWidget)
+        # TODO: shouldn't the next 2 lines be reversed?
+        self.peracotta.start()
+        self.reset_toolbox()
+
+    def _ask_sudo_pass(self):
         sudo_passwd, ok = QtWidgets.QInputDialog.getText(
             self,
-            "Insert root password",
-            "Insert root password:",
+            "Insert sudo password",
+            "Insert sudo password:",
             QtWidgets.QLineEdit.Password,
         )
         if ok:
             self.peracotta.sudo_passwd = sudo_passwd
+            return True
         else:
-            return
-        self.peracotta.generate_files = True
-        self.peracotta.set_filters(self.selectorsWidget)
-        self.peracotta.start()
-        self.reset_toolbox()
+            self.peracotta.sudo_passwd = None
+            return False
 
     def save_json(self):
         if self.data is None:
@@ -540,6 +555,7 @@ class Peracotta(QtCore.QThread):
         self.the_dir = None
         self.set_default_values()
         self.sudo_passwd = None
+        self.use_sudo = True
 
         self.is_running = False
 
@@ -564,7 +580,7 @@ class Peracotta(QtCore.QThread):
                 message = peracommon.check_required_files(self.generated_files_path, is_gui=True)
                 if message != "":
                     QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
-                self.generated_files_path = peracommon.generate_files(self.the_dir, self.sudo_passwd)
+                self.generated_files_path = peracommon.generate_files(self.the_dir, self.use_sudo, self.sudo_passwd)
                 if self.generated_files_path is None:
                     print("Wrong root password. Terminating peracotta...")
                     return
@@ -586,6 +602,7 @@ class Peracotta(QtCore.QThread):
         self.the_dir = "tmp"
         self.is_running = True
         self.sudo_passwd = None
+        self.use_sudo = True
 
     def process_files(self):
         pass
@@ -870,11 +887,11 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
     def show_menu(self):
         button = self.sender()
-        self.menu = QtWidgets.QMenu()
+        menu = QtWidgets.QMenu()
         remove_action = QtWidgets.QAction("Remove item", self)
         remove_action.triggered.connect(lambda: self.remove_item_from_toolbox(button))
-        self.menu.addAction(remove_action)
-        self.menu.popup(QtGui.QCursor.pos())
+        menu.addAction(remove_action)
+        menu.popup(QtGui.QCursor.pos())
 
     def minimumSizeHint(self) -> QtCore.QSize:
         h = 0
@@ -1301,21 +1318,13 @@ def tarallo_success_dialog(url: str):
     return False
 
 
-def _env_to_bool(auto_download):
-    if auto_download.lower() in ("1", "true", "t", "", "yes", "y"):
-        auto_download = True
-    else:
-        auto_download = False
-    return auto_download
-
-
 def main():
     # noinspection PyBroadException
     try:
         load_dotenv()
         tarallo_url = env["TARALLO_URL"]
         tarallo_token = env["TARALLO_TOKEN"]
-        auto_download = _env_to_bool(env.get("TARALLO_FEATURES_AUTO_DOWNLOAD", "1"))
+        auto_download = env_to_bool(env.get("TARALLO_FEATURES_AUTO_DOWNLOAD", "1"))
         app = QtWidgets.QApplication(sys.argv)
         # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
         # noinspection PyUnusedLocal
