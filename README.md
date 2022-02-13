@@ -16,7 +16,7 @@ Multiple use cases are possible. More details on each program are provided in th
 
 Launch `peracotta`: that is the GUI that allows you to gather data, parse it and display it.
 
-![Main peracotta window, displaying a motherboard](/S/Software/peracotta/docs/peracotta_mobo_screenshot.png)
+![Main peracotta window, displaying a motherboard](docs/peracotta_mobo_screenshot.png)
 
 Options can be configured in the left pane, then after Generate is pressed data is displayed in the right pane.  
 Some basic editing is possible (add and remove items and features, edit feature values). The result can be saved as a JSON or uploaded directly to tarallo.
