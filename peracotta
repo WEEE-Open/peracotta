@@ -337,6 +337,7 @@ class Ui(QtWidgets.QMainWindow):
     def set_theme(self, theme: str):
         if theme == "default":
             self.app.setStyleSheet("")
+            self.app.setStyleSheet("QWidget {" "font-size: 10pt;" "}")
             self.active_theme = "default"
         else:
             with open(f"{PATH['THEMES']}{theme}.css", "r") as file:

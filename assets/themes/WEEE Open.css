@@ -5,7 +5,7 @@ QMainWindow {
 }
 
 QWidget {
-    font-size: 12px;
+    font-size: 10pt;
 }
 
 QMenu {
