@@ -162,5 +162,7 @@ They can also be imported as libraries.
 
 ### assets
 
-This directory contains some images and other files used by the GUI.  
+This directory contains some images and other files used by the GUI.<br>
 Fan icons created by <a href="https://www.flaticon.com/free-icons/fan" title="fan icons">juicy_fish</a> - Flaticon
+<a href="https://www.flaticon.com/free-icons/more" title="more icons">More icons created by Kirill Kazachek - Flaticon</a><br>
+Down arrow icons created by <a href="https://www.flaticon.com/free-icons/down-arrow" title="down arrow icons">Freepik - Flaticon</a>
