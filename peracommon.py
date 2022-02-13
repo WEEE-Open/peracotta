@@ -290,10 +290,19 @@ def item_only_features():
     return item_keys
 
 
-def add_owner(parsed: List[dict], owner: str) -> List[dict]:
-    for item in parsed:
+def add_owner(parsed_items_only: List[dict], owner: str) -> List[dict]:
+    for item in parsed_items_only:
         item["owner"] = owner
-    return parsed
+    return parsed_items_only
+
+
+def add_chassis_code(parsed: List[dict], code: str) -> bool:
+    for item in parsed:
+        if item.get("type") == "I":
+            if item.get("features", {}).get("type") == "case":
+                item["code"] = code
+                return True
+    return False
 
 
 def can_be_product(component: dict):

@@ -71,6 +71,14 @@ def main(the_args):
     # List of items and products
     result = peracommon.split_products(result)
 
+    code = get_code()
+    if code:
+        # List of items
+        found = peracommon.add_chassis_code(result, code)
+        if not found:
+            print("[red]Failed to add code to case! Maybe the case was not parsed?[/]")
+            exit(1)
+
     # List of items as trees and products as products
     result = peracommon.make_tree(result)
 
@@ -264,14 +272,13 @@ def print_output(output: str, path: str):
     )
 
 
-def get_code(the_args) -> Optional[str]:
-    if not the_args.code:
+def get_code() -> Optional[str]:
+    if not args.code:
         code = input(
             "Does this have a code already? (optional, ENTER to skip): "
         ).strip()
     else:
-        code = the_args.code
-
+        code = args.code
     if code and code != "":
         return code
     return None
