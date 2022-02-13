@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from typing import Optional, List
 from urllib.error import URLError
+
 # noinspection PyUnresolvedReferences
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
@@ -112,9 +113,9 @@ class Ui(QtWidgets.QMainWindow):
         self.refreshThemeShortcut.activated.connect(self.refresh_theme)
 
         # Output toolbox
-        self.outputWidget = self.findChild(QtWidgets.QWidget, "outputWidget")
+        self.outputScrollArea = self.findChild(QtWidgets.QScrollArea, "outputScrollArea")
         self.itemToolBox = ToolBoxWidget(self.data, self.useful_default_features, self.encountered_types_count)
-        self.outputWidget.layout().addWidget(self.itemToolBox)
+        self.outputScrollArea.setWidget(self.itemToolBox)
 
         # App settings
         self.settings = QtCore.QSettings("WEEE Open", "PERACOTTA")
@@ -700,6 +701,7 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.feature_selector = QtWidgets.QComboBox()
         self.add_feature_button = QtWidgets.QPushButton("Add")
         self.add_feature_button.clicked.connect(self.add_feature)
+        self.add_feature_button.setMinimumWidth(60)
 
         # setup
         self.table_setup(data, features, product, default_features)
@@ -795,7 +797,6 @@ class ToolBoxItem(QtWidgets.QWidget):
 class ToolBoxWidget(QtWidgets.QToolBox):
     def __init__(self, data: List[dict], default_features: dict, encountered_types_count: dict):
         super().__init__()
-        self.clear()
         self.data = data
         self.default_features = default_features
         self.encountered_types_count = encountered_types_count
@@ -807,10 +808,13 @@ class ToolBoxWidget(QtWidgets.QToolBox):
     def clear(self):
         for idx in range(self.count()):
             self.removeItem(0)
+        self.encountered_types_count.clear()
+        self.encountered_types_current_count.clear()
 
     def load_items(self, data: List[dict]):
         if data:
             self.data = data
+        self.clear()
         self.types_count()
 
         # find brand, model and variant of all products in data
@@ -923,7 +927,6 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                 # Why 1.5? Dunno, they're ~40 pixels and sizeHint is 25 (minimum 24).
                 h += int(child.sizeHint().height() * 1.5)
         old = super().minimumSizeHint()
-        print(f"------ {h} vs {old.height()}! ------")
         if h > old.height():
             return QtCore.QSize(old.width(), h)
         return old
