@@ -4,7 +4,7 @@ from enum import Enum
 import json
 import sys
 from math import log10, floor
-from typing import List
+from typing import List, Dict
 
 """
 Read "smartctl" output:
@@ -21,15 +21,23 @@ class PORT(Enum):
 
 
 def parse_smartctl(file: str, interactive: bool = False) -> List[dict]:
+    """
+    Parse a list of smartctl outputs to a list of disks.
+    """
     disks = []
     jdisks = json.loads(file)
     for jdisk in jdisks:
-        disk = _parse_disk(jdisk)
+        disk = parse_single_disk(jdisk, interactive)
         disks.append(disk)
     return disks
 
 
-def _parse_disk(file):
+def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
+    """
+    Parse a single disk from smartctl -ja output to tarallo upload format.
+
+    See parse_smartctl to parse multiple disks.
+    """
     disk = {
         "type": "hdd",
     }
@@ -38,40 +46,35 @@ def _parse_disk(file):
 
     port = None
 
-    if file.get("vendor") and file.get("product"):
+    if smartctl.get("vendor") and smartctl.get("product"):
         # For SCSI disks only, apparently
-        disk["brand"] = file.get("vendor")
-        disk["model"] = file.get("product")
+        disk["brand"] = smartctl.get("vendor")
+        disk["model"] = smartctl.get("product")
     else:
-        if file.get("model_name"):
-            brand, model = _split_brand_and_other(file.get("model_name"))
+        # "Device Model:" is model_name in the JSON
+        if smartctl.get("model_name"):
+            brand, model = _split_brand_and_other(smartctl.get("model_name"))
             disk["model"] = model
             if "brand" not in disk and brand:
                 disk["brand"] = brand
 
-        if file.get("model_family"):
-            brand, family = _split_brand_and_other(file.get("model_family"))
+        if smartctl.get("model_family"):
+            brand, family = _split_brand_and_other(smartctl.get("model_family"))
             disk["family"] = family
-            if "brand" not in disk and brand:
-                disk["brand"] = brand
-
-        if file.get("device_model"):  # TODO: does this exist?
-            brand, model = _split_brand_and_other(file.get("device_model"))
-            disk["model"] = model
             if "brand" not in disk and brand:
                 disk["brand"] = brand
 
     if disk.get("brand", "") == "WDC":
         disk["brand"] = "Western Digital"
 
-    if file.get("serial_number"):
-        disk["sn"] = file.get("serial_number")
+    if smartctl.get("serial_number"):
+        disk["sn"] = smartctl.get("serial_number")
 
-    if file.get("wwn"):
-        disk["wwn"] = str(file["wwn"].get("naa", "")) + " " + str(file["wwn"].get("oui", "")) + " " + str(file["wwn"].get("id", ""))
+    if smartctl.get("wwn"):
+        disk["wwn"] = str(smartctl["wwn"].get("naa", "")) + " " + str(smartctl["wwn"].get("oui", "")) + " " + str(smartctl["wwn"].get("id", ""))
 
-    if file.get("form_factor", {}).get("name"):
-        ff = file["form_factor"]["name"]
+    if smartctl.get("form_factor", {}).get("name"):
+        ff = smartctl["form_factor"]["name"]
         # https://github.com/smartmontools/smartmontools/blob/master/smartmontools/ataprint.cpp#L405
         if ff == "3.5 inches":
             disk["hdd-form-factor"] = "3.5"
@@ -89,22 +92,19 @@ def _parse_disk(file):
             disk["hdd-form-factor"] = "msata"
             port = PORT.MSATA
 
-    if file.get("user_capacity", {}).get("bytes"):
+    if smartctl.get("user_capacity", {}).get("bytes"):
         # https://stackoverflow.com/a/3411435
-        round_digits = int(floor(log10(abs(float(file["user_capacity"]["bytes"]))))) - 2
-        bytes_rounded = int(round(float(file["user_capacity"]["bytes"]), -round_digits))
+        round_digits = int(floor(log10(abs(float(smartctl["user_capacity"]["bytes"]))))) - 2
+        bytes_rounded = int(round(float(smartctl["user_capacity"]["bytes"]), -round_digits))
         disk["capacity-decibyte"] = bytes_rounded
 
     # This may be 0, which is a valid value and casts to False, check for None explicitly!
-    if file.get("rotation_rate") is not None:
-        if file.get("rotation_rate") > 0:
-            disk["spin-rate-rpm"] = file.get("rotation_rate")
+    if smartctl.get("rotation_rate") is not None:
+        if smartctl.get("rotation_rate") > 0:
+            disk["spin-rate-rpm"] = smartctl.get("rotation_rate")
             disk["type"] = "hdd"
         else:
             disk["type"] = "ssd"
-
-    # TODO: throw a catastrophic fatal error of death if a disk has SMART disabled (can be enabled and disabled with smartctl to test and view the exact error message)
-    # TODO: NVME support
 
     if disk.get("brand", "").title() == "Western Digital":
         # These are useless and usually not even printed on labels and in bar codes...
@@ -133,20 +133,20 @@ def _parse_disk(file):
         if "Serial ATA" in disk.get("family", ""):
             # disk["family"] = disk["family"].replace("Serial ATA", "").strip()
             port = PORT.SATA
-        if "sata_version" in file:
+        if "sata_version" in smartctl:
             port = PORT.SATA
-        elif "pata_version" in file:
+        elif "pata_version" in smartctl:
             if disk.get("hdd-form-factor", "").startswith("2.5") or disk.get("hdd-form-factor", "").startswith("1.8"):
                 port = PORT.MINIIDE
             else:
                 port = PORT.IDE
-        if "nvme_version" in file:
+        if "nvme_version" in smartctl:
             port = PORT.M2
             if disk.get("type", "") == "hdd":
                 disk["type"] = "ssd"
             if "hdd-form-factor" not in disk:
                 disk["hdd-form-factor"] = "m2"
-        if "device" in file and file["device"].get("type", "") == "scsi" and file["device"].get("protocol", "") == "SCSI":
+        if "device" in smartctl and smartctl["device"].get("type", "") == "scsi" and smartctl["device"].get("protocol", "") == "SCSI":
             disk["notes"] = "This is a SCSI disk, however it is not possible to detect the exact connector type. Please set the correct one manually."
 
     if port is not None:
@@ -157,10 +157,9 @@ def _parse_disk(file):
         if "desktop" in disk.get("family", "").lower() and port == PORT.SATA:
             disk["hdd-form-factor"] = "3.5"
 
-    smart = extract_smart_data(file)
+    smart, failing_now = extract_smart_data(smartctl)
 
-    # TODO: failing now, uncorrectable error log, other stuff
-    status = smart_health_status(smart, False)
+    status = smart_health_status(smart, failing_now)
     if status:
         if len(smart) < 2 and status == "ok":
             # Nah bro, I'll pass... "ok" with (nearly) no smart data is meaningless
@@ -168,21 +167,49 @@ def _parse_disk(file):
         else:
             disk["smart-data"] = status
     else:
-        # TODO: print verbose error
+        if interactive:
+            print("Failed to determine HDD health status from SMART data!")
         pass
 
     return disk
 
 
-def extract_smart_data(parsed):
+def extract_smart_data(parsed: dict) -> [Dict, bool]:
+    """
+    Extract SMART attributes and raw values from smartctl -ja output.
+    Also returns failing_now value to indicate if any attributes (except temperature)
+    is failing now.
+    """
+    failing_now = False
+
     smart = {}
     if parsed.get("ata_smart_attributes", {}).get("table"):
         for line in parsed["ata_smart_attributes"]["table"]:
+            # Name
             name = line["name"]
+
+            # Value
             if name.lower() == "unknown_attribute":
                 name = f"{name}_{str(line['id'])}"
-            smart[name] = line["raw"]["value"]
-    return smart
+            value = line["raw"]["value"]
+
+            # Normalize power on time to hours
+            # (see https://github.com/mirror/smartmontools/blob/44cdd4ce63ca4e07db87ec062a159181be967a72/ataprint.cpp#L1140-L1168)
+            if line["id"] == 9 and name.lower().startswith("power_on_"):
+                if "power_on_time" in parsed:
+                    if parsed["power_on_time"].get("hours", None) is not None:
+                        value = parsed["power_on_time"]["hours"]
+                    elif parsed["power_on_time"].get("minutes", None) is not None:
+                        value = parsed["power_on_time"]["minutes"] * 60
+            # Set result
+            smart[name] = value
+
+            # Find out if anything is failing
+            if "when_failed" in line:
+                if line["when_failed"] == "now":
+                    if line["name"].lower() != "temperature_celsius":
+                        failing_now = True
+    return smart, failing_now
 
 
 def _mega_clean_disk_model(disk: dict):
