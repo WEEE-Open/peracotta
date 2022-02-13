@@ -38,7 +38,7 @@ PATH = {
     "FEATURES": "features.json",
     "THEMES": "assets/themes/",
     "TMP_FILES": "tmp/",
-    "ICON": "assets/pear_emoji.png",
+    "ICON": "assets/ui/pear_emoji.png",
 }
 
 ICON = {
@@ -89,7 +89,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tarallo_token = tarallo_token
         self.useful_default_features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
-        self.active_theme = "default"
+        self.active_theme = str()
 
         self.setWindowIcon(QtGui.QIcon(PATH["ICON"]))
         # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
@@ -219,6 +219,8 @@ class Ui(QtWidgets.QMainWindow):
         self.setup()
 
     def setup(self):
+        self.get_settings()
+        self.set_theme(self.active_theme)
         self.reset_toolbox()
 
         layout = self.selectorsWidget.layout()
@@ -229,6 +231,11 @@ class Ui(QtWidgets.QMainWindow):
                 checkbox.setEnabled(False)
             layout.addWidget(checkbox)
         self.reset_setup_group()
+
+    def get_settings(self):
+        self.active_theme = self.settings.value("last_theme")
+        if self.active_theme is None:
+            self.active_theme = "default"
 
     @staticmethod
     def _backup_features_json() -> bool:
@@ -330,9 +337,10 @@ class Ui(QtWidgets.QMainWindow):
         if theme == "default":
             self.app.setStyleSheet("")
             self.active_theme = "default"
-            return
-        with open(f"{PATH['THEMES']}{theme}.css", "r") as file:
-            self.app.setStyleSheet(file.read())
+        else:
+            with open(f"{PATH['THEMES']}{theme}.css", "r") as file:
+                self.app.setStyleSheet(file.read())
+        self.settings.setValue("last_theme", theme)
         self.active_theme = theme
 
     def refresh_theme(self):
