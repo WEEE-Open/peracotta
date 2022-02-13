@@ -47,7 +47,8 @@ ICON = {
     "cpu": "assets/toolbox/cpu.png",
     "graphics-card": "assets/toolbox/gpu.png",
     "odd": "assets/toolbox/odd.png",
-    "hard disk": "assets/toolbox/hard disk.png",
+    "hdd": "assets/toolbox/hdd.png",
+    "ssd": "assets/toolbox/ssd.png",
     "motherboard": "assets/toolbox/motherboard.png",
     "wifi-card": "assets/toolbox/wifi-card.png",
     "psu": "assets/toolbox/psu.png",
@@ -187,7 +188,7 @@ class Ui(QtWidgets.QMainWindow):
         action[-1].triggered.connect(lambda: self.set_theme("default"))
         for theme_file in os.listdir(PATH["THEMES"]):
             theme = theme_file.rstrip(".css")
-            action.append(self.menuTheme.addAction(theme.title()))
+            action.append(self.menuTheme.addAction(theme))
             action[-1].triggered.connect((lambda t: lambda: self.set_theme(t))(theme))
 
         # Help actions
