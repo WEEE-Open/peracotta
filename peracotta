@@ -685,8 +685,6 @@ class CustomTableView(QtWidgets.QTableView):
         menu.popup(QtGui.QCursor.pos())
 
     def remove_row(self):
-        print(f"{self.selectedIndexes()[1].row()}")
-        print(f"{self.selectedIndexes()[1].parent()}")
         self.model().removeRow(self.selectedIndexes()[1].row(), self.selectedIndexes()[1].parent())
 
 
@@ -710,7 +708,7 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.setLayout(self.main_layout)
 
     def external_size_hint_height(self):
-        h1 = self.table.minimumSizeHint().height()
+        h1 = max(self.table.minimumSizeHint().height(), self.table.sizeHint().height())
         h2 = self.adder_layout.sizeHint().height()
 
         return h1 + h2
@@ -732,7 +730,11 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
     def _do_the_emergency_resize(self):
-        self.table.resizeColumnsToContents()
+        self.parentWidget().parentWidget().updateGeometry()
+        # TODO: re-enable this IF AND ONLY IF:
+        # TODO: 1. the last column stretches as it should, but doesn't
+        # TODO: 2. it won't resize past the table width
+        # self.table.resizeColumnsToContents()
 
     def _create_feature_adder(self):
         layout = QtWidgets.QHBoxLayout()
@@ -754,8 +756,11 @@ class ToolBoxItem(QtWidgets.QWidget):
                     self.feature_line_edit.setHidden(True)
                     self.feature_selector.setHidden(False)
                     self.feature_selector.clear()
+                    i = 0
                     for value in self.default_features["values"][the_type]:
                         self.feature_selector.addItem(self.default_features["values"][the_type][value])
+                        self.feature_selector.setItemData(i, value)
+                        i += 1
                 else:
                     self.feature_line_edit.setHidden(False)
                     self.feature_selector.setHidden(True)
@@ -770,7 +775,7 @@ class ToolBoxItem(QtWidgets.QWidget):
         if self.feature_line_edit.isVisible():
             value = self.feature_line_edit.text()
         elif self.feature_selector.isVisible():
-            value = self.feature_selector.currentText()
+            value = self.feature_selector.currentData()
         else:
             return
         model: CustomTableModel = self.table.model()
@@ -918,7 +923,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                 # Why 1.5? Dunno, they're ~40 pixels and sizeHint is 25 (minimum 24).
                 h += int(child.sizeHint().height() * 1.5)
         old = super().minimumSizeHint()
-        # print(f"------ {h} vs {old.height()}! ------")
+        print(f"------ {h} vs {old.height()}! ------")
         if h > old.height():
             return QtCore.QSize(old.width(), h)
         return old
@@ -1158,7 +1163,6 @@ class CustomTableModel(QAbstractTableModel):
         try:
             removed = self.feature_keys.pop(row)
             try:
-                del self.feature_keys[removed]
                 del self.features[removed]
                 # TODO: remove from features but show product one if it exists
                 if removed in self.ref_features:
@@ -1199,16 +1203,16 @@ class CustomTableModel(QAbstractTableModel):
 
         row_index = self.rowCount()
 
-        self.beginInsertRows(QtCore.QModelIndex(), row_index, row_index)
         ok, value = self.extreme_validation(feature, value)
         product_to_add = None
         if ok:
+            self.beginInsertRows(QtCore.QModelIndex(), row_index, row_index)
             self.feature_keys.append(feature)
             self.features[feature] = value
             if not self.ref_product:
                 product_to_add = ToolBoxWidget.find_matching_product(self._data, self.features)
             self._add_to_ref(feature, value)
-        self.endInsertRows()
+            self.endInsertRows()
 
         if product_to_add:
             self.beginResetModel()
