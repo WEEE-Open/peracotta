@@ -80,7 +80,7 @@ def test_upload_pytarallo(args2, monkeypatch, capsys):  # testing pytarallo inte
 
     def fixed_bulk_id():  # testing automatic upload with a fixed bulk_id
         identifier = f"{args2[0]}{time.time()}"
-        cli_input = io.StringIO(f"y\n{identifier}\n")
+        cli_input = io.StringIO(f"y\n\n{identifier}\n")
         monkeypatch.setattr("sys.stdin", cli_input)
         peracruda.upload_to_tarallo(result)
         assert "all went fine" in capsys.readouterr().out.lower()
@@ -89,7 +89,7 @@ def test_upload_pytarallo(args2, monkeypatch, capsys):  # testing pytarallo inte
     def overwrite_bulk_id(
         identifier,
     ):  # testing the overwrite of a bulk_id with an upload
-        cli_input = io.StringIO(f"y\n{identifier}\ny\n")
+        cli_input = io.StringIO(f"y\n\n{identifier}\ny\n")
         monkeypatch.setattr("sys.stdin", cli_input)
         peracruda.upload_to_tarallo(result)
         output = capsys.readouterr().out.lower()
@@ -99,7 +99,7 @@ def test_upload_pytarallo(args2, monkeypatch, capsys):  # testing pytarallo inte
     def change_identifier(
         old_identifier,
     ):  # testing an upload with a new identifier after a failure
-        cli_input = io.StringIO(f"y\n{old_identifier}\nn\n{args2[0]}{time.time()}")
+        cli_input = io.StringIO(f"y\n\n{old_identifier}\nn\n{args2[0]}{time.time()}")
         monkeypatch.setattr("sys.stdin", cli_input)
         peracruda.upload_to_tarallo(result)
         output = capsys.readouterr().out.lower()
