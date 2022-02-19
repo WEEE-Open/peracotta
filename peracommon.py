@@ -89,7 +89,7 @@ def generate_files(path: str, use_sudo: bool = True, sudo_passwd: str = None):
     else:
         script = "scripts/generate_files.sh"
     os.makedirs(path, exist_ok=True)
-    command = ["-S", "scripts/generate_files.pkexec", path]
+    command = ["-S", script, path]
     if use_sudo:
         command.insert(0, "sudo")
 
