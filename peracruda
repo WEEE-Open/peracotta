@@ -20,6 +20,18 @@ import peracommon
 
 def main(the_args):
     load_dotenv()
+    parsers = []
+
+    if the_args.parsers is None:
+        parsers = peracommon.ParserComponents.all()
+    else:
+        for parser_piece in the_args.parsers.split(","):
+            try:
+                parsers.append(peracommon.ParserComponents[parser_piece.strip()])
+            except KeyError:
+                print(f"[red]Unknown component parser: {parser_piece.strip()}[/]")
+                print(f"Available parsers: " + ", ".join(peracommon.ParserComponents.all_keys()))
+                exit(2)
 
     if the_args.path is None:
         generated_files_path = f"{os.getcwd()}/tmp"
@@ -64,7 +76,7 @@ def main(the_args):
 
     # List of items only
     result = peracommon.call_parsers(
-        generated_files_path, set(peracommon.ParserComponents.all()), gpu_location, True
+        generated_files_path, set(parsers), gpu_location, True
     )
 
     owner = get_owner()
@@ -322,6 +334,9 @@ def generate_parser():
     )
     parser.add_argument(
         "--owner", action="store", default=None, required=False, help="set a owner"
+    )
+    parser.add_argument(
+        "-p", "--parsers", action="store", default=None, required=False, help="which parsers to use"
     )
     gpu_group = parser.add_argument_group("GPU Location").add_mutually_exclusive_group(
         required=False

@@ -120,24 +120,26 @@ You can find the usage below, but keep in mind that the three most important arg
 - `-f` to read files from the path instead of calling `generate_files.sh` again.
 
 ```
-usage: peracruda [-h] [-f] [--code CODE] [--owner OWNER]
+usage: peracruda [-h] [-f] [--code CODE] [--owner OWNER] [-p PARSERS]
                  [-g | -c | -b | --gpu-none] [-v]
                  [path]
 Parse the files generated with generate_files.sh and get all the possible info
 out of them
 positional arguments:
-  path               optional path where generated files are stored
-optional arguments:
-  -h, --help         show this help message and exit
-  -f, --files        reuse previously generated files
-  --code CODE        set the code assigned by T.A.R.A.L.L.O
-  --owner OWNER      set a owner
-  -v, --verbose      print some warning messages
+  path                  optional path where generated files are stored
+options:
+  -h, --help            show this help message and exit
+  -f, --files           reuse previously generated files
+  --code CODE           set the code assigned by T.A.R.A.L.L.O
+  --owner OWNER         set a owner
+  -p PARSERS, --parsers PARSERS
+                        which parsers to use
+  -v, --verbose         print some warning messages
 GPU Location:
-  -g, --gpu          computer has dedicated GPU
-  -c, --cpu          GPU is integrated inside the CPU
-  -b, --motherboard  GPU is integrated inside the motherboard
-  --gpu-none         There's no GPU at all
+  -g, --gpu             computer has dedicated GPU
+  -c, --cpu             GPU is integrated inside the CPU
+  -b, --motherboard     GPU is integrated inside the motherboard
+  --gpu-none            There's no GPU at all
 ```
 
 ### peracotta (GUI)

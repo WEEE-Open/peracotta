@@ -70,6 +70,13 @@ class ParserComponents(Enum):
         return res
 
     @classmethod
+    def all_keys(cls):
+        res = []
+        for thing in cls:
+            res.append(thing.name)
+        return res
+
+    @classmethod
     def not_implemented_yet(cls):
         return {
             ParserComponents.ODD,
