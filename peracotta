@@ -3,6 +3,7 @@ from typing import Optional, List
 from urllib.error import URLError
 
 # noinspection PyUnresolvedReferences
+import PyQt5.QtWidgets
 from PyQt5 import uic, QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QAbstractTableModel
 from collections import defaultdict
@@ -741,12 +742,13 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.table.resizeColumnsToContents()
         self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
+        hh = PyQt5.QtWidgets.QHeaderView = self.table.horizontalHeader()
+        hh.setSectionResizeMode(0, PyQt5.QtWidgets.QHeaderView.ResizeToContents)
+        hh.setSectionResizeMode(1, PyQt5.QtWidgets.QHeaderView.Stretch)
+
     def _do_the_emergency_resize(self):
         self.parentWidget().parentWidget().updateGeometry()
-        # TODO: re-enable this IF AND ONLY IF:
-        # TODO: 1. the last column stretches as it should, but doesn't
-        # TODO: 2. it won't resize past the table width
-        # self.table.resizeColumnsToContents()
+        self.table.resizeColumnToContents(0)
 
     def _create_feature_adder(self):
         layout = QtWidgets.QHBoxLayout()
