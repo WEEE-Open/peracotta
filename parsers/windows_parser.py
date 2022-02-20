@@ -2,21 +2,21 @@ import json
 
 
 def parse_win_chassis_specs(the_dir: str):
-    with open(the_dir, "r") as file:
+    with open(f"{the_dir}/chassis.win", "r") as file:
         data = json.load(file)
         object = [
             {
                 "features": {
-                    "type": "case",
                     "brand": data["Manufacturer"],
                     "sn": data["SerialNumber"],
-                }
+                },
+                "type": "case",
             }
         ]
         return object
 
 
-def parse_win_cpu_specs(cpu_dir: str, gpu_dir: str):
+def parse_win_cpu_specs(the_dir: str):
     architectures = {
         0: "x86-32",
         1: "mips",
@@ -26,7 +26,7 @@ def parse_win_cpu_specs(cpu_dir: str, gpu_dir: str):
         9: "x86-64",
     }
     object = []
-    with open(cpu_dir, "r") as file:
+    with open(f"{the_dir}/lscpu.win", "r") as file:
         data = json.load(file)
         object.append(
             {
@@ -39,20 +39,21 @@ def parse_win_cpu_specs(cpu_dir: str, gpu_dir: str):
                     "thread-n": data["ThreadCount"],
                     "frequency-hertz": int(data["MaxClockSpeed"]) * 1000000,
                 },
+                "type": "cpu",
             }
         )
-    with open(gpu_dir, "r") as file:
+    with open(f"{the_dir}/graphics.win", "r") as file:
         data = json.load(file)
         for entry in data:
             if "Service" in entry and entry["Service"] == "igfx":
                 object[0]["features"]["integrated-graphics-brand"] = entry["Manufacturer"]
                 object[0]["features"]["integrated-graphics-model"] = entry["Name"]
                 break
-    return json.dumps(object)
+    return object
 
 
 def parse_win_ram_specs(the_dir: str):
-    with open(the_dir, "r") as file:
+    with open(f"{the_dir}/dimms.win", "r") as file:
         data = json.load(file)
         object = []
         for entry in data:
@@ -61,7 +62,6 @@ def parse_win_ram_specs(the_dir: str):
                     "brand": entry["Manufacturer"],
                     "model": entry["PartNumber"],
                     "features": {
-                        "type": "ram",
                         "frequency-hertz": entry["Speed"] * 1000000,
                         "capacity-byte": entry["Capacity"],
                         "ram-type": "",
@@ -69,20 +69,20 @@ def parse_win_ram_specs(the_dir: str):
                         "ram-timings": "",
                         "sn": entry["SerialNumber"],
                     },
+                    "type": "ram",
                 }
             )
-    return json.dumps(object)
+    return object
 
 
-def parse_win_motherboard_specs(baseboard_dir: str, pci_dir: str):
-    with open(baseboard_dir, "r") as file:
+def parse_win_motherboard_specs(the_dir: str):
+    with open(f"{the_dir}/baseboard.win", "r") as file:
         data = json.load(file)
         object = [
             {
                 "brand": data["Manufacturer"],
                 "model": data["Product"],
                 "features": {
-                    "type": "motherboard",
                     "parallel-ports-n": 0,
                     "usb-ports-n": 0,
                     "mini-jack-ports-n": 0,
@@ -93,9 +93,10 @@ def parse_win_motherboard_specs(baseboard_dir: str, pci_dir: str):
                     "ps2-ports-n": 0,
                     "ethernet-ports-1000m-n": 0,
                 },
+                "type": "motherboard",
             }
         ]
-    with open(pci_dir, "r") as file:
+    with open(f"{the_dir}/lspci.win", "r") as file:
         data = json.load(file)
         for entry in data:
             pnp_class = entry["PNPClass"]
@@ -111,4 +112,4 @@ def parse_win_motherboard_specs(baseboard_dir: str, pci_dir: str):
             elif pnp_class == "DiskDrive":
                 object[0]["features"]["sata-ports-n"] += 1
                 continue
-    return json.dumps(object)
+    return object

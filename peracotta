@@ -364,6 +364,19 @@ class Ui(QtWidgets.QMainWindow):
         for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
             checkbox.setChecked(False)
 
+    def get_file_directory_dialog(self):
+        the_dir = QtWidgets.QFileDialog.getOpenFileName(
+            self,
+            "Open JSON",
+            f"{expanduser('~')}",
+            f"JSON (*.json);;All Files (*)",
+        )
+        return the_dir[0]
+
+    def get_directory_dialog(self):
+        the_dir = QtWidgets.QFileDialog.getExistingDirectory(self, "Open JSON", f"{expanduser('~')}")
+        return the_dir if the_dir != "" else None
+
     # tarallo utilities
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
         if bulk_id == "":
@@ -419,21 +432,21 @@ class Ui(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
             return
 
-        use_sudo = peracommon.env_to_bool(env.get("GENERATE_FILES_USE_SUDO", "1"))
-        ask_sudo_pass = peracommon.env_to_bool(env.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1"))
+        if sys.platform != "win32":
+            use_sudo = peracommon.env_to_bool(env.get("GENERATE_FILES_USE_SUDO", "1"))
+            ask_sudo_pass = peracommon.env_to_bool(env.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1"))
 
-        self.peracotta.use_sudo = use_sudo
-        self.peracotta.sudo_passwd = None
+            self.peracotta.use_sudo = use_sudo
+            self.peracotta.sudo_passwd = None
 
-        if use_sudo and ask_sudo_pass:
-            got_it = self._ask_sudo_pass()
-            if not got_it:
-                return
+            if use_sudo and ask_sudo_pass:
+                got_it = self._ask_sudo_pass()
+                if not got_it:
+                    return
 
-        self.peracotta.generate_files = True
         self.peracotta.set_filters(self.selectorsWidget)
         # TODO: shouldn't the next 2 lines be reversed?
-        self.peracotta.start()
+        self.peracotta.begin()
         self.reset_toolbox()
 
     def _ask_sudo_pass(self):
@@ -487,21 +500,16 @@ class Ui(QtWidgets.QMainWindow):
 
     # menu actions
     def open_json(self, path: str = ""):
-        self.itemToolBox.clear()
-
         if not path:
-            the_dir = QtWidgets.QFileDialog.getOpenFileName(
-                self,
-                "Open JSON",
-                f"{expanduser('~')}",
-                f"JSON (*.json);;All Files (*)",
-            )
-            path = the_dir[0]
+            path = self.get_file_directory_dialog()
         if path == "":
             self.data = None
             return
-        with open(path, "r") as file:
-            self.data = json.load(file)
+        try:
+            with open(path, "r") as file:
+                self.data = json.load(file)
+        except FileNotFoundError as exc:
+            QtWidgets.QMessageBox.warning(self, "Error", f"File not found.\n{exc.args[1]}")
 
         self.data = peracommon.unmake_tree(self.data)
         self.settings.setValue("latest_json", path)
@@ -512,8 +520,13 @@ class Ui(QtWidgets.QMainWindow):
             if "latest_json" in key:
                 self.open_json(self.settings.value("latest_json"))
 
-    def load_raw_files(self):
-        QtWidgets.QMessageBox.warning(self, "Oh no", "Not implemented yet!")
+    def load_raw_files(self, path: str = ""):
+        if not path:
+            path = self.get_directory_dialog()
+        if path is None:
+            return
+        self.peracotta.generated_files_path = path
+        self.peracotta.begin(generate_files=False, raw_files_path=path)
 
     def show_json(self):
         if self.data is None:
@@ -561,6 +574,7 @@ class Peracotta(QtCore.QThread):
         self.gpu_location = None
         self.owner = owner_line_edit.text()
         self.generated_files_path = generated_files_path
+        self.raw_files_path = ""
         self.generate_files = None
 
         self.filters = []
@@ -570,6 +584,11 @@ class Peracotta(QtCore.QThread):
         self.use_sudo = True
 
         self.is_running = False
+
+    def begin(self, generate_files: bool = True, raw_files_path: str = ""):
+        self.generate_files = generate_files
+        self.raw_files_path = raw_files_path
+        self.start()
 
     def run(self) -> None:
         self.is_running = True
@@ -587,14 +606,14 @@ class Peracotta(QtCore.QThread):
                 from scripts.get_windows_specs import generate_win_files
 
                 generate_win_files()
-                self.process_win_files()
+                result = self.process_win_files()
             else:
                 message = peracommon.check_required_files(self.generated_files_path, is_gui=True)
                 if message != "":
                     QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
                 self.generated_files_path = peracommon.generate_files(self.the_dir, self.use_sudo, self.sudo_passwd)
                 if self.generated_files_path is None:
-                    print("Wrong root password. Terminating peracotta...")
+                    QtWidgets.QMessageBox.warning(self.main_window, "Critical error", "Wrong root password. Terminating peracotta...")
                     return
                 result = peracommon.call_parsers(
                     self.generated_files_path,
@@ -602,9 +621,12 @@ class Peracotta(QtCore.QThread):
                     self.gpu_location,
                     False,
                 )
-                if self.owner != "":
-                    result = peracommon.add_owner(result, self.owner)
-                result = peracommon.split_products(result)
+        if self.raw_files_path != "":
+            print(f"{self.generated_files_path}")
+            print("Peracottando con i raw_files ....")
+        if self.owner != "":
+            result = peracommon.add_owner(result, self.owner)
+        result = peracommon.split_products(result)
         self.updateEvent.emit(result)
         self.set_default_values()
 
@@ -615,12 +637,16 @@ class Peracotta(QtCore.QThread):
         self.is_running = True
         self.sudo_passwd = None
         self.use_sudo = True
-
-    def process_files(self):
-        pass
+        self.raw_files_path = ""
 
     def process_win_files(self):
-        pass
+        import parsers.windows_parser as win
+
+        result = win.parse_win_cpu_specs(self.generated_files_path)
+        result = result + win.parse_win_chassis_specs(self.generated_files_path)
+        result = result + win.parse_win_ram_specs(self.generated_files_path)
+        result = result + win.parse_win_motherboard_specs(self.generated_files_path)
+        return result
 
     def set_filters(self, widget: QtWidgets.QWidget):
         for checkbox in widget.findChildren(QtWidgets.QCheckBox):
@@ -825,9 +851,9 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
     def load_items(self, data: List[dict]):
         if data:
+            self.clear()
             self.data = data
-        self.clear()
-        self.types_count()
+            self.types_count()
 
         # find brand, model and variant of all products in data
         products = {}
