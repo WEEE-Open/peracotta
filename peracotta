@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import Optional, List
+from typing import Optional, List, Dict
 from urllib.error import URLError
 
 # noinspection PyUnresolvedReferences
@@ -384,6 +384,7 @@ class Ui(QtWidgets.QMainWindow):
         uploader = Uploader(peracommon.make_tree(self.data), self.tarallo_url, self.tarallo_token, bulk_id, checkbox)
         uploader.successEvent.connect(self.tarallo_success)
         uploader.failureEvent.connect(self.tarallo_failure)
+        uploader.start()
 
     def tarallo_success(self, code: str):
         url = f"{self.tarallo_url}/bulk/import#{urllib.parse.quote(code)}"
@@ -613,7 +614,7 @@ class Peracotta(QtCore.QThread):
                     QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
                 self.generated_files_path = peracommon.generate_files(self.the_dir, self.use_sudo, self.sudo_passwd)
                 if self.generated_files_path is None:
-                    QtWidgets.QMessageBox.warning(self.main_window, "Critical error", "Wrong root password. Terminating peracotta...")
+                    QtWidgets.QMessageBox.warning(self.main_window, "Critical error", "Failed to generate files")
                     return
                 result = peracommon.call_parsers(
                     self.generated_files_path,
@@ -1086,7 +1087,7 @@ class CustomTableModel(QAbstractTableModel):
         else:
             return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
 
-    def row_all_enum_values_for_editor(self, row: int) -> Optional[dict[str, str]]:
+    def row_all_enum_values_for_editor(self, row: int) -> Optional[Dict[str, str]]:
         if row < 0 or row >= len(self.feature_keys):
             return None
 
@@ -1293,7 +1294,7 @@ class JsonWidget(QtWidgets.QDialog):
 
 
 class TaralloUploadDialog(QtWidgets.QDialog):
-    signal = QtCore.pyqtSignal(bool, bool, str, name="event")
+    signal = QtCore.pyqtSignal(bool, str, name="event")
 
     def __init__(self, bulk_id: str = ""):
         super().__init__()
@@ -1307,6 +1308,7 @@ class TaralloUploadDialog(QtWidgets.QDialog):
         self.cancelButton = self.findChild(QtWidgets.QPushButton, "cancelButton")
         self.cancelButton.clicked.connect(self.cancel_signal)
         self.overwriteCheckBox = self.findChild(QtWidgets.QCheckBox, "overwriteCheckBox")
+        self.show()
 
     def ok_signal(self):
         self.signal.emit(self.overwriteCheckBox.isChecked(), self.bulkLineEdit.text())
