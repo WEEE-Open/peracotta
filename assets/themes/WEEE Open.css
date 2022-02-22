@@ -138,9 +138,27 @@ QSplitter::handle {
 }
 
 QDialog {
-    background-color: rgb(49, 52, 59);
+    background-color: #3c3d3b;
     color: white;
-    border-color: rgb(188, 188, 188);
+    border-color: whitesmoke;
+}
+
+QDialog QLabel {
+    color: white;
+}
+
+QDialog QCheckBox {
+    color: white;
+}
+
+QDialog QPushButton {
+    min-width: 60px;
+}
+
+QDialog QPlainTextEdit {
+    background-color: #3c3d3b;
+    border: 1px solid whitesmoke;
+    color: white;
 }
 
 QComboBox {
@@ -223,6 +241,32 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
 }
 
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar:horizontal {
+    background: transparent;
+}
+
+QScrollBar::handle:horizontal {
+    border: 1px solid whitesmoke;
+    background: rgb(50, 51, 49);
+    border-radius: 8px;
+}
+
+QScrollBar::add-line:horizontal {
+    background: none;
+}
+
+QScrollBar::sub-line:horizontal {
+    background: none;
+}
+
+QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal {
+    background: none;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
     background: none;
 }
 

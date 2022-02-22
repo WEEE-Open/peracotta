@@ -80,7 +80,6 @@ class Ui(QtWidgets.QMainWindow):
         app: QtWidgets.QApplication,
         tarallo_url: str,
         tarallo_token: str,
-        tarallo_auto_download: bool,
     ) -> None:
         super(Ui, self).__init__()
         uic.loadUi(PATH["UI"], self)
@@ -95,21 +94,6 @@ class Ui(QtWidgets.QMainWindow):
         self.active_theme = str()
 
         self.setWindowIcon(QtGui.QIcon(PATH["ICON"]))
-        # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
-        try:
-            self.load_features_file(tarallo_auto_download)
-        except Exception as e:
-            title = "Cannot download features"
-            message = f"Failed to download features from TARALLO: {str(e)}"
-            if self.useful_default_features == {}:
-                QtWidgets.QMessageBox.critical(
-                    self,
-                    title,
-                    message + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.",
-                )
-                exit(1)
-            else:
-                QtWidgets.QMessageBox.warning(self, title, message)
 
         # shortcuts
         self.refreshThemeShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+R"), self)
@@ -117,8 +101,7 @@ class Ui(QtWidgets.QMainWindow):
 
         # Output toolbox
         self.outputScrollArea = self.findChild(QtWidgets.QScrollArea, "outputScrollArea")
-        self.itemToolBox = ToolBoxWidget(self.data, self.useful_default_features, self.encountered_types_count)
-        self.outputScrollArea.setWidget(self.itemToolBox)
+        self.itemToolBox = None
 
         # App settings
         self.settings = QtCore.QSettings("WEEE Open", "PERACOTTA")
@@ -137,12 +120,6 @@ class Ui(QtWidgets.QMainWindow):
 
         self.addItemComboBox = self.findChild(QtWidgets.QComboBox, "addItemComboBox")
         self.addItemComboBox.addItem("Select Type --")
-        for the_type in self.useful_default_features["values"]["type"]:
-            tye_type_fancy = self.useful_default_features["values"]["type"][the_type]
-            self.addItemComboBox.addItem(tye_type_fancy)
-            if the_type in ICON:
-                icon = QtGui.QIcon(ICON[the_type])
-                self.addItemComboBox.setItemIcon(self.addItemComboBox.count() - 1, icon)
         self.addItemComboBox.currentTextChanged.connect(self.add_toolbox_item)
         self.addItemComboBox.wheelEvent = lambda stop_wheel_event: None
 
@@ -224,8 +201,23 @@ class Ui(QtWidgets.QMainWindow):
     def setup(self):
         self.get_settings()
         self.set_theme(self.active_theme)
+        self.download_features()
+
+        # Set item types available in the add item combo box
+        for the_type in self.useful_default_features["values"]["type"]:
+            tye_type_fancy = self.useful_default_features["values"]["type"][the_type]
+            self.addItemComboBox.addItem(tye_type_fancy)
+            if the_type in ICON:
+                icon = QtGui.QIcon(ICON[the_type])
+                self.addItemComboBox.setItemIcon(self.addItemComboBox.count() - 1, icon)
+
+        # Set up the item toolbox
+        self.itemToolBox = ToolBoxWidget(self.data, self.useful_default_features, self.encountered_types_count)
+        self.outputScrollArea.setWidget(self.itemToolBox)
+
         self.reset_toolbox()
 
+        # Set the selectors widget
         layout = self.selectorsWidget.layout()
         niy = peracommon.ParserComponents.not_implemented_yet()
         for item in peracommon.ParserComponents:
@@ -234,6 +226,24 @@ class Ui(QtWidgets.QMainWindow):
                 checkbox.setEnabled(False)
             layout.addWidget(checkbox)
         self.reset_setup_group()
+
+    def download_features(self):
+        # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
+        try:
+            tarallo_auto_download = env_to_bool(env.get("TARALLO_FEATURES_AUTO_DOWNLOAD", "1"))
+            self.load_features_file(tarallo_auto_download)
+        except Exception as e:
+            title = "Cannot download features"
+            message = f"Failed to download features from TARALLO: {str(e)}"
+            if self.useful_default_features == {}:
+                QtWidgets.QMessageBox.critical(
+                    self,
+                    title,
+                    message + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.",
+                )
+                exit(1)
+            else:
+                QtWidgets.QMessageBox.warning(self, title, message)
 
     def get_settings(self):
         self.active_theme = self.settings.value("last_theme")
@@ -359,7 +369,8 @@ class Ui(QtWidgets.QMainWindow):
 
     def select_all_checkboxes(self):
         for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
-            checkbox.setChecked(True)
+            if checkbox.isEnabled():
+                checkbox.setChecked(True)
 
     def deselect_all_checkboxes(self):
         for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
@@ -427,6 +438,7 @@ class Ui(QtWidgets.QMainWindow):
                 checkbox.setChecked(True)
             else:
                 checkbox.setChecked(False)
+                checkbox.setStyleSheet("text-decoration: line-through;")
 
         # reset owner
         self.ownerLineEdit.clear()
@@ -483,7 +495,7 @@ class Ui(QtWidgets.QMainWindow):
             file.write(f"{json.dumps(peracommon.make_tree(self.data))}")
 
     def tarallo_dialog(self, bulk_id=str()):
-        if self.data is None:
+        if len(self.data) == 0:
             QtWidgets.QMessageBox.warning(self, "Warning", "There is nothing to be uploaded")
             return
         if not bulk_id:
@@ -1380,11 +1392,10 @@ def main():
         load_dotenv()
         tarallo_url = env["TARALLO_URL"]
         tarallo_token = env["TARALLO_TOKEN"]
-        auto_download = env_to_bool(env.get("TARALLO_FEATURES_AUTO_DOWNLOAD", "1"))
         app = QtWidgets.QApplication(sys.argv)
         # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
         # noinspection PyUnusedLocal
-        window = Ui(app, tarallo_url, tarallo_token, auto_download)
+        window = Ui(app, tarallo_url, tarallo_token)
         app.exec_()
 
     except KeyboardInterrupt:

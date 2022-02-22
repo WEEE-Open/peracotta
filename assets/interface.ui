@@ -279,7 +279,7 @@
           <item>
            <widget class="QPushButton" name="saveJsonBtn">
             <property name="text">
-             <string>Save JSON</string>
+             <string>Save JSON to file</string>
             </property>
             <property name="shortcut">
              <string>Ctrl+S</string>
@@ -289,7 +289,7 @@
           <item>
            <widget class="QPushButton" name="uploadBtn">
             <property name="text">
-             <string>Upload</string>
+             <string>Upload to TARALLO</string>
             </property>
             <property name="shortcut">
              <string>Ctrl+U</string>
