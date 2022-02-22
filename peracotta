@@ -85,6 +85,7 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()
         uic.loadUi(PATH["UI"], self)
         self.app = app
+        self.uploader = None
         self.taralloDialog = None
         self.data = list(dict())
         self.tarallo_url = tarallo_url
@@ -381,16 +382,18 @@ class Ui(QtWidgets.QMainWindow):
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
         if bulk_id == "":
             bulk_id = None
-        uploader = Uploader(peracommon.make_tree(self.data), self.tarallo_url, self.tarallo_token, bulk_id, checkbox)
-        uploader.successEvent.connect(self.tarallo_success)
-        uploader.failureEvent.connect(self.tarallo_failure)
-        uploader.start()
+        self.uploader = Uploader(peracommon.make_tree(self.data), self.tarallo_url, self.tarallo_token, bulk_id, checkbox)
+        self.uploader.successEvent.connect(self.tarallo_success)
+        self.uploader.failureEvent.connect(self.tarallo_failure)
+        self.uploader.start()
 
     def tarallo_success(self, code: str):
+        self.uploader = None
         url = f"{self.tarallo_url}/bulk/import#{urllib.parse.quote(code)}"
         tarallo_success_dialog(url)
 
     def tarallo_failure(self, case: str, bulk_id: str):
+        self.uploader = None
         if case == "cannot_upload":
             QtWidgets.QMessageBox.warning(
                 self,
@@ -485,8 +488,8 @@ class Ui(QtWidgets.QMainWindow):
             return
         if not bulk_id:
             bulk_id = ""
-        self.taralloDialog = TaralloUploadDialog(bulk_id)
-        self.taralloDialog.signal.connect(self.upload_to_tarallo)
+        taralloDialog = TaralloUploadDialog(self, bulk_id)
+        taralloDialog.signal.connect(self.upload_to_tarallo)
 
     def add_toolbox_item(self):
         if self.addItemComboBox.currentIndex() == 0:
@@ -823,6 +826,7 @@ class ToolBoxItem(QtWidgets.QWidget):
         ok = model.insert_row(feature, value)
         if ok:
             self.set_add_control_enabled(False)
+        self.feature_line_edit.clear()
 
     def set_add_control_enabled(self, flag: bool):
         self.add_feature_button.setEnabled(flag)
@@ -1296,8 +1300,8 @@ class JsonWidget(QtWidgets.QDialog):
 class TaralloUploadDialog(QtWidgets.QDialog):
     signal = QtCore.pyqtSignal(bool, str, name="event")
 
-    def __init__(self, bulk_id: str = ""):
-        super().__init__()
+    def __init__(self, parent: QtWidgets.QMainWindow, bulk_id: str = ""):
+        super().__init__(parent)
         uic.loadUi(PATH["TARALLOUPLOADDIALOG"], self)
 
         self.setWindowTitle("Set bulk identifier")
