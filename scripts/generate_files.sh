@@ -46,6 +46,7 @@ COUNTER=${#DISKZ[@]}
 echo Found $COUNTER disks
 echo "[" > "$OUTPATH/smartctl.txt"
 for d in "${DISKZ[@]}"; do
+  smartctl -s on /dev/"$d" || true
   smartctl -ja /dev/"$d" >> "$OUTPATH/smartctl.txt"
   if [[ ! $COUNTER == 1 ]]; then
 	  echo "," >> "$OUTPATH/smartctl.txt"
