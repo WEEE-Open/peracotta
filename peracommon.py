@@ -481,18 +481,19 @@ def make_tree(items_and_products: List[dict]) -> List[dict]:
 
 
 def check_required_files(path, is_gui: bool = False):
-    files_in_dir = os.listdir(path)
-    for file in required_files():
-        for file_in_dir in files_in_dir:
-            if file_in_dir == file:
-                break
-        else:
-            if is_gui:
-                error = f"Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]"
-                return error
+    if os.path.isdir(path):
+        files_in_dir = os.listdir(path)
+        for file in required_files():
+            for file_in_dir in files_in_dir:
+                if file_in_dir == file:
+                    break
             else:
-                print(f"[bold red]Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]")
-                exit(1)
+                if is_gui:
+                    error = f"Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]"
+                    return error
+                else:
+                    print(f"[bold red]Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]")
+                    exit(1)
     return ""
 
 

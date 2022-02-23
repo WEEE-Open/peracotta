@@ -294,7 +294,7 @@ class Ui(QtWidgets.QMainWindow):
             # noinspection PyBroadException
             try:
                 with urllib.request.urlopen(request) as response:
-                    with open("features.json", "w") as out:
+                    with open("features.json", "wb") as out:
                         shutil.copyfileobj(response, out)
                         has_file = True
             except URLError as e:
