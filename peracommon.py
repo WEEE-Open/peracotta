@@ -483,6 +483,8 @@ def make_tree(items_and_products: List[dict]) -> List[dict]:
 def check_required_files(path, is_gui: bool = False):
     if os.path.isdir(path):
         files_in_dir = os.listdir(path)
+        if files_in_dir == []:
+            return ""
         for file in required_files():
             for file_in_dir in files_in_dir:
                 if file_in_dir == file:
