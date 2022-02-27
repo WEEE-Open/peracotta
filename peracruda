@@ -38,20 +38,17 @@ def main(the_args):
     else:
         generated_files_path = the_args.path
 
-    if the_args.files is not None:
-        peracommon.check_required_files(generated_files_path)
+    # if the_args.files is not None:
+    #     peracommon.check_required_files(generated_files_path)
 
+    # If we have to generate files...
     if not the_args.files:
         if os.path.isdir(generated_files_path):
-            sel = input(
-                f"Overwrite existing files in {generated_files_path} dir? y/N "
-            ).lower()
+            sel = input(f"Overwrite existing files in {generated_files_path} dir? y/N ").lower()
             if sel == "y":
                 print("Overwriting...")
             else:
-                sel = input(
-                    "Output files to current working directory instead? y/N "
-                ).lower()
+                sel = input("Output files to current working directory instead? y/N ").lower()
                 if sel == "y":
                     generated_files_path = os.getcwd()
                     print("Outputting files to working directory...")
@@ -59,25 +56,35 @@ def main(the_args):
                     print("[blue]Quitting...[/]")
                     exit(-1)
 
-        if not generated_files_path:
-            has_dependencies = peracommon.check_dependencies_for_generate_files()
-            if not has_dependencies:
-                if not ask_install_depdendencies():
-                    print("[blue]Quitting...[/]")
-                    exit(-1)
+        # if not generated_files_path:
+        #     has_dependencies = peracommon.check_dependencies_for_generate_files()
+        #     if not has_dependencies:
+        #         if not ask_install_depdendencies():
+        #             print("[blue]Quitting...[/]")
+        #             exit(-1)
 
-        if not the_args.files:
-            # now that I have a dest folder, I generate files
-            use_sudo = peracommon.env_to_bool(env.get("GENERATE_FILES_USE_SUDO", "1"))
-            # ask_sudo_pass = peracommon.env_to_bool(env.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1"))
+        # now that I have a dest folder, I generate files
+        use_sudo = peracommon.env_to_bool(env.get("GENERATE_FILES_USE_SUDO", "1"))
+        # ask_sudo_pass = peracommon.env_to_bool(env.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1"))
+        try:
             generated_files_path = peracommon.generate_files(generated_files_path, use_sudo, None)
+        except peracommon.GenerateFilesError as e:
+            print(f"[red]Error: {str(e)}[/]")
+            exit(2)
 
     gpu_location = get_gpu(the_args)
 
     # List of items only
-    result = peracommon.call_parsers(
-        generated_files_path, set(parsers), gpu_location, True
-    )
+    try:
+        result = peracommon.call_parsers(generated_files_path, set(parsers), gpu_location, True)
+    except peracommon.InputFileNotFoundError as e:
+        msg = f"[red]Cannot find required file: {e.path}[/]"
+        if the_args.files:
+            msg += "\nMake sure the file exists or selecting other parsers with -p"
+        else:
+            msg += "\nMake sure the file exists or try running generate_files.sh manually"
+        exit(3)
+
 
     owner = get_owner()
     if owner:

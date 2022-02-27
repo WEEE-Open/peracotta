@@ -23,6 +23,16 @@ class InputFileNotFoundError(FileNotFoundError):
         return self.path
 
 
+class GenerateFilesError(BaseException):
+    def __init__(self, msg):
+        super().__init__(msg)
+
+
+class SudoError(GenerateFilesError):
+    def __init__(self, msg):
+        super().__init__(msg)
+
+
 MEANINGLESS_VALUES = (
     "",
     "null",
@@ -96,21 +106,31 @@ def generate_files(path: str, use_sudo: bool = True, sudo_passwd: str = None):
     else:
         script = "scripts/generate_files.sh"
     os.makedirs(path, exist_ok=True)
-    command = ["-S", script, path]
+    command = [script, path]
     if use_sudo:
-        command.insert(0, "sudo")
+        command = ["sudo", "-S"] + command
 
     p = subprocess.Popen(command, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     if sudo_passwd is not None:
         try:
-            out, err = p.communicate(input=(sudo_passwd + "\n").encode(), timeout=5)
-            if out == b"":
-                return None
+            out, err = p.communicate(input=(sudo_passwd + "\n").encode(), timeout=30)
+            if err:
+                raise SudoError("sudo failed: " + str(err))
         except subprocess.TimeoutExpired:
             p.kill()
+            raise GenerateFilesError(" ".join(command) + " timed out after 30 seconds")
+    else:
+        try:
+            p.communicate(timeout=30)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            raise GenerateFilesError(" ".join(command) + " timed out after 30 seconds")
 
-    # TODO: check p.returncode
+    if p.returncode is None:
+        raise GenerateFilesError(" ".join(command) + " did not run")
+    elif p.returncode != 0:
+        raise GenerateFilesError(" ".join(command) + f" failed, return code: {p.returncode}")
 
     return path
 
@@ -483,7 +503,7 @@ def make_tree(items_and_products: List[dict]) -> List[dict]:
 def check_required_files(path, is_gui: bool = False):
     if os.path.isdir(path):
         files_in_dir = os.listdir(path)
-        if files_in_dir == []:
+        if not files_in_dir:
             return ""
         for file in required_files():
             for file_in_dir in files_in_dir:
