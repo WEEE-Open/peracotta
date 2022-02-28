@@ -35,6 +35,7 @@ URL = {
 PATH = {
     "UI": "assets/interface.ui",
     "TARALLOUPLOADDIALOG": "assets/uploadTaralloDialog.ui",
+    "ERRORDIALOG": "assets/error.ui",
     "JSON": "copy_this_to_tarallo.json",
     "FEATURES": "features.json",
     "THEMES": "assets/themes/",
@@ -194,6 +195,9 @@ class Ui(QtWidgets.QMainWindow):
         )
         self.peracotta.updateEvent.connect(self.peracotta_results)
         self.peracotta.startEvent.connect(self.show_busy_progress_bar)
+        self.peracotta.errorEvent.connect(self.peracotta_error)
+
+        self.errorDialog = None
 
         self.show()
         self.setup()
@@ -452,6 +456,10 @@ class Ui(QtWidgets.QMainWindow):
             use_sudo = peracommon.env_to_bool(env.get("GENERATE_FILES_USE_SUDO", "1"))
             ask_sudo_pass = peracommon.env_to_bool(env.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1"))
 
+            if "NOPASSWD: ALL" in os.popen("sudo -l").read():
+                use_sudo = True
+                ask_sudo_pass = False
+
             self.peracotta.use_sudo = use_sudo
             self.peracotta.sudo_passwd = None
 
@@ -459,7 +467,8 @@ class Ui(QtWidgets.QMainWindow):
                 got_it = self._ask_sudo_pass()
                 if not got_it:
                     return
-
+            else:
+                self.peracotta.sudo_passwd = ""
         self.peracotta.set_filters(self.selectorsWidget)
         # TODO: shouldn't the next 2 lines be reversed?
         self.peracotta.begin()
@@ -562,8 +571,15 @@ class Ui(QtWidgets.QMainWindow):
     def peracotta_results(self, data: list):
         self.progressBar.setRange(0, 1)  # disable statusBar's progressBar
         self.progressBar.hide()
+        if not data:
+            return
         self.data = data
         self.itemToolBox.load_items(self.data)
+
+    def peracotta_error(self, error_type: str, error: str):
+        self.errorDialog = ErrorDialog(self, error_type, error)
+        self.progressBar.setRange(0, 1)  # disable statusBar's progressBar
+        self.progressBar.hide()
 
     # close event
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
@@ -573,6 +589,7 @@ class Ui(QtWidgets.QMainWindow):
 
 class Peracotta(QtCore.QThread):
     updateEvent = QtCore.pyqtSignal(list, name="update")
+    errorEvent = QtCore.pyqtSignal(str, str, name="error")
     startEvent = QtCore.pyqtSignal()
 
     def __init__(
@@ -627,7 +644,12 @@ class Peracotta(QtCore.QThread):
                 message = peracommon.check_required_files(self.generated_files_path, is_gui=True)
                 if message != "":
                     QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
-                self.generated_files_path = peracommon.generate_files(self.the_dir, self.use_sudo, self.sudo_passwd)
+                try:
+                    self.generated_files_path = peracommon.generate_files(self.the_dir, self.use_sudo, self.sudo_passwd)
+                except peracommon.SudoError as error:
+                    err = error.args[0]
+                    self.errorEvent.emit("Sudo error", err)
+                    return
                 if self.generated_files_path is None:
                     QtWidgets.QMessageBox.warning(self.main_window, "Critical error", "Failed to generate files")
                     return
@@ -1332,6 +1354,19 @@ class TaralloUploadDialog(QtWidgets.QDialog):
 
     def cancel_signal(self):
         self.close()
+
+
+class ErrorDialog(QtWidgets.QDialog):
+    def __init__(self, parent: QtWidgets.QMainWindow, title: str, detailed_error: str):
+        super().__init__(parent)
+        uic.loadUi(PATH["ERRORDIALOG"], self)
+        self.setWindowTitle("Error")
+        self.iconLabel = self.findChild(QtWidgets.QLabel, "iconLabel")
+        self.textLabel = self.findChild(QtWidgets.QLabel, "textLabel")
+        self.textLabel.setText(title)
+        self.errorTextEdit = self.findChild(QtWidgets.QPlainTextEdit, "errorTextEdit")
+        self.errorTextEdit.setPlainText(detailed_error)
+        self.show()
 
 
 class Uploader(QtCore.QThread):

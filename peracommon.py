@@ -116,7 +116,7 @@ def generate_files(path: str, use_sudo: bool = True, sudo_passwd: str = None):
         try:
             out, err = p.communicate(input=(sudo_passwd + "\n").encode(), timeout=30)
             if err:
-                raise SudoError("sudo failed: " + str(err))
+                raise SudoError("sudo failed: " + err.decode('utf-8'))
         except subprocess.TimeoutExpired:
             p.kill()
             raise GenerateFilesError(" ".join(command) + " timed out after 30 seconds")

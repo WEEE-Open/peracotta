@@ -6,7 +6,7 @@
 # -e -> exit on first error
 # -u -> exit if unused variable is found
 # -x -> show every command that is run
-set -ux
+set -u
 
 if [[ $# -eq 0 ]]; then
     echo "No path given: outputting files to working directory"
