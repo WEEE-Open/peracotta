@@ -114,9 +114,8 @@ def generate_files(path: str, use_sudo: bool = True, sudo_passwd: str = None):
 
     if sudo_passwd is not None:
         try:
-            out, err = p.communicate(input=(sudo_passwd + "\n").encode(), timeout=30)
-            if err:
-                raise SudoError("sudo failed: " + err.decode("utf-8"))
+            # out, err =
+            p.communicate(input=(sudo_passwd + "\n").encode(), timeout=30)
         except subprocess.TimeoutExpired:
             p.kill()
             raise GenerateFilesError(" ".join(command) + " timed out after 30 seconds")
@@ -130,7 +129,10 @@ def generate_files(path: str, use_sudo: bool = True, sudo_passwd: str = None):
     if p.returncode is None:
         raise GenerateFilesError(" ".join(command) + " did not run")
     elif p.returncode != 0:
-        raise GenerateFilesError(" ".join(command) + f" failed, return code: {p.returncode}")
+        if use_sudo and p.returncode == 1:
+            raise SudoError(" ".join(command) + f" failed, return code: {p.returncode}")
+        else:
+            raise GenerateFilesError(" ".join(command) + f" failed, return code: {p.returncode}")
 
     return path
 

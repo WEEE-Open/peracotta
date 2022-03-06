@@ -647,8 +647,10 @@ class Peracotta(QtCore.QThread):
                 try:
                     self.generated_files_path = peracommon.generate_files(self.the_dir, self.use_sudo, self.sudo_passwd)
                 except peracommon.SudoError as error:
-                    err = error.args[0]
-                    self.errorEvent.emit("Sudo error", err)
+                    self.errorEvent.emit("Sudo error", str(error))
+                    return
+                except peracommon.GenerateFilesError as error:
+                    self.errorEvent.emit("Generate files error", str(error))
                     return
                 if self.generated_files_path is None:
                     QtWidgets.QMessageBox.warning(self.main_window, "Critical error", "Failed to generate files")
