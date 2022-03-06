@@ -168,8 +168,8 @@ def _extract_gpu_for_integrated(gpu: dict) -> dict:
     else:
         brand = None
 
-    internal_name_present = bool(gpu.get("internal-name", None))
-    model_present = len(gpu["model"]) > 0
+    internal_name_present = "internal-name" in gpu
+    model_present = "model" in gpu
     if model_present and internal_name_present:
         model = f"{gpu['model']} ({gpu['internal-name']})"
     elif model_present:
