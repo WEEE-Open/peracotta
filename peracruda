@@ -75,6 +75,7 @@ def main(the_args):
     gpu_location = get_gpu(the_args)
 
     # List of items only
+    result = []
     try:
         result = peracommon.call_parsers(generated_files_path, set(parsers), gpu_location, True)
     except peracommon.InputFileNotFoundError as e:
@@ -84,7 +85,6 @@ def main(the_args):
         else:
             msg += "\nMake sure the file exists or try running generate_files.sh manually"
         exit(3)
-
 
     owner = get_owner()
     if owner:
