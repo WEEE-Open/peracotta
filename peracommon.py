@@ -513,7 +513,7 @@ def check_required_files(path, is_gui: bool = False):
                     break
             else:
                 if is_gui:
-                    error = f"Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]"
+                    error = f"Missing file {file}\n"
                     return error
                 else:
                     print(f"[bold red]Missing file {file}\n" f"Please re-run this script without the -f or --files option.[/]")

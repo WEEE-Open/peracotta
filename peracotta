@@ -157,7 +157,7 @@ class Ui(QtWidgets.QMainWindow):
         self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
         self.actionLoadRawFiles = self.findChild(QtWidgets.QAction, "actionLoadRawFiles")
-        self.actionLoadRawFiles.triggered.connect(self.load_raw_files)
+        self.actionLoadRawFiles.triggered.connect(self._load_raw_files)
         self.actionExit = self.findChild(QtWidgets.QAction, "actionExit")
         self.actionExit.triggered.connect(self.close)
 
@@ -186,16 +186,10 @@ class Ui(QtWidgets.QMainWindow):
         # self.statusBar().setStyleSheet(DEFAULT_PROGRESS_BAR_STYLE)
 
         # Setup peracotta QThread
-        self.peracotta = Peracotta(
-            self,
-            self.discreteRadioBtn,
-            self.intCpuRadioBtn,
-            self.ownerLineEdit,
-            PATH["TMP_FILES"],
-        )
-        self.peracotta.updateEvent.connect(self.peracotta_results)
-        self.peracotta.startEvent.connect(self.show_busy_progress_bar)
-        self.peracotta.errorEvent.connect(self.peracotta_error)
+        self.perathread = PeracottaThread(self)
+        self.perathread.updateEvent.connect(self.peracotta_results)
+        self.perathread.startEvent.connect(self.show_busy_progress_bar)
+        self.perathread.errorEvent.connect(self.peracotta_error)
 
         self.errorDialog = None
 
@@ -438,6 +432,7 @@ class Ui(QtWidgets.QMainWindow):
         }
 
         for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
+            checkbox: QtWidgets.QCheckBox
             if checkbox.text() in defaults and checkbox.isEnabled():
                 checkbox.setChecked(True)
             else:
@@ -447,32 +442,61 @@ class Ui(QtWidgets.QMainWindow):
         # reset owner
         self.ownerLineEdit.clear()
 
+    def gpu_location_from_buttons(self):
+        if self.discreteRadioBtn.isChecked():
+            return peracommon.GpuLocation.DISCRETE
+        if self.intCpuRadioBtn.isChecked():
+            return peracommon.GpuLocation.CPU
+        if self.intMoboRadioBtn.isChecked():
+            return peracommon.GpuLocation.MOTHERBOARD
+        else:
+            return None
+
+    def get_selected_filters(self):
+        filters = set()
+        for checkbox in self.selectorsWidget.findChildren(QtWidgets.QCheckBox):
+            checkbox: QtWidgets.QCheckBox
+            if checkbox.isChecked():
+                filters.add(peracommon.ParserComponents(checkbox.text()))
+        return filters
+
     def generate(self):
-        if not (self.discreteRadioBtn.isChecked() or self.intCpuRadioBtn.isChecked() or self.intMoboRadioBtn.isChecked()):
-            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
+        if self.perathread.isRunning():
             return
 
         if sys.platform != "win32":
             use_sudo = peracommon.env_to_bool(env.get("GENERATE_FILES_USE_SUDO", "1"))
             ask_sudo_pass = peracommon.env_to_bool(env.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1"))
 
-            if "NOPASSWD: ALL" in os.popen("sudo -l").read():
-                use_sudo = True
+            if use_sudo and "NOPASSWD: ALL" in os.popen("sudo -l").read():
                 ask_sudo_pass = False
 
-            self.peracotta.use_sudo = use_sudo
-            self.peracotta.sudo_passwd = None
+            self.perathread.use_sudo = use_sudo
 
             if use_sudo and ask_sudo_pass:
                 got_it = self._ask_sudo_pass()
                 if not got_it:
                     return
             else:
-                self.peracotta.sudo_passwd = ""
-        self.peracotta.set_filters(self.selectorsWidget)
-        # TODO: shouldn't the next 2 lines be reversed?
-        self.peracotta.begin()
-        self.reset_toolbox()
+                self.perathread.sudo_passwd = None
+
+        self.perathread.generate_files = True
+        if self.set_thread_buttons_values():
+            # TODO: shouldn't the next 2 lines be reversed?
+            self.perathread.begin()
+            self.reset_toolbox()
+        else:
+            self.perathread.set_default_values()
+
+    def set_thread_buttons_values(self):
+        gpu_location = self.gpu_location_from_buttons()
+        if gpu_location is None:
+            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
+            return False
+        self.perathread.gpu_location = gpu_location
+        self.perathread.owner = self.ownerLineEdit.text()
+        self.perathread.filters = self.get_selected_filters()
+        return True
 
     def _ask_sudo_pass(self):
         sudo_passwd, ok = QtWidgets.QInputDialog.getText(
@@ -482,10 +506,10 @@ class Ui(QtWidgets.QMainWindow):
             QtWidgets.QLineEdit.Password,
         )
         if ok:
-            self.peracotta.sudo_passwd = sudo_passwd
+            self.perathread.sudo_passwd = sudo_passwd
             return True
         else:
-            self.peracotta.sudo_passwd = None
+            self.perathread.sudo_passwd = None
             return False
 
     def save_json(self):
@@ -545,13 +569,30 @@ class Ui(QtWidgets.QMainWindow):
             if "latest_json" in key:
                 self.open_json(self.settings.value("latest_json"))
 
+    # the checked parameter exists for QAction::triggered
+    # noinspection PyUnusedLocal
+    def _load_raw_files(self, checked):
+        self.load_raw_files()
+
     def load_raw_files(self, path: str = ""):
-        if not path:
+        if self.perathread.isRunning():
+            return
+
+        if not self.set_thread_buttons_values():
+            self.perathread.set_default_values()
+            return
+
+        if path == "":
             path = self.get_directory_dialog()
         if path is None:
+            self.perathread.set_default_values()
             return
-        self.peracotta.generated_files_path = path
-        self.peracotta.begin(generate_files=False, raw_files_path=path)
+        self.perathread.generate_files = False
+        self.perathread.files_path = path
+
+        # TODO: shouldn't the next 2 lines be reversed?
+        self.perathread.begin()
+        self.reset_toolbox()
 
     def show_json(self):
         if self.data is None:
@@ -583,40 +624,31 @@ class Ui(QtWidgets.QMainWindow):
 
     # close event
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
-        if self.peracotta.isRunning():
-            self.peracotta.terminate()
+        if self.perathread.isRunning():
+            self.perathread.terminate()
 
 
-class Peracotta(QtCore.QThread):
+class PeracottaThread(QtCore.QThread):
     updateEvent = QtCore.pyqtSignal(list, name="update")
     errorEvent = QtCore.pyqtSignal(str, str, name="error")
     startEvent = QtCore.pyqtSignal()
 
     def __init__(
         self,
-        main_window: QtWidgets.QMainWindow,
-        discrete_radio_btn: QtWidgets.QRadioButton,
-        int_cpu_radio_btn: QtWidgets.QRadioButton,
-        owner_line_edit: QtWidgets.QLineEdit,
-        generated_files_path: str,
+        main_window: QtWidgets.QMainWindow
     ):
         super().__init__()
         self.main_window = main_window
-        self.discrete_radio_btn = discrete_radio_btn
-        self.int_cpu_radio_btn = int_cpu_radio_btn
+
         self.gpu_location = None
-        self.owner = owner_line_edit.text()
-        self.generated_files_path = generated_files_path
+        self.owner = ""
+        self.files_path = PATH["TMP_FILES"]
         self.raw_files_path = ""
-        self.generate_files = None
-
-        self.filters = []
-        self.the_dir = None
-        self.set_default_values()
+        self.generate_files = False
+        self.filters = set()
+        self.use_sudo = False
         self.sudo_passwd = None
-        self.use_sudo = True
-
-        self.is_running = False
+        # self.set_default_values()
 
     def begin(self, generate_files: bool = True, raw_files_path: str = ""):
         self.generate_files = generate_files
@@ -624,74 +656,61 @@ class Peracotta(QtCore.QThread):
         self.start()
 
     def run(self) -> None:
-        self.is_running = True
         self.startEvent.emit()
-        self.gpu_location = (
-            peracommon.GpuLocation.DISCRETE
-            if self.discrete_radio_btn.isChecked()
-            else peracommon.GpuLocation.CPU
-            if self.int_cpu_radio_btn.isChecked()
-            else peracommon.GpuLocation.MOTHERBOARD
-        )
         result = []
-        if self.generate_files:
+        try:
             if sys.platform == "win32":
                 from scripts.get_windows_specs import generate_win_files
 
                 generate_win_files()
                 result = self.process_win_files()
             else:
-                message = peracommon.check_required_files(self.generated_files_path, is_gui=True)
-                if message != "":
-                    QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
-                try:
-                    self.generated_files_path = peracommon.generate_files(self.the_dir, self.use_sudo, self.sudo_passwd)
-                except peracommon.SudoError as error:
-                    self.errorEvent.emit("Sudo error", str(error))
-                    return
-                except peracommon.GenerateFilesError as error:
-                    self.errorEvent.emit("Generate files error", str(error))
-                    return
-                if self.generated_files_path is None:
-                    QtWidgets.QMessageBox.warning(self.main_window, "Critical error", "Failed to generate files")
-                    return
+                if self.generate_files:
+                    # message = peracommon.check_required_files(self.files_path, is_gui=True)
+                    # if message != "":
+                    #     QtWidgets.QMessageBox.critical(self.main_window, "Error", message)
+                    try:
+                        self.files_path = peracommon.generate_files(self.files_path, self.use_sudo, self.sudo_passwd)
+                    except peracommon.SudoError as error:
+                        self.errorEvent.emit("Sudo error", str(error))
+                        return
+                    except peracommon.GenerateFilesError as error:
+                        self.errorEvent.emit("Generate files error", str(error))
+                        return
+                    if self.files_path is None:
+                        QtWidgets.QMessageBox.warning(self.main_window, "Critical error", "Failed to generate files")
+                        return
                 result = peracommon.call_parsers(
-                    self.generated_files_path,
+                    self.files_path,
                     set(self.filters),
                     self.gpu_location,
                     False,
                 )
-        if self.raw_files_path != "":
-            print(f"{self.generated_files_path}")
-            print("Peracottando con i raw_files ....")
-        if self.owner != "":
-            result = peracommon.add_owner(result, self.owner)
-        result = peracommon.split_products(result)
+            if self.owner != "":
+                result = peracommon.add_owner(result, self.owner)
+            result = peracommon.split_products(result)
+        finally:
+            self.set_default_values()
         self.updateEvent.emit(result)
-        self.set_default_values()
 
     def set_default_values(self):
-        self.filters = []
-        self.generate_files = False
-        self.the_dir = "tmp"
-        self.is_running = True
-        self.sudo_passwd = None
-        self.use_sudo = True
+        self.gpu_location = None
+        self.owner = ""
+        self.files_path = PATH["TMP_FILES"]
         self.raw_files_path = ""
+        self.generate_files = False
+        self.filters = set()
+        self.use_sudo = False
+        self.sudo_passwd = None
 
     def process_win_files(self):
         import parsers.windows_parser as win
 
-        result = win.parse_win_cpu_specs(self.generated_files_path)
-        result = result + win.parse_win_chassis_specs(self.generated_files_path)
-        result = result + win.parse_win_ram_specs(self.generated_files_path)
-        result = result + win.parse_win_motherboard_specs(self.generated_files_path)
+        result = win.parse_win_cpu_specs(self.files_path)
+        result = result + win.parse_win_chassis_specs(self.files_path)
+        result = result + win.parse_win_ram_specs(self.files_path)
+        result = result + win.parse_win_motherboard_specs(self.files_path)
         return result
-
-    def set_filters(self, widget: QtWidgets.QWidget):
-        for checkbox in widget.findChildren(QtWidgets.QCheckBox):
-            if checkbox.isChecked():
-                self.filters.append(peracommon.ParserComponents(checkbox.text()))
 
 
 class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
