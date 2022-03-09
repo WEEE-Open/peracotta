@@ -3,6 +3,7 @@
 from enum import Enum
 import json
 import sys
+import re
 from math import log10, floor
 from typing import List, Dict
 
@@ -30,6 +31,222 @@ def parse_smartctl(file: str, interactive: bool = False) -> List[dict]:
         disk = parse_single_disk(jdisk, interactive)
         disks.append(disk)
     return disks
+
+
+def samsung_model_decode(disk, model: str):
+    # SV + capacity (3) + number of heads (platters*2) + interface?
+    sv_format = r"SV[0-9]{2,4}([A-Z])"
+
+    if re.match(sv_format, model):
+        result = re.search(f"^{sv_format}", model)
+        if result.group(1) in ("D", "E", "N", "H"):
+            _add_interface_if_possible(disk, "ide-ports-n")
+
+
+def hitachi_model_decode(disk, model: str):
+    # https://www.instantfundas.com/2009/02/how-to-interpret-hard-disk-model.html
+    the_format = r"H[A-Z][A-Z][0-9]{2}[0-9]{2}[0-9]{2}[A-Z]([A-Z0-9])([A-Z][A-Z0-9])[0-9]+"
+    ic25_format = r"IC25[NT][0-9]{3}[A-Z0-9]{2}[A-Z0-9]{2}([0-9]{2})-?.*"
+
+    if re.match(the_format, model):
+        result = re.search(f"^{the_format}", model)
+        ff_num = result.group(1)
+        interface_num = result.group(2)
+
+        # TODO: add 'em to tarallo
+        ff = {
+            "L": ("3.5", None),
+            "9": ("2.5", 9.5),
+            "8": ("2.5", 8),
+            "7": ("2.5", 7),
+            "5": ("2.5", 5),
+        }.get(ff_num)
+        _add_feature_if_possible(disk, "hdd-form-factor", ff[0])
+        _add_feature_if_possible(disk, "height-mm", ff[1])
+
+        if interface_num in ("A3", "SA"):
+            _add_interface_if_possible(disk, "sata-ports-n")
+        elif interface_num == "AT":
+            _add_interface_if_possible(disk, "ide-ports-n")
+    elif re.match(ic25_format, model):
+        result = re.search(f"^{ic25_format}", model)
+
+        rpm_num = result.group(1)
+        rpm = {
+            "04": 4200,
+            "05": 5400,
+        }.get(rpm_num)
+        _add_feature_if_possible(disk, "spin-rate-rpm", rpm)
+
+        _add_feature_if_possible(disk, "hdd-form-factor", "2.5")
+        _add_interface_if_possible(disk, "mini-ide-ports-n")
+
+
+def toshiba_model_decode(disk, model: str):
+    mk_format = r"MK[0-9]{2}([0-9]{2})G([A-Z])([A-Z])[A-Z]?"
+    if re.match(mk_format, model):
+        result = re.search(f"^{mk_format}", model)
+        unk_num = result.group(1)
+        interface_num = result.group(2)
+        rpm_num = result.group(3)
+
+        rpm = {
+            "G": 5400,
+            "L": 4200,
+            "M": 5400,
+            "P": 4200,
+            "X": 5400,
+            "Y": 7200,
+        }.get(rpm_num)
+        _add_feature_if_possible(disk, "spin-rate-rpm", rpm)
+
+        interface = {
+            "A": "mini-ide-ports-n",
+            "S": "sata-ports-n",
+        }.get(interface_num)
+        _add_interface_if_possible(disk, interface)
+
+        ff = {
+            "16": "1.8",
+            "14": "2.5",
+            "25": "1.8",
+            "33": "1.8",
+            "35": "1.8",
+            "37": "2.5",
+            "52": "2.5",
+            "53": "2.5",
+            "55": "2.5",
+            "56": "2.5",
+            "59": "2.5",
+            "65": "2.5",
+            "75": "2.5",
+            "76": "2.5",
+        }.get(unk_num)
+        _add_feature_if_possible(disk, "hdd-form-factor", ff)
+
+
+def fujitsu_model_decode(disk, model: str):
+    mhx2_format = r"MH([RSVT])2[0-9]{3}([A-Z]{2})U?(?: .+)?"
+
+    if re.match(mhx2_format, model):
+        result = re.search(f"^{mhx2_format}", model)
+        # series_num = result.group(1)
+        unk_num = result.group(2)
+
+        interface = {
+            "AT": "mini-ide-ports-n",
+        }.get(unk_num)
+        _add_interface_if_possible(disk, interface)
+
+        _add_feature_if_possible(disk, "hdd-form-factor", "2.5")
+        _add_feature_if_possible(disk, "height-mm", 9.5)
+        _add_feature_if_possible(disk, "spin-rate-rpm", 4200)
+
+
+def quantum_model_decode(disk, model: str):
+    if model.lower().startswith("fireball"):
+        _add_interface_if_possible(disk, "ide-ports-n")
+
+
+def wd_model_decode(disk, model: str):
+    old_format = r"WD[0-9]{2,4}([A-Z])([A-Z])-.+"
+
+    if re.match(old_format, model):
+        result = re.search(f"^{old_format}", model)
+        rpm_num = result.group(1)
+        interface_num = result.group(2)
+
+        rpm = {
+            "A": 5400,
+            "B": 7200,
+            "C": 10000,
+            "D": 4500,
+            "E": 5400,
+            "F": 10000,
+            "G": 10000,
+            "H": 10000,
+            "J": 7200,
+            "K": 7200,
+            "L": 7200,
+            "M": 5400,
+            "N": 5400,
+            "P": 7200,
+            "R": 10000,
+            "S": 7200,
+            "T": 7200,
+            "U": 5400,
+            "V": 5400,
+            "W": 3600,
+            "X": 4200,
+            "Y": 7200,
+            "Z": 7200,
+        }.get(rpm_num)
+        _add_feature_if_possible(disk, "spin-rate-rpm", rpm)
+
+        interface = {
+            "A": "ide-ports-n",
+            "B": "ide-ports-n",
+            "C": "firewire-ports-n",
+            "D": "sata-ports-n",
+            "E": "ide-ports-n",
+            "S": "sata-ports-n",
+        }.get(interface_num)
+        _add_interface_if_possible(disk, interface)
+
+
+def maxtor_model_decode(disk, model: str):
+    the_format = r"([0-9][A-Z])[0-9]{2,3}([A-Z])[0-9]"
+
+    if re.match(the_format, model):
+        result = re.search(f"^{the_format}", model)
+        series_num = result.group(1)
+        interface_num = result.group(2)
+
+        ff = {
+            "4D": "3.5",
+            "4G": "3.5",
+            "4K": "3.5",
+            "6L": "3.5",
+            "6E": "3.5",
+            "6Y": "3.5",
+        }.get(series_num)
+        _add_feature_if_possible(disk, "hdd-form-factor", ff)
+
+        interface = {
+            "D": "ide-ports-n",
+            "H": "ide-ports-n",
+            "J": "ide-ports-n",
+            "K": "ide-ports-n",
+            "L": "ide-ports-n",
+            "M": "sata-ports-n",
+            "P": "ide-ports-n",
+            "U": "ide-ports-n",
+        }.get(interface_num)
+        _add_interface_if_possible(disk, interface)
+
+
+def _add_feature_if_possible(disk, feature, value):
+    if value is not None:
+        if feature not in disk:
+            if value:
+                disk[feature] = value
+
+
+def _add_interface_if_possible(disk, interface):
+    interface_values = [
+        "ide-ports-n",
+        "sata-ports-n",
+        "firewire-ports-n",
+    ]
+
+    if interface:
+        if interface not in disk:
+            for maybe_interface in interface_values:
+                if maybe_interface in disk:
+                    # TODO: print a warning
+                    break
+            else:
+                disk[interface] = 1
 
 
 def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
@@ -79,11 +296,9 @@ def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
         if ff == "3.5 inches":
             disk["hdd-form-factor"] = "3.5"
         elif ff == "2.5 inches":
-            # This is the most common height, just guessing...
-            disk["hdd-form-factor"] = "2.5-7mm"
+            disk["hdd-form-factor"] = "2.5"
         elif ff == "1.8 inches":
-            # Still guessing...
-            disk["hdd-form-factor"] = "1.8-8mm"
+            disk["hdd-form-factor"] = "1.8"
         # TODO: add these to tarallo
         elif ff == "M.2":
             disk["hdd-form-factor"] = "m2"
@@ -118,6 +333,9 @@ def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
         _mega_clean_disk_model(disk)
         if disk["type"] == "hdd":
             disk["type"] = "ssd"
+
+    if "(ATA/133 and SATA/150)" in disk.get("family", ""):
+        disk["family"] = disk["family"].replace("(ATA/133 and SATA/150)", "").strip()
 
     if "SSD" in disk.get("family", ""):
         if disk["type"] == "hdd":
@@ -156,6 +374,23 @@ def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
     if "hdd-form-factor" not in disk:
         if "desktop" in disk.get("family", "").lower() and port == PORT.SATA:
             disk["hdd-form-factor"] = "3.5"
+
+    if disk.get("model") is not None:
+        brand = disk.get("brand")
+        if brand == "Western Digital":
+            wd_model_decode(disk, disk.get("model"))
+        elif brand == "Maxtor":
+            maxtor_model_decode(disk, disk.get("model"))
+        elif brand == "Samsung":
+            samsung_model_decode(disk, disk.get("model"))
+        elif brand == "Toshiba":
+            toshiba_model_decode(disk, disk.get("model"))
+        elif brand == "Fujitsu":
+            fujitsu_model_decode(disk, disk.get("model"))
+        elif brand == "Hitachi":
+            hitachi_model_decode(disk, disk.get("model"))
+        elif brand == "Quantum":
+            quantum_model_decode(disk, disk.get("model"))
 
     smart, failing_now = extract_smart_data(smartctl)
 
@@ -337,6 +572,7 @@ def _split_brand_and_other(line):
         "LiteOn",
         "Kingston",
         "Adata",
+        "Quantum",
     ]
 
     brand = None

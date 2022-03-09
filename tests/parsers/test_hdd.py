@@ -4,6 +4,7 @@ from parsers import read_smartctl
 from tests.parsers.read_file import read_file
 import pytest
 
+
 results = [
     (
         "test0.txt",
@@ -12,7 +13,8 @@ results = [
                 "brand": "Hitachi",
                 "capacity-decibyte": 500000000000,
                 "family": "Travelstar 5K500.B",
-                "hdd-form-factor": "2.5-7mm",
+                "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
                 "model": "HTS545050B9A300",
                 "sata-ports-n": 1,
                 "smart-data": "fail",
@@ -46,6 +48,8 @@ results = [
                 "family": "Caviar",
                 "model": "WD400BB-00DKA0",
                 "smart-data": "ok",
+                "spin-rate-rpm": 7200,
+                "ide-ports-n": 1,
                 "sn": "WCAHM356436",
                 "type": "hdd",
             }
@@ -75,6 +79,7 @@ results = [
                 "model": "WD1600JS-60MHB5",
                 "sata-ports-n": 1,
                 "smart-data": "ok",
+                "spin-rate-rpm": 7200,
                 "sn": "WCANM33344334",
                 "type": "hdd",
             }
@@ -123,6 +128,8 @@ results = [
                 "family": "Caviar",
                 "model": "WD400BB-60JKC0",
                 "smart-data": "ok",
+                "spin-rate-rpm": 7200,
+                "ide-ports-n": 1,
                 "sn": "WCAMF97867543",
                 "type": "hdd",
             }
@@ -133,7 +140,7 @@ results = [
         [
             {
                 "capacity-decibyte": 128000000000,
-                "hdd-form-factor": "2.5-7mm",
+                "hdd-form-factor": "2.5",
                 "model": "SSD128GBS800",
                 "sata-ports-n": 1,  # This is mSATA and impossible to detect
                 "smart-data": "ok",
@@ -242,7 +249,7 @@ results = [
         [
             {
                 "capacity-decibyte": 480000000000,
-                "hdd-form-factor": "2.5-7mm",
+                "hdd-form-factor": "2.5",
                 "model": "SATA3 480GB",
                 "sata-ports-n": 1,
                 "smart-data": "ok",
@@ -273,7 +280,7 @@ results = [
         [
             {
                 "capacity-decibyte": 120000000000,
-                "hdd-form-factor": "2.5-7mm",
+                "hdd-form-factor": "2.5",
                 "model": "SATA3 120GB",
                 "sata-ports-n": 1,
                 "smart-data": "ok",
@@ -287,7 +294,7 @@ results = [
         [
             {
                 "capacity-decibyte": 120000000000,
-                "hdd-form-factor": "2.5-7mm",
+                "hdd-form-factor": "2.5",
                 "model": "SATA3 120GB",
                 "sata-ports-n": 1,
                 "smart-data": "ok",
@@ -303,7 +310,7 @@ results = [
                 "brand": "Crucial/Micron",
                 "capacity-decibyte": 480000000000,
                 "family": "Client SSDs",
-                "hdd-form-factor": "2.5-7mm",
+                "hdd-form-factor": "2.5",
                 "model": "CT480BX500SSD1",
                 "sata-ports-n": 1,
                 "smart-data": "ok",
@@ -350,7 +357,7 @@ results = [
                 "brand": "Adata",
                 "capacity-decibyte": 240000000000,
                 "family": "Silicon Motion based SSDs",
-                "hdd-form-factor": "2.5-7mm",
+                "hdd-form-factor": "2.5",
                 "model": "SU650",
                 "sata-ports-n": 1,
                 "smart-data": "ok",
@@ -388,8 +395,225 @@ results = [
             }
         ],
     ),
+    (
+        "ide01.json",
+        [
+            {
+                "brand": "Samsung",
+                "capacity-decibyte": 20400000000,
+                "model": "SV2042H",
+                "ide-ports-n": 1,
+                "smart-data": "fail",
+                "sn": "REDACTED123456",
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "ide02.json",
+        [
+            {
+                "brand": "Hitachi",
+                "capacity-decibyte": 160000000000,
+                "family": "Deskstar P7K500",
+                "hdd-form-factor": "3.5",
+                "model": "HDP725016GLAT80",
+                "ide-ports-n": 1,
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+                "wwn": "5 3274 123456789",
+            }
+        ],
+    ),
+    (
+        "ide03.json",
+        [
+            {
+                "brand": "Quantum",
+                "capacity-decibyte": 13000000000,
+                "family": "Fireball CR",
+                "model": "FIREBALL CR13.0A",
+                "ide-ports-n": 1,
+                "smart-data": "old",
+                "sn": "REDACTED123456",
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "ide04.json",
+        [
+            {
+                "brand": "Quantum",
+                "capacity-decibyte": 20400000000,
+                "model": "FIREBALL CX20.4A",
+                "ide-ports-n": 1,
+                "sn": "REDACTED123456",
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "ide05.json",
+        [
+            {
+                "brand": "Western Digital",
+                "capacity-decibyte": 40000000000,
+                "family": "Caviar",
+                "model": "WD400BB-55JHA0",
+                "ide-ports-n": 1,
+                "smart-data": "ok",
+                "spin-rate-rpm": 7200,
+                "sn": "REDACTED123456",
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "ide06.json",
+        [
+            {
+                "brand": "Maxtor",
+                "capacity-decibyte": 164000000000,
+                "family": "DiamondMax 10",
+                "hdd-form-factor": "3.5",
+                "model": "6L160P0",
+                "ide-ports-n": 1,
+                "smart-data": "fail",
+                "sn": "REDACTED123456",
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "ide07.json",
+        [
+            {
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "ide08.json",
+        [
+            {
+                "brand": "Maxtor",
+                "capacity-decibyte": 40000000000,
+                "family": "DiamondMax Plus D740X",
+                "hdd-form-factor": "3.5",
+                "model": "6L040J2",
+                "ide-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "ide09.json",
+        [
+            {
+                "brand": "Western Digital",
+                "capacity-decibyte": 40000000000,
+                "family": "Caviar",
+                "model": "WD400BB-55JHA0",
+                "smart-data": "ok",
+                "spin-rate-rpm": 7200,
+                "ide-ports-n": 1,
+                "sn": "REDACTED123456",
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "mini_ide01.json",
+        [
+            {
+                "brand": "Toshiba",
+                "capacity-decibyte": 12100000000,
+                "hdd-form-factor": "2.5",
+                "mini-ide-ports-n": 1,
+                "model": "MK1214GAP",
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 4200,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "mini_ide02.json",
+        [
+            {
+                "brand": "Hitachi",
+                "capacity-decibyte": 60000000000,
+                "family": "Travelstar 80GN",
+                "hdd-form-factor": "2.5",
+                "model": "IC25N060ATMR04-0",
+                "mini-ide-ports-n": 1,
+                "smart-data": "fail",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 4200,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "mini_ide03.json",
+        [
+            {
+                "brand": "Fujitsu",
+                "capacity-decibyte": 60000000000,
+                "family": "MHV",
+                "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
+                "model": "MHV2060AT PL",
+                "mini-ide-ports-n": 1,
+                "smart-data": "fail",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 4200,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "mini_ide04.json",
+        [
+            {
+                "brand": "Fujitsu",
+                "capacity-decibyte": 40000000000,
+                "family": "MHS AT",
+                "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
+                "model": "MHS2040AT  D",
+                "mini-ide-ports-n": 1,
+                "smart-data": "sus",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 4200,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "mini_ide05.json",
+        [
+            {
+                "brand": "Fujitsu",
+                "capacity-decibyte": 60000000000,
+                "family": "MHT",
+                "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
+                "model": "MHT2060AT PL",
+                "mini-ide-ports-n": 1,
+                "smart-data": "fail",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 4200,
+                "type": "hdd",
+            }
+        ],
+    ),
 ]
-
 
 @pytest.mark.parametrize("filename,expected", results)
 def test_smartctl_single(filename, expected):
@@ -408,6 +632,8 @@ def test_smartctl_triple():
             "model": "WD400BB-00DKA0",
             "smart-data": "ok",
             "sn": "WCAHM786543",
+            "spin-rate-rpm": 7200,
+            "ide-ports-n": 1,
             "type": "hdd",
         },
         {
@@ -430,6 +656,7 @@ def test_smartctl_triple():
             "model": "WD1600JS-60MHB5",
             "sata-ports-n": 1,
             "smart-data": "ok",
+            "spin-rate-rpm": 7200,
             "sn": "WCANM89765430",
             "type": "hdd",
         },

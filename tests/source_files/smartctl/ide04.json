@@ -1,0 +1,49 @@
+[{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      2
+    ],
+    "svn_revision": "5155",
+    "platform_info": "x86_64-linux-5.16.9-arch1-1",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-ja",
+      "/dev/sdb"
+    ],
+    "exit_status": 0
+  },
+  "device": {
+    "name": "/dev/sdb",
+    "info_name": "/dev/sdb [USB JMicron]",
+    "type": "usbjmicron",
+    "protocol": "ATA"
+  },
+  "model_name": "QUANTUM FIREBALL CX20.4A",
+  "serial_number": "REDACTED123456",
+  "firmware_version": "A3F.0B00",
+  "user_capacity": {
+    "blocks": 39876480,
+    "bytes": 20416757760
+  },
+  "logical_block_size": 512,
+  "physical_block_size": 512,
+  "trim": {
+    "supported": false
+  },
+  "in_smartctl_database": false,
+  "ata_version": {
+    "string": "ATA/ATAPI-4 T13/1153D revision 15",
+    "major_value": 30,
+    "minor_value": 17
+  },
+  "local_time": {
+    "time_t": 1645451303,
+    "asctime": "Mon Feb 21 14:48:23 2022 CET"
+  }
+}]

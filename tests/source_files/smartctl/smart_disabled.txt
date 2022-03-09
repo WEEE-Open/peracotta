@@ -1,0 +1,50 @@
+[{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      2
+    ],
+    "svn_revision": "5155",
+    "platform_info": "x86_64-linux-5.10.0-9-amd64",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-aj",
+      "/dev/sda"
+    ],
+    "exit_status": 0
+  },
+  "device": {
+    "name": "/dev/sda",
+    "info_name": "/dev/sda [SAT]",
+    "type": "sat",
+    "protocol": "ATA"
+  },
+  "model_family": "Western Digital Caviar",
+  "model_name": "WDC WD400BB-00DKA0",
+  "serial_number": "REDACTED123456",
+  "firmware_version": "77.07W77",
+  "user_capacity": {
+    "blocks": 78165360,
+    "bytes": 40020664320
+  },
+  "logical_block_size": 512,
+  "physical_block_size": 512,
+  "trim": {
+    "supported": false
+  },
+  "in_smartctl_database": true,
+  "ata_version": {
+    "string": "ATA/ATAPI-6 (minor revision not indicated)",
+    "major_value": 126,
+    "minor_value": 0
+  },
+  "local_time": {
+    "time_t": 1645623242,
+    "asctime": "Wed Feb 23 14:34:02 2022 CET"
+  }
+}]

@@ -1,0 +1,58 @@
+[
+{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      2
+    ],
+    "svn_revision": "5155",
+    "platform_info": "x86_64-linux-5.16.9-arch1-1",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-ja",
+      "/dev/sdb"
+    ],
+    "exit_status": 0
+  },
+  "device": {
+    "name": "/dev/sdb",
+    "info_name": "/dev/sdb [USB JMicron]",
+    "type": "usbjmicron",
+    "protocol": "ATA"
+  },
+  "model_family": "Hitachi Deskstar P7K500",
+  "model_name": "Hitachi HDP725016GLAT80",
+  "serial_number": "REDACTED123456",
+  "wwn": {
+    "naa": 5,
+    "oui": 3274,
+    "id": 123456789
+  },
+  "firmware_version": "GMBOA4CA",
+  "user_capacity": {
+    "blocks": 312581808,
+    "bytes": 160041885696
+  },
+  "logical_block_size": 512,
+  "physical_block_size": 512,
+  "rotation_rate": 7200,
+  "trim": {
+    "supported": false
+  },
+  "in_smartctl_database": true,
+  "ata_version": {
+    "string": "ATA8-ACS T13/1699-D revision 4",
+    "major_value": 508,
+    "minor_value": 41
+  },
+  "local_time": {
+    "time_t": 1645450941,
+    "asctime": "Mon Feb 21 14:42:21 2022 CET"
+  }
+}
+]

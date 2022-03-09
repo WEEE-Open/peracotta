@@ -1,0 +1,934 @@
+[{
+  "json_format_version": [
+    1,
+    0
+  ],
+  "smartctl": {
+    "version": [
+      7,
+      2
+    ],
+    "svn_revision": "5155",
+    "platform_info": "x86_64-linux-5.16.9-arch1-1",
+    "build_info": "(local build)",
+    "argv": [
+      "smartctl",
+      "-ja",
+      "/dev/sdb"
+    ],
+    "exit_status": 96
+  },
+  "device": {
+    "name": "/dev/sdb",
+    "info_name": "/dev/sdb [USB JMicron]",
+    "type": "usbjmicron",
+    "protocol": "ATA"
+  },
+  "model_family": "Seagate Barracuda 7200.10",
+  "model_name": "ST380815AS",
+  "serial_number": "REDACTED123456",
+  "firmware_version": "3.AAD",
+  "user_capacity": {
+    "blocks": 156301488,
+    "bytes": 80026361856
+  },
+  "logical_block_size": 512,
+  "physical_block_size": 512,
+  "trim": {
+    "supported": false
+  },
+  "in_smartctl_database": true,
+  "ata_version": {
+    "string": "ATA/ATAPI-7 (minor revision not indicated)",
+    "major_value": 254,
+    "minor_value": 0
+  },
+  "local_time": {
+    "time_t": 1645452913,
+    "asctime": "Mon Feb 21 15:15:13 2022 CET"
+  },
+  "smart_status": {
+    "passed": true
+  },
+  "ata_smart_data": {
+    "offline_data_collection": {
+      "status": {
+        "value": 130,
+        "string": "was completed without error",
+        "passed": true
+      },
+      "completion_seconds": 430
+    },
+    "self_test": {
+      "status": {
+        "value": 0,
+        "string": "completed without error",
+        "passed": true
+      },
+      "polling_minutes": {
+        "short": 1,
+        "extended": 27
+      }
+    },
+    "capabilities": {
+      "values": [
+        91,
+        3
+      ],
+      "exec_offline_immediate_supported": true,
+      "offline_is_aborted_upon_new_cmd": false,
+      "offline_surface_scan_supported": true,
+      "self_tests_supported": true,
+      "conveyance_self_test_supported": false,
+      "selective_self_test_supported": true,
+      "attribute_autosave_enabled": true,
+      "error_logging_supported": true,
+      "gp_logging_supported": true
+    }
+  },
+  "ata_smart_attributes": {
+    "revision": 10,
+    "table": [
+      {
+        "id": 1,
+        "name": "Raw_Read_Error_Rate",
+        "value": 116,
+        "worst": 89,
+        "thresh": 6,
+        "when_failed": "",
+        "flags": {
+          "value": 15,
+          "string": "POSR-- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": true,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 114479292,
+          "string": "114479292"
+        }
+      },
+      {
+        "id": 3,
+        "name": "Spin_Up_Time",
+        "value": 98,
+        "worst": 97,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 3,
+          "string": "PO---- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 4,
+        "name": "Start_Stop_Count",
+        "value": 99,
+        "worst": 99,
+        "thresh": 20,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 1499,
+          "string": "1499"
+        }
+      },
+      {
+        "id": 5,
+        "name": "Reallocated_Sector_Ct",
+        "value": 100,
+        "worst": 100,
+        "thresh": 36,
+        "when_failed": "",
+        "flags": {
+          "value": 51,
+          "string": "PO--CK ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 7,
+        "name": "Seek_Error_Rate",
+        "value": 84,
+        "worst": 60,
+        "thresh": 30,
+        "when_failed": "",
+        "flags": {
+          "value": 15,
+          "string": "POSR-- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": true,
+          "error_rate": true,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 247640961,
+          "string": "247640961"
+        }
+      },
+      {
+        "id": 9,
+        "name": "Power_On_Hours",
+        "value": 79,
+        "worst": 79,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 19075,
+          "string": "19075"
+        }
+      },
+      {
+        "id": 10,
+        "name": "Spin_Retry_Count",
+        "value": 100,
+        "worst": 100,
+        "thresh": 97,
+        "when_failed": "",
+        "flags": {
+          "value": 19,
+          "string": "PO--C- ",
+          "prefailure": true,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 12,
+        "name": "Power_Cycle_Count",
+        "value": 99,
+        "worst": 99,
+        "thresh": 20,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 1497,
+          "string": "1497"
+        }
+      },
+      {
+        "id": 187,
+        "name": "Reported_Uncorrect",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 189,
+        "name": "High_Fly_Writes",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 58,
+          "string": "-O-RCK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 190,
+        "name": "Airflow_Temperature_Cel",
+        "value": 76,
+        "worst": 30,
+        "thresh": 45,
+        "when_failed": "past",
+        "flags": {
+          "value": 34,
+          "string": "-O---K ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 404160536,
+          "string": "24 (Min/Max 23/24)"
+        }
+      },
+      {
+        "id": 194,
+        "name": "Temperature_Celsius",
+        "value": 24,
+        "worst": 70,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 34,
+          "string": "-O---K ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 64424509464,
+          "string": "24 (0 15 0 0 0)"
+        }
+      },
+      {
+        "id": 195,
+        "name": "Hardware_ECC_Recovered",
+        "value": 116,
+        "worst": 65,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 26,
+          "string": "-O-RC- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": true,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 223577061,
+          "string": "223577061"
+        }
+      },
+      {
+        "id": 197,
+        "name": "Current_Pending_Sector",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 18,
+          "string": "-O--C- ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 198,
+        "name": "Offline_Uncorrectable",
+        "value": 100,
+        "worst": 100,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 16,
+          "string": "----C- ",
+          "prefailure": false,
+          "updated_online": false,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 199,
+        "name": "UDMA_CRC_Error_Count",
+        "value": 200,
+        "worst": 200,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 62,
+          "string": "-OSRCK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": true,
+          "error_rate": true,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 32,
+          "string": "32"
+        }
+      },
+      {
+        "id": 200,
+        "name": "Multi_Zone_Error_Rate",
+        "value": 100,
+        "worst": 253,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 0,
+          "string": "------ ",
+          "prefailure": false,
+          "updated_online": false,
+          "performance": false,
+          "error_rate": false,
+          "event_count": false,
+          "auto_keep": false
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      },
+      {
+        "id": 202,
+        "name": "Data_Address_Mark_Errs",
+        "value": 100,
+        "worst": 253,
+        "thresh": 0,
+        "when_failed": "",
+        "flags": {
+          "value": 50,
+          "string": "-O--CK ",
+          "prefailure": false,
+          "updated_online": true,
+          "performance": false,
+          "error_rate": false,
+          "event_count": true,
+          "auto_keep": true
+        },
+        "raw": {
+          "value": 0,
+          "string": "0"
+        }
+      }
+    ]
+  },
+  "power_on_time": {
+    "hours": 19075
+  },
+  "power_cycle_count": 1497,
+  "temperature": {
+    "current": 24
+  },
+  "ata_smart_error_log": {
+    "summary": {
+      "revision": 1,
+      "count": 47,
+      "logged_count": 5,
+      "table": [
+        {
+          "error_number": 47,
+          "lifetime_hours": 17287,
+          "completion_registers": {
+            "error": 132,
+            "status": 81,
+            "count": 0,
+            "lba": 2465826,
+            "device": 224
+          },
+          "error_description": "Error: ICRC, ABRT at LBA = 0x0025a022 = 2465826",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 32,
+                "count": 1,
+                "lba": 2465826,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 25779,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 32,
+                "count": 1,
+                "lba": 2465825,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 25779,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 32,
+                "count": 1,
+                "lba": 2465824,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 25779,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 32,
+                "count": 1,
+                "lba": 2465823,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 25779,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 32,
+                "count": 1,
+                "lba": 2465822,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 25779,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 46,
+          "lifetime_hours": 17287,
+          "completion_registers": {
+            "error": 132,
+            "status": 81,
+            "count": 0,
+            "lba": 872572,
+            "device": 224
+          },
+          "error_description": "Error: ICRC, ABRT at LBA = 0x000d507c = 872572",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 3,
+                "count": 1,
+                "lba": 872572,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 23946,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 3,
+                "count": 1,
+                "lba": 872571,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 23946,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 3,
+                "count": 1,
+                "lba": 872570,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 23946,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 3,
+                "count": 1,
+                "lba": 872569,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 23946,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 3,
+                "count": 1,
+                "lba": 872568,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 23945,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 45,
+          "lifetime_hours": 17277,
+          "completion_registers": {
+            "error": 132,
+            "status": 81,
+            "count": 31,
+            "lba": 13661594,
+            "device": 224
+          },
+          "error_description": "Error: ICRC, ABRT 31 sectors at LBA = 0x00d0759a = 13661594",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 216,
+                "count": 0,
+                "lba": 13661369,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 145423,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 216,
+                "count": 0,
+                "lba": 13661113,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 145421,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 216,
+                "count": 0,
+                "lba": 13660857,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 145419,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 216,
+                "count": 0,
+                "lba": 13660601,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 145417,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 216,
+                "count": 0,
+                "lba": 13660345,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 145415,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 44,
+          "lifetime_hours": 17039,
+          "completion_registers": {
+            "error": 132,
+            "status": 81,
+            "count": 95,
+            "lba": 10007856,
+            "device": 224
+          },
+          "error_description": "Error: ICRC, ABRT 95 sectors at LBA = 0x0098b530 = 10007856",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 208,
+                "count": 128,
+                "lba": 10007823,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 2137071,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 53,
+                "features": 208,
+                "count": 128,
+                "lba": 11081399,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 2137069,
+              "command_name": "WRITE DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 208,
+                "count": 128,
+                "lba": 10007695,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 2137068,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 53,
+                "features": 208,
+                "count": 40,
+                "lba": 11081359,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 2137085,
+              "command_name": "WRITE DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 208,
+                "count": 40,
+                "lba": 10007655,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 2137084,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        },
+        {
+          "error_number": 43,
+          "lifetime_hours": 16113,
+          "completion_registers": {
+            "error": 132,
+            "status": 81,
+            "count": 95,
+            "lba": 12293408,
+            "device": 224
+          },
+          "error_description": "Error: ICRC, ABRT 95 sectors at LBA = 0x00bb9520 = 12293408",
+          "previous_commands": [
+            {
+              "registers": {
+                "command": 37,
+                "features": 216,
+                "count": 128,
+                "lba": 12293375,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 3061314,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 53,
+                "features": 216,
+                "count": 128,
+                "lba": 13366455,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 3061312,
+              "command_name": "WRITE DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 216,
+                "count": 128,
+                "lba": 12293247,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 3061310,
+              "command_name": "READ DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 53,
+                "features": 216,
+                "count": 128,
+                "lba": 13366327,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 3061334,
+              "command_name": "WRITE DMA EXT"
+            },
+            {
+              "registers": {
+                "command": 37,
+                "features": 216,
+                "count": 128,
+                "lba": 12293119,
+                "device": 224,
+                "device_control": 0
+              },
+              "powerup_milliseconds": 3061331,
+              "command_name": "READ DMA EXT"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "ata_smart_self_test_log": {
+    "standard": {
+      "revision": 1,
+      "count": 0,
+      "error_count_total": 0,
+      "error_count_outdated": 0
+    }
+  },
+  "ata_smart_selective_self_test_log": {
+    "revision": 1,
+    "table": [
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      },
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      },
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      },
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      },
+      {
+        "lba_min": 0,
+        "lba_max": 0,
+        "status": {
+          "value": 0,
+          "string": "Not_testing"
+        }
+      }
+    ],
+    "flags": {
+      "value": 0,
+      "remainder_scan_enabled": false
+    },
+    "power_up_scan_resume_minutes": 0
+  }
+}]
