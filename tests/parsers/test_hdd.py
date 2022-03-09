@@ -615,6 +615,8 @@ results = [
     ),
 ]
 
+
+@pytest.mark.smartctl
 @pytest.mark.parametrize("filename,expected", results)
 def test_smartctl_single(filename, expected):
     filedir = "tests/source_files/smartctl/"
@@ -623,6 +625,7 @@ def test_smartctl_single(filename, expected):
     assert output == expected
 
 
+@pytest.mark.smartctl
 def test_smartctl_triple():
     expected = [
         {
@@ -669,6 +672,7 @@ def test_smartctl_triple():
     assert output == expected
 
 
+@pytest.mark.smartctl
 def test_smartctl_virtual_scsi():
     expected = [
         {
