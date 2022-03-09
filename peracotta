@@ -114,6 +114,7 @@ class Ui(QtWidgets.QMainWindow):
         self.discreteRadioBtn = self.findChild(QtWidgets.QRadioButton, "discreteRadioBtn")
         self.intCpuRadioBtn = self.findChild(QtWidgets.QRadioButton, "intCpuRadioBtn")
         self.intMoboRadioBtn = self.findChild(QtWidgets.QRadioButton, "intMoboRadioBtn")
+        self.bothGpuRadioBtn = self.findChild(QtWidgets.QRadioButton, "bothGpuRadioBtn")
 
         # Selectors area
         self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
@@ -449,7 +450,11 @@ class Ui(QtWidgets.QMainWindow):
             return peracommon.GpuLocation.CPU
         if self.intMoboRadioBtn.isChecked():
             return peracommon.GpuLocation.MOTHERBOARD
+        if self.bothGpuRadioBtn.isChecked():
+            QtWidgets.QMessageBox.information(self, "Warning", "The integrated GPU cannot be detected in this configuration: disconnect the dedicated one and re-run peracotta if you want to parse it, or edit manually.")
+            return peracommon.GpuLocation.DISCRETE
         else:
+            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
             return None
 
     def get_selected_filters(self):
@@ -462,6 +467,10 @@ class Ui(QtWidgets.QMainWindow):
 
     def generate(self):
         if self.perathread.isRunning():
+            return
+
+        if not self.set_thread_buttons_values():
+            self.perathread.set_default_values()
             return
 
         if sys.platform != "win32":
@@ -481,17 +490,13 @@ class Ui(QtWidgets.QMainWindow):
                 self.perathread.sudo_passwd = None
 
         self.perathread.generate_files = True
-        if self.set_thread_buttons_values():
-            # TODO: shouldn't the next 2 lines be reversed?
-            self.perathread.begin()
-            self.reset_toolbox()
-        else:
-            self.perathread.set_default_values()
+        # TODO: shouldn't the next 2 lines be reversed?
+        self.perathread.begin()
+        self.reset_toolbox()
 
     def set_thread_buttons_values(self):
         gpu_location = self.gpu_location_from_buttons()
         if gpu_location is None:
-            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
             return False
         self.perathread.gpu_location = gpu_location
         self.perathread.owner = self.ownerLineEdit.text()
