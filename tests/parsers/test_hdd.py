@@ -62,9 +62,12 @@ results = [
                 "brand": "Seagate",
                 "capacity-decibyte": 250000000000,
                 "family": "Barracuda 7200.10",
+                "hdd-form-factor": "3.5",
                 "model": "ST3250310AS",
+                "sata-ports-n": 1,
                 "smart-data": "old",
                 "sn": "9RY53ABC",
+                "spin-rate-rpm": 7200,
                 "type": "hdd",
             }
         ],
@@ -75,7 +78,7 @@ results = [
             {
                 "brand": "Western Digital",
                 "capacity-decibyte": 160000000000,
-                "family": "Caviar SE Serial ATA",
+                "family": "Caviar SE",
                 "model": "WD1600JS-60MHB5",
                 "sata-ports-n": 1,
                 "smart-data": "ok",
@@ -109,11 +112,13 @@ results = [
             {
                 "brand": "Western Digital",
                 "capacity-decibyte": 320000000000,
-                "family": "Caviar Blue Serial ATA",
+                "family": "Caviar Blue",
+                "hdd-form-factor": "3.5",
                 "model": "WD3200AAJS-00VWA0",
                 "sata-ports-n": 1,
                 "smart-data": "ok",
                 "sn": "WCARW3489748",
+                "spin-rate-rpm": 7200,
                 "type": "hdd",
                 "wwn": "5 5358 7337373773",
             }
@@ -613,6 +618,176 @@ results = [
             }
         ],
     ),
+    (
+        "mini_sata01.json",
+        [
+            {
+                "brand": "Hitachi",
+                "capacity-decibyte": 160000000000,
+                "family": "Travelstar 5K250",
+                "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
+                "model": "HTS542516K9SA00",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 3274 123456789",
+            }
+        ],
+    ),
+    (
+        "mini_sata02.json",
+        [
+            {
+                "brand": "Hitachi",
+                "capacity-decibyte": 160000000000,
+                "family": "Travelstar 5K250",
+                "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
+                "model": "HTS542516K9SA00",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 3274 123456789",
+            }
+        ],
+    ),
+    (
+        "mini_sata03.json",
+        [
+            {
+                "brand": "Western Digital",
+                "capacity-decibyte": 160000000000,
+                "family": "Scorpio Blue",
+                "hdd-form-factor": "2.5",
+                "model": "WD1600BEVS-22RST0",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 5358 123456789",
+            }
+        ],
+    ),
+    (
+        "mini_sata04.json",
+        [
+            {
+                "brand": "Toshiba",
+                "capacity-decibyte": 320000000000,
+                "family": "2.5\" HDD MK..75GSX",
+                "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
+                "model": "MK3275GSX",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 57 123456789",
+            }
+        ],
+    ),
+    (
+        "mini_sata05.json",
+        [
+            {
+                # TODO: decode more data
+                "brand": "Samsung",
+                "capacity-decibyte": 160000000000,
+                "family": "SpinPoint M5",
+                # "hdd-form-factor": "2.5",
+                "model": "HM160HI",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 983040 123456789",
+            }
+        ],
+    ),
+    (
+        "mini_sata06.json",
+        [
+            {
+                "brand": "Hitachi",
+                "brand-manufacturer": "HGST",
+                "capacity-decibyte": 320000000000,
+                "family": "HGST Travelstar Z7K500",
+                "hdd-form-factor": "2.5",
+                "height-mm": 7,
+                "model": "HTS725032A7E630",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+                "wwn": "5 3274 123456789",
+            }
+        ],
+    ),
+    (
+        "mini_sata07.json",
+        [
+            {
+                # TODO: decode more data
+                "brand": "Fujitsu",
+                "capacity-decibyte": 250000000000,
+                "family": "MHY BH",
+                # "hdd-form-factor": "2.5",
+                "model": "MHY2250BH",
+                "sata-ports-n": 1,
+                "smart-data": "fail",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 14 123456789",
+            }
+        ],
+    ),
+    (
+        "mini_sata08.json",
+        [
+            {
+                "brand": "Hitachi",
+                "capacity-decibyte": 250000000000,
+                "family": "Travelstar 5K250",
+                "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
+                "model": "HTS542525K9SA00",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 3274 123456789",
+            }
+        ],
+    ),
+    (
+        "mini_sata09.json",
+        [
+            {
+                "brand": "Seagate",
+                "capacity-decibyte": 320000000000,
+                "family": "Momentus 5400.5",
+                "hdd-form-factor": "2.5",
+                "model": "ST9320320AS",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 3152 123456789",
+            }
+        ],
+    ),
 ]
 
 
@@ -655,7 +830,7 @@ def test_smartctl_triple():
         {
             "brand": "Western Digital",
             "capacity-decibyte": 160000000000,
-            "family": "Caviar SE Serial ATA",
+            "family": "Caviar SE",
             "model": "WD1600JS-60MHB5",
             "sata-ports-n": 1,
             "smart-data": "ok",

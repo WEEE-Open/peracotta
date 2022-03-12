@@ -33,27 +33,60 @@ def parse_smartctl(file: str, interactive: bool = False) -> List[dict]:
     return disks
 
 
+def seagate_model_decode(disk, model: str):
+    old_format = r"ST([0-9])[0-9]{2,}(AS?)[A-Z]*.*"
+
+    if re.match(old_format, model):
+        result = re.search(f"^{old_format}", model)
+        ff_num = result.group(1)
+        interface_num = result.group(2)
+
+        ff = {
+            "3": "3.5",
+            "9": "2.5",
+        }.get(ff_num)
+        _add_feature_if_possible(disk, "hdd-form-factor", ff)
+
+        if interface_num == "AS":
+            _add_interface_if_possible(disk, "sata-ports-n")
+        elif interface_num == "A":
+            _add_interface_if_possible(disk, "ide-ports-n")
+
+    rpm = re.search(r"(?:.+ )*([1-9][0-9]00)\.[0-9]", disk.get("family", ""))
+    if rpm:
+        _add_feature_if_possible(disk, "spin-rate-rpm", int(rpm.group(1)))
+
+
 def samsung_model_decode(disk, model: str):
     # SV + capacity (3) + number of heads (platters*2) + interface?
     sv_format = r"SV[0-9]{2,4}([A-Z])"
 
     if re.match(sv_format, model):
         result = re.search(f"^{sv_format}", model)
-        if result.group(1) in ("D", "E", "N", "H"):
+
+        if result.group(1) in ("C", ):
+            _add_interface_if_possible(disk, "sata-ports-n")
+        elif result.group(1) in ("D", "E", "N", "H"):
             _add_interface_if_possible(disk, "ide-ports-n")
 
 
 def hitachi_model_decode(disk, model: str):
     # https://www.instantfundas.com/2009/02/how-to-interpret-hard-disk-model.html
-    the_format = r"H[A-Z][A-Z][0-9]{2}[0-9]{2}[0-9]{2}[A-Z]([A-Z0-9])([A-Z][A-Z0-9])[0-9]+"
+    h_format = r"H[A-Z][A-Z]([0-9]{2})[0-9]{2}[0-9]{2}[A-Z]([A-Z0-9])([A-Z][A-Z0-9])[0-9]+"
     ic25_format = r"IC25[NT][0-9]{3}[A-Z0-9]{2}[A-Z0-9]{2}([0-9]{2})-?.*"
 
-    if re.match(the_format, model):
-        result = re.search(f"^{the_format}", model)
-        ff_num = result.group(1)
-        interface_num = result.group(2)
+    if re.match(h_format, model):
+        result = re.search(f"^{h_format}", model)
+        rpm_num = result.group(1)
+        ff_num = result.group(2)
+        interface_num = result.group(3)
 
-        # TODO: add 'em to tarallo
+        rpm = {
+            "54": 5400,
+            "72": 7200,
+        }.get(rpm_num)
+        _add_feature_if_possible(disk, "spin-rate-rpm", rpm)
+
         ff = {
             "L": ("3.5", None),
             "9": ("2.5", 9.5),
@@ -61,8 +94,9 @@ def hitachi_model_decode(disk, model: str):
             "7": ("2.5", 7),
             "5": ("2.5", 5),
         }.get(ff_num)
-        _add_feature_if_possible(disk, "hdd-form-factor", ff[0])
-        _add_feature_if_possible(disk, "height-mm", ff[1])
+        if ff:
+            _add_feature_if_possible(disk, "hdd-form-factor", ff[0])
+            _add_feature_if_possible(disk, "height-mm", ff[1])
 
         if interface_num in ("A3", "SA"):
             _add_interface_if_possible(disk, "sata-ports-n")
@@ -83,46 +117,39 @@ def hitachi_model_decode(disk, model: str):
 
 
 def toshiba_model_decode(disk, model: str):
-    mk_format = r"MK[0-9]{2}([0-9]{2})G([A-Z])([A-Z])[A-Z]?"
+    mk_format = r"MK[0-9]{2}[0-9]{2}G([A-Z])([A-Z])[A-Z]?"
+
     if re.match(mk_format, model):
         result = re.search(f"^{mk_format}", model)
-        unk_num = result.group(1)
-        interface_num = result.group(2)
-        rpm_num = result.group(3)
+        interface_num = result.group(1)
+        ff_num = result.group(2)
 
-        rpm = {
-            "G": 5400,
-            "L": 4200,
-            "M": 5400,
-            "P": 4200,
-            "X": 5400,
-            "Y": 7200,
-        }.get(rpm_num)
-        _add_feature_if_possible(disk, "spin-rate-rpm", rpm)
+        ff = {
+            "A": ("1.8", 5, 3600),
+            "B": ("1.8", 8, 3600),
+            "G": ("1.8", 8, 5400),
+            "H": ("1.8", 8, 4200),
+            "L": ("1.8", 5, 4200),
+            "K": ("3.5", None, 7200),
+            "M": ("2.5", 12.7, 5400),
+            "P": ("2.5", None, 4200),
+            "R": ("2.5", None, 15000),
+            "S": ("2.5", 9.5, 4200),
+            "X": ("2.5", 9.5, 5400),
+            "Y": ("2.5", 9.5, 7200),
+        }.get(ff_num)
+        if ff:
+            _add_feature_if_possible(disk, "hdd-form-factor", ff[0])
+            _add_feature_if_possible(disk, "height-mm", ff[1])
+            _add_feature_if_possible(disk, "spin-rate-rpm", ff[2])
 
         interface = {
-            "A": "mini-ide-ports-n",
+            "A": "mini-ide-ports-n" if ff and ff[0] != "3.5" else "ide-ports-n",
+            "P": "mini-ide-ports-n",
+            "R": "sas-ports-n",
             "S": "sata-ports-n",
         }.get(interface_num)
         _add_interface_if_possible(disk, interface)
-
-        ff = {
-            "16": "1.8",
-            "14": "2.5",
-            "25": "1.8",
-            "33": "1.8",
-            "35": "1.8",
-            "37": "2.5",
-            "52": "2.5",
-            "53": "2.5",
-            "55": "2.5",
-            "56": "2.5",
-            "59": "2.5",
-            "65": "2.5",
-            "75": "2.5",
-            "76": "2.5",
-        }.get(unk_num)
-        _add_feature_if_possible(disk, "hdd-form-factor", ff)
 
 
 def fujitsu_model_decode(disk, model: str):
@@ -150,6 +177,7 @@ def quantum_model_decode(disk, model: str):
 
 def wd_model_decode(disk, model: str):
     old_format = r"WD[0-9]{2,4}([A-Z])([A-Z])-.+"
+    new_format = r"WD[0-9]{4}([A-Z])[A-Z]([A-Z])([A-Z])-.+"
 
     if re.match(old_format, model):
         result = re.search(f"^{old_format}", model)
@@ -189,7 +217,75 @@ def wd_model_decode(disk, model: str):
             "C": "firewire-ports-n",
             "D": "sata-ports-n",
             "E": "ide-ports-n",
+            "R": "sata-ports-n",
             "S": "sata-ports-n",
+        }.get(interface_num)
+        _add_interface_if_possible(disk, interface)
+
+    elif re.match(new_format, model):
+        result = re.search(f"^{new_format}", model)
+        ff_num = result.group(1)
+        rpm_num = result.group(2)
+        interface_num = result.group(3)
+
+        ff = {
+            "A": ("3.5", None),
+            "B": ("2.5", None),
+            "C": ("1.0", None),
+            "E": ("3.5", None),
+            "F": ("3.5", None),
+            # "G": "",
+            # "H": "",
+            "J": ("2.5", 9.5),
+            "K": ("3.5", None),
+            "L": ("2.5", 7),
+            "M": ("2.5", 5),
+            "N": ("2.5", 15),
+            "P": ("3.5", None),
+            "S": ("2.5", 7),
+            "T": ("2.5", 12.5),
+            "X": ("2.5", 9.5),
+        }.get(ff_num)
+        if ff:
+            _add_feature_if_possible(disk, "hdd-form-factor", ff[0])
+            _add_feature_if_possible(disk, "height-mm", ff[1])
+
+        rpm = {
+            "A": 5400,
+            "B": 7200,
+            "C": 5400,
+            "D": 5400,
+            "E": 7200,
+            "F": 10000,
+            "G": 10000,
+            "H": 10000,
+            "J": 7200,
+            "K": 7200,
+            "L": 7200,
+            "P": 5400,
+            "R": 5400,
+            "S": 7200,
+            "T": 10000,
+            "V": 5400,
+            "W": 7200,
+            "Y": 7200,
+            "Z": 5400,
+        }.get(rpm_num)
+        _add_feature_if_possible(disk, "spin-rate-rpm", rpm)
+
+        interface = {
+            "A": "ide-ports-n",
+            "B": "ide-ports-n",
+            "D": "sata-ports-n",
+            "E": "ide-ports-n",
+            "F": "sas-ports-n",
+            "G": "sas-ports-n",
+            "K": "sata-ports-n",
+            "S": "sata-ports-n",
+            "T": "sata-ports-n",
+            "W": "usb-ports-n",
+            "X": "sata-ports-n",
+            "Z": "sata-ports-n",
         }.get(interface_num)
         _add_interface_if_possible(disk, interface)
 
@@ -214,12 +310,15 @@ def maxtor_model_decode(disk, model: str):
 
         interface = {
             "D": "ide-ports-n",
+            "F": "sata-ports-n",
             "H": "ide-ports-n",
             "J": "ide-ports-n",
             "K": "ide-ports-n",
             "L": "ide-ports-n",
             "M": "sata-ports-n",
             "P": "ide-ports-n",
+            "R": "ide-ports-n",
+            "S": "sata-ports-n",
             "U": "ide-ports-n",
         }.get(interface_num)
         _add_interface_if_possible(disk, interface)
@@ -237,6 +336,8 @@ def _add_interface_if_possible(disk, interface):
         "ide-ports-n",
         "sata-ports-n",
         "firewire-ports-n",
+        "sas-ports-n",
+        "usb-ports-n",
     ]
 
     if interface:
@@ -335,7 +436,7 @@ def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
             disk["type"] = "ssd"
 
     if "(ATA/133 and SATA/150)" in disk.get("family", ""):
-        disk["family"] = disk["family"].replace("(ATA/133 and SATA/150)", "").strip()
+        disk["family"] = disk.get("family").replace("(ATA/133 and SATA/150)", "").strip()
 
     if "SSD" in disk.get("family", ""):
         if disk["type"] == "hdd":
@@ -343,6 +444,18 @@ def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
         lowered = disk["family"].replace(" ", "").lower()
         if lowered in ("basedssds", "basedssd"):
             del disk["family"]
+
+    if disk.get("family", "").startswith("/"):
+        disk["family"] = disk.get("family", "")[1:]
+
+    if "Serial ATA" in disk.get("family", ""):
+        if not port:
+            port = PORT.SATA
+        disk["family"] = disk.get("family").replace("Serial ATA", "").strip()
+
+    if disk.get("model", "").startswith("HGST "):
+        disk["model"] = disk.get("model")[5:]
+        disk["brand-manufacturer"] = "HGST"
 
     # Unreliable port detection as a fallback
     if port is None:
@@ -379,6 +492,8 @@ def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
         brand = disk.get("brand")
         if brand == "Western Digital":
             wd_model_decode(disk, disk.get("model"))
+        elif brand == "Seagate":
+            seagate_model_decode(disk, disk.get("model"))
         elif brand == "Maxtor":
             maxtor_model_decode(disk, disk.get("model"))
         elif brand == "Samsung":
