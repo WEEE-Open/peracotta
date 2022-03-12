@@ -178,7 +178,7 @@ def toshiba_model_decode(disk, model: str):
         interface = {
             "A": "mini-ide-ports-n" if ff and ff[0] != "3.5" else "ide-ports-n",
             "P": "mini-ide-ports-n",
-            "R": "sas-ports-n",
+            "R": "sas-sata-ports-n",
             "S": "sata-ports-n",
         }.get(interface_num)
         _add_interface_if_possible(disk, interface)
@@ -325,8 +325,8 @@ def wd_model_decode(disk, model: str):
             "B": "ide-ports-n",
             "D": "sata-ports-n",
             "E": "ide-ports-n",
-            "F": "sas-ports-n",
-            "G": "sas-ports-n",
+            "F": "sas-sata-ports-n",
+            "G": "sas-sata-ports-n",
             "K": "sata-ports-n",
             "S": "sata-ports-n",
             "T": "sata-ports-n",
@@ -385,7 +385,7 @@ def _add_interface_if_possible(disk, interface):
         "ide-ports-n",
         "sata-ports-n",
         "firewire-ports-n",
-        "sas-ports-n",
+        "sas-sata-ports-n",
         "usb-ports-n",
         "scsi-sca2-ports-n",
         "scsi-db68-ports-n",
