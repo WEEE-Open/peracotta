@@ -68,7 +68,7 @@ def samsung_model_decode(disk, model: str):
     if re.match(sv_format, model):
         result = re.search(f"^{sv_format}", model)
 
-        if result.group(1) in ("C", ):
+        if result.group(1) in ("C",):
             _add_interface_if_possible(disk, "sata-ports-n")
         elif result.group(1) in ("D", "E", "N", "H"):
             _add_interface_if_possible(disk, "ide-ports-n")

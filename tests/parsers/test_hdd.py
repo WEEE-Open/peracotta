@@ -680,7 +680,7 @@ results = [
             {
                 "brand": "Toshiba",
                 "capacity-decibyte": 320000000000,
-                "family": "2.5\" HDD MK..75GSX",
+                "family": '2.5" HDD MK..75GSX',
                 "hdd-form-factor": "2.5",
                 "height-mm": 9.5,
                 "model": "MK3275GSX",
