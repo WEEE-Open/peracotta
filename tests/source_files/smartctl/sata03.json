@@ -16,33 +16,6 @@
       "-ja",
       "/dev/sdb"
     ],
-    "messages": [
-      {
-        "string": "Smartctl open device: /dev/sdb failed: No such device",
-        "severity": "error"
-      }
-    ],
-    "exit_status": 2
-  }
-}]
-[{
-  "json_format_version": [
-    1,
-    0
-  ],
-  "smartctl": {
-    "version": [
-      7,
-      2
-    ],
-    "svn_revision": "5155",
-    "platform_info": "x86_64-linux-5.16.9-arch1-1",
-    "build_info": "(local build)",
-    "argv": [
-      "smartctl",
-      "-ja",
-      "/dev/sdb"
-    ],
     "exit_status": 0
   },
   "device": {

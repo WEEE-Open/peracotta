@@ -32,7 +32,9 @@ results = [
                 "brand": "Maxtor",
                 "capacity-decibyte": 320000000000,
                 "family": "Maxtor DiamondMax 21",
+                "hdd-form-factor": "3.5",
                 "model": "STM3320820AS",
+                "sata-ports-n": 1,
                 "smart-data": "ok",
                 "sn": "9ABC12435",
                 "type": "hdd",
@@ -555,6 +557,7 @@ results = [
                 "capacity-decibyte": 60000000000,
                 "family": "Travelstar 80GN",
                 "hdd-form-factor": "2.5",
+                "height-mm": 9.5,
                 "model": "IC25N060ATMR04-0",
                 "mini-ide-ports-n": 1,
                 "smart-data": "fail",
@@ -572,7 +575,6 @@ results = [
                 "capacity-decibyte": 60000000000,
                 "family": "MHV",
                 "hdd-form-factor": "2.5",
-                "height-mm": 9.5,
                 "model": "MHV2060AT PL",
                 "mini-ide-ports-n": 1,
                 "smart-data": "fail",
@@ -590,7 +592,6 @@ results = [
                 "capacity-decibyte": 40000000000,
                 "family": "MHS AT",
                 "hdd-form-factor": "2.5",
-                "height-mm": 9.5,
                 "model": "MHS2040AT  D",
                 "mini-ide-ports-n": 1,
                 "smart-data": "sus",
@@ -608,7 +609,6 @@ results = [
                 "capacity-decibyte": 60000000000,
                 "family": "MHT",
                 "hdd-form-factor": "2.5",
-                "height-mm": 9.5,
                 "model": "MHT2060AT PL",
                 "mini-ide-ports-n": 1,
                 "smart-data": "fail",
@@ -736,16 +736,15 @@ results = [
         "mini_sata07.json",
         [
             {
-                # TODO: decode more data
                 "brand": "Fujitsu",
                 "capacity-decibyte": 250000000000,
                 "family": "MHY BH",
-                # "hdd-form-factor": "2.5",
+                "hdd-form-factor": "2.5",
                 "model": "MHY2250BH",
                 "sata-ports-n": 1,
                 "smart-data": "fail",
                 "sn": "REDACTED123456",
-                # "spin-rate-rpm": 5400,
+                "spin-rate-rpm": 5400,
                 "type": "hdd",
                 "wwn": "5 14 123456789",
             }
@@ -785,6 +784,300 @@ results = [
                 "spin-rate-rpm": 5400,
                 "type": "hdd",
                 "wwn": "5 3152 123456789",
+            }
+        ],
+    ),
+    (
+        "sata01.json",
+        [
+            {
+                "brand": "Samsung",
+                "capacity-decibyte": 160000000000,
+                # "family": "",
+                # "hdd-form-factor": "3.5",
+                "model": "HD161HJ",
+                # "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 0,
+                "type": "hdd",
+                "wwn": "5 240 123456789",
+            }
+        ],
+    ),
+    (
+        "sata02.json",
+        [
+            {
+                "brand": "Seagate",
+                "capacity-decibyte": 160000000000,
+                "family": "Barracuda 7200.9",
+                "hdd-form-factor": "3.5",
+                "model": "ST3160812AS",
+                "sata-ports-n": 1,
+                "smart-data": "old",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "sata03.json",
+        [
+            {
+                "brand": "Western Digital",
+                "capacity-decibyte": 500000000000,
+                "family": "Caviar Blue",
+                "hdd-form-factor": "3.5",
+                "model": "WD5000AAKS-00UU3A0",
+                "sata-ports-n": 1,
+                "smart-data": "fail",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+                "wwn": "5 5358 123456789",
+            }
+        ],
+    ),
+    (
+        "sata04.json",
+        [
+            {
+                "brand": "Seagate",
+                "capacity-decibyte": 250000000000,
+                "family": "Barracuda 7200.10",
+                "hdd-form-factor": "3.5",
+                "model": "ST3250310AS",
+                "sata-ports-n": 1,
+                "smart-data": "old",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "sata05.json",
+        [
+            {
+                "brand": "Maxtor",
+                "capacity-decibyte": 250000000000,
+                "family": "Maxtor DiamondMax 21",
+                "hdd-form-factor": "3.5",
+                "model": "STM3250820AS",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 0,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "sata06.json",
+        [
+            {
+                "brand": "Samsung",
+                "capacity-decibyte": 160000000000,
+                # "hdd-form-factor": "3.5",
+                "model": "HD161HJ",
+                # "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 0,
+                "type": "hdd",
+                "wwn": "5 240 123456789",
+            }
+        ],
+    ),
+    (
+        "sata07.json",
+        [
+            {
+                "brand": "Samsung",
+                "capacity-decibyte": 160000000000,
+                # "hdd-form-factor": "3.5",
+                "model": "HD161HJ",
+                # "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 0,
+                "type": "hdd",
+                "wwn": "5 240 123456789",
+            }
+        ],
+    ),
+    (
+        "sata08.json",
+        [
+            {
+                "brand": "Maxtor",
+                "capacity-decibyte": 320000000000,
+                "family": "Maxtor DiamondMax 21",
+                "hdd-form-factor": "3.5",
+                "model": "STM3320820AS",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 0,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "sata09.json",
+        [
+            {
+                "brand": "Seagate",
+                "capacity-decibyte": 80000000000,
+                "family": "Barracuda 7200.10",
+                "hdd-form-factor": "3.5",
+                "model": "ST380815AS",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+            }
+        ],
+    ),
+    (
+        "sata10.json",
+        [
+            {
+                "brand": "Hitachi",
+                "capacity-decibyte": 500000000000,
+                "family": "Deskstar T7K500",
+                "hdd-form-factor": "3.5",
+                "model": "HDT725050VLA360",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+                "wwn": "5 3274 123456789",
+            }
+        ],
+    ),
+    (
+        "sata11.json",
+        [
+            {
+                "brand": "Samsung",
+                "capacity-decibyte": 160000000000,
+                # "hdd-form-factor": "3.5",
+                "model": "HD161HJ",
+                # "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 0,
+                "type": "hdd",
+                "wwn": "5 240 123456789",
+            }
+        ],
+    ),
+    (
+        "sata12.json",
+        [
+            {
+                "brand": "Western Digital",
+                "capacity-decibyte": 500000000000,
+                "family": "Blue",
+                "hdd-form-factor": "3.5",
+                "model": "WD5000AZLX-08K2TA0",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+                "wwn": "5 5358 123456789",
+            }
+        ],
+    ),
+    (
+        "sata13.json",
+        [
+            {
+                "brand": "Western Digital",
+                "capacity-decibyte": 500000000000,
+                "family": "Caviar Blue",
+                "hdd-form-factor": "3.5",
+                "model": "WD5000AAKS-00A7B0",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+                "wwn": "5 5358 123456789",
+            }
+        ],
+    ),
+    (
+        "sata14.json",
+        [
+            {
+                "brand": "Samsung",
+                "capacity-decibyte": 160000000000,
+                # "hdd-form-factor": "3.5",
+                "model": "HD161HJ",
+                # "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                # "spin-rate-rpm": 0,
+                "type": "hdd",
+                "wwn": "5 240 123456789",
+            }
+        ],
+    ),
+    (
+        "sata15.json",
+        [
+            {
+                "brand": "Western Digital",
+                "capacity-decibyte": 500000000000,
+                "family": "Caviar Black",
+                "hdd-form-factor": "3.5",
+                "model": "WD5003AZEX-00RLFA0",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
+                "wwn": "5 5358 123456789",
+            }
+        ],
+    ),
+    (
+        "sata16.json",
+        [
+            {
+                "brand": "Seagate",
+                "capacity-decibyte": 250000000000,
+                "family": "Momentus 5400.5",
+                "hdd-form-factor": "2.5",
+                "model": "ST9250320AS",
+                "sata-ports-n": 1,
+                "smart-data": "ok",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 5400,
+                "type": "hdd",
+                "wwn": "5 3152 123456789",
+            }
+        ],
+    ),
+    (
+        "smart_disabled.txt",
+        [
+            {
+                "brand": "Western Digital",
+                "capacity-decibyte": 40000000000,
+                "family": "Caviar",
+                "ide-ports-n": 1,
+                "model": "WD400BB-00DKA0",
+                "sn": "REDACTED123456",
+                "spin-rate-rpm": 7200,
+                "type": "hdd",
             }
         ],
     ),
