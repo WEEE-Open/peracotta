@@ -45,7 +45,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
             elif "NVIDIA" in first_line.upper():
                 gpu["brand-manufacturer"] = "Nvidia"
                 gpu["model"] = part_between_square_brackets
-                if gpu["brand"] != "":
+                if "brand" in gpu:
                     pieces = gpu["brand"].rsplit(" ", 1)
                     gpu["brand"] = pieces[0]
                     gpu["internal-name"] = pieces[1]
@@ -91,7 +91,7 @@ def _read_lspci_output(gpu: dict, lspci_file: str, interactive: bool = False):
                 # May be written somewhere else on other models, but we have so few SiS cards that it's difficult to
                 # find more examples. Also, they haven't made any video card in the last 15 years or so.
                 gpu["brand-manufacturer"] = part_between_square_brackets
-                if gpu["brand"].lower() == "silicon integrated systems":
+                if "brand" in gpu and gpu["brand"].lower() == "silicon integrated systems":
                     gpu["brand"] = "SiS"
                 gpu["model"] = first_line.split("]", 1)[1]
                 # These may be useful for non-integrated cards, however the example ones are all integrated
