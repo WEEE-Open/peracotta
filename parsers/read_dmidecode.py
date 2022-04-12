@@ -268,9 +268,9 @@ def get_dmidecoded_value(section: str, key: str) -> str:
 
 def parse_psu(chassis: Optional[dict]):
     if chassis.get("motherboard-form-factor") == "proprietary-laptop":
-        return [{"type": "external-psu"}]
+        return [{"type": "external-psu", "check": "missing-data", "working": "yes"}]
     else:
-        return [{"type": "psu"}]
+        return [{"type": "psu", "check": "missing-data", "working": "yes"}]
 
 
 def parse_case(chassis_file: str, mobo: Optional[dict] = None) -> List[dict]:
