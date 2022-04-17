@@ -979,9 +979,15 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         if "model" in features and "brand" in features and "variant" in features:
             for maybe in data:
                 if maybe.get("type") == "P":
-                    if maybe.get("brand") == features["brand"] and maybe.get("model") == features["model"] and maybe.get("variant") == features["variant"]:
+                    if ToolBoxWidget.bmv_match(features, maybe):
                         return maybe
         return None
+
+    @staticmethod
+    def bmv_match(dict1, dict2) -> bool:
+        return dict1.get("brand") == dict2.get("brand") and \
+               dict1.get("model") == dict2.get("model") and \
+               dict1.get("variant") == dict2.get("variant")
 
     def set_context_menu(self):
         counter = 0
@@ -1215,20 +1221,35 @@ class CustomTableModel(QAbstractTableModel):
             if row < 0 or row >= len(self.feature_keys):
                 return False
 
+            # Feature name
             name = self.feature_keys[row]
+            # Normalize and validate, with EXTREME intensity
             ok, value = self.extreme_validation(name, value)
             if ok:
+                # Add to features, this is a local copy of merged
+                # item and product features
                 self.features[name] = value
                 product_to_add = None
+                # Search if a product is there but not linked,
+                # this is needed when a new item is added
+                # since brand, model and variant are filled
+                # one at a time
                 if not self.ref_product:
                     product_to_add = ToolBoxWidget.find_matching_product(self._data, self.features)
                     if product_to_add:
                         self.beginResetModel()
                         self._productize(self.features, product_to_add)
+                # If this feature exists in the product, add it there.
+                # Otherwise, if the item has it, add it there.
+                # Otherwise, find where it should be added.
                 if self.ref_product and name in self.ref_product["features"]:
                     self.ref_product["features"][name] = value
                 elif name in self.ref_features:
                     self.ref_features[name] = value
+                    # If brand or model or variant was changed
+                    # update product and related items, too
+                    if self.ref_product and name in ("brand", "model", "variant"):
+                        self._rename_product(self.ref_product, name, value)
                 else:
                     self._add_to_ref(name, value)
                 if product_to_add:
@@ -1259,6 +1280,19 @@ class CustomTableModel(QAbstractTableModel):
             if len(value) <= 0:
                 return False, None
         return True, value
+
+    def _rename_product(self, product: dict, feature: str, value: str):
+        if "brand" not in product or "model" not in product or "variant" not in product:
+            # Sanity check, but should never happen
+            return
+
+        for maybe in self._data:
+            if maybe.get("type") == "I":
+                if ToolBoxWidget.bmv_match(product, maybe.get("features", {})):
+                    maybe["features"][feature] = value
+
+        # Finally, update product itself
+        self.product[feature] = value
 
     def removeRow(self, row: int, parent: QtCore.QModelIndex() = ...) -> bool:
         # TODO: remove this limitation asd
