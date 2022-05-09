@@ -2,7 +2,7 @@
 [![Docker Image CI](https://github.com/WEEE-Open/peracotta/actions/workflows/docker-image.yml/badge.svg)](https://github.com/WEEE-Open/peracotta/actions/workflows/docker-image.yml)
 [![Linting](https://github.com/WEEE-Open/peracotta/actions/workflows/lint.yml/badge.svg)](https://github.com/WEEE-Open/peracotta/actions/workflows/lint.yml)
 
-![Peracotta](assets/peracotta.png)
+![Peracotta](assets/ui/pear_emoji.png)
 
 # 🍐 P.E.R.A.C.O.T.T.A. 🍐
 
