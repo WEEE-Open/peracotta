@@ -13,3 +13,7 @@ features.json
 features.json.bak
 scripts/tmp/
 .pre-commit-config.yaml
+pera*.bin
+pera*.build
+pera*.dist
+pera*.onefile-build
