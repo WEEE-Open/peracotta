@@ -17,3 +17,4 @@ pera*.bin
 pera*.build
 pera*.dist
 pera*.onefile-build
+.vscode/
