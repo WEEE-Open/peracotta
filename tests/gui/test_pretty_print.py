@@ -1,6 +1,6 @@
 import pytest
 
-import prettyprinter
+import peracotta.prettyprinter as prettyprinter
 
 
 @pytest.mark.prettyprint

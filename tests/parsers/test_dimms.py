@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from parsers import read_decode_dimms
+from peracotta.parsers import read_decode_dimms
+
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/decode-dimms/"

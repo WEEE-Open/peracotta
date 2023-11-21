@@ -12,6 +12,34 @@ from parsers.read_lscpu import parse_lscpu
 from parsers.read_lspci_and_glxinfo import parse_lspci_and_glxinfo
 from parsers.read_smartctl import parse_smartctl
 
+VERSION = "2.0.0"
+
+PATH = {
+    "UI": "assets/interface.ui",
+    "TARALLOUPLOADDIALOG": "assets/uploadTaralloDialog.ui",
+    "ERRORDIALOG": "assets/error.ui",
+    "JSON": "copy_this_to_tarallo.json",
+    "FEATURES": "features.json",
+    "THEMES": "assets/themes/",
+    "TMP_FILES": "tmp/",
+    "ICON": "assets/ui/pear_emoji.png",
+}
+ICON = {
+    "case": "assets/toolbox/case.png",
+    "ram": "assets/toolbox/ram.png",
+    "cpu": "assets/toolbox/cpu.png",
+    "graphics-card": "assets/toolbox/gpu.png",
+    "odd": "assets/toolbox/odd.png",
+    "hdd": "assets/toolbox/hdd.png",
+    "ssd": "assets/toolbox/ssd.png",
+    "motherboard": "assets/toolbox/motherboard.png",
+    "wifi-card": "assets/toolbox/wifi-card.png",
+    "psu": "assets/toolbox/psu.png",
+    "monitor": "assets/toolbox/monitor.png",
+    "keyboard": "assets/toolbox/keyboard.png",
+    "mouse": "assets/toolbox/mouse.png",
+}
+
 
 class InputFileNotFoundError(FileNotFoundError):
     def __init__(self, path):

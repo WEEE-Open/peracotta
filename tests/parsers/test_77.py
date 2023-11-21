@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from parsers import (read_dmidecode, read_lscpu, read_lspci_and_glxinfo,
-                     read_smartctl)
+from peracotta.parsers import read_dmidecode, read_lscpu, read_lspci_and_glxinfo, read_smartctl
+
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/77/"

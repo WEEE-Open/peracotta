@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import os
 
-from parsers import read_lspci_and_glxinfo
+from peracotta.parsers import read_lspci_and_glxinfo
+
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/glxinfo+lspci/"

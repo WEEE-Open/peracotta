@@ -6,7 +6,7 @@ import time
 import pytest
 from dotenv import load_dotenv
 
-import peracommon
+import peracotta.commons as commons
 
 
 def import_executable(name):
@@ -47,12 +47,12 @@ for fold in set(test_folders):
 def args2(request):
     # noinspection DuplicatedCode
     parsers = {
-        peracommon.ParserComponents.CPU,
-        peracommon.ParserComponents.GPU,
-        peracommon.ParserComponents.MOTHERBOARD,
-        peracommon.ParserComponents.RAM,
-        peracommon.ParserComponents.CASE,
-        peracommon.ParserComponents.PSU,
+        commons.ParserComponents.CPU,
+        commons.ParserComponents.GPU,
+        commons.ParserComponents.MOTHERBOARD,
+        commons.ParserComponents.RAM,
+        commons.ParserComponents.CASE,
+        commons.ParserComponents.PSU,
     }
 
     path = f"tests/source_files/{request.param}"
@@ -60,13 +60,13 @@ def args2(request):
         with open(os.path.join(path, "gpu_location.txt"), "r") as f:
             gpu_flag = f.readline()
             if gpu_flag == "cpu":
-                where = peracommon.GpuLocation.CPU
+                where = commons.GpuLocation.CPU
             elif gpu_flag == "gpu":
-                where = peracommon.GpuLocation.DISCRETE
+                where = commons.GpuLocation.DISCRETE
             else:
-                where = peracommon.GpuLocation.MOTHERBOARD
+                where = commons.GpuLocation.MOTHERBOARD
     except FileNotFoundError:
-        where = peracommon.GpuLocation.NONE
+        where = commons.GpuLocation.NONE
 
     return path, parsers, where
 
@@ -113,9 +113,9 @@ def test_upload_pytarallo(args2, monkeypatch, capsys):  # testing pytarallo inte
         assert "all went fine" in output
 
     try:
-        result = peracommon.call_parsers(args2[0], args2[1], args2[2])
-        result = peracommon.split_products(result)
-        result = peracommon.make_tree(result)
+        result = commons.call_parsers(args2[0], args2[1], args2[2])
+        result = commons.split_products(result)
+        result = commons.make_tree(result)
 
         auto_bulk_id()
         overwrite_id = fixed_bulk_id()
