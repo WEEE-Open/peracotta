@@ -1,7 +1,7 @@
-import pytest
 import os
+
+import pytest
 from PyQt5 import QtCore, QtTest, QtWidgets
-import peracommon
 
 # from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo
 

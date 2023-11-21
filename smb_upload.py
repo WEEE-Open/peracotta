@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-from dotenv import load_dotenv
 import os
 import shutil
 from datetime import datetime
+
+from dotenv import load_dotenv
 
 
 def main(parsed_args):

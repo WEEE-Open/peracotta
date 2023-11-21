@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-from parsers import read_smartctl
-from parsers import read_decode_dimms
-from parsers import read_dmidecode
-from parsers import read_lspci_and_glxinfo
-from parsers import read_lscpu
+from parsers import (read_decode_dimms, read_dmidecode, read_lscpu,
+                     read_lspci_and_glxinfo)
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/polveroso/"

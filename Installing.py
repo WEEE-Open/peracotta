@@ -1,8 +1,9 @@
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QMovie
-import sys
 import os
+import sys
+
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtGui import QMovie
+from PyQt5.QtWidgets import *
 
 
 class UIMainWindow(QWidget):

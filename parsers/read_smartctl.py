@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-from enum import Enum
 import json
-import sys
 import re
-from math import log10, floor
-from typing import List, Dict
+import sys
+from enum import Enum
+from math import floor, log10
+from typing import Dict, List
 
 """
 Read "smartctl" output:
