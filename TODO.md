@@ -1,0 +1,2 @@
+- [ ] Known and non-fatal errors shouldn't crash the program.
+- [ ] Possibly use better sudo management (especially for devices with fingerprint)
