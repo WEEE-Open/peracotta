@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import os
+from pathlib import Path
 import shutil
 import sys
 import time
@@ -24,6 +25,12 @@ from pytarallo.Errors import NoInternetConnectionError
 import peracommon
 import prettyprinter
 from peracommon import env_to_bool
+import signal
+
+from loguru import logger
+from crash_reporting import send_crash_notification
+
+logdir_path = "logs"
 
 VERSION = "1.0.0"
 
@@ -125,7 +132,7 @@ class Ui(QtWidgets.QMainWindow):
         self.addItemComboBox.currentTextChanged.connect(self.add_toolbox_item)
         self.addItemComboBox.wheelEvent = lambda stop_wheel_event: None
 
-        # select/deselect all buttons
+        # 'select/deselect all' buttons
         self.selectAllBtn = self.findChild(QtWidgets.QPushButton, "selectBtn")
         self.selectAllBtn.clicked.connect(self.select_all_checkboxes)
         self.deselectAllBtn = self.findChild(QtWidgets.QPushButton, "deselectBtn")
@@ -203,11 +210,11 @@ class Ui(QtWidgets.QMainWindow):
         self.download_features()
 
         # Set item types available in the add item combo box
-        for the_type in self.useful_default_features["values"]["type"]:
-            tye_type_fancy = self.useful_default_features["values"]["type"][the_type]
-            self.addItemComboBox.addItem(tye_type_fancy)
-            if the_type in ICON:
-                icon = QtGui.QIcon(ICON[the_type])
+        for type_key in self.useful_default_features["values"]["type"]:
+            type_value = self.useful_default_features["values"]["type"][type_key]
+            self.addItemComboBox.addItem(type_value)
+            if type_key in ICON:
+                icon = QtGui.QIcon(ICON[type_key])
                 self.addItemComboBox.setItemIcon(self.addItemComboBox.count() - 1, icon)
 
         # Set up the item toolbox
@@ -389,6 +396,7 @@ class Ui(QtWidgets.QMainWindow):
         return the_dir if the_dir != "" else None
 
     # tarallo utilities
+
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
         if bulk_id == "":
             bulk_id = None
@@ -419,6 +427,7 @@ class Ui(QtWidgets.QMainWindow):
             )
 
     # buttons functions
+
     def reset_setup_group(self):
         # reset gpu location
         for radioBtn in self.gpuGroupBox.findChildren(QtWidgets.QRadioButton):
@@ -451,7 +460,11 @@ class Ui(QtWidgets.QMainWindow):
         if self.intMoboRadioBtn.isChecked():
             return peracommon.GpuLocation.MOTHERBOARD
         if self.bothGpuRadioBtn.isChecked():
-            QtWidgets.QMessageBox.information(self, "Warning", "The integrated GPU cannot be detected in this configuration: disconnect the dedicated one and re-run peracotta if you want to parse it, or edit manually.")
+            QtWidgets.QMessageBox.information(
+                self,
+                "Warning",
+                "The integrated GPU cannot be detected in this configuration: disconnect the dedicated one and re-run peracotta if you want to parse it, or edit manually.",
+            )
             return peracommon.GpuLocation.DISCRETE
         else:
             QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
@@ -553,6 +566,7 @@ class Ui(QtWidgets.QMainWindow):
             self.addItemComboBox.setCurrentIndex(0)
 
     # menu actions
+
     def open_json(self, path: str = ""):
         if not path:
             path = self.get_file_directory_dialog()
@@ -576,6 +590,7 @@ class Ui(QtWidgets.QMainWindow):
 
     # the checked parameter exists for QAction::triggered
     # noinspection PyUnusedLocal
+
     def _load_raw_files(self, checked):
         self.load_raw_files()
 
@@ -638,10 +653,7 @@ class PeracottaThread(QtCore.QThread):
     errorEvent = QtCore.pyqtSignal(str, str, name="error")
     startEvent = QtCore.pyqtSignal()
 
-    def __init__(
-        self,
-        main_window: QtWidgets.QMainWindow
-    ):
+    def __init__(self, main_window: QtWidgets.QMainWindow):
         super().__init__()
         self.main_window = main_window
 
@@ -985,9 +997,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
     @staticmethod
     def bmv_match(dict1, dict2) -> bool:
-        return dict1.get("brand") == dict2.get("brand") and \
-               dict1.get("model") == dict2.get("model") and \
-               dict1.get("variant") == dict2.get("variant")
+        return dict1.get("brand") == dict2.get("brand") and dict1.get("model") == dict2.get("model") and dict1.get("variant") == dict2.get("variant")
 
     def set_context_menu(self):
         counter = 0
@@ -1481,23 +1491,43 @@ def tarallo_success_dialog(url: str):
     return False
 
 
+@logger.catch()
+def excepthook(exc_type, exc_value, exc_tb):
+    critical_errors = []  # error classes that should crash the program
+
+    QtWidgets.QMessageBox.warning(None, "Error", f"Peracotta encountered an exception ({exc_type.__name__}).\nSee the logs for the traceback.")
+
+    if any([exc_type is exc_t for exc_t in critical_errors]):
+        QtWidgets.QApplication.quit()
+
+    raise exc_type(exc_value)  # doesn't close the program, but exits the function and shows up on the logs
+
+
 def main():
+    sys.excepthook = excepthook
+    signal.signal(signal.SIGINT, signal.SIG_DFL)  # makes CTRL+C work
+
+    logdir = Path(logdir_path)
+    if not logdir.exists():
+        os.mkdir(logdir)
+
+    stdout_level = "DEBUG" if peracommon.env_to_bool(os.getenv("DEBUG")) else "WARNING"
+    file_level = "DEBUG" if peracommon.env_to_bool(os.getenv("DEBUG")) else "INFO"
+
+    log_format = "{time}\t{message}"
+    logger.remove()
+    logger.add(sys.stdout, format=log_format, level=stdout_level, colorize=True, backtrace=True, diagnose=True)
+    logger.add(logdir.joinpath("peracotta.log"), format=log_format, level=file_level)
+
     # noinspection PyBroadException
-    try:
-        load_dotenv()
-        tarallo_url = env["TARALLO_URL"]
-        tarallo_token = env["TARALLO_TOKEN"]
-        app = QtWidgets.QApplication(sys.argv)
-        # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
-        # noinspection PyUnusedLocal
-        window = Ui(app, tarallo_url, tarallo_token)
-        app.exec_()
-
-    except KeyboardInterrupt:
-        print("KeyboardInterrupt")
-
-    except BaseException:
-        print(traceback.print_exc(file=sys.stdout))
+    load_dotenv()
+    tarallo_url = env["TARALLO_URL"]
+    tarallo_token = env["TARALLO_TOKEN"]
+    app = QtWidgets.QApplication(sys.argv)
+    # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
+    # noinspection PyUnusedLocal
+    window = Ui(app, tarallo_url, tarallo_token)
+    app.exec_()
 
 
 if __name__ == "__main__":

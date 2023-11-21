@@ -520,9 +520,11 @@ def check_required_files(path, is_gui: bool = False):
     return ""
 
 
-def env_to_bool(value: str) -> bool:
-    if value.lower() in ("1", "true", "t", "", "yes", "y"):
-        value = True
-    else:
-        value = False
-    return value
+def env_to_bool(value: str | None) -> bool:
+    try:
+        if value.lower() in ("1", "true", "t", "", "yes", "y"):
+            return True
+    except AttributeError:
+        pass
+
+    return False
