@@ -1,7 +1,7 @@
 import os
 
 import pytest
-from PyQt5 import QtCore, QtTest, QtWidgets
+from PyQt6 import QtCore, QtTest, QtWidgets
 
 # from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo
 

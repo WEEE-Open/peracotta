@@ -1,2 +1,3 @@
 - [ ] Known and non-fatal errors shouldn't crash the program.
 - [ ] Possibly use better sudo management (especially for devices with fingerprint)
+- [ ] Migrate to PySide6? Seems to have a better suppot for Nuitka
