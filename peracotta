@@ -15,10 +15,10 @@ from typing import Dict, List, Optional
 from urllib.error import URLError
 
 # noinspection PyUnresolvedReferences
-import PyQt5.QtWidgets
+import PyQt6.QtWidgets
 from dotenv import load_dotenv
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5.QtCore import QAbstractTableModel
+from PyQt6 import QtCore, QtGui, QtWidgets, uic
+from PyQt6.QtCore import QAbstractTableModel
 from pytarallo import Tarallo
 from pytarallo.Errors import NoInternetConnectionError
 
@@ -104,7 +104,7 @@ class Ui(QtWidgets.QMainWindow):
         self.setWindowIcon(QtGui.QIcon(PATH["ICON"]))
 
         # shortcuts
-        self.refreshThemeShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+R"), self)
+        self.refreshThemeShortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+R"), self)
         self.refreshThemeShortcut.activated.connect(self.refresh_theme)
 
         # Output toolbox
@@ -158,15 +158,15 @@ class Ui(QtWidgets.QMainWindow):
         self.uploadBtn.clicked.connect(self.tarallo_dialog)
 
         # File actions
-        self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
+        self.actionOpen = self.findChild(QtGui.QAction, "actionOpen")
         self.actionOpen.triggered.connect(self.open_json)
-        self.actionOpenLastJson = self.findChild(QtWidgets.QAction, "actionOpenLastJson")
+        self.actionOpenLastJson = self.findChild(QtGui.QAction, "actionOpenLastJson")
         self.actionOpenLastJson.triggered.connect(self.open_latest_json)
-        self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
+        self.actionOpenJson = self.findChild(QtGui.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
-        self.actionLoadRawFiles = self.findChild(QtWidgets.QAction, "actionLoadRawFiles")
+        self.actionLoadRawFiles = self.findChild(QtGui.QAction, "actionLoadRawFiles")
         self.actionLoadRawFiles.triggered.connect(self._load_raw_files)
-        self.actionExit = self.findChild(QtWidgets.QAction, "actionExit")
+        self.actionExit = self.findChild(QtGui.QAction, "actionExit")
         self.actionExit.triggered.connect(self.close)
 
         # Options actions
@@ -180,11 +180,11 @@ class Ui(QtWidgets.QMainWindow):
             action[-1].triggered.connect((lambda t: lambda: self.set_theme(t))(theme))
 
         # Help actions
-        self.actionAboutUs = self.findChild(QtWidgets.QAction, "actionAboutUs")
+        self.actionAboutUs = self.findChild(QtGui.QAction, "actionAboutUs")
         self.actionAboutUs.triggered.connect(self.open_website)
-        self.actionSourceCode = self.findChild(QtWidgets.QAction, "actionSourceCode")
+        self.actionSourceCode = self.findChild(QtGui.QAction, "actionSourceCode")
         self.actionSourceCode.triggered.connect(self.open_source_code)
-        self.actionVersion = self.findChild(QtWidgets.QAction, "actionVersion")
+        self.actionVersion = self.findChild(QtGui.QAction, "actionVersion")
         self.actionVersion.triggered.connect(self.show_version)
 
         # Status bar widgets
@@ -521,7 +521,7 @@ class Ui(QtWidgets.QMainWindow):
             self,
             "Insert sudo password",
             "Insert sudo password:",
-            QtWidgets.QLineEdit.Password,
+            QtWidgets.QLineEdit.EchoMode.Password,
         )
         if ok:
             self.perathread.sudo_passwd = sudo_passwd
@@ -737,7 +737,7 @@ class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
     #         option.displayAlignment = QtCore.Qt.AlignLeft
 
     def createEditor(self, parent, option, index):
-        the_type = str(index.model().data(index, QtCore.Qt.UserRole))
+        the_type = str(index.model().data(index, QtCore.Qt.ItemDataRole.UserRole))
         if the_type == "e":
             editor = QtWidgets.QComboBox(parent)
             editor.currentTextChanged.connect(self.handle_editor_change)
@@ -793,7 +793,7 @@ class CustomTableView(QtWidgets.QTableView):
 
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
         menu = QtWidgets.QMenu(self)
-        remove_action = QtWidgets.QAction("Remove feature", self)
+        remove_action = QtGui.QAction("Remove feature", self)
         remove_action.triggered.connect(self.remove_row)
         menu.addAction(remove_action)
         menu.popup(QtGui.QCursor.pos())
@@ -836,17 +836,17 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.table.setModel(ctm)
         self.table.setShowGrid(False)
         self.table.setAlternatingRowColors(True)
-        self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.table.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.table.verticalScrollBar().hide()
         self.table.verticalScrollBar().resize(0, 0)
         self.main_layout.addWidget(self.table)
-        self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
         self.table.resizeColumnsToContents()
-        self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
 
-        hh = PyQt5.QtWidgets.QHeaderView = self.table.horizontalHeader()
-        hh.setSectionResizeMode(0, PyQt5.QtWidgets.QHeaderView.ResizeToContents)
-        hh.setSectionResizeMode(1, PyQt5.QtWidgets.QHeaderView.Stretch)
+        hh = PyQt6.QtWidgets.QHeaderView = self.table.horizontalHeader()
+        hh.setSectionResizeMode(0, PyQt6.QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        hh.setSectionResizeMode(1, PyQt6.QtWidgets.QHeaderView.ResizeMode.Stretch)
 
     def _do_the_emergency_resize(self):
         self.parentWidget().parentWidget().updateGeometry()
@@ -943,7 +943,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
 
         # remove scroll in toolbox's scrollAreas
         for scroll_area in self.findChildren(QtWidgets.QScrollArea):
-            scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
             scroll_area.verticalScrollBar().hide()
             scroll_area.verticalScrollBar().resize(0, 0)
 
@@ -1004,7 +1004,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         for item in self.children():
             if type(item) == QtWidgets.QAbstractButton:
                 item: QtWidgets.QAbstractButton
-                item.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                item.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
                 item.customContextMenuRequested.connect(self.show_menu)
                 counter += 1
 
@@ -1017,7 +1017,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
     def show_menu(self):
         button = self.sender()
         self.menu = QtWidgets.QMenu()
-        remove_action = QtWidgets.QAction("Remove item", self)
+        remove_action = QtGui.QAction("Remove item", self)
         remove_action.triggered.connect(lambda: self.remove_item_from_toolbox(button))
         self.menu.addAction(remove_action)
         self.menu.popup(QtGui.QCursor.pos())
@@ -1154,7 +1154,7 @@ class CustomTableModel(QAbstractTableModel):
 
     # noinspection PyMethodOverriding
     def headerData(self, section, orientation, role):
-        if role == QtCore.Qt.DisplayRole and orientation == QtCore.Qt.Horizontal:
+        if role == QtCore.Qt.ItemDataRole.DisplayRole and orientation == QtCore.Qt.Orientation.Horizontal:
             if section == 0:
                 return "Feature"
             else:
@@ -1163,9 +1163,9 @@ class CustomTableModel(QAbstractTableModel):
 
     def flags(self, index):
         if index.column() == 1:
-            return QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
+            return QtCore.Qt.ItemFlag.ItemIsEditable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable
         else:
-            return QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable
+            return QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable
 
     def row_all_enum_values_for_editor(self, row: int) -> Optional[Dict[str, str]]:
         if row < 0 or row >= len(self.feature_keys):
@@ -1191,19 +1191,19 @@ class CustomTableModel(QAbstractTableModel):
     #         else:
     #             return None
 
-    def data(self, index, role=QtCore.Qt.DisplayRole):
+    def data(self, index, role=QtCore.Qt.ItemDataRole.DisplayRole):
         row = index.row()
         if row < 0 or row >= len(self.feature_keys):
             return None
 
-        if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole or role == QtCore.Qt.UserRole:
+        if role == QtCore.Qt.ItemDataRole.DisplayRole or role == QtCore.Qt.ItemDataRole.EditRole or role == QtCore.Qt.ItemDataRole.UserRole:
             column = index.column()
             name = self.feature_keys[row]
             if column == 0:
                 return self.default_features["names"].get(name, name)
             elif column == 1:
                 feature_type = self._get_feature_type(name)
-                if role == QtCore.Qt.UserRole:
+                if role == QtCore.Qt.ItemDataRole.UserRole:
                     return feature_type
                 value = self.features[name]
                 if feature_type == "e":
@@ -1212,18 +1212,18 @@ class CustomTableModel(QAbstractTableModel):
                     return prettyprinter.print_feature(name, value, feature_type)
                 else:
                     return value
-        elif role == QtCore.Qt.TextAlignmentRole:
+        elif role == QtCore.Qt.ItemDataRole.TextAlignmentRole:
             column = index.column()
             if column == 0:
-                return QtCore.Qt.AlignLeft + QtCore.Qt.AlignVCenter
+                return QtCore.Qt.AlignmentFlag.AlignLeft + QtCore.Qt.AlignmentFlag.AlignVCenter
             elif column == 1:
-                return QtCore.Qt.AlignLeft + QtCore.Qt.AlignVCenter
+                return QtCore.Qt.AlignmentFlag.AlignLeft + QtCore.Qt.AlignmentFlag.AlignVCenter
 
         return None
 
     # noinspection PyMethodOverriding
     def setData(self, index, value, role):
-        if role == QtCore.Qt.EditRole:
+        if role == QtCore.Qt.ItemDataRole.EditRole:
             row = index.row()
             col = index.column()
             if col != 1:
@@ -1391,14 +1391,14 @@ class JsonWidget(QtWidgets.QDialog):
         super().__init__()
         layout = QtWidgets.QVBoxLayout()
         text_edit = QtWidgets.QPlainTextEdit()
-        text_edit.setWordWrapMode(QtGui.QTextOption.NoWrap)
+        text_edit.setWordWrapMode(QtGui.QTextOption.WrapMode.NoWrap)
         text_edit.setPlainText(f"{json.dumps(data, indent=2)}")
         text_edit.setReadOnly(True)
         layout.addWidget(text_edit)
         self.setLayout(layout)
         new_size = QtCore.QSize(int(window_size.width() * 0.8), int(window_size.height() * 0.8))
         self.resize(new_size)
-        self.exec_()
+        self.exec()
 
 
 class TaralloUploadDialog(QtWidgets.QDialog):
@@ -1473,16 +1473,16 @@ class Uploader(QtCore.QThread):
 
 
 def tarallo_success_dialog(url: str):
-    dialog = QtWidgets.QMessageBox(
-        QtWidgets.QMessageBox.Information,
+    dialog: QtWidgets.QMessageBox = QtWidgets.QMessageBox(
+        QtWidgets.QMessageBox.Icon.Information,
         "Upload successful",
         "Upload successful! Now go to TARALLO and finish the job.",
     )
-    std_width = QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.SP_MessageBoxWarning).availableSizes()[-1].width()
-    dialog.setIconPixmap(QtGui.QPixmap(PATH["ICON"]).scaledToWidth(std_width, QtCore.Qt.SmoothTransformation))
-    dialog.setStandardButtons(QtWidgets.QMessageBox.Ok)
-    view_on_tarallo_button = dialog.addButton("View on TARALLO", dialog.ActionRole)
-    dialog.exec_()
+    std_width = QtWidgets.QApplication.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxWarning).availableSizes()[-1].width()
+    dialog.setIconPixmap(QtGui.QPixmap(PATH["ICON"]).scaledToWidth(std_width, QtCore.Qt.TransformationMode.SmoothTransformation))
+    dialog.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+    view_on_tarallo_button = dialog.addButton("View on TARALLO", dialog.ButtonRole.ActionRole)
+    dialog.exec()
     if dialog.clickedButton() == view_on_tarallo_button:
         url = QtCore.QUrl(url)
         if not QtGui.QDesktopServices.openUrl(url):
@@ -1527,7 +1527,7 @@ def main():
     # This is EXTREMELY IMPORTANT, DON'T TACH [sic], DO NOT REMOVE IT EVER
     # noinspection PyUnusedLocal
     window = Ui(app, tarallo_url, tarallo_token)
-    app.exec_()
+    app.exec()
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ venv:
 	venv/bin/python -m pip install -r requirements-dev.txt
 
 peracotta.bin: peracotta $(COMMON)
-	venv/bin/python -m nuitka --standalone --onefile --enable-plugin=pyqt5 peracotta
+	venv/bin/python -m nuitka --standalone --onefile --enable-plugin=PyQt6 peracotta
 
 peracruda.bin: peracruda $(COMMON)
-	venv/bin/python -m nuitka --standalone --onefile --enable-plugin=pyqt5 peracruda
+	venv/bin/python -m nuitka --standalone --onefile --enable-plugin=PyQt6 peracruda
