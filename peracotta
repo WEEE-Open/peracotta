@@ -530,7 +530,7 @@ class Ui(QtWidgets.QMainWindow):
         if the_dir[0] == "":
             return
         with open(the_dir[0], "w") as file:
-            file.write(f"{json.dumps(peracommon.make_tree(self.data))}")
+            file.write(f"{json.dumps(peracommon.make_tree(self.data), indent=2)}")
 
     def tarallo_dialog(self, bulk_id=str()):
         if len(self.data) == 0:
