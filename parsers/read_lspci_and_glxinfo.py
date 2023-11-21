@@ -175,7 +175,7 @@ def _read_glxinfo_output(gpu: dict, glxinfo_file: str):
             gpu["notes"] += "\n"
         else:
             gpu["notes"] = ""
-        gpu["notes"] += f"Could not find dedicated video memory, check glxinfo output"
+        gpu["notes"] += "Could not find dedicated video memory, check glxinfo output"
 
 
 def _parse_capacity(gpu, tmp_vram, tmp_vram_multiplier):

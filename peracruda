@@ -5,13 +5,12 @@ import json
 import os
 import random
 from datetime import datetime
+from os import environ as env
 from typing import Optional
 
+from dotenv import load_dotenv
 from pytarallo import Tarallo
 from pytarallo.Errors import NoInternetConnectionError
-from dotenv import load_dotenv
-from os import environ as env
-
 from rich import print
 from rich.console import Console
 

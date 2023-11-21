@@ -1,5 +1,6 @@
-import prettyprinter
 import pytest
+
+import prettyprinter
 
 
 @pytest.mark.prettyprint

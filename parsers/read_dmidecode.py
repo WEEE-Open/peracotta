@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import Optional, List
+from typing import List, Optional
 
 connectors_map = {
     "PS/2": "ps2-ports-n",
@@ -241,7 +241,7 @@ def find_connector_from_tuple(connectors, external, external_des, internal, inte
             if mask is None:
                 continue
             if mask.startswith("*") and mask.endswith("*"):
-                if not mask[1:-1] in garbage_from_manufacturer:
+                if mask[1:-1] not in garbage_from_manufacturer:
                     equal = False
                     break
             elif mask.endswith("*"):

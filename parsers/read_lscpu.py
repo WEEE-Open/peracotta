@@ -102,8 +102,8 @@ def parse_lscpu(lscpu: str) -> List[dict]:
 
 
 if __name__ == "__main__":
-    import sys
     import json
+    import sys
 
     try:
         with open(sys.argv[1], "r") as f:

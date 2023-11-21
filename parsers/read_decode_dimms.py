@@ -106,8 +106,8 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
 
 
 if __name__ == "__main__":
-    import sys
     import json
+    import sys
 
     try:
         with open(sys.argv[1], "r") as f:

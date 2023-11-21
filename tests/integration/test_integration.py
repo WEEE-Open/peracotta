@@ -2,14 +2,16 @@ import io
 import os
 import sys
 import time
+
 import pytest
 from dotenv import load_dotenv
+
 import peracommon
 
 
 def import_executable(name):
-    import importlib.util
     import importlib.machinery
+    import importlib.util
 
     spec = importlib.util.spec_from_loader(name, importlib.machinery.SourceFileLoader(name, f"{os.path.dirname(__file__)}/../../{name}"))
     module = importlib.util.module_from_spec(spec)
@@ -77,7 +79,7 @@ def load_dotenv_for_upload():
 @pytest.mark.upload
 def test_upload_pytarallo(args2, monkeypatch, capsys):  # testing pytarallo integration with peracotta
     def auto_bulk_id():  # testing straight upload with automatic bulk_id
-        cli_input = io.StringIO(f"y\n\n")
+        cli_input = io.StringIO("y\n\n")
         monkeypatch.setattr("sys.stdin", cli_input)
         peracruda.upload_to_tarallo(result)
         assert "all went fine" in capsys.readouterr().out.lower()

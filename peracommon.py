@@ -4,11 +4,10 @@ import os
 import subprocess
 import sys
 from enum import Enum
-from typing import Optional, List, Set
-from os import environ as env
+from typing import List, Optional, Set
 
 from parsers.read_decode_dimms import parse_decode_dimms
-from parsers.read_dmidecode import parse_motherboard, parse_case, parse_psu
+from parsers.read_dmidecode import parse_case, parse_motherboard, parse_psu
 from parsers.read_lscpu import parse_lscpu
 from parsers.read_lspci_and_glxinfo import parse_lspci_and_glxinfo
 from parsers.read_smartctl import parse_smartctl
