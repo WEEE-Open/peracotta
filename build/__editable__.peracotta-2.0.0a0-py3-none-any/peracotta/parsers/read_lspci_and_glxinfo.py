@@ -1,0 +1,1 @@
+/home/basilef/Documents/Repos/peracotta/src/parsers/read_lspci_and_glxinfo.py

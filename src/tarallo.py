@@ -2,7 +2,7 @@ import pytarallo.Errors
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
 from pytarallo import Tarallo
 
-from commons import PATH
+from .constants import PATH
 
 
 class Uploader(QtCore.QThread):

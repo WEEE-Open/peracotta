@@ -1,0 +1,1 @@
+/home/basilef/Documents/Repos/peracotta/src/scripts/install_dependencies_all.sh

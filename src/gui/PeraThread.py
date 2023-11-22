@@ -2,7 +2,8 @@ import sys
 
 from PyQt6 import QtCore, QtWidgets
 
-import commons
+from peracotta import commons
+from peracotta.constants import PATH
 
 
 class PeracottaThread(QtCore.QThread):
@@ -16,7 +17,7 @@ class PeracottaThread(QtCore.QThread):
 
         self.gpu_location = None
         self.owner = ""
-        self.files_path = commons.PATH["TMP_FILES"]
+        self.files_path = PATH["TMP_FILES"]
         self.raw_files_path = ""
         self.generate_files = False
         self.filters = set()
@@ -70,7 +71,7 @@ class PeracottaThread(QtCore.QThread):
     def set_default_values(self):
         self.gpu_location = None
         self.owner = ""
-        self.files_path = commons.PATH["TMP_FILES"]
+        self.files_path = PATH["TMP_FILES"]
         self.raw_files_path = ""
         self.generate_files = False
         self.filters = set()

@@ -1,10 +1,11 @@
 from collections import defaultdict
 from typing import Optional
 
-import prettyprinter as prettyprinter
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from commons import ICON, item_only_features
+from . import prettyprinter
+from peracotta.commons import item_only_features
+from peracotta.constants import ICON
 
 
 class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):

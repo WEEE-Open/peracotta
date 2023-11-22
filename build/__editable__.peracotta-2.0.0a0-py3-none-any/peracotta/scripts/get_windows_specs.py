@@ -1,0 +1,1 @@
+/home/basilef/Documents/Repos/peracotta/src/scripts/get_windows_specs.py

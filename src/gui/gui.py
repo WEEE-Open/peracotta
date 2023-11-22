@@ -3,25 +3,19 @@ import os
 import shutil
 import sys
 import time
-from collections import defaultdict
 import urllib.parse
 import urllib.request
+from collections import defaultdict
 from urllib.error import URLError
 
-import urllib3
+from peracotta.commons import ParserComponents, env_to_bool, make_tree
+from peracotta.constants import ICON, PATH, VERSION, URL
+from .PeraThread import PeracottaThread
+from peracotta.tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
+from .Toolbox import ToolBoxWidget
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
 
-from commons import ICON, PATH, VERSION, ParserComponents, env_to_bool, make_tree
-import commons
-from PeraThread import PeracottaThread
-from tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
-from Toolbox import ToolBoxWidget
-
-URL = {
-    "website": "https://weeeopen.polito.it",
-    "source_code": "https://github.com/WEEE-Open/peracotta",
-}
-
+from peracotta import commons
 
 DEFAULT_PROGRESS_BAR_STYLE = (
     "QStatusBar::item {"
@@ -39,14 +33,14 @@ DEFAULT_PROGRESS_BAR_STYLE = (
 )
 
 
-class Ui(QtWidgets.QMainWindow):
+class GUI(QtWidgets.QMainWindow):
     def __init__(
         self,
         app: QtWidgets.QApplication,
         tarallo_url: str,
         tarallo_token: str,
     ) -> None:
-        super(Ui, self).__init__()
+        super(GUI, self).__init__()
         uic.loadUi(PATH["UI"], self)
         self.app = app
         self.uploader = None
@@ -250,7 +244,7 @@ class Ui(QtWidgets.QMainWindow):
 
         if auto_update and time.time() - mtime > 60 * 60 * 12:
             # TODO: etag/if-modified-since
-            request = urllib.request(url=f"{self.tarallo_url}/features.json")
+            request = urllib.request.Request(url=f"{self.tarallo_url}/features.json")
             request.add_header("User-Agent", "peracotta")
             request.add_header("Accept", "application/json")
             self._backup_features_json()
