@@ -1,0 +1,14 @@
+certifi==2023.11.17
+chardet==4.0.0
+colorama==0.4.4
+commonmark==0.9.1
+idna==2.10
+Pygments==2.8.1
+PyQt6==6.6.0
+pytarallo>=2.3.0
+python-dotenv==0.17.0
+requests==2.25.1
+typing-extensions==3.7.4.3
+urllib3==1.26.5
+loguru==0.7.2
+PyQt6

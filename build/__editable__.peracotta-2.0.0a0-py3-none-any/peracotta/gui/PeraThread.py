@@ -1,0 +1,1 @@
+/home/basilef/Documents/Repos/peracotta/src/gui/PeraThread.py

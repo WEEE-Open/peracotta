@@ -1,0 +1,5 @@
+[console_scripts]
+peracruda = peracotta:main_cli
+
+[gui_scripts]
+peracotta = peracotta:main_gui

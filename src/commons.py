@@ -6,11 +6,12 @@ import sys
 from enum import Enum
 from typing import List, Optional, Set
 
-from parsers.read_decode_dimms import parse_decode_dimms
-from parsers.read_dmidecode import parse_case, parse_motherboard, parse_psu
-from parsers.read_lscpu import parse_lscpu
-from parsers.read_lspci_and_glxinfo import parse_lspci_and_glxinfo
-from parsers.read_smartctl import parse_smartctl
+from .constants import VERSION, basedir, ICON
+from .parsers.read_decode_dimms import parse_decode_dimms
+from .parsers.read_dmidecode import parse_case, parse_motherboard, parse_psu
+from .parsers.read_lscpu import parse_lscpu
+from .parsers.read_lspci_and_glxinfo import parse_lspci_and_glxinfo
+from .parsers.read_smartctl import parse_smartctl
 
 
 class InputFileNotFoundError(FileNotFoundError):
@@ -100,10 +101,11 @@ def check_dependencies_for_generate_files():
 
 
 def generate_files(path: str, use_sudo: bool = True, sudo_passwd: str = None):
-    if os.path.exists("scripts/generate_files.pxec"):
+    if os.path.exists(os.path.join(basedir, "scripts/generate_files.pxec")):
         script = "scripts/generate_files.pkexec"
     else:
         script = "scripts/generate_files.sh"
+    script = os.path.join(basedir, script)
     os.makedirs(path, exist_ok=True)
     command = [script, path]
     if use_sudo:

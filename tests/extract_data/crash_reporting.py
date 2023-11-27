@@ -1,4 +1,5 @@
 import time
+
 from requests import Session
 
 url = "http://localhost:9999/crash_report"

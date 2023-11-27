@@ -47,11 +47,11 @@ cd peracotta
 python3 -m venv venv
 source venv/bin/activate
 
-# Install the requirements
-pip install -r requirements.txt
+# Install the package
+pip install .
 
 # Copy the example .env file and edit it to your liking
-cp .env.example .env
+cp .env.example peracotta/.env
 nano .env
 ```
 
@@ -82,13 +82,6 @@ Add this to your .env:
 ```bash
 export GENERATE_FILES_USE_SUDO=0
 ```
-
-#### pkexec
-
-You can run `polkit.py` just once: it will configure pkexec to run generate_files.sh with root privileges. However, the configuration contains hardcoded absolute paths to your generate_files.sh script, so you cannot move it.
-
-Additionally, if anyone edits generate_files.sh, it will be executed with root privileges. Unless you move it to /sbin and change its owner to root:root, this is also not very secure.
-
 #### Manually
 
 Run `sudo generate_files.sh /path/to/output/directory` then load the raw files in peracruda or peracotta. This is probably the safest way, considering that generate_files.sh is pretty short so you can inspect it before running. Everything else will work as usual and won't require root permissions.

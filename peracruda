@@ -8,13 +8,12 @@ from datetime import datetime
 from os import environ as env
 from typing import Optional
 
+import peracotta.commons as peracommon
 from dotenv import load_dotenv
 from pytarallo import Tarallo
 from pytarallo.Errors import NoInternetConnectionError
 from rich import print
 from rich.console import Console
-
-import peracommon
 
 
 def main(the_args):
@@ -112,9 +111,7 @@ def main(the_args):
 
 
 def ask_install_depdendencies():
-    ans = input(
-        "You need to install some packages. Do you want to install them? y/N "
-    ).lower()
+    ans = input("You need to install some packages. Do you want to install them? y/N ").lower()
     if ans == "y":
         install_cmd = "apt install -y pciutils i2c-tools mesa-utils smartmontools dmidecode < /dev/null"
         if os.geteuid() != 0:
@@ -151,22 +148,14 @@ def prompt_to_open_browser():
             egg.print(word, end=" ", style=f"rgb({red},{green},{blue})")
         egg.print(web_link)
     else:
-        print(
-            f"[green]Finished successfully![/] Now you can add this output to the T.A.R.A.L.L.O. -> {web_link}"
-        )
+        print(f"[green]Finished successfully![/] Now you can add this output to the T.A.R.A.L.L.O. -> {web_link}")
 
 
 def upload_to_tarallo(data):
     msg_upload_ok = "[green]All went fine! [/] [blue]\nBye bye! [/]🍐\n"
     msg_upload_failed = "The upload failed. Check above and try to upload on your own"
 
-    ans = (
-        input(
-            "Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): "
-        )
-        .lower()
-        .rstrip()
-    )
+    ans = input("Do you want to automatically upload the JSON to the T.A.R.A.L.L.O ? (Y/n): ").lower().rstrip()
 
     if ans.lower() == "n":
         print("\n[blue]Bye bye! [/]🍐\n")
@@ -177,9 +166,7 @@ def upload_to_tarallo(data):
         t_url = env["TARALLO_URL"]
         t_token = env["TARALLO_TOKEN"]
     except KeyError:
-        raise EnvironmentError(
-            "Missing definitions of TARALLO* environment variables (see the README)"
-        )
+        raise EnvironmentError("Missing definitions of TARALLO* environment variables (see the README)")
 
     while True:
         try:
@@ -192,13 +179,7 @@ def upload_to_tarallo(data):
                 print(msg_upload_ok)
                 break
             else:
-                overwrite = (
-                    input(
-                        "Cannot update, do you want to try overwriting the identifier? (y/N): "
-                    )
-                    .lower()
-                    .rstrip()
-                )
+                overwrite = input("Cannot update, do you want to try overwriting the identifier? (y/N): ").lower().rstrip()
                 if overwrite.lower() == "y":
                     ver = t.bulk_add(data, bulk_id, True)
                     if ver:
@@ -207,10 +188,7 @@ def upload_to_tarallo(data):
                     else:
                         print(msg_upload_failed)
                 else:
-                    bulk_id = input(
-                        "Do you want to use another identifier? Just press enter for an automatic one. "
-                        "You choose (NEW_ID/n): "
-                    ).rstrip()
+                    bulk_id = input("Do you want to use another identifier? Just press enter for an automatic one. " "You choose (NEW_ID/n): ").rstrip()
                     if bulk_id.lower() != "n":
                         if bulk_id == "":
                             bulk_id = None
@@ -222,10 +200,7 @@ def upload_to_tarallo(data):
                             print(msg_upload_failed)
 
         except NoInternetConnectionError:
-            print(
-                "\n[yellow]Unable to reach the T.A.R.A.L.L.O. "
-                "Please connect this PC to the Internet and try again.[/]\n"
-            )
+            print("\n[yellow]Unable to reach the T.A.R.A.L.L.O. " "Please connect this PC to the Internet and try again.[/]\n")
 
 
 def get_gpu(the_args) -> peracommon.GpuLocation:
@@ -279,9 +254,7 @@ def get_gpu(the_args) -> peracommon.GpuLocation:
 
 
 def print_output(output: str, path: str):
-    print(
-        "\nThe following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':\n"
-    )
+    print("\nThe following output can be copy-pasted into the 'Bulk Add' page of the TARALLO, from '[' to ']':\n")
     print(output)
 
     with open(os.path.join(path, "copy_this_to_tarallo.json"), "w") as f:
@@ -295,9 +268,7 @@ def print_output(output: str, path: str):
 
 def get_code() -> Optional[str]:
     if not args.code:
-        code = input(
-            "Does this have a code already? (optional, ENTER to skip): "
-        ).strip()
+        code = input("Does this have a code already? (optional, ENTER to skip): ").strip()
     else:
         code = args.code
     if code and code != "":
@@ -317,8 +288,7 @@ def get_owner() -> Optional[str]:
 
 def generate_parser():
     parser = argparse.ArgumentParser(
-        description="Parse the files generated with generate_files.sh and "
-        "get all the possible info out of them",
+        description="Parse the files generated with generate_files.sh and " "get all the possible info out of them",
         epilog="If no argument is given, then this script will interactively guide you to run the PERACOTTA data gathering package."
         "Alternatively, you can choose to pass either the path to the directory where you want the files to be generated, the gpu location, or both."
         "In this case, the script will only become interactive when needed, and it won't ask you anything if you pass both the path and the gpu location.",
@@ -338,15 +308,9 @@ def generate_parser():
         required=False,
         help="set the code assigned by T.A.R.A.L.L.O",
     )
-    parser.add_argument(
-        "--owner", action="store", default=None, required=False, help="set a owner"
-    )
-    parser.add_argument(
-        "-p", "--parsers", action="store", default=None, required=False, help="which parsers to use"
-    )
-    gpu_group = parser.add_argument_group("GPU Location").add_mutually_exclusive_group(
-        required=False
-    )
+    parser.add_argument("--owner", action="store", default=None, required=False, help="set a owner")
+    parser.add_argument("-p", "--parsers", action="store", default=None, required=False, help="which parsers to use")
+    gpu_group = parser.add_argument_group("GPU Location").add_mutually_exclusive_group(required=False)
     gpu_group.add_argument(
         "-g",
         "--gpu",
