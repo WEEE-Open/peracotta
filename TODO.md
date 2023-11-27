@@ -5,4 +5,7 @@
 - [ ] github Actions to auto-publish to PyPi
 - [ ] Check peracrurda
 - [ ] Add TOML config
-- [ ] Fix logs
+- [x] Fix logs
+- [ ] Properly credit Authors and Mantainers in README and pyproject
+- [ ] Add event logging
+- [ ] Add crash feedback
