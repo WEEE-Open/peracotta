@@ -1,1 +1,0 @@
-/home/basilef/Documents/Repos/peracotta/src/scripts/check_dependencies.sh
