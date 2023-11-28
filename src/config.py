@@ -14,24 +14,24 @@ conf_dirs = [
     basedir,
 ]
 
-for dir in conf_dirs:
-    if dir.exists():
-        conf_dir = dir
+for c_dir in conf_dirs:
+    if c_dir.exists():
+        conf_dir = c_dir
         break
 
 
 def load_conf():
-    load_dotenv(dir.joinpath(".env"))
+    load_dotenv(conf_dir.joinpath(".env"))
 
 
 load_conf()
 
 CONFIG = {
-    "TARALLO_URL": os.environ["TARALLO_URL"],
-    "TARALLO_TOKEN": os.environ["TARALLO_TOKEN"],
-    "TARALLO_FEATURES_AUTO_DOWNLOAD": os.environ["TARALLO_FEATURES_AUTO_DOWNLOAD"],
-    "GENERATE_FILES_USE_SUDO": os.environ["GENERATE_FILES_USE_SUDO"],
-    "GENERATE_FILES_ASK_SUDO_PASSWORD": os.environ["GENERATE_FILES_ASK_SUDO_PASSWORD"],
+    "TARALLO_URL": os.environ.get(["TARALLO_URL"], None),
+    "TARALLO_TOKEN": os.environ.get(["TARALLO_TOKEN"], None),
+    "TARALLO_FEATURES_AUTO_DOWNLOAD": env_to_bool(os.environ.get(["TARALLO_FEATURES_AUTO_DOWNLOAD"], "1")),
+    "GENERATE_FILES_USE_SUDO": env_to_bool(os.environ.get(["GENERATE_FILES_USE_SUDO"], "1")),
+    "GENERATE_FILES_ASK_SUDO_PASSWORD": env_to_bool(os.environ.get(["GENERATE_FILES_ASK_SUDO_PASSWORD"], "1")),
 }
 
 logger.info(f"{conf_dir = }")
