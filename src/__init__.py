@@ -34,8 +34,9 @@ def main_gui():
     signal.signal(signal.SIGINT, signal.SIG_DFL)  # makes CTRL+C work
 
     # noinspection PyUnusedLocal
-    window = GUI(app, CONFIG["TARALLO_URL"], CONFIG["TARALLO_TOKEN"])
+    window = GUI(app, CONFIG["TARALLO_TOKEN"])
     app.exec()
+    logger.info("Started PERACOTTA")
 
 
 def main_cli():
