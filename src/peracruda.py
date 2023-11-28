@@ -8,12 +8,13 @@ from datetime import datetime
 from os import environ as env
 from typing import Optional
 
-import peracotta.commons as peracommon
 from dotenv import load_dotenv
 from pytarallo import Tarallo
 from pytarallo.Errors import NoInternetConnectionError
 from rich import print
 from rich.console import Console
+
+from . import commons as peracommon
 
 
 def main(the_args):
@@ -355,10 +356,14 @@ def generate_parser():
     return parser
 
 
-if __name__ == "__main__":
+def main_():
     args = generate_parser().parse_args()
 
     try:
         main(args)
     except KeyboardInterrupt:
         print("\n[blue]Quitting...[/]")
+
+
+if __name__ == "__main__":
+    main_()

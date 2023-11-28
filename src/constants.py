@@ -4,7 +4,6 @@ import pathlib
 from pkg_resources import resource_filename
 
 basedir = pathlib.Path(resource_filename("peracotta", ".")).resolve()
-print(basedir)
 
 logdir_path = basedir.joinpath("logs")
 
