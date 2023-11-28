@@ -1,5 +1,6 @@
-from peracotta.peralog import logger
 from PyQt6 import QtWidgets
+
+from peracotta.peralog import logger
 
 critical_errors = []  # error classes that should crash the program
 
