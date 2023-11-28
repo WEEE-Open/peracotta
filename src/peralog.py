@@ -1,11 +1,11 @@
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
+
 from loguru import logger
 
 from .commons import env_to_bool
 from .constants import logdir_path
-
 
 logdir = Path(logdir_path)
 if not logdir.exists():

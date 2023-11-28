@@ -4,12 +4,12 @@ import sys
 
 from PyQt6 import QtWidgets
 
+from . import peracruda
 from .commons import env_to_bool
 from .config import CONFIG
 from .constants import VERSION
 from .gui import GUI, gui_excepthook
-from .peralog import logger, logdir_path
-from . import peracruda
+from .peralog import logdir_path, logger
 
 
 def common_args_parsing():
