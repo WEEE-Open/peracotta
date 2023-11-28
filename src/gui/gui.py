@@ -17,6 +17,7 @@ from peracotta.config import conf_dir, CONFIG
 from peracotta.constants import ICON, PATH, URL, VERSION
 from peracotta.tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
 from peracotta.peralog import logger
+from .exceptions import MissingFeaturesError
 
 from .PeraThread import PeracottaThread
 from .Toolbox import ToolBoxWidget
@@ -51,7 +52,7 @@ class GUI(QtWidgets.QMainWindow):
         self.taralloDialog = None
         self.data = list(dict())
         self.tarallo_token = tarallo_token
-        self.useful_default_features = dict()
+        self.features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
         self.active_theme = str()
 
@@ -160,18 +161,18 @@ class GUI(QtWidgets.QMainWindow):
 
     def setup(self):
         self.set_theme(self.settings.value("last_theme"))
-        self.ensure_features()
+        self.load_features_file(CONFIG["TARALLO_FEATURES_AUTO_DOWNLOAD"])
 
         # Set item types available in the add item combo box
-        for type_key in self.useful_default_features["values"]["type"]:
-            type_value = self.useful_default_features["values"]["type"][type_key]
+        for type_key in self.features["values"]["type"]:
+            type_value = self.features["values"]["type"][type_key]
             self.addItemComboBox.addItem(type_value)
             if type_key in ICON:
                 icon = QtGui.QIcon(ICON[type_key])
                 self.addItemComboBox.setItemIcon(self.addItemComboBox.count() - 1, icon)
 
         # Set up the item toolbox
-        self.itemToolBox = ToolBoxWidget(self.data, self.useful_default_features, self.encountered_types_count)
+        self.itemToolBox = ToolBoxWidget(self.data, self.features, self.encountered_types_count)
         self.outputScrollArea.setWidget(self.itemToolBox)
 
         self.reset_toolbox()
@@ -186,97 +187,77 @@ class GUI(QtWidgets.QMainWindow):
             layout.addWidget(checkbox)
         self.reset_setup_group()
 
-    def ensure_features(self):
-        # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
-        tarallo_auto_download = CONFIG["TARALLO_FEATURES_AUTO_DOWNLOAD"]
-        try:
-            self.load_features_file(tarallo_auto_download)
-        except Exception as e:
-            title = "ERROR"
-            message = f"Failed to load features: {str(e)}"
-            QtWidgets.QMessageBox.critical(
-                self,
-                title,
-                message + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.",
-            )
-            exit(1)
+    @staticmethod
+    def backup_features_json():
+        here: str = os.path.dirname(os.path.realpath(__file__))
+        shutil.copy2(
+            os.path.join(conf_dir, "features.json"),
+            os.path.join(conf_dir, "features.json.bak"),
+        )
 
     @staticmethod
-    def backup_features_json() -> bool:
+    def restore_features_json():
         here = os.path.dirname(os.path.realpath(__file__))
-        try:
-            shutil.copy2(
-                os.path.join(conf_dir, "features.json"),
-                os.path.join(conf_dir, "features.json.bak"),
-            )
-        except FileNotFoundError:
-            return False
-        return True
-
-    @staticmethod
-    def restore_features_json() -> bool:
-        here = os.path.dirname(os.path.realpath(__file__))
-        try:
-            shutil.move(
-                os.path.join(conf_dir, "features.json.bak"),
-                os.path.join(conf_dir, "features.json"),
-            )
-        except FileNotFoundError:
-            return False
-        return True
+        shutil.move(
+            os.path.join(conf_dir, "features.json.bak"),
+            os.path.join(conf_dir, "features.json"),
+        )
 
     def load_features_file(self, auto_update: bool):
-        self.useful_default_features = {}
+        self.features = {}
         has_file = False
         error = None
 
         try:
             mtime = os.path.getmtime(PATH["FEATURES"])
+            self.backup_features_json()
             has_file = True
         except FileNotFoundError:
             mtime = 0
 
         if auto_update and time.time() - mtime > 60 * 60 * 12:
-            self.backup_features_json()
             try:
-                response = requests.get(f"{CONFIG['TARALLO_URL']}/features.json", headers={"User-Agent": 'peracotta', "Accept": "application/json"})
+                response = requests.get(f"{CONFIG['TARALLO_URL']}/features.json", headers={"User-Agent": "peracotta", "Accept": "application/json"})
 
                 with open(os.path.join(conf_dir, "features.json"), "wb") as fs:
                     json.dump(response.json(), fs)
 
                 has_file = True
-            except URLError as e:
-                self.restore_features_json()
-                if hasattr(e, "reason"):
-                    raise e("Connection error")
-                elif hasattr(e, "code"):
-                    raise e("Server error")
+            except requests.exceptions.ConnectionError as e:
+                logger.exception("Couldn't connect to TARALLO")
+                QtWidgets.QMessageBox.warning(None, "Error", f"Couldn't connect to TARALLO to update features.json")
+            except Exception as e:
+                logger.exception(e)
+            finally:
+                if not has_file:
+                    try:
+                        self.restore_features_json()
+                        has_file = True
+                    except FileNotFoundError as e:
+                        pass
 
         if has_file:
-            self._parse_features_file()
+            self.parse_features_file()
+        else:
+            raise MissingFeaturesError("features.json file not present")
 
-        if error:
-            raise Exception(error)
-        if not has_file and not auto_update:
-            raise Exception("features.json file not present and automatic download is disabled")
-
-    def _parse_features_file(self):
+    def parse_features_file(self):
         with open(PATH["FEATURES"], "r") as file:
-            default_feature_names = {}
-            default_feature_types = {}
-            default_feature_values = {}
-            default_features = json.load(file)
-            for group in default_features["features"]:
-                for feature in default_features["features"][group]:
+            feature_names = {}
+            feature_types = {}
+            feature_values = {}
+            features = json.load(file)
+            for group in features["features"]:
+                for feature in features["features"][group]:
                     name = feature["name"]
-                    default_feature_names[name] = feature["printableName"]
-                    default_feature_types[name] = feature["type"]
+                    feature_names[name] = feature["printableName"]
+                    feature_types[name] = feature["type"]
                     if "values" in feature:
-                        default_feature_values[name] = feature["values"]
-            self.useful_default_features = {
-                "names": default_feature_names,
-                "types": default_feature_types,
-                "values": default_feature_values,
+                        feature_values[name] = feature["values"]
+            self.features = {
+                "names": feature_names,
+                "types": feature_types,
+                "values": feature_values,
             }
 
     # gui utilities
@@ -342,7 +323,7 @@ class GUI(QtWidgets.QMainWindow):
 
     def tarallo_success(self, code: str):
         self.uploader = None
-        url = f"{CONFIG["TARALLO_URL"]}/bulk/import#{urllib.parse.quote(code)}"
+        url = f"{CONFIG['TARALLO_URL']}/bulk/import#{urllib.parse.quote(code)}"
         tarallo_success_dialog(url)
 
     def tarallo_failure(self, case: str, bulk_id: str):
