@@ -24,3 +24,4 @@ publish.sh
 dist/
 build/
 *.egg-info
+logs
