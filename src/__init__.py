@@ -31,7 +31,8 @@ def main_gui():
 
     app = QtWidgets.QApplication(sys.argv)
     sys.excepthook = gui_excepthook
-    signal.signal(signal.SIGINT, signal.SIG_DFL)  # makes CTRL+C work
+    # makes CTRL+ C work
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     # noinspection PyUnusedLocal
     window = GUI(app, CONFIG["TARALLO_TOKEN"])
