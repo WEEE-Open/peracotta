@@ -9,16 +9,18 @@ from collections import defaultdict
 from urllib.error import URLError
 
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
+import requests
 
 from peracotta import commons
 from peracotta.commons import ParserComponents, env_to_bool, make_tree
-from peracotta.config import conf_dir
+from peracotta.config import conf_dir, CONFIG
 from peracotta.constants import ICON, PATH, URL, VERSION
-from peracotta.tarallo import (TaralloUploadDialog, Uploader,
-                               tarallo_success_dialog)
+from peracotta.tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
+from peracotta.peralog import logger
 
 from .PeraThread import PeracottaThread
 from .Toolbox import ToolBoxWidget
+
 
 DEFAULT_PROGRESS_BAR_STYLE = (
     "QStatusBar::item {"
@@ -40,7 +42,6 @@ class GUI(QtWidgets.QMainWindow):
     def __init__(
         self,
         app: QtWidgets.QApplication,
-        tarallo_url: str,
         tarallo_token: str,
     ) -> None:
         super(GUI, self).__init__()
@@ -49,7 +50,6 @@ class GUI(QtWidgets.QMainWindow):
         self.uploader = None
         self.taralloDialog = None
         self.data = list(dict())
-        self.tarallo_url = tarallo_url
         self.tarallo_token = tarallo_token
         self.useful_default_features = dict()
         self.encountered_types_count = defaultdict(lambda: 0)
@@ -159,9 +159,8 @@ class GUI(QtWidgets.QMainWindow):
         self.setup()
 
     def setup(self):
-        self.get_settings()
-        self.set_theme(self.active_theme)
-        self.download_features()
+        self.set_theme(self.settings.value("last_theme"))
+        self.ensure_features()
 
         # Set item types available in the add item combo box
         for type_key in self.useful_default_features["values"]["type"]:
@@ -187,31 +186,23 @@ class GUI(QtWidgets.QMainWindow):
             layout.addWidget(checkbox)
         self.reset_setup_group()
 
-    def download_features(self):
+    def ensure_features(self):
         # self.useful_default_features must be set correctly, otherwise the GUI will fail to load
+        tarallo_auto_download = CONFIG["TARALLO_FEATURES_AUTO_DOWNLOAD"]
         try:
-            tarallo_auto_download = env_to_bool(os.environ.get("TARALLO_FEATURES_AUTO_DOWNLOAD", "1"))
             self.load_features_file(tarallo_auto_download)
         except Exception as e:
-            title = "Cannot download features"
-            message = f"Failed to download features from TARALLO: {str(e)}"
-            if self.useful_default_features == {}:
-                QtWidgets.QMessageBox.critical(
-                    self,
-                    title,
-                    message + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.",
-                )
-                exit(1)
-            else:
-                QtWidgets.QMessageBox.warning(self, title, message)
-
-    def get_settings(self):
-        self.active_theme = self.settings.value("last_theme")
-        if self.active_theme is None:
-            self.active_theme = "default"
+            title = "ERROR"
+            message = f"Failed to load features: {str(e)}"
+            QtWidgets.QMessageBox.critical(
+                self,
+                title,
+                message + "\n\nPeracotta will now terminate.\nIf the problem persists, you can try peracruda instead.",
+            )
+            exit(1)
 
     @staticmethod
-    def _backup_features_json() -> bool:
+    def backup_features_json() -> bool:
         here = os.path.dirname(os.path.realpath(__file__))
         try:
             shutil.copy2(
@@ -223,7 +214,7 @@ class GUI(QtWidgets.QMainWindow):
         return True
 
     @staticmethod
-    def _restore_features_json() -> bool:
+    def restore_features_json() -> bool:
         here = os.path.dirname(os.path.realpath(__file__))
         try:
             shutil.move(
@@ -246,27 +237,20 @@ class GUI(QtWidgets.QMainWindow):
             mtime = 0
 
         if auto_update and time.time() - mtime > 60 * 60 * 12:
-            # TODO: etag/if-modified-since
-            request = urllib.request.Request(url=f"{self.tarallo_url}/features.json")
-            request.add_header("User-Agent", "peracotta")
-            request.add_header("Accept", "application/json")
-            self._backup_features_json()
-            # noinspection PyBroadException
+            self.backup_features_json()
             try:
-                with urllib.request.urlopen(request) as response:
-                    with open(os.path.join(conf_dir, "features.json"), "wb") as out:
-                        shutil.copyfileobj(response, out)
-                        has_file = True
-            except URLError as e:
-                if hasattr(e, "reason"):
-                    error = "Connection error: " + str(e.reason)
-                elif hasattr(e, "code"):
-                    error = "Server error: " + str(e.code)
-            except Exception as e:
-                error = "Some error: " + str(e)
+                response = requests.get(f"{CONFIG['TARALLO_URL']}/features.json", headers={"User-Agent": 'peracotta', "Accept": "application/json"})
 
-            if error:
-                has_file = self._restore_features_json()
+                with open(os.path.join(conf_dir, "features.json"), "wb") as fs:
+                    json.dump(response.json(), fs)
+
+                has_file = True
+            except URLError as e:
+                self.restore_features_json()
+                if hasattr(e, "reason"):
+                    raise e("Connection error")
+                elif hasattr(e, "code"):
+                    raise e("Server error")
 
         if has_file:
             self._parse_features_file()
@@ -306,16 +290,13 @@ class GUI(QtWidgets.QMainWindow):
         if not QtGui.QDesktopServices.openUrl(url):
             QtWidgets.QMessageBox.warning(self, "Cannot Open Url", f"Could not open url {url_type}")
 
-    def set_theme(self, theme: str):
-        if theme == "default":
-            self.app.setStyleSheet("")
-            self.app.setStyleSheet("QWidget {" "font-size: 10pt;" "}")
-            self.active_theme = "default"
-        else:
-            with open(f"{PATH['THEMES']}{theme}.css", "r") as file:
-                self.app.setStyleSheet(file.read())
+    def set_theme(self, theme: str = "default"):
+        logger.debug(f"Setting theme {theme}")
+        with open(f"{PATH['THEMES']}{theme}.css", "r") as file:
+            self.app.setStyleSheet(file.read())
         self.settings.setValue("last_theme", theme)
         self.active_theme = theme
+        logger.debug(f"Done setting theme")
 
     def refresh_theme(self):
         if self.active_theme == "default":
@@ -354,14 +335,14 @@ class GUI(QtWidgets.QMainWindow):
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
         if bulk_id == "":
             bulk_id = None
-        self.uploader = Uploader(make_tree(self.data), self.tarallo_url, self.tarallo_token, bulk_id, checkbox)
+        self.uploader = Uploader(make_tree(self.data), CONFIG["TARALLO_URL"], self.tarallo_token, bulk_id, checkbox)
         self.uploader.successEvent.connect(self.tarallo_success)
         self.uploader.failureEvent.connect(self.tarallo_failure)
         self.uploader.start()
 
     def tarallo_success(self, code: str):
         self.uploader = None
-        url = f"{self.tarallo_url}/bulk/import#{urllib.parse.quote(code)}"
+        url = f"{CONFIG["TARALLO_URL"]}/bulk/import#{urllib.parse.quote(code)}"
         tarallo_success_dialog(url)
 
     def tarallo_failure(self, case: str, bulk_id: str):
