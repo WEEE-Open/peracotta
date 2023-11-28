@@ -7,12 +7,16 @@ from PyQt6 import QtWidgets
 from .commons import env_to_bool
 from .config import CONFIG
 from .constants import VERSION
-from .gui import GUI
-from .peralog import excepthook, logger, logdir_path
+from .gui import GUI, gui_excepthook
+from .peralog import logger, logdir_path
 from . import peracruda
 
 
-def main_gui():
+def common_args_parsing():
+    """Parse arguments common to both GUI and CLI version
+    --version prints the current version and quits.
+    --logs prints the path where logs are stored and quits.
+    """
     if ["--version"] in sys.argv:
         print(f"P.E.R.A.C.O.T.T.A. Version {VERSION}")
         exit(0)
@@ -21,12 +25,14 @@ def main_gui():
         print(f"P.E.R.A.C.O.T.T.A.'s logs are located in {logdir_path}")
         exit(0)
 
+
+def main_gui():
+    common_args_parsing()
+
     app = QtWidgets.QApplication(sys.argv)
-    sys.excepthook = excepthook
+    sys.excepthook = gui_excepthook
     signal.signal(signal.SIGINT, signal.SIG_DFL)  # makes CTRL+C work
 
-    tarallo_url = os.environ["TARALLO_URL"]
-    tarallo_token = os.environ["TARALLO_TOKEN"]
     # noinspection PyUnusedLocal
     window = GUI(app, CONFIG["TARALLO_URL"], CONFIG["TARALLO_TOKEN"])
     app.exec()
@@ -34,4 +40,5 @@ def main_gui():
 
 def main_cli():
     print("Sorry, peracruda isn't implemented in v2 yet! Use the old one at https://github.com/WEEE-Open/peracotta")
+    common_args_parsing()
     # peracruda.main_()
