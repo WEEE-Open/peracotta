@@ -1,9 +1,8 @@
 import os
-import pathlib
 
-from pkg_resources import resource_filename
+import importlib.resources
 
-basedir = pathlib.Path(resource_filename("peracotta", ".")).resolve()
+basedir = importlib.resources.files("peracotta")
 
 logdir_path = basedir.joinpath("logs")
 
