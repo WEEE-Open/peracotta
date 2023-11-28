@@ -8,14 +8,17 @@ import urllib.request
 from collections import defaultdict
 from urllib.error import URLError
 
-from peracotta.commons import ParserComponents, env_to_bool, make_tree
-from peracotta.constants import ICON, PATH, VERSION, URL
-from .PeraThread import PeracottaThread
-from peracotta.tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
-from .Toolbox import ToolBoxWidget
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
 
 from peracotta import commons
+from peracotta.commons import ParserComponents, env_to_bool, make_tree
+from peracotta.config import conf_dir
+from peracotta.constants import ICON, PATH, URL, VERSION
+from peracotta.tarallo import (TaralloUploadDialog, Uploader,
+                               tarallo_success_dialog)
+
+from .PeraThread import PeracottaThread
+from .Toolbox import ToolBoxWidget
 
 DEFAULT_PROGRESS_BAR_STYLE = (
     "QStatusBar::item {"
@@ -212,8 +215,8 @@ class GUI(QtWidgets.QMainWindow):
         here = os.path.dirname(os.path.realpath(__file__))
         try:
             shutil.copy2(
-                os.path.join(here, "features.json"),
-                os.path.join(here, "features.json.bak"),
+                os.path.join(conf_dir, "features.json"),
+                os.path.join(conf_dir, "features.json.bak"),
             )
         except FileNotFoundError:
             return False
@@ -224,8 +227,8 @@ class GUI(QtWidgets.QMainWindow):
         here = os.path.dirname(os.path.realpath(__file__))
         try:
             shutil.move(
-                os.path.join(here, "features.json.bak"),
-                os.path.join(here, "features.json"),
+                os.path.join(conf_dir, "features.json.bak"),
+                os.path.join(conf_dir, "features.json"),
             )
         except FileNotFoundError:
             return False
@@ -251,7 +254,7 @@ class GUI(QtWidgets.QMainWindow):
             # noinspection PyBroadException
             try:
                 with urllib.request.urlopen(request) as response:
-                    with open("features.json", "wb") as out:
+                    with open(os.path.join(conf_dir, "features.json"), "wb") as out:
                         shutil.copyfileobj(response, out)
                         has_file = True
             except URLError as e:

@@ -6,7 +6,7 @@ import sys
 from enum import Enum
 from typing import List, Optional, Set
 
-from .constants import VERSION, basedir, ICON
+from .constants import basedir
 from .parsers.read_decode_dimms import parse_decode_dimms
 from .parsers.read_dmidecode import parse_case, parse_motherboard, parse_psu
 from .parsers.read_lscpu import parse_lscpu
