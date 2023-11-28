@@ -29,7 +29,7 @@ dependencies = [
   "typing-extensions==3.7.4.3",
   "urllib3==1.26.5",
   "loguru==0.7.2",
-  "PyQt6"
+  "PyQt6==6.6.0"
 ]
 
 [project.scripts]
