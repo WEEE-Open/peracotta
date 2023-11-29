@@ -66,7 +66,7 @@ class GUI(QtWidgets.QMainWindow):
         self.itemToolBox = None
 
         # App settings
-        self.settings = QtCore.QSettings("WEEE Open", "PERACOTTA")
+        self.settings: QtCore.QSettings = QtCore.QSettings("WEEE Open", "PERACOTTA")
 
         # Gpu location layout
         self.gpuGroupBox = self.findChild(QtWidgets.QGroupBox, "gpuGroupBox")
@@ -159,7 +159,7 @@ class GUI(QtWidgets.QMainWindow):
         self.setup()
 
     def setup(self):
-        self.set_theme(self.settings.value("last_theme"))
+        self.set_theme(self.settings.value("last_theme", "default"))
         self.load_features_file(CONFIG["TARALLO_FEATURES_AUTO_DOWNLOAD"])
 
         # Set item types available in the add item combo box
