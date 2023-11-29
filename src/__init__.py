@@ -35,7 +35,7 @@ def main_gui():
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     # noinspection PyUnusedLocal
-    window = GUI(app, CONFIG["TARALLO_TOKEN"])
+    window = GUI(app)
     app.exec()
     logger.info("Started PERACOTTA")
 
