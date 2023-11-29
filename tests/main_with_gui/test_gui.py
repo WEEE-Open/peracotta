@@ -1,61 +1,30 @@
 import os
+import sys
 
 import pytest
+import pytestqt
 from PyQt6 import QtCore, QtTest, QtWidgets
 
-# from main_with_gui import Welcome, FilesGenerated, GPU, DataToTarallo
 
-gpu_loc_file = "gpu_location.txt"
+from peracotta import CONFIG
+from peracotta.gui import GUI
 
-test_folders = [entries for entries in os.listdir("tests/source_files/") if os.path.isdir(f"tests/source_files/{entries}")]
-for fold in set(test_folders):
-    if "baseboard.txt" not in os.listdir(f"tests/source_files/{fold}"):
-        test_folders.remove(fold)
-
-
-@pytest.fixture(params=test_folders)
-def folders(request):
-    return request.param
+from pytestqt import qt_compat
+from pytestqt.qt_compat import qt_api
 
 
 @pytest.fixture
-def open_welcome(qtbot):
-    def callback(window):
-        widget = window(QtWidgets.QMainWindow)
-        qtbot.addWidget(widget)
-        widget.show()
-        qtbot.wait_for_window_shown(widget)
-        return widget
-
-    return callback
-
-
-@pytest.fixture
-def open_filesgen(qtbot):
-    def callback(window, gpu_loc: GPU):
-        widget = window(Welcome, gpu_loc)
-        qtbot.addWidget(widget)
-        widget.show()
-        qtbot.wait_for_window_shown(widget)
-        # QtTest.QTest.qWait(3 * 1000)
-        return widget
-
-    return callback
-
-
-def get_gpu_location(directory):
-    with open(os.path.join(directory, gpu_loc_file)) as f:
-        return GPU(f.read())
+def widget(qtbot):
+    app = QtWidgets.QApplication.instance()
+    window = GUI(app, CONFIG["TARALLO_TOKEN"])
+    qtbot.addWidget(window)
+    return window
 
 
 @pytest.mark.gui
-class TestVisibleWindow:
-    def test_visible_welcome(self, open_welcome, qtbot):
-        widget = open_welcome(Welcome)
-        assert widget.isVisible()
-
-    def test_visible_filesgen(self, open_filesgen, qtbot):
-        widget = open_filesgen(FilesGenerated, GPU.dec_gpu)
+class TestGui:
+    def test_visible(self, widget, qtbot) -> None:
+        widget.show()
         assert widget.isVisible()
 
 
@@ -74,7 +43,7 @@ class TestDataTarallo:
         assert text == "Everything went fine, what do you want to do?"
         messagebox.close()
 
-    def def_gpu_location(self, gpu_loc):
+    """ def def_gpu_location(self, gpu_loc):
         if gpu_loc == GPU.int_mobo:
             has_dedicated_gpu = False
             gpu_in_cpu = False
@@ -137,3 +106,4 @@ class TestDataTarallo:
         self.press_upload(widget, qtbot)
         QtTest.QTest.qWait(100)
         self.check_result()
+ """
