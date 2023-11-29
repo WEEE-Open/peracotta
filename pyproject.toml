@@ -5,12 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "peracotta"
 dynamic = ["version"]
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 license = { file = "LICENSE" }
 readme = "README.md"
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.9",
   "Environment :: X11 Applications :: Qt",
   "License :: OSI Approved :: MIT License",
 ]
@@ -21,7 +22,7 @@ dependencies = [
   "colorama==0.4.4",
   "commonmark==0.9.1",
   "idna==2.10",
-  "Pygments==2.8.1",
+  "Pygments>=2.0.0",
   "PyQt6==6.6.0",
   "pytarallo>=2.3.0",
   "python-dotenv==0.17.0",
@@ -29,7 +30,8 @@ dependencies = [
   "typing-extensions==3.7.4.3",
   "urllib3==1.26.5",
   "loguru==0.7.2",
-  "PyQt6==6.6.0"
+  "PyQt6==6.6.0",
+  "rich>=13.0.0"
 ]
 
 [project.scripts]
