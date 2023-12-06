@@ -17,21 +17,17 @@ classifiers = [
 ]
 
 dependencies = [
-  "certifi==2023.11.17",
-  "chardet==4.0.0",
-  "colorama==0.4.4",
-  "commonmark==0.9.1",
-  "idna==2.10",
-  "Pygments>=2.0.0",
-  "PyQt6==6.6.0",
-  "pytarallo>=2.3.0",
-  "python-dotenv==0.17.0",
-  "requests==2.25.1",
-  "typing-extensions==3.7.4.3",
-  "urllib3==1.26.5",
-  "loguru==0.7.2",
-  "PyQt6==6.6.0",
-  "rich>=13.0.0"
+  "colorama==0.4",
+  "commonmark==0.9",
+  "PyQt6>=6.6",
+  "pytarallo>=2.3",
+  "python-dotenv==0.17",
+  "requests==2.25",
+  "typing-extensions>=3.7.4",
+  "urllib3>=1.26",
+  "loguru>=0.7",
+  "rich>=13.0",
+  "requests>=2.25"
 ]
 
 [project.scripts]
