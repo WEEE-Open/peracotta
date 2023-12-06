@@ -1,11 +1,13 @@
 - [x] Known and non-fatal errors shouldn't crash the program.
 - [ ] Known and fatal errors should crash the program
+- [ ] Handle in-thread exceptions
 - [ ] Possibly use better sudo management (especially for devices with fingerprint)
 - [ ] Migrate to PySide6? Seems to have a better suppot for Nuitka
 - [ ] github Actions to auto-publish to PyPi
-- [ ] Check peracrurda
+- [ ] Check peracruda
 - [ ] Add TOML config
 - [x] Fix logs
 - [ ] Properly credit Authors and Mantainers in README and pyproject
 - [ ] Add event logging
 - [ ] Add crash feedback
+- [ ] Add tests

@@ -39,20 +39,8 @@ You can load those files in `peracruda` (`-f` option) or `peracotta` (`File > Lo
 ## How to install and run
 
 ```bash
-# Clone this repo
-git clone https://github.com/weee-open/peracotta
-
-# Make a virtual environment and activate it
-cd peracotta
-python3 -m venv venv
-source venv/bin/activate
-
-# Install the package
-pip install .
-
-# Copy the example .env file and edit it to your liking
-cp .env.example peracotta/.env
-nano .env
+sudo apt install libxcb-cursor-dev
+pip install peracotta
 ```
 
 ### Privileges and sudo
