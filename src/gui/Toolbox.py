@@ -260,7 +260,7 @@ class CustomTableModel(QtCore.QAbstractTableModel):
                     maybe["features"][feature] = value
 
         # Finally, update product itself
-        self.product[feature] = value
+        self.ref_product[feature] = value
 
     def removeRow(self, row: int, parent: QtCore.QModelIndex() = ...) -> bool:
         # TODO: remove this limitation asd
