@@ -17,11 +17,11 @@ def common_args_parsing():
     --version prints the current version and quits.
     --logs prints the path where logs are stored and quits.
     """
-    if ["--version"] in sys.argv:
+    if any([s in sys.argv for s in ["--version", "-v"]]):
         print(f"P.E.R.A.C.O.T.T.A. Version {VERSION}")
         exit(0)
 
-    if ["--logs"] in sys.argv:
+    if "--logs" in sys.argv:
         print(f"P.E.R.A.C.O.T.T.A.'s logs are located in {logdir_path}")
         exit(0)
 
