@@ -3,21 +3,11 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from .constants import basedir
 from .commons import env_to_bool
 
 home_dir = Path().home()
-conf_dirs = [
-    home_dir.joinpath(".config/peracotta"),
-    home_dir.joinpath("peracotta"),
-    Path("/etc/peracotta"),
-    basedir,
-]
 
-for c_dir in conf_dirs:
-    if c_dir.exists():
-        conf_dir = c_dir
-        break
+conf_dir = home_dir.joinpath(".config/peracotta")
 
 
 def load_conf():
