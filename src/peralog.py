@@ -5,9 +5,9 @@ from pathlib import Path
 from loguru import logger
 
 from .commons import env_to_bool
-from .constants import logdir_path
+from .config import conf_dir
 
-logdir = Path(logdir_path)
+logdir = Path(conf_dir)
 if not logdir.exists():
     os.mkdir(logdir)
 
@@ -18,3 +18,5 @@ log_format = "{time}\t{message}"
 logger.remove()
 logger.add(sys.stdout, format=log_format, level=stdout_level, colorize=True, backtrace=True, diagnose=True)
 logger.add(logdir.joinpath("peracotta.log"), format=log_format, level=file_level)
+
+logger.info(f"{conf_dir = }")

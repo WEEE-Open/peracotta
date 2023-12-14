@@ -9,7 +9,7 @@ from .commons import env_to_bool
 from .config import CONFIG
 from .constants import VERSION
 from .gui import GUI, gui_excepthook
-from .peralog import logdir_path, logger
+from .peralog import logdir, logger
 
 
 def common_args_parsing():
@@ -22,7 +22,7 @@ def common_args_parsing():
         exit(0)
 
     if "--logs" in sys.argv:
-        print(f"P.E.R.A.C.O.T.T.A.'s logs are located in {logdir_path}")
+        print(f"P.E.R.A.C.O.T.T.A.'s logs are located in {logdir.as_posix()}")
         exit(0)
 
 
