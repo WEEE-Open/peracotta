@@ -7,7 +7,7 @@ from loguru import logger
 from .commons import env_to_bool
 from .config import conf_dir
 
-logdir = Path(conf_dir)
+logdir = Path(conf_dir).joinpath("logs")
 if not logdir.exists():
     os.mkdir(logdir)
 

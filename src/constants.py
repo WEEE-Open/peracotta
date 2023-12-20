@@ -4,14 +4,12 @@ import importlib.resources
 
 basedir = importlib.resources.files("peracotta")
 
-logdir_path = basedir.joinpath("logs")
-
 URL = {
     "website": "https://weeeopen.polito.it",
     "source_code": "https://github.com/WEEE-Open/peracotta",
 }
 
-VERSION = "2.2.5"
+VERSION = "2.2.6"
 
 PATH = {
     "UI": "assets/interface.ui",
