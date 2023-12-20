@@ -209,8 +209,8 @@ class GUI(QtWidgets.QMainWindow):
             try:
                 response = requests.get(f"{CONFIG['TARALLO_URL']}/features.json", headers={"User-Agent": "peracotta", "Accept": "application/json"})
 
-                with open(conf_dir.joinpath("features.json"), "wb") as fs:
-                    json.dump(response.json(), fs)
+                with open(conf_dir.joinpath("features.json"), "w") as fs:
+                    fs.write(response.json())
 
                 has_file = True
             except requests.exceptions.ConnectionError as e:
