@@ -210,7 +210,7 @@ class GUI(QtWidgets.QMainWindow):
                 response = requests.get(f"{CONFIG['TARALLO_URL']}/features.json", headers={"User-Agent": "peracotta", "Accept": "application/json"})
 
                 with open(conf_dir.joinpath("features.json"), "w") as fs:
-                    fs.write(response.json())
+                    json.dump(response.json(), fs)
 
                 has_file = True
             except requests.exceptions.ConnectionError as e:
@@ -448,6 +448,7 @@ class GUI(QtWidgets.QMainWindow):
         )
         if the_dir[0] == "":
             return
+        logger.debug(f"Saving json from data:\n{json.dumps(self.data, indent=2)}")
         with open(the_dir[0], "w") as file:
             file.write(f"{json.dumps(commons.make_tree(self.data), indent=2)}")
 
