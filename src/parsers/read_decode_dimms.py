@@ -34,6 +34,7 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
 
     for i, dimm in enumerate(dimm_sections):
         manufacturer_data_type = None
+        fallback_manufacturer_data_type = None
         for line in dimm.splitlines():
             if line.startswith("Fundamental Memory type"):
                 dimms[i]["ram-type"] = line.split(" ")[-2].lower()
@@ -65,13 +66,17 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
 
             # alternatives to "Manufacturer" are "DRAM Manufacturer" and "Module Manufacturer"
             if "---=== Manufacturer Data ===---" in line:
-                manufacturer_data_type = "DRAM Manufacturer"
+                manufacturer_data_type = "Module Manufacturer"
+                fallback_manufacturer_data_type = "DRAM Manufacturer"
+                # Sometimes DRAM Manufacturer isn't present.
 
             if "---=== Manufacturing Information ===---" in line:
                 manufacturer_data_type = "Manufacturer"
 
             if manufacturer_data_type and line.startswith(manufacturer_data_type):
                 dimms[i]["brand"] = _ignore_spaces(line, len(manufacturer_data_type))
+            elif fallback_manufacturer_data_type and line.startswith(fallback_manufacturer_data_type):
+                dimms[i]["brand"] = _ignore_spaces(line, len(fallback_manufacturer_data_type))
 
             # This seems to always be the model (or at least never be the serial number)
             if line.startswith("Part Number"):
