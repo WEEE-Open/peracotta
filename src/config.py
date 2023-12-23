@@ -17,6 +17,8 @@ keys = [
     "TARALLO_FEATURES_AUTO_DOWNLOAD",
     "GENERATE_FILES_USE_SUDO",
     "GENERATE_FILES_ASK_SUDO_PASSWORD",
+    "REPORT_URL",
+    "AUTOMATIC_REPORT_ERRORS",  
 ]
 
 # 1) local environment
@@ -40,7 +42,6 @@ try:
             CONFIG[k] = _toml_conf[k]
 except FileNotFoundError:
     pass
-
 
 # 4) default toml
 try:

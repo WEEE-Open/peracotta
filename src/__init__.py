@@ -8,8 +8,9 @@ from . import peracruda
 from .commons import env_to_bool
 from .config import CONFIG
 from .constants import VERSION
-from .gui import GUI, gui_excepthook
+from .gui import GUI, gui_excepthook, errored
 from .peralog import logdir, logger
+from .reporter import send_report
 
 
 def common_args_parsing():
@@ -37,7 +38,12 @@ def main_gui():
     # noinspection PyUnusedLocal
     window = GUI(app)
     app.exec()
-    logger.info("Started PERACOTTA")
+
+    if CONFIG["AUTOMATIC_REPORT_ERRORS"] and errored():
+        try:
+            send_report()
+        except Exception:
+            pass
 
 
 def main_cli():
