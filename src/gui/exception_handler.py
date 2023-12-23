@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets
 
-from peracotta.peralog import logger
+from ..peralog import logger
 from .exceptions import MissingFeaturesError
 
 critical_errors = [MissingFeaturesError]  # error classes that should crash the program

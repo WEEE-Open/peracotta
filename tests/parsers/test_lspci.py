@@ -2,7 +2,6 @@
 import os
 
 from peracotta.parsers import read_lspci_and_glxinfo
-
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/glxinfo+lspci/"

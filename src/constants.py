@@ -1,6 +1,5 @@
-import os
-
 import importlib.resources
+import os
 
 basedir = importlib.resources.files("peracotta")
 

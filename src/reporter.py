@@ -1,7 +1,9 @@
+from typing import Optional
+
+import requests
+
 from .config import CONFIG
 from .peralog import logdir
-from typing import Optional
-import requests
 
 
 def send_report(info: Optional[str] = ""):

@@ -16,7 +16,7 @@ Some interesting properties are:
  - **[tool.setuptools.package-data]** by default, only .py files are included in the built package. This property allows including useful data files such as assets and scripts. Find more info [here](https://setuptools.pypa.io/en/latest/userguide/datafiles.html#package-data).
 
 ## Styling
-as a general rule for styling try to follow [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html). Formatting is done with black and isort (installed as a pre-commit hook).
+as a general rule for styling try to follow [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html). Formatting is done with black (installed as a pre-commit hook).
 
 ## Contributing
 You should **NEVER** push directly to the master branch.

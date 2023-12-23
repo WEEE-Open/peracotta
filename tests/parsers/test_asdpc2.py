@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from peracotta.parsers import read_decode_dimms, read_dmidecode, read_lscpu, read_lspci_and_glxinfo
-
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/asdpc2/"

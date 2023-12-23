@@ -1,7 +1,9 @@
-from cgitb import text
-from PyQt6 import QtWidgets, QtCore, uic, QtGui
 import json
-from peracotta.constants import PATH
+from cgitb import text
+
+from PyQt6 import QtCore, QtGui, QtWidgets, uic
+
+from ..constants import PATH
 
 
 class JsonWidget(QtWidgets.QDialog):
