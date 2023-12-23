@@ -34,4 +34,3 @@ On Board Device Information
 	Type: Other
 	Status: Enabled
 	Description: SATA
-

@@ -195,4 +195,3 @@
 	Capabilities: [168] L1 PM Substates
 	Kernel driver in use: mwifiex_pcie
 	Kernel modules: mwifiex_pcie
-

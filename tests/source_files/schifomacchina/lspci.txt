@@ -169,4 +169,3 @@
 	Capabilities: [140] Device Serial Number 00-00-00-01-00-4c-e0-00
 	Kernel driver in use: rtsx_pci
 	Kernel modules: rtsx_pci
-

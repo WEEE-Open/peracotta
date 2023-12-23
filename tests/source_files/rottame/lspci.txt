@@ -170,4 +170,3 @@
 	Capabilities: [180] Root Complex Link
 	Kernel driver in use: pcieport
 	Kernel modules: shpchp
-

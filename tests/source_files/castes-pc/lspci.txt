@@ -129,4 +129,3 @@
 	Capabilities: <access denied>
 	Kernel driver in use: iwlwifi
 	Kernel modules: iwlwifi
-

@@ -289,4 +289,3 @@
 	Capabilities: [80] Power Management version 2
 	Kernel driver in use: r852
 	Kernel modules: r852
-

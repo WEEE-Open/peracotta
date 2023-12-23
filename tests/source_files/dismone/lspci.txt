@@ -549,4 +549,3 @@ ff:06.2 Host bridge: Intel Corporation Xeon 5500/Core i7 Integrated Memory Contr
 ff:06.3 Host bridge: Intel Corporation Xeon 5500/Core i7 Integrated Memory Controller Channel 2 Thermal Control Registers (rev 05)
 	Subsystem: Intel Corporation Xeon 5500/Core i7 Integrated Memory Controller Channel 2 Thermal Control Registers
 	Flags: bus master, fast devsel, latency 0
-

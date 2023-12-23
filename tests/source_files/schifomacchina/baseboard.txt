@@ -8,12 +8,12 @@ Base Board Information
 	Product Name: 2AC5
 	Version: 100
 	Serial Number: PCHNR014J161EJ
-	Asset Tag:  
+	Asset Tag:
 	Features:
 		Board is a hosting board
 		Board is removable
 		Board is replaceable
-	Location In Chassis:  
+	Location In Chassis:
 	Chassis Handle: 0x0003
 	Type: Motherboard
 	Contained Object Handles: 0
@@ -41,4 +41,3 @@ Onboard Device
 	Status: Enabled
 	Type Instance: 1
 	Bus Address: 0000:03:1c.2
-

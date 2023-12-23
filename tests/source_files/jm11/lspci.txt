@@ -184,4 +184,3 @@
 	Capabilities: [160] Device Serial Number 01-00-00-00-69-2d-f0-00
 	Kernel driver in use: r8169
 	Kernel modules: r8169
-

@@ -161,4 +161,3 @@ Port Connector Information
 	External Reference Designator: Not Specified
 	External Connector Type: IEEE 1394
 	Port Type: Firewire (IEEE P1394)
-

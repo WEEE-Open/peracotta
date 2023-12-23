@@ -40,7 +40,7 @@
 [    0.000000] BIOS-e820: [mem 0x0000000100000000-0x00000003767fffff] usable
 [    0.000000] NX (Execute Disable) protection: active
 [    0.000000] efi: EFI v2.40 by American Megatrends
-[    0.000000] efi:  ACPI=0x87f31000  ACPI 2.0=0x87f31000  SMBIOS=0xf05e0  MPS=0xfc410 
+[    0.000000] efi:  ACPI=0x87f31000  ACPI 2.0=0x87f31000  SMBIOS=0xf05e0  MPS=0xfc410
 [    0.000000] SMBIOS 2.8 present.
 [    0.000000] DMI: To Be Filled By O.E.M. To Be Filled By O.E.M./H110M-ITX/ac, BIOS P1.50 07/28/2016
 [    0.000000] tsc: Detected 3200.000 MHz processor
@@ -64,7 +64,7 @@
 [    0.001258]   7 disabled
 [    0.001258]   8 disabled
 [    0.001259]   9 disabled
-[    0.001925] x86/PAT: Configuration [0-7]: WB  WC  UC- UC  WB  WP  UC- WT  
+[    0.001925] x86/PAT: Configuration [0-7]: WB  WC  UC- UC  WB  WP  UC- WT
 [    0.002079] last_pfn = 0x88000 max_arch_pfn = 0x400000000
 [    0.008320] found SMP MP-table at [mem 0x000fc670-0x000fc67f] mapped at [(____ptrval____)]
 [    0.008334] check: Scanning 1 areas for low memory corruption
@@ -177,7 +177,7 @@
 [    0.145134] setup_percpu: NR_CPUS:320 nr_cpumask_bits:320 nr_cpu_ids:4 nr_node_ids:1
 [    0.145233] percpu: Embedded 45 pages/cpu @(____ptrval____) s147456 r8192 d28672 u524288
 [    0.145237] pcpu-alloc: s147456 r8192 d28672 u524288 alloc=1*2097152
-[    0.145238] pcpu-alloc: [0] 0 1 2 3 
+[    0.145238] pcpu-alloc: [0] 0 1 2 3
 [    0.145251] Built 1 zonelists, mobility grouping on.  Total pages: 3084515
 [    0.145251] Policy zone: Normal
 [    0.145252] Kernel command line: BOOT_IMAGE=/boot/vmlinuz-5.0-x86_64 root=UUID=5a6a947f-c9b3-4c7b-b7ff-2181b8d65c44 rw quiet
@@ -595,7 +595,7 @@
 [    0.861098] libata version 3.00 loaded.
 [    0.863361] ahci 0000:00:17.0: version 3.0
 [    0.863548] ahci 0000:00:17.0: AHCI 0001.0301 32 slots 4 ports 6 Gbps 0xf impl SATA mode
-[    0.863550] ahci 0000:00:17.0: flags: 64bit ncq sntf led clo only pio slum part ems deso sadm sds apst 
+[    0.863550] ahci 0000:00:17.0: flags: 64bit ncq sntf led clo only pio slum part ems deso sadm sds apst
 [    0.891683] scsi host0: ahci
 [    0.892027] scsi host1: ahci
 [    0.892304] scsi host2: ahci

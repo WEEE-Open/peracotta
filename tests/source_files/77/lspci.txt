@@ -118,4 +118,3 @@
 	[virtual] Expansion ROM at 000c0000 [disabled] [size=128K]
 	Capabilities: [40] Power Management version 2
 	Capabilities: [50] AGP version 3.0
-

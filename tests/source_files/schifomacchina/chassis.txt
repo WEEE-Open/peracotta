@@ -7,9 +7,9 @@ Chassis Information
 	Manufacturer: Hewlett-Packard
 	Type: Desktop
 	Lock: Not Present
-	Version:  
-	Serial Number:  
-	Asset Tag: CZC2140HRG 
+	Version:
+	Serial Number:
+	Asset Tag: CZC2140HRG
 	Boot-up State: Safe
 	Power Supply State: Safe
 	Thermal State: Safe
@@ -18,5 +18,4 @@ Chassis Information
 	Height: Unspecified
 	Number Of Power Cords: 1
 	Contained Elements: 0
-	SKU Number:  
-
+	SKU Number:

@@ -247,4 +247,3 @@
 	Capabilities: [dc] Power Management version 1
 	Kernel driver in use: snd_ens1371
 	Kernel modules: snd_ens1371
-

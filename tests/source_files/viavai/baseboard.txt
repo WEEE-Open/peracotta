@@ -8,4 +8,3 @@ Base Board Information
 	Product Name: P5VD2-VM
 	Version: 1.XX
 	Serial Number: 123456789000
-

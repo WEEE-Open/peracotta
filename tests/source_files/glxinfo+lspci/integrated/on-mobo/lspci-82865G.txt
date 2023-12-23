@@ -105,4 +105,3 @@
 	Capabilities: <access denied>
 	Kernel driver in use: e100
 	Kernel modules: e100
-

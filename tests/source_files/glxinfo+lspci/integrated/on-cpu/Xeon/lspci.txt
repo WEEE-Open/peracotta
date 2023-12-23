@@ -134,4 +134,3 @@
 	Capabilities: <access denied>
 	Kernel driver in use: r8169
 	Kernel modules: r8169
-

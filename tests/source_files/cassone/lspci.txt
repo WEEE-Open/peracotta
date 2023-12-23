@@ -82,4 +82,3 @@
 	Capabilities: [40] Power Management version 2
 	Capabilities: [50] AGP version 2.0
 	Kernel modules: sisfb
-

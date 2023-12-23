@@ -19,4 +19,3 @@ Chassis Information
 	Number Of Power Cords: Unspecified
 	Contained Elements: 0
 	SKU Number: LENOVO_MT_2468
-

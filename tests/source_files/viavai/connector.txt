@@ -30,7 +30,7 @@ Handle 0x000E, DMI type 8, 9 bytes
 Port Connector Information
 	Internal Reference Designator: COM2
 	Internal Connector Type: 9 Pin Dual Inline (pin 10 cut)
-	External Reference Designator:  
+	External Reference Designator:
 	External Connector Type: DB-9 male
 	Port Type: Serial Port 16450 Compatible
 
@@ -38,7 +38,7 @@ Handle 0x000F, DMI type 8, 9 bytes
 Port Connector Information
 	Internal Reference Designator: LPT1
 	Internal Connector Type: DB-25 female
-	External Reference Designator:  
+	External Reference Designator:
 	External Connector Type: DB-25 female
 	Port Type: Parallel Port ECP/EPP
 
@@ -46,7 +46,7 @@ Handle 0x0010, DMI type 8, 9 bytes
 Port Connector Information
 	Internal Reference Designator: PS/2 Keyboard
 	Internal Connector Type: PS/2
-	External Reference Designator:  
+	External Reference Designator:
 	External Connector Type: PS/2
 	Port Type: Keyboard Port
 
@@ -54,7 +54,7 @@ Handle 0x0011, DMI type 8, 9 bytes
 Port Connector Information
 	Internal Reference Designator: PS/2 Mouse
 	Internal Connector Type: PS/2
-	External Reference Designator:  
+	External Reference Designator:
 	External Connector Type: PS/2
 	Port Type: Mouse Port
 
@@ -220,9 +220,8 @@ Port Connector Information
 
 Handle 0x0026, DMI type 8, 9 bytes
 Port Connector Information
-	Internal Reference Designator: ESATA 
+	Internal Reference Designator: ESATA
 	Internal Connector Type: On Board IDE
 	External Reference Designator: Not Specified
 	External Connector Type: None
 	Port Type: Other
-

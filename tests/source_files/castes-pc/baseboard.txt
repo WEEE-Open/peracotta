@@ -6,14 +6,13 @@ Handle 0x0002, DMI type 2, 15 bytes
 Base Board Information
 	Manufacturer: ASRock
 	Product Name: H110M-ITX/ac
-	Version:                       
+	Version:
 	Serial Number: M80-69017400518
-	Asset Tag:                       
+	Asset Tag:
 	Features:
 		Board is a hosting board
 		Board is replaceable
-	Location In Chassis:                       
+	Location In Chassis:
 	Chassis Handle: 0x0003
 	Type: Motherboard
 	Contained Object Handles: 0
-

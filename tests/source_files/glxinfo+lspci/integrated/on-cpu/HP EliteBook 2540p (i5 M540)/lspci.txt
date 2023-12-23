@@ -178,4 +178,3 @@ ff:02.2 Host bridge: Intel Corporation 1st Generation Core i3/5/7 Processor Rese
 ff:02.3 Host bridge: Intel Corporation 1st Generation Core i3/5/7 Processor Reserved (rev 02)
 	Subsystem: Intel Corporation 1st Generation Core i3/5/7 Processor Reserved
 	Flags: bus master, fast devsel, latency 0
-

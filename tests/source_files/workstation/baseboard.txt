@@ -4,7 +4,7 @@ SMBIOS 2.3 present.
 
 Handle 0x0200, DMI type 2, 8 bytes
 Base Board Information
-	Manufacturer: Dell Inc.          
+	Manufacturer: Dell Inc.
 	Product Name: 0MY171
 	Version: A00
 	Serial Number: ..CN125321L404Q.
@@ -32,4 +32,3 @@ On Board Device Information
 	Type: SCSI Controller
 	Status: Enabled
 	Description: Dell SAS5 Host Bus Adapter
-

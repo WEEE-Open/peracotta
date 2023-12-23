@@ -145,4 +145,3 @@
 	Capabilities: [d0] Express Endpoint, MSI 00
 	Kernel driver in use: tg3
 	Kernel modules: tg3
-

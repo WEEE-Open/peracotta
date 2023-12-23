@@ -117,4 +117,3 @@
 	Capabilities: <access denied>
 	Kernel driver in use: ath10k_pci
 	Kernel modules: ath10k_pci
-
