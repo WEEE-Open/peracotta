@@ -530,3 +530,24 @@ def env_to_bool(value: Optional[str]) -> bool:
         pass
 
     return False
+
+
+def parse_from_env(value: Optional[str]):
+    if not value:
+        return None
+
+    trues = ["1", "true", "t", "", "yes", "y"]
+    falses = ["0", "false", "f", "no", "n"]
+
+    if value.lower() in trues:
+        return True
+    if value.lower() in falses:
+        return False
+
+    try:
+        i = int(value)
+        return i
+    except ValueError:
+        pass
+
+    return value

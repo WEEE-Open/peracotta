@@ -5,9 +5,8 @@
 - [ ] Migrate to PySide6? Seems to have a better suppot for Nuitka
 - [ ] github Actions to auto-publish to PyPi
 - [ ] Check peracruda
-- [ ] Add TOML config
+- [x] Add TOML config
 - [x] Fix logs
 - [ ] Properly credit Authors and Mantainers in README and pyproject
-- [ ] Add event logging
-- [ ] Add crash feedback
+- [x] Add crash feedback
 - [ ] Add tests
