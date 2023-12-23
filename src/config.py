@@ -1,26 +1,52 @@
+import toml
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
 
-from .commons import env_to_bool
+from .commons import parse_from_env
 
 home_dir = Path().home()
 
 conf_dir = home_dir.joinpath(".config/peracotta")
 CONFIG = {}
 
+keys = [
+    "TARALLO_URL",
+    "TARALLO_TOKEN",
+    "TARALLO_FEATURES_AUTO_DOWNLOAD",
+    "GENERATE_FILES_USE_SUDO",
+    "GENERATE_FILES_ASK_SUDO_PASSWORD",
+]
 
-def load_conf():
-    global CONFIG
+# 1) local environment
+for key in keys:
+    CONFIG[key] = parse_from_env(os.environ.get(key))
+
+# 2) conf_dir's .env
+try:
     load_dotenv(conf_dir.joinpath(".env"))
-    CONFIG = {
-        "TARALLO_URL": os.environ.get("TARALLO_URL", None),
-        "TARALLO_TOKEN": os.environ.get("TARALLO_TOKEN", None),
-        "TARALLO_FEATURES_AUTO_DOWNLOAD": env_to_bool(os.environ.get("TARALLO_FEATURES_AUTO_DOWNLOAD", "1")),
-        "GENERATE_FILES_USE_SUDO": env_to_bool(os.environ.get("GENERATE_FILES_USE_SUDO", "1")),
-        "GENERATE_FILES_ASK_SUDO_PASSWORD": env_to_bool(os.environ.get("GENERATE_FILES_ASK_SUDO_PASSWORD", "1")),
-    }
+    for key in keys:
+        if key not in CONFIG.keys() or CONFIG[key] is None:
+            CONFIG[key] = parse_from_env(os.environ.get(key))
+except FileNotFoundError:
+    pass
+
+# 3) conf_dir's toml
+try:
+    _toml_conf = toml.load(conf_dir.joinpath("config.toml"))
+    for k in _toml_conf:
+        if k not in CONFIG.keys() or CONFIG[k] is None:
+            CONFIG[k] = _toml_conf[k]
+except FileNotFoundError:
+    pass
 
 
-load_conf()
+# 4) default toml
+try:
+    _toml_conf = toml.load(conf_dir.joinpath("config.toml"))
+    for k in _toml_conf:
+        if k not in CONFIG.keys() or CONFIG[k] is None:
+            CONFIG[k] = _toml_conf[k]
+except FileNotFoundError:
+    pass
