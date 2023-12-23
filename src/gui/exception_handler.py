@@ -4,6 +4,8 @@ from peracotta.peralog import logger
 from .exceptions import MissingFeaturesError
 
 critical_errors = [MissingFeaturesError]  # error classes that should crash the program
+errored = lambda: _errored
+_errored = False
 
 
 def gui_excepthook(exc_type, exc_value, exc_tb):
@@ -14,6 +16,8 @@ def gui_excepthook(exc_type, exc_value, exc_tb):
         exc_value: exception value
         exc_tb: exception traceback
     """
+    global _errored
+    _errored = True
     QtWidgets.QMessageBox.warning(None, "Error", f"Peracotta encountered an exception ({exc_type.__name__}).\nSee logs for the traceback.")
     if any([exc_type is exc_t for exc_t in critical_errors]):
         logger.error("Encountered a critical error")
