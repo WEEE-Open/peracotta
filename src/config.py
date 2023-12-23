@@ -6,9 +6,9 @@ from dotenv import load_dotenv
 
 from .commons import parse_from_env
 
-home_dir = Path().home()
+HOME_DIR = Path().home()
 
-conf_dir = home_dir.joinpath(".config/peracotta")
+CONF_DIR = HOME_DIR.joinpath(".config/peracotta")
 CONFIG = {}
 
 keys = [
@@ -25,18 +25,18 @@ keys = [
 for key in keys:
     CONFIG[key] = parse_from_env(os.environ.get(key))
 
-# 2) conf_dir's .env
+# 2) CONF_DIR's .env
 try:
-    load_dotenv(conf_dir.joinpath(".env"))
+    load_dotenv(CONF_DIR.joinpath(".env"))
     for key in keys:
         if key not in CONFIG.keys() or CONFIG[key] is None:
             CONFIG[key] = parse_from_env(os.environ.get(key))
 except FileNotFoundError:
     pass
 
-# 3) conf_dir's toml
+# 3) CONF_DIR's toml
 try:
-    _toml_conf = toml.load(conf_dir.joinpath("config.toml"))
+    _toml_conf = toml.load(CONF_DIR.joinpath("config.toml"))
     for k in _toml_conf:
         if k not in CONFIG.keys() or CONFIG[k] is None:
             CONFIG[k] = _toml_conf[k]
@@ -45,7 +45,7 @@ except FileNotFoundError:
 
 # 4) default toml
 try:
-    _toml_conf = toml.load(conf_dir.joinpath("config.toml"))
+    _toml_conf = toml.load(CONF_DIR.joinpath("config.toml"))
     for k in _toml_conf:
         if k not in CONFIG.keys() or CONFIG[k] is None:
             CONFIG[k] = _toml_conf[k]

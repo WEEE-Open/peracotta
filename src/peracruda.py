@@ -356,7 +356,7 @@ def generate_parser():
     return parser
 
 
-def main_():
+def __main():
     args = generate_parser().parse_args()
 
     try:
@@ -366,4 +366,4 @@ def main_():
 
 
 if __name__ == "__main__":
-    main_()
+    __main()

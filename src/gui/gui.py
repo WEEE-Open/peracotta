@@ -12,7 +12,7 @@ import requests
 
 from peracotta import commons
 from peracotta.commons import ParserComponents, make_tree
-from peracotta.config import conf_dir, CONFIG
+from peracotta.config import CONF_DIR, CONFIG
 from peracotta.constants import ICON, PATH, URL, VERSION
 from peracotta.tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
 from peracotta.peralog import logger
@@ -188,11 +188,11 @@ class GUI(QtWidgets.QMainWindow):
 
     @staticmethod
     def backup_features_json():
-        shutil.copy2(conf_dir.joinpath("features.json"), conf_dir.joinpath("features.json.bak"))
+        shutil.copy2(CONF_DIR.joinpath("features.json"), CONF_DIR.joinpath("features.json.bak"))
 
     @staticmethod
     def restore_features_json():
-        shutil.move(conf_dir.joinpath("features.json.bak"), conf_dir.joinpath("features.json"))
+        shutil.move(CONF_DIR.joinpath("features.json.bak"), CONF_DIR.joinpath("features.json"))
 
     def load_features_file(self, auto_update: bool):
         self.features = {}
@@ -209,7 +209,7 @@ class GUI(QtWidgets.QMainWindow):
             try:
                 response = requests.get(f"{CONFIG['TARALLO_URL']}/features.json", headers={"User-Agent": "peracotta", "Accept": "application/json"})
 
-                with open(conf_dir.joinpath("features.json"), "w") as fs:
+                with open(CONF_DIR.joinpath("features.json"), "w") as fs:
                     json.dump(response.json(), fs)
 
                 has_file = True
