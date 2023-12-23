@@ -3,9 +3,8 @@ from typing import Optional
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
-from peracotta.commons import item_only_features
-from peracotta.constants import ICON
-
+from ..commons import item_only_features
+from ..constants import ICON
 from . import prettyprinter
 
 

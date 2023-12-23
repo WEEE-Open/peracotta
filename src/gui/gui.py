@@ -7,22 +7,19 @@ import urllib.parse
 import urllib.request
 from collections import defaultdict
 
-from PyQt6 import QtCore, QtGui, QtWidgets, uic
 import requests
+from PyQt6 import QtCore, QtGui, QtWidgets, uic
 
-from peracotta import commons
-from peracotta.commons import ParserComponents, make_tree
-from peracotta.config import CONF_DIR, CONFIG
-from peracotta.constants import ICON, PATH, URL, VERSION
-from peracotta.tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
-from peracotta.peralog import logger
-
-from .widgets import JsonWidget, ErrorDialog
+from .. import commons
+from ..commons import ParserComponents, make_tree
+from ..config import CONF_DIR, CONFIG
+from ..constants import ICON, PATH, URL, VERSION
+from ..peralog import logger
+from ..tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
 from .exceptions import MissingFeaturesError
-
 from .PeraThread import PeracottaThread
 from .Toolbox import ToolBoxWidget
-
+from .widgets import ErrorDialog, JsonWidget
 
 DEFAULT_PROGRESS_BAR_STYLE = (
     "QStatusBar::item {"

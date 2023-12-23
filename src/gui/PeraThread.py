@@ -2,8 +2,8 @@ import sys
 
 from PyQt6 import QtCore, QtWidgets
 
-from peracotta import commons
-from peracotta.constants import PATH
+from .. import commons
+from ..constants import PATH
 
 
 class PeracottaThread(QtCore.QThread):

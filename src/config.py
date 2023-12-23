@@ -1,7 +1,7 @@
-import toml
 import os
 from pathlib import Path
 
+import toml
 from dotenv import load_dotenv
 
 from .commons import parse_from_env
