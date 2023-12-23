@@ -5,6 +5,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from ..commons import item_only_features
 from ..constants import ICON
+
 from . import prettyprinter
 
 
@@ -14,7 +15,7 @@ class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
     #         super().initStyleOption(option, index)
     #         option.displayAlignment = QtCore.Qt.AlignLeft
 
-    def create_editor(self, parent, option, index):
+    def createEditor(self, parent, option, index):
         the_type = str(index.model().data(index, QtCore.Qt.ItemDataRole.UserRole))
         if the_type == "e":
             editor = QtWidgets.QComboBox(parent)
@@ -22,9 +23,9 @@ class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
             editor.setEditable(True)
             return editor
         else:
-            return super().create_editor(parent, option, index)
+            return super().createEditor(parent, option, index)
 
-    def set_editor_data(self, editor, index):
+    def setEditorData(self, editor, index):
         model: CustomTableModel = index.model()
         if isinstance(editor, QtWidgets.QComboBox):
             values = model.row_all_enum_values_for_editor(index.row())
@@ -37,13 +38,13 @@ class ItemEnumDelegate(QtWidgets.QStyledItemDelegate):
                     if current == k:
                         editor.setCurrentIndex(i)
         else:
-            return super().set_editor_data(editor, index)
+            return super().setEditorData(editor, index)
 
-    def set_model_data(self, editor, model, index):
+    def setModelData(self, editor, model, index):
         if isinstance(editor, QtWidgets.QComboBox):
             model.setData(index, editor.currentData(), QtCore.Qt.EditRole)
         else:
-            return super().set_model_data(editor, model, index)
+            return super().setModelData(editor, model, index)
 
     def handle_editor_change(self):
         editor = self.sender()
@@ -56,20 +57,20 @@ class CustomTableView(QtWidgets.QTableView):
         super().__init__()
         self.setItemDelegateForColumn(1, ItemEnumDelegate())
 
-    def minimum_size_hint(self) -> QtCore.QSize:
-        default_size = super().minimum_size_hint()
+    def minimumSizeHint(self) -> QtCore.QSize:
+        default_size = super().minimumSizeHint()
 
         frame = self.frameWidth() * 2
 
         header = self.verticalHeader().sizeHint().height()
         rows = self.verticalHeader().length()
-        # rows = self.model().row_count() * self.horizontalHeader().defaultSectionSize()
+        # rows = self.model().rowCount() * self.horizontalHeader().defaultSectionSize()
         h = header + rows + frame
         # print(f"{header} + {rows} + {frame} = {h} > {default_size.height()}")
 
         return QtCore.QSize(default_size.width(), h)
 
-    def ContextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
+    def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
         menu = QtWidgets.QMenu(self)
         remove_action = QtGui.QAction("Remove feature", self)
         remove_action.triggered.connect(self.remove_row)
@@ -103,14 +104,14 @@ class CustomTableModel(QtCore.QAbstractTableModel):
         self.features.update(item_features)
         self.feature_keys = list(self.features)
 
-    def row_count(self, parent=QtCore.QModelIndex()):
+    def rowCount(self, parent=QtCore.QModelIndex()):
         return len(self.feature_keys)
 
-    def column_count(self, parent=QtCore.QModelIndex()):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         return 2
 
     # noinspection PyMethodOverriding
-    def header_data(self, section, orientation, role):
+    def headerData(self, section, orientation, role):
         if role == QtCore.Qt.ItemDataRole.DisplayRole and orientation == QtCore.Qt.Orientation.Horizontal:
             if section == 0:
                 return "Feature"
@@ -308,7 +309,7 @@ class CustomTableModel(QtCore.QAbstractTableModel):
         if feature in self.feature_keys:
             return False
 
-        row_index = self.row_count()
+        row_index = self.rowCount()
 
         ok, value = self.extreme_validation(feature, value)
         product_to_add = None
@@ -364,7 +365,7 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.setLayout(self.main_layout)
 
     def external_size_hint_height(self):
-        h1 = max(self.table.minimum_size_hint().height(), self.table.sizeHint().height())
+        h1 = max(self.table.minimumSizeHint().height(), self.table.sizeHint().height())
         h2 = self.adder_layout.sizeHint().height()
 
         return h1 + h2
@@ -446,8 +447,8 @@ class ToolBoxItem(QtWidgets.QWidget):
         self.feature_line_edit.setEnabled(flag)
         self.feature_selector.setEnabled(flag)
 
-    def minimum_size_hint(self) -> QtCore.QSize:
-        return self.table.minimum_size_hint()
+    def minimumSizeHint(self) -> QtCore.QSize:
+        return self.table.minimumSizeHint()
 
 
 class ToolBoxWidget(QtWidgets.QToolBox):
@@ -563,16 +564,16 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         self.menu.addAction(remove_action)
         self.menu.popup(QtGui.QCursor.pos())
 
-    def minimum_size_hint(self) -> QtCore.QSize:
+    def minimumSizeHint(self) -> QtCore.QSize:
         h = 0
         for child in self.children():
             if isinstance(child, QtWidgets.QScrollArea):
                 if child.isHidden():
                     # print("Hidden!")
                     pass
-                    # print(f"Hidden min {child.minimum_size_hint().height()}")
+                    # print(f"Hidden min {child.minimumSizeHint().height()}")
                     # print(f"Hidden {child.sizeHint().height()}")
-                    # h += child.minimum_size_hint().height()
+                    # h += child.minimumSizeHint().height()
                 else:
                     the_widget = child.widget()
                     if the_widget and isinstance(the_widget, ToolBoxItem):
@@ -580,13 +581,13 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                         # print(f"Hinted: {hinted}")
                         h += hinted
                     else:
-                        # h += max(child.sizeHint().height(), child.minimum_size_hint().height())
+                        # h += max(child.sizeHint().height(), child.minimumSizeHint().height())
                         pass
             elif isinstance(child, QtWidgets.QAbstractButton):
-                # print(f"{child}: {child.sizeHint().height()} {child.minimum_size_hint().height()}")
+                # print(f"{child}: {child.sizeHint().height()} {child.minimumSizeHint().height()}")
                 # Why 1.5? Dunno, they're ~40 pixels and sizeHint is 25 (minimum 24).
                 h += int(child.sizeHint().height() * 1.5)
-        old = super().minimum_size_hint()
+        old = super().minimumSizeHint()
         if h > old.height():
             return QtCore.QSize(old.width(), h)
         return old
