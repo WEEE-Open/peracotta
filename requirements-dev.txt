@@ -14,3 +14,4 @@ toml==0.10.2
 wcwidth==0.1.7
 zipp==3.3.1
 black==23.11.0
+pre-commit==3.6.0
