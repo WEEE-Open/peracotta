@@ -40,7 +40,7 @@ peracotta = "peracotta:main_gui"
 peracotta = "src"
 
 [tool.setuptools.package-data]
-peracotta = [".env", "*"]
+peracotta = ["*"]
 "peracotta.scripts" = ["*"]
 "peracotta.assets" = ["*", "*/*"]
 
