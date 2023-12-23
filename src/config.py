@@ -18,7 +18,7 @@ keys = [
     "GENERATE_FILES_USE_SUDO",
     "GENERATE_FILES_ASK_SUDO_PASSWORD",
     "REPORT_URL",
-    "AUTOMATIC_REPORT_ERRORS",  
+    "AUTOMATIC_REPORT_ERRORS",
 ]
 
 # 1) local environment

@@ -20,4 +20,3 @@ Chassis Information
 	Contained Elements: 1
 		<OUT OF SPEC> (0)
 	SKU Number: To be filled by O.E.M.
-

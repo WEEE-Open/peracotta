@@ -81,4 +81,3 @@ Port Connector Information
 	External Reference Designator: SD Card Reader
 	External Connector Type: Access Bus (USB)
 	Port Type: USB
-

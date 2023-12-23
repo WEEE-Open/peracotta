@@ -8,11 +8,10 @@ Chassis Information
 	Type: Desktop
 	Lock: Not Present
 	Version: 1111
-	Serial Number: EVAL          
+	Serial Number: EVAL
 	Asset Tag: 123456789000
 	Boot-up State: Safe
 	Power Supply State: Safe
 	Thermal State: Safe
 	Security Status: None
 	OEM Information: 0x00000001
-

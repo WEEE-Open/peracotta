@@ -9,10 +9,9 @@ Chassis Information
 	Lock: Not Present
 	Version: Not Specified
 	Serial Number: CZC6203MC5
-	Asset Tag:  
+	Asset Tag:
 	Boot-up State: Safe
 	Power Supply State: Safe
 	Thermal State: Safe
 	Security Status: Unknown
 	OEM Information: 0x00000000
-

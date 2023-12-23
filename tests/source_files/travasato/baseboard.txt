@@ -40,4 +40,3 @@ On Board Device Information
 	Type: Other
 	Status: Enabled
 	Description: Texas Instruments TSB82AA2 1394A/B Controller
-

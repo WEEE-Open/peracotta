@@ -7,8 +7,8 @@ Chassis Information
 	Manufacturer: ASUSTeK COMPUTER INC.
 	Type: Notebook
 	Lock: Not Present
-	Version: 1.0       
-	Serial Number: G6M0DF00361708D     
+	Version: 1.0
+	Serial Number: G6M0DF00361708D
 	Asset Tag: ATN12345678901234567
 	Boot-up State: Safe
 	Power Supply State: Safe
@@ -19,4 +19,3 @@ Chassis Information
 	Number Of Power Cords: 1
 	Contained Elements: 0
 	SKU Number: Default string
-

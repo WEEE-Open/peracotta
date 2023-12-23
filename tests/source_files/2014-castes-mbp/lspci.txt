@@ -332,4 +332,3 @@
 	Capabilities: [600] Latency Tolerance Reporting
 	Kernel driver in use: thunderbolt
 	Kernel modules: thunderbolt
-

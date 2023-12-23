@@ -8,10 +8,10 @@ Base Board Information
 	Product Name: Mac-937A206F2EE63C01
 	Version: MacBookPro15,1
 	Serial Number: C0290440002JP5P1T
-	Asset Tag:  
+	Asset Tag:
 	Features:
 		Board is a hosting board
-	Location In Chassis:  
+	Location In Chassis:
 	Chassis Handle: 0x0007
 	Type: Motherboard
 	Contained Object Handles: 0
@@ -39,4 +39,3 @@ Onboard Device
 	Status: Enabled
 	Type Instance: 1
 	Bus Address: 0000:00:00.0
-

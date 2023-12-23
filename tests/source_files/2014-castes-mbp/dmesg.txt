@@ -35,7 +35,7 @@
 [    0.000000] BIOS-e820: [mem 0x0000000100000000-0x000000047f5fffff] usable
 [    0.000000] NX (Execute Disable) protection: active
 [    0.000000] efi: EFI v1.10 by Apple
-[    0.000000] efi:  ACPI=0x7ad8e000  ACPI 2.0=0x7ad8e014  SMBIOS=0x7ad15000 
+[    0.000000] efi:  ACPI=0x7ad8e000  ACPI 2.0=0x7ad8e014  SMBIOS=0x7ad15000
 [    0.000000] SMBIOS 2.4 present.
 [    0.000000] DMI: Apple Inc. MacBookPro11,3/Mac-2BD1B31983FE1663, BIOS 151.0.0.0.0 02/14/2019
 [    0.000000] tsc: Fast TSC calibration using PIT
@@ -60,7 +60,7 @@
 [    0.000142]   7 disabled
 [    0.000142]   8 disabled
 [    0.000142]   9 disabled
-[    0.008412] x86/PAT: Configuration [0-7]: WB  WC  UC- UC  WB  WP  UC- WT  
+[    0.008412] x86/PAT: Configuration [0-7]: WB  WC  UC- UC  WB  WP  UC- WT
 [    0.008567] last_pfn = 0x7b000 max_arch_pfn = 0x400000000
 [    0.020015] check: Scanning 1 areas for low memory corruption
 [    0.020018] Base memory trampoline at [(____ptrval____)] 99000 size 24576
@@ -173,7 +173,7 @@
 [    0.156974] setup_percpu: NR_CPUS:320 nr_cpumask_bits:320 nr_cpu_ids:8 nr_node_ids:1
 [    0.157122] percpu: Embedded 45 pages/cpu @(____ptrval____) s147456 r8192 d28672 u262144
 [    0.157128] pcpu-alloc: s147456 r8192 d28672 u262144 alloc=1*2097152
-[    0.157129] pcpu-alloc: [0] 0 1 2 3 4 5 6 7 
+[    0.157129] pcpu-alloc: [0] 0 1 2 3 4 5 6 7
 [    0.157143] Built 1 zonelists, mobility grouping on.  Total pages: 4105615
 [    0.157143] Policy zone: Normal
 [    0.157144] Kernel command line: BOOT_IMAGE=/boot/vmlinuz-5.0-x86_64 root=UUID=4f4921ba-733d-4a2b-af0d-4267f8b83388 rw quiet
@@ -745,7 +745,7 @@
 [    1.800949] libata version 3.00 loaded.
 [    1.803118] ahci 0000:05:00.0: version 3.0
 [    1.813441] ahci 0000:05:00.0: AHCI 0001.0300 32 slots 1 ports 6 Gbps 0x1 impl SATA mode
-[    1.813443] ahci 0000:05:00.0: flags: 64bit ncq led clo only pio ccc 
+[    1.813443] ahci 0000:05:00.0: flags: 64bit ncq led clo only pio ccc
 [    1.813691] scsi host0: ahci
 [    1.813779] ata1: SATA max UDMA/133 abar m8192@0xc1b00000 port 0xc1b00100 irq 16
 [    2.101725] tsc: Refined TSC clocksource calibration: 2793.514 MHz

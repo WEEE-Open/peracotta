@@ -18,4 +18,3 @@ Chassis Information
 	Height: Unspecified
 	Number Of Power Cords: Unspecified
 	Contained Elements: 0
-

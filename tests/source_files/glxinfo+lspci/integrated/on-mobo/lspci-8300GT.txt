@@ -179,4 +179,3 @@
 	Capabilities: <access denied>
 	Kernel driver in use: firewire_ohci
 	Kernel modules: firewire_ohci
-

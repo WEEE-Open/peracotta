@@ -14,4 +14,3 @@ Chassis Information
 	Power Supply State: Unknown
 	Thermal State: Unknown
 	Security Status: Unknown
-
