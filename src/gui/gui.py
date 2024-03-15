@@ -8,7 +8,7 @@ import urllib.request
 from collections import defaultdict
 
 import requests
-from PyQt6 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
 from .. import commons
 from ..commons import ParserComponents, make_tree

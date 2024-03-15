@@ -1,7 +1,7 @@
 import json
 from cgitb import text
 
-from PyQt6 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
 from ..constants import PATH
 

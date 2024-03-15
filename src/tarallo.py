@@ -1,5 +1,5 @@
 import pytarallo.Errors
-from PyQt6 import QtCore, QtGui, QtWidgets, uic
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from pytarallo import Tarallo
 
 from .constants import PATH

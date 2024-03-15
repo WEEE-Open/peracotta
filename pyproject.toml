@@ -19,7 +19,7 @@ classifiers = [
 dependencies = [
   "colorama==0.4",
   "commonmark==0.9",
-  "PyQt6>=6.6",
+  "PyQt5",
   "pytarallo>=2.3",
   "python-dotenv==0.17",
   "requests==2.25",
@@ -27,7 +27,8 @@ dependencies = [
   "urllib3>=1.26",
   "loguru>=0.7",
   "rich>=13.0",
-  "requests>=2.25"
+  "requests>=2.25",
+  "toml>=0.10"
 ]
 
 [project.scripts]
