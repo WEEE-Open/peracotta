@@ -26,3 +26,6 @@ build/
 *.egg-info
 logs
 */*.log
+.envrc
+.direnv
+flake*
