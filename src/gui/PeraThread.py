@@ -1,6 +1,6 @@
 import sys
 
-from PyQt6 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 from .. import commons
 from ..constants import PATH

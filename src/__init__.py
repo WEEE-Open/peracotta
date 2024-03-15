@@ -42,10 +42,9 @@ Whenever a new feature is added make sure that you have added proper tests and d
 import signal
 import sys
 
-from PyQt6 import QtWidgets
+from PyQt5 import QtWidgets
 
 from . import peracruda
-from .commons import env_to_bool
 from .config import CONFIG
 from .constants import VERSION
 from .gui import GUI, errored, gui_excepthook
@@ -78,7 +77,7 @@ def main_gui():
 
     # noinspection PyUnusedLocal
     window = GUI(app)
-    app.exec()
+    app.exec_()
 
     if CONFIG["AUTOMATIC_REPORT_ERRORS"] and errored():
         try:
@@ -92,4 +91,4 @@ def main_cli():
     """.. todo::Entrypoint for the CLI version"""
     print("Sorry, peracruda isn't implemented in v2 yet! Use the old one at https://github.com/WEEE-Open/peracotta")
     parse_common_args()
-    # peracruda.main_()
+    # peracruda.__main() # Doesn't seem to prompt for sudo password and gets stuck

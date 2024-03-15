@@ -1,4 +1,4 @@
-from PyQt6 import QtWidgets
+from PyQt5 import QtWidgets
 
 from ..peralog import logger
 from .exceptions import MissingFeaturesError
