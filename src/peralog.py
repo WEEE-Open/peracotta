@@ -9,7 +9,7 @@ from .config import CONF_DIR
 
 logdir = Path(CONF_DIR).joinpath("logs")
 if not logdir.exists():
-    os.mkdir(logdir)
+    os.makedirs(logdir)
 
 stdout_level = "DEBUG" if env_to_bool(os.getenv("DEBUG")) else "WARNING"
 file_level = "DEBUG" if env_to_bool(os.getenv("DEBUG")) else "INFO"
