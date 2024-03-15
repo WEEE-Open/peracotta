@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ '3.8', '3.9', '3.10', '3.11' ]
+        python-version: [ '3.8', '3.9', '3.10', '3.11', '3.12' ]
 
     steps:
       - uses: actions/checkout@v2
@@ -27,9 +27,6 @@ jobs:
       - name: Install dev dependencies
         run: pip install -r requirements-dev.txt
 
-      - name: Install dataclasses on Python 3.6
-        run: pip install dataclasses
-        if: matrix.python-version == '3.6'
 
       - name: Set up local development Tarallo instance
         run: |
