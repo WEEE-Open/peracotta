@@ -92,3 +92,13 @@ def main_cli():
     print("Sorry, peracruda isn't implemented in v2 yet! Use the old one at https://github.com/WEEE-Open/peracotta")
     parse_common_args()
     # peracruda.__main() # Doesn't seem to prompt for sudo password and gets stuck
+
+
+if __name__ == "__main__":
+    try:
+        if sys.argv[1] == "gui":
+            main_gui()
+        else:
+            main_cli()
+    except IndexError:
+        main_cli()
