@@ -17,8 +17,10 @@ REPORT_URL = "http://127.0.0.1:9999"
 This configuration can be overridden by `~/.config/WEEE Open/peracotta/.env`
 and/or environment variables. If both are used, the latter take precedence.
 
-For compatibility with the old M.I.S.O.'s martello.sh script, it's also possible to configure it by placing a .env file in the src directory. For the same reasons, there's a .env.example in the source code at the appropriate place
+For compatibility with the old M.I.S.O.'s martello.sh script, it's also possible to configure it by placing a .env file in the src directory. This file is only checked if peracotta is being launched directly from source instead of being installed.
+For this reasons, there's a .env.example in the source code at the appropriate place
 """
+
 import os
 from pathlib import Path
 
@@ -26,6 +28,7 @@ import toml
 from dotenv import load_dotenv
 
 from .commons import parse_from_env
+from .constants import basedir
 
 HOME_DIR = Path().home()
 
@@ -42,27 +45,22 @@ keys = [
     "AUTOMATIC_REPORT_ERRORS",
 ]
 
-# 1) local environment
-for key in keys:
-    CONFIG[key] = parse_from_env(os.environ.get(key))
+# 1) src's .env, for compatibility with old M.I.S.O.
+if isinstance(basedir, str):  # If the app is installed as a package basedir is a PosixPath object
+    try:
+        load_dotenv(basedir + "/../.env")  # doesn't override already defined variables
+    except FileNotFoundError:
+        pass
 
-# 1.1) src's .env, for compatibility with old M.I.S.O.
-try:
-    load_dotenv(".env")
-    for key in keys:
-        if key not in CONFIG.keys() or CONFIG[key] is None:
-            CONFIG[key] = parse_from_env(os.environ.get(key))
-except FileNotFoundError:
-    pass
 
 # 2) CONF_DIR's .env
 try:
     load_dotenv(CONF_DIR.joinpath(".env"))
-    for key in keys:
-        if key not in CONFIG.keys() or CONFIG[key] is None:
-            CONFIG[key] = parse_from_env(os.environ.get(key))
 except FileNotFoundError:
     pass
+
+for key in keys:
+    CONFIG[key] = parse_from_env(os.environ.get(key))
 
 # 3) CONF_DIR's toml
 try:

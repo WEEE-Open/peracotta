@@ -1,7 +1,10 @@
 import importlib.resources
 import os
 
-basedir = importlib.resources.files("peracotta")
+try:
+    basedir = importlib.resources.files("peracotta")
+except ModuleNotFoundError:  # in case it's being called without installing the package
+    basedir = os.path.dirname(__file__)
 
 URL = {
     "website": "https://weeeopen.polito.it",
