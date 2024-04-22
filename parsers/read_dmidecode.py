@@ -237,7 +237,7 @@ def find_connector_from_tuple(connectors, external, external_des, internal, inte
     for tup in connectors_map_tuples:
         zipped = list(zip(tup, (internal, external, internal_des, external_des)))
         equal = True
-        for (mask, garbage_from_manufacturer) in zipped:
+        for mask, garbage_from_manufacturer in zipped:
             if mask is None:
                 continue
             if mask.startswith("*") and mask.endswith("*"):
