@@ -3,7 +3,7 @@ chardet==4.0.0
 colorama==0.4.4
 commonmark==0.9.1
 idna==2.10
-Pygments==2.8.1
+Pygments==2.15.0
 PyQt5>=5.14.2
 pytarallo>=2.3.0
 python-dotenv==0.17.0
