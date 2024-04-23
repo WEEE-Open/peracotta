@@ -55,7 +55,7 @@ class GUI(QtWidgets.QMainWindow):
         self.setWindowIcon(QtGui.QIcon(PATH["ICON"]))
 
         # shortcuts
-        self.refreshThemeShortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+R"), self)
+        self.refreshThemeShortcut = QtWidgets.QShortcut(QtGui.QKeySequence("Ctrl+R"), self)
         self.refreshThemeShortcut.activated.connect(self.refresh_theme)
 
         # Output toolbox
@@ -109,15 +109,15 @@ class GUI(QtWidgets.QMainWindow):
         self.uploadBtn.clicked.connect(self.tarallo_dialog)
 
         # File actions
-        self.actionOpen = self.findChild(QtGui.QAction, "actionOpen")
+        self.actionOpen = self.findChild(QtWidgets.QAction, "actionOpen")
         self.actionOpen.triggered.connect(self.open_json)
-        self.actionOpenLastJson = self.findChild(QtGui.QAction, "actionOpenLastJson")
+        self.actionOpenLastJson = self.findChild(QtWidgets.QAction, "actionOpenLastJson")
         self.actionOpenLastJson.triggered.connect(self.open_latest_json)
-        self.actionOpenJson = self.findChild(QtGui.QAction, "actionOpenJson")
+        self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
-        self.actionLoadRawFiles = self.findChild(QtGui.QAction, "actionLoadRawFiles")
+        self.actionLoadRawFiles = self.findChild(QtWidgets.QAction, "actionLoadRawFiles")
         self.actionLoadRawFiles.triggered.connect(self._load_raw_files)
-        self.actionExit = self.findChild(QtGui.QAction, "actionExit")
+        self.actionExit = self.findChild(QtWidgets.QAction, "actionExit")
         self.actionExit.triggered.connect(self.close)
 
         # Options actions
@@ -131,11 +131,11 @@ class GUI(QtWidgets.QMainWindow):
             action[-1].triggered.connect((lambda t: lambda: self.set_theme(t))(theme))
 
         # Help actions
-        self.actionAboutUs = self.findChild(QtGui.QAction, "actionAboutUs")
+        self.actionAboutUs = self.findChild(QtWidgets.QAction, "actionAboutUs")
         self.actionAboutUs.triggered.connect(self.open_website)
-        self.actionSourceCode = self.findChild(QtGui.QAction, "actionSourceCode")
+        self.actionSourceCode = self.findChild(QtWidgets.QAction, "actionSourceCode")
         self.actionSourceCode.triggered.connect(self.open_source_code)
-        self.actionVersion = self.findChild(QtGui.QAction, "actionVersion")
+        self.actionVersion = self.findChild(QtWidgets.QAction, "actionVersion")
         self.actionVersion.triggered.connect(self.show_version)
 
         # Status bar widgets
@@ -185,11 +185,11 @@ class GUI(QtWidgets.QMainWindow):
 
     @staticmethod
     def backup_features_json():
-        shutil.copy2(CONF_DIR.joinpath("features.json"), CONF_DIR.joinpath("features.json.bak"))
+        shutil.copy2(PATH["FEATURES"], PATH["FEATURES"] + ".bak")
 
     @staticmethod
     def restore_features_json():
-        shutil.move(CONF_DIR.joinpath("features.json.bak"), CONF_DIR.joinpath("features.json"))
+        shutil.move(PATH["FEATURES"] + ".bak", PATH["FEATURES"])
 
     def load_features_file(self, auto_update: bool):
         self.features = {}
@@ -205,7 +205,6 @@ class GUI(QtWidgets.QMainWindow):
         if auto_update and time.time() - mtime > 60 * 60 * 12:
             try:
                 response = requests.get(f"{CONFIG['TARALLO_URL']}/features.json", headers={"User-Agent": "peracotta", "Accept": "application/json"})
-
                 with open(CONF_DIR.joinpath("features.json"), "w") as fs:
                     json.dump(response.json(), fs)
 
