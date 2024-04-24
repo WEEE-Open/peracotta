@@ -44,7 +44,7 @@ peracruda = "peracotta:main_cli"
 peracotta = "peracotta:main_gui"
 
 [tool.setuptools.package-dir]
-peracotta = "src"
+peracotta = "src/peracotta"
 
 [tool.setuptools.package-data]
 peracotta = ["*"]
@@ -58,6 +58,6 @@ version = { attr = "peracotta.constants.VERSION" }
 line-length = 160
 
 [tool.pytest.ini_options]
-pythonpath = "src"
+pythonpath = ["src", "."]
 markers = ["upload", "gui", "prettyprint", "smartctl"]
 addopts = ["--import-mode=importlib"]
