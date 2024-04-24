@@ -72,7 +72,7 @@ class CustomTableView(QtWidgets.QTableView):
 
     def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
         menu = QtWidgets.QMenu(self)
-        remove_action = QtGui.QAction("Remove feature", self)
+        remove_action = QtWidgets.QAction("Remove feature", self)
         remove_action.triggered.connect(self.remove_row)
         menu.addAction(remove_action)
         menu.popup(QtGui.QCursor.pos())
@@ -559,7 +559,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
     def show_menu(self):
         button = self.sender()
         self.menu = QtWidgets.QMenu()
-        remove_action = QtGui.QAction("Remove item", self)
+        remove_action = QtWidgets.QAction("Remove item", self)
         remove_action.triggered.connect(lambda: self.remove_item_from_toolbox(button))
         self.menu.addAction(remove_action)
         self.menu.popup(QtGui.QCursor.pos())
