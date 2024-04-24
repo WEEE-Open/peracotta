@@ -1,11 +1,5 @@
-import os
-import sys
-
 import pytest
-import pytestqt
-from PyQt5 import QtCore, QtTest, QtWidgets
-from pytestqt import qt_compat
-from pytestqt.qt_compat import qt_api
+from PyQt5 import QtCore, QtWidgets
 
 from peracotta import CONFIG
 from peracotta.gui import GUI
