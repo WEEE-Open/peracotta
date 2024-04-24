@@ -2,5 +2,5 @@
 # This file exists only for compatibility reasons and shouldn't be used for new installations.
 # Instead, install the program with `pip install peracotta` or `pip install .` if you've cloned the repo
 echo "Launching peracotta directly from source is being deprecated!"
-echo "Install it with `pip install peracotta` instead"
+echo "Install it with 'pip install peracotta' instead"
 python3 -m src.__init__ cli
