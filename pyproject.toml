@@ -34,7 +34,7 @@ dependencies = [
   "loguru",
   "rich",
   "requests",
-  "toml"
+  "toml",
 ]
 
 [project.scripts]
@@ -56,3 +56,8 @@ version = { attr = "peracotta.constants.VERSION" }
 
 [tool.black]
 line-length = 160
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+markers = ["upload", "gui", "prettyprint", "smartctl"]
+addopts = ["--import-mode=importlib"]
