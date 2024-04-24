@@ -19,19 +19,22 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
 ]
 
+# Unless really needed, dependencies in pyproject.toml should be unpinned.
+# For deployments, use the classic pip freeze > requirements.txt
+# Remember to manually move the dependencies that are not needed in the final package to requirements-dev.txt
 dependencies = [
-  "colorama==0.4",
-  "commonmark==0.9",
+  "colorama",
+  "commonmark",
   "PyQt5",
-  "pytarallo>=2.3",
-  "python-dotenv==0.17",
-  "requests==2.25",
-  "typing-extensions>=3.7.4",
-  "urllib3>=1.26",
-  "loguru>=0.7",
-  "rich>=13.0",
-  "requests>=2.25",
-  "toml>=0.10"
+  "pytarallo",
+  "python-dotenv",
+  "requests",
+  "typing-extensions",
+  "urllib3",
+  "loguru",
+  "rich",
+  "requests",
+  "toml"
 ]
 
 [project.scripts]
