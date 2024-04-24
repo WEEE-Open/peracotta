@@ -1,3 +1,4 @@
+from typing import List
 import pytarallo.Errors
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from pytarallo import Tarallo
@@ -11,7 +12,7 @@ class Uploader(QtCore.QThread):
 
     def __init__(
         self,
-        data: list[dict],
+        data: List[dict],
         tarallo_url: str,
         tarallo_token: str,
         bulk_identifier: str,

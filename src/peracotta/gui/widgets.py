@@ -1,5 +1,6 @@
 import json
 from cgitb import text
+from typing import List
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
@@ -7,7 +8,7 @@ from ..constants import PATH
 
 
 class JsonWidget(QtWidgets.QDialog):
-    def __init__(self, data: list[dict], window_size: QtCore.QSize):
+    def __init__(self, data: List[dict], window_size: QtCore.QSize):
         super().__init__()
         layout = QtWidgets.QVBoxLayout()
         text_edit = QtWidgets.QPlainTextEdit()

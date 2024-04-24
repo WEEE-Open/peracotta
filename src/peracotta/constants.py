@@ -6,7 +6,6 @@ import sys
 if "peracotta" in sys.modules:
     if sys.version_info >= (3, 9):
         basedir = importlib.resources.files(__package__)
-        print("a")
     else:
         import importlib_resources  # backport for python 3.8, remove it when EOL
 
@@ -14,7 +13,6 @@ if "peracotta" in sys.modules:
 
 else:  # in case it's being called without installing the package
     basedir = os.path.dirname(__file__)
-    print("b")
 
 URL = {
     "website": "https://weeeopen.polito.it",

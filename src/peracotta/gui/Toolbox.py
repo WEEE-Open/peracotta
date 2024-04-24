@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Optional
+from typing import Dict, List, Optional, Tuple, Union
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -84,7 +84,7 @@ class CustomTableView(QtWidgets.QTableView):
 class CustomTableModel(QtCore.QAbstractTableModel):
     emergency_resize = QtCore.pyqtSignal(name="emergency_resize")
 
-    def __init__(self, data: list[dict], item_features: dict, product: Optional[dict], default_features: dict):
+    def __init__(self, data: List[dict], item_features: dict, product: Optional[dict], default_features: dict):
         super().__init__()
 
         self._data = data
@@ -125,7 +125,7 @@ class CustomTableModel(QtCore.QAbstractTableModel):
         else:
             return QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable
 
-    def row_all_enum_values_for_editor(self, row: int) -> Optional[dict[str, str]]:
+    def row_all_enum_values_for_editor(self, row: int) -> Optional[Dict[str, str]]:
         if row < 0 or row >= len(self.feature_keys):
             return None
 
@@ -226,7 +226,7 @@ class CustomTableModel(QtCore.QAbstractTableModel):
             return ok
         return False
 
-    def extreme_validation(self, name: str, value: [str, int, float]) -> [bool, [str, int, float]]:
+    def extreme_validation(self, name: str, value: Union[str, int, float]) -> Tuple[bool, Union[str, int, float]]:
         feature_type = self._get_feature_type(name)
         if isinstance(value, str):
             value = value.strip()
@@ -345,7 +345,7 @@ class CustomTableModel(QtCore.QAbstractTableModel):
 
 
 class ToolBoxItem(QtWidgets.QWidget):
-    def __init__(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
+    def __init__(self, data: List[dict], features: dict, product: Optional[dict], default_features: dict):
         super().__init__()
         self.default_features = default_features
 
@@ -370,7 +370,7 @@ class ToolBoxItem(QtWidgets.QWidget):
 
         return h1 + h2
 
-    def table_setup(self, data: list[dict], features: dict, product: Optional[dict], default_features: dict):
+    def table_setup(self, data: List[dict], features: dict, product: Optional[dict], default_features: dict):
         ctm = CustomTableModel(data, features, product, default_features)
         ctm.emergency_resize.connect(self._do_the_emergency_resize)
         self.table.verticalHeader().hide()
@@ -452,7 +452,7 @@ class ToolBoxItem(QtWidgets.QWidget):
 
 
 class ToolBoxWidget(QtWidgets.QToolBox):
-    def __init__(self, data: list[dict], default_features: dict, encountered_types_count: dict):
+    def __init__(self, data: List[dict], default_features: dict, encountered_types_count: dict):
         super().__init__()
         self.data = data
         self.default_features = default_features
@@ -468,7 +468,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         self.encountered_types_count.clear()
         self.encountered_types_current_count.clear()
 
-    def load_items(self, data: list[dict]):
+    def load_items(self, data: List[dict]):
         if data:
             self.clear()
             self.data = data
@@ -529,7 +529,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         self.set_context_menu()
 
     @staticmethod
-    def find_matching_product(data: list[dict], features: dict):
+    def find_matching_product(data: List[dict], features: dict):
         if "model" in features and "brand" in features and "variant" in features:
             for maybe in data:
                 if maybe.get("type") == "P":
