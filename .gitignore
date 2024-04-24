@@ -27,4 +27,4 @@ build/
 logs
 */*.log
 *.egg-info
-.direnv
+.direnv/
