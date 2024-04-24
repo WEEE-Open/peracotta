@@ -16,7 +16,7 @@
         default = pkgs.mkShell {
           packages = with pkgs;
             [ python39 xcb-util-cursor ]
-            ++ (with pkgs.python311Packages; [ pip black icecream virtualenv pyqt5 pre-commit]);
+            ++ (with pkgs.python39Packages; [ pip virtualenv pyqt5 ]);
           shellHook = ''
             echo
             echo "Activated environment"
