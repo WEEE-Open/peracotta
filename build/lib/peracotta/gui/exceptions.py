@@ -1,2 +1,0 @@
-class MissingFeaturesError(Exception):
-    pass
