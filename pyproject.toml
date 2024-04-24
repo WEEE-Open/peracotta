@@ -31,6 +31,7 @@ dependencies = [
   "requests",
   "typing-extensions",
   "urllib3",
+  "importlib_resources",
   "loguru",
   "rich",
   "requests",
