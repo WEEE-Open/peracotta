@@ -1,16 +1,3 @@
--r requirements.txt
-black==24.3.0
-build==1.2.1
-distlib==0.3.8
-docutils==0.21.2
-icecream==2.1.3
-mypy_extensions==1.0.0
-packaging==24.0
-pdoc3==0.10.0
-pkginfo==1.10.0
-pre_commit==3.7.0
-PyQt5_sip==12.13.0
-pytest==6.2.5
-pytest-qt==4.2.0
-twine==3.3.0
+typing_extensions==4.11.0
 virtualenv==20.25.1
+pre-commit==3.5.0
