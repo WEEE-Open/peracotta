@@ -13,5 +13,5 @@ pytest-qt==4.0.2
 six==1.13.0
 toml==0.10.2
 wcwidth==0.1.7
-zipp==3.3.1
+zipp==3.19.1
 Nuitka==1.0.7
