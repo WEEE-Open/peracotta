@@ -1,8 +1,8 @@
 import time
-
+from .config import CONFIG
 from requests import Session
 
-url = "http://localhost:9999/crash_report"
+url = CONFIG["REPORT_URL"]
 
 
 def send_crash_notification(message):
