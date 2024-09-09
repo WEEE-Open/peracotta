@@ -357,6 +357,7 @@
      <string>View</string>
     </property>
     <addaction name="actionOpenJson"/>
+    <addaction name="actionOpenLogsDir"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
@@ -392,6 +393,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+J</string>
+   </property>
+  </action>
+  <action name="actionOpenLogsDir">
+   <property name="text">
+    <string>Open Logs Dir</string>
    </property>
   </action>
   <action name="actionSourceCode">

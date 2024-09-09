@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import sys
+import subprocess
 import time
 import urllib.parse
 import urllib.request
@@ -14,7 +15,7 @@ from .. import commons
 from ..commons import ParserComponents, make_tree
 from ..config import CONF_DIR, CONFIG
 from ..constants import ICON, PATH, URL, VERSION
-from ..peralog import logger
+from ..peralog import logger, logdir
 from ..tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
 from .exceptions import MissingFeaturesError
 from .PeraThread import PeracottaThread
@@ -115,6 +116,8 @@ class GUI(QtWidgets.QMainWindow):
         self.actionOpenLastJson.triggered.connect(self.open_latest_json)
         self.actionOpenJson = self.findChild(QtWidgets.QAction, "actionOpenJson")
         self.actionOpenJson.triggered.connect(self.show_json)
+        self.actionOpenLogsDir = self.findChild(QtWidgets.QAction, "actionOpenLogsDir")
+        self.actionOpenLogsDir.triggered.connect(self.open_logs_dir)
         self.actionLoadRawFiles = self.findChild(QtWidgets.QAction, "actionLoadRawFiles")
         self.actionLoadRawFiles.triggered.connect(self._load_raw_files)
         self.actionExit = self.findChild(QtWidgets.QAction, "actionExit")
@@ -521,6 +524,14 @@ class GUI(QtWidgets.QMainWindow):
         if self.data is None:
             return
         JsonWidget(commons.make_tree(self.data), self.size())
+
+    def open_logs_dir(self):
+        if sys.platform == "win32":
+            os.startfile(logdir)
+        elif sys.platform == "darwin":
+            subprocess.call(["open", logdir])
+        else:
+            subprocess.call(["xdg-open", logdir])
 
     def open_website(self):
         self.open_url(URL["website"])
