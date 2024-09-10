@@ -73,7 +73,7 @@ except FileNotFoundError:
 
 # 4) default toml
 try:
-    _toml_conf = toml.load(CONF_DIR.joinpath("config.toml"))
+    _toml_conf = toml.load(basedir.joinpath("config.toml"))
     for k in _toml_conf:
         if k not in CONFIG.keys() or CONFIG[k] is None:
             CONFIG[k] = _toml_conf[k]
