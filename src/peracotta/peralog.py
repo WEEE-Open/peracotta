@@ -19,4 +19,4 @@ logger.remove()
 logger.add(sys.stdout, format=log_format, level=stdout_level, colorize=True, backtrace=True, diagnose=True)
 logger.add(logdir.joinpath("peracotta.log"), format=log_format, level=file_level)
 
-logger.info(f"{CONF_DIR = }")
+# logger.info(f"{CONF_DIR = }")

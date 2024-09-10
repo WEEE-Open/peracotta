@@ -43,6 +43,13 @@ class GUI(QtWidgets.QMainWindow):
         self,
         app: QtWidgets.QApplication,
     ) -> None:
+        logger.info("Starting GUI")
+        logger.info(f"Logs directory: {logdir}")
+        logger.info("Configuration:")
+        for k, v in CONFIG.items():
+            logger.info(f"{k} = {v}")
+        logger.info("")
+
         super(GUI, self).__init__()
         uic.loadUi(PATH["UI"], self)
         self.app = app

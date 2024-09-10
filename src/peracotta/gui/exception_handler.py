@@ -27,8 +27,6 @@ def gui_excepthook(exc_type, exc_value, exc_tb):
     """
     global _errored
     _errored = True
-    if report:
-        send_crash_notification(f"{exc_type = }\n{exc_value = }\n{exc_tb = }\n\n")
     QtWidgets.QMessageBox.warning(
         None,
         "Error",
@@ -43,3 +41,5 @@ def gui_excepthook(exc_type, exc_value, exc_tb):
     # This is loguru syntax and should be modified if the logging system is changed
     options = ((exc_type, exc_value, exc_tb),) + logger._options[1:]
     logger._log("ERROR", False, options, "", None, None)
+    if report:
+        send_crash_notification()
