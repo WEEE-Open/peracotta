@@ -408,7 +408,7 @@ def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
 
     See parse_smartctl to parse multiple disks.
     """
-    if smartctl.get("exit_status") != 0:
+    if smartctl.get("smartctl").get("exit_status") != 0:
         return {}
 
     disk = {
