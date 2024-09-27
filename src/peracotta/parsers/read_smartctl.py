@@ -29,7 +29,8 @@ def parse_smartctl(file: str, interactive: bool = False) -> List[dict]:
     jdisks = json.loads(file)
     for jdisk in jdisks:
         disk = parse_single_disk(jdisk, interactive)
-        disks.append(disk)
+        if disk != {}:
+            disks.append(disk)
     return disks
 
 
@@ -407,6 +408,9 @@ def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
 
     See parse_smartctl to parse multiple disks.
     """
+    if smartctl.get("exit_status") != 0:
+        return {}
+
     disk = {
         "type": "hdd",
     }
