@@ -5,6 +5,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from ..commons import item_only_features
 from ..constants import ICON
+from ..peralog import logger
 
 from . import prettyprinter
 
@@ -619,33 +620,37 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         counter = 0
         product_index = None
         deleted = False
-        if item_b and item_m and item_v:
-            for idx, entry in enumerate(self.data):
-                # count items with the same product
-                if entry["type"] == "I" and idx != data_index:
-                    test_b = entry["features"].get("brand")
-                    test_m = entry["features"].get("model")
-                    test_v = entry["features"].get("variant")
-                    if item_b == test_b and item_m == test_m and item_v == test_v:
-                        counter += 1
-                # find the product itself
-                elif entry["type"] == "P":
-                    p_test_b = entry.get("brand")
-                    p_test_m = entry.get("model")
-                    p_test_v = entry.get("variant")
-                    if item_b == p_test_b and item_m == p_test_m and item_v == p_test_v:
-                        product_index = idx
-            if counter <= 0 and product_index:
-                # If both item and product have to be deleted, delete them
-                # without f...messing up indexes
-                if data_index >= product_index:
-                    del self.data[data_index]
-                    del self.data[product_index]
-                else:
-                    del self.data[product_index]
-                    del self.data[data_index]
-                deleted = True
-
+        try:
+            if item_b and item_m and item_v:
+                for idx, entry in enumerate(self.data):
+                    # count items with the same product
+                    if entry["type"] == "I" and idx != data_index:
+                        test_b = entry["features"].get("brand")
+                        test_m = entry["features"].get("model")
+                        test_v = entry["features"].get("variant")
+                        if item_b == test_b and item_m == test_m and item_v == test_v:
+                            counter += 1
+                    # find the product itself
+                    elif entry["type"] == "P":
+                        p_test_b = entry.get("brand")
+                        p_test_m = entry.get("model")
+                        p_test_v = entry.get("variant")
+                        if item_b == p_test_b and item_m == p_test_m and item_v == p_test_v:
+                            product_index = idx
+                if counter <= 0 and product_index:
+                    # If both item and product have to be deleted, delete them
+                    # without f...messing up indexes
+                    if data_index >= product_index:
+                        del self.data[data_index]
+                        del self.data[product_index]
+                    else:
+                        del self.data[product_index]
+                        del self.data[data_index]
+                    deleted = True
+        except KeyError as e:
+            logger.error("Item to remove is missing something")
+            logger.error(f"{entry = }")
+            raise e
         # All other cases (item with no product, product not found, other items linked to product):
         # just delete the product
         if not deleted:
