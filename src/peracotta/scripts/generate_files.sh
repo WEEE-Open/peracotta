@@ -41,7 +41,7 @@ lscpu > "$OUTPATH/lscpu.txt"
 lspci -v > "$OUTPATH/lspci.txt"
 glxinfo > "$OUTPATH/glxinfo.txt"
 
-DISKZ=($(lsblk -d --exclude 7,9,11,179 -o NAME -n))
+DISKZ=($(lsblk -d --exclude 7,9,11,179 -o NAME -n -A))
 COUNTER=${#DISKZ[@]}
 echo Found $COUNTER disks
 echo "[" > "$OUTPATH/smartctl.txt"
