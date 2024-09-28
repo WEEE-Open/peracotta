@@ -53,7 +53,8 @@ from .reporter import send_report
 
 
 def parse_common_args():
-    """Parse arguments common to both GUI and CLI version
+    """
+    Parse arguments common to both GUI and CLI version
     --version prints the current version and quits.
     --logs prints the path where logs are stored and quits.
     """

@@ -43,6 +43,8 @@ class GUI(QtWidgets.QMainWindow):
         self,
         app: QtWidgets.QApplication,
     ) -> None:
+        logger.info(f"Peracotta v. {VERSION}")
+        logger.info(f"Python v. {sys.version.split()[0]}")
         logger.info("Starting GUI")
         logger.info(f"Logs directory: {logdir}")
         logger.info("Configuration:")

@@ -176,7 +176,7 @@ class CustomTableModel(QtCore.QAbstractTableModel):
             if column == 0:
                 return QtCore.Qt.AlignmentFlag.AlignLeft + QtCore.Qt.AlignmentFlag.AlignVCenter
             elif column == 1:
-                return QtCore.Qt.AlignmentFlag.AlignLeft + QtCore.Qt.AlignmentFlag.AlignVCenter
+                return QtCore.Qt.AlignmentFlag.AlignRight + QtCore.Qt.AlignmentFlag.AlignVCenter
 
         return None
 
@@ -596,7 +596,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
     def remove_item_from_toolbox(self, button):
         i = 0
         for item in self.children():
-            if type(item) == QtWidgets.QAbstractButton:
+            if isinstance(item, QtWidgets.QAbstractButton):
                 if item == button:
                     self.removeItem(i)
                     break
@@ -648,7 +648,7 @@ class ToolBoxWidget(QtWidgets.QToolBox):
                         del self.data[data_index]
                     deleted = True
         except KeyError as e:
-            logger.error("Item to remove is missing something")
+            logger.error("Item to be removed is missing something")
             logger.error(f"{entry = }")
             raise e
         # All other cases (item with no product, product not found, other items linked to product):

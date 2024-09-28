@@ -5,7 +5,7 @@ import re
 import sys
 from enum import Enum
 from math import floor, log10
-from typing import Dict, List
+from typing import Dict, List, Union
 
 """
 Read "smartctl" output:
@@ -29,7 +29,7 @@ def parse_smartctl(file: str, interactive: bool = False) -> List[dict]:
     jdisks = json.loads(file)
     for jdisk in jdisks:
         disk = parse_single_disk(jdisk, interactive)
-        if disk != {}:
+        if disk:
             disks.append(disk)
     return disks
 
@@ -402,14 +402,14 @@ def _add_interface_if_possible(disk, interface):
                 disk[interface] = 1
 
 
-def parse_single_disk(smartctl: dict, interactive: bool = False) -> dict:
+def parse_single_disk(smartctl: dict, interactive: bool = False) -> Union[dict, None]:
     """
     Parse a single disk from smartctl -ja output to tarallo upload format.
 
     See parse_smartctl to parse multiple disks.
     """
-    if smartctl.get("smartctl").get("exit_status") != 0:
-        return {}
+    if smartctl.get("smartctl").get("exit_status") == 1:
+        return
 
     disk = {
         "type": "hdd",
