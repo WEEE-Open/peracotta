@@ -1,4 +1,5 @@
 from typing import List
+
 import pytarallo.Errors
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from pytarallo import Tarallo

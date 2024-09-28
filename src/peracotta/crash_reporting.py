@@ -1,6 +1,7 @@
+from requests import Session
+
 from .config import CONFIG
 from .peralog import logdir
-from requests import Session
 
 url = CONFIG["REPORT_URL"]
 

@@ -6,7 +6,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from ..commons import item_only_features
 from ..constants import ICON
 from ..peralog import logger
-
 from . import prettyprinter
 
 

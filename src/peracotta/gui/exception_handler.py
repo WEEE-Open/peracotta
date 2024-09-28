@@ -1,8 +1,8 @@
 from PyQt5 import QtWidgets
 
-from ..peralog import logger
 from ..config import CONFIG
 from ..crash_reporting import send_crash_notification
+from ..peralog import logger
 from .exceptions import MissingFeaturesError
 
 report = CONFIG["AUTOMATIC_REPORT_ERRORS"]
@@ -30,7 +30,7 @@ def gui_excepthook(exc_type, exc_value, exc_tb):
     QtWidgets.QMessageBox.warning(
         None,
         "Error",
-        f"Peracotta encountered an exception ({exc_type.__name__}).\nSee logs for the traceback.",
+        f"Peracotta encountered an exception ({exc_type.__name__}).\n{exc_value}\nSee logs for the traceback.",
     )
     if any([exc_type is exc_t for exc_t in critical_errors]):
         logger.error("Encountered a critical error")

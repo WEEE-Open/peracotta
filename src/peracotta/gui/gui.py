@@ -1,8 +1,8 @@
 import json
 import os
 import shutil
-import sys
 import subprocess
+import sys
 import time
 import urllib.parse
 import urllib.request
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from .. import commons
 from ..config import CONF_DIR, CONFIG
 from ..constants import ICON, PATH, URL, VERSION
-from ..peralog import logger, logdir
+from ..peralog import logdir, logger
 from ..tarallo import TaralloUploadDialog, Uploader, tarallo_success_dialog
 from .exceptions import MissingFeaturesError
 from .PeraThread import PeracottaThread
