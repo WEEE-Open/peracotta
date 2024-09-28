@@ -7,11 +7,7 @@ from enum import Enum
 from typing import List, Optional, Set
 
 from .constants import basedir
-from .parsers.read_decode_dimms import parse_decode_dimms
-from .parsers.read_dmidecode import parse_case, parse_motherboard, parse_psu
-from .parsers.read_lscpu import parse_lscpu
-from .parsers.read_lspci_and_glxinfo import parse_lspci_and_glxinfo
-from .parsers.read_smartctl import parse_smartctl
+from .parsers import parse_case, parse_decode_dimms, parse_lscpu, parse_lspci_and_glxinfo, parse_motherboard, parse_psu, parse_smartctl, parse_udevadm
 
 
 class InputFileNotFoundError(FileNotFoundError):
@@ -253,7 +249,24 @@ def call_parsers(
         if ParserComponents.GPU in components and gpu_location == GpuLocation.DISCRETE:
             result += parse_lspci_and_glxinfo(True, read_file("lspci.txt"), read_file("glxinfo.txt"), interactive)
         if ParserComponents.RAM in components:
-            result += parse_decode_dimms(read_file("dimms.txt"), interactive)
+            ram_result = parse_decode_dimms(read_file("dimms.txt"), interactive)
+            tmp: list[dict] = ram_result.copy()
+            for item in tmp:
+                item.pop("ram-ecc", None)
+                item.pop("ram-timings", None)
+
+            for bank in parse_udevadm(read_file("udevadm.txt")):
+                for item in tmp:
+                    if item["sn"] == bank["sn"]:
+                        if any([item[k] != bank[k] for k in item]):  # they found the same item but they are different, manual review is needed
+                            ram_result.append(bank)
+                            tmp.append(bank)
+                        break
+                else:  # no break, udevadm found an item that decode-dimms missed
+                    tmp.append(bank)
+                    ram_result.append(bank)
+
+            result += ram_result
         if ParserComponents.HDD in components or ParserComponents.SSD in components:
             result += parse_smartctl(read_file("smartctl.txt"), interactive)
         if ParserComponents.PSU in components:
@@ -530,24 +543,3 @@ def env_to_bool(value: Optional[str]) -> bool:
         pass
 
     return False
-
-
-def parse_from_env(value: Optional[str]):
-    if not value:
-        return None
-
-    trues = ["1", "true", "t", "", "yes", "y"]
-    falses = ["0", "false", "f", "no", "n"]
-
-    if value.lower() in trues:
-        return True
-    if value.lower() in falses:
-        return False
-
-    try:
-        i = int(value)
-        return i
-    except ValueError:
-        pass
-
-    return value

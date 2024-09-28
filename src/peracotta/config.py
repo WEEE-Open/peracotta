@@ -23,11 +23,11 @@ For this reasons, there's a .env.example in the source code at the appropriate p
 
 import os
 from pathlib import Path
+from typing import Optional
 
 import toml
 from dotenv import load_dotenv
 
-from .commons import parse_from_env
 from .constants import basedir
 
 HOME_DIR = Path().home()
@@ -44,6 +44,28 @@ keys = [
     "REPORT_URL",
     "AUTOMATIC_REPORT_ERRORS",
 ]
+
+
+def parse_from_env(value: Optional[str]):
+    if not value:
+        return None
+
+    trues = ["1", "true", "t", "", "yes", "y"]
+    falses = ["0", "false", "f", "no", "n"]
+
+    if value.lower() in trues:
+        return True
+    if value.lower() in falses:
+        return False
+
+    try:
+        i = int(value)
+        return i
+    except ValueError:
+        pass
+
+    return value
+
 
 # 1) src's .env, for compatibility with old M.I.S.O.
 if isinstance(basedir, str):  # If the app is installed as a package basedir is a PosixPath object

@@ -2,7 +2,6 @@ import importlib.resources
 import os
 import sys
 
-
 if "peracotta" in sys.modules:
     if sys.version_info >= (3, 9):
         basedir = importlib.resources.files(__package__)
@@ -19,7 +18,7 @@ URL = {
     "source_code": "https://github.com/WEEE-Open/peracotta",
 }
 
-VERSION = "2.4.5"
+VERSION = "2.5.0"
 
 PATH = {
     "UI": "assets/interface.ui",

@@ -4,15 +4,19 @@ from pathlib import Path
 
 from loguru import logger
 
-from .commons import env_to_bool
 from .config import CONF_DIR
 
 logdir = Path(CONF_DIR).joinpath("logs")
 if not logdir.exists():
     os.makedirs(logdir)
 
-stdout_level = "DEBUG" if env_to_bool(os.getenv("DEBUG")) else "WARNING"
-file_level = "DEBUG" if env_to_bool(os.getenv("DEBUG")) else "INFO"
+try:
+    DEBUG = sys.argv[1] == "DEBUG"
+except IndexError:
+    DEBUG = False
+
+stdout_level = "DEBUG" if DEBUG else "WARNING"
+file_level = "DEBUG" if DEBUG else "INFO"
 
 log_format = "{time}\t{message}"
 logger.remove()

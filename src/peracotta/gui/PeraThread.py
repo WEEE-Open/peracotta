@@ -61,6 +61,17 @@ class PeracottaThread(QtCore.QThread):
                     self.gpu_location,
                     False,
                 )
+                sns = set()
+                for item in result:
+                    if "sn" in item:
+                        if item["sn"] in sns:
+                            QtWidgets.QMessageBox.warning(
+                                None,
+                                "Warning",
+                                "Found conflicting information.\nBE CAREFUL.",
+                            )
+                            break
+                        sns.add(item["sn"])
             if self.owner != "":
                 result = commons.add_owner(result, self.owner)
             result = commons.split_products(result)

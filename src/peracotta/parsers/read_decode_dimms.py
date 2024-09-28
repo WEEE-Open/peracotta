@@ -37,7 +37,7 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
         fallback_manufacturer_data_type = None
         for line in dimm.splitlines():
             if line.startswith("Fundamental Memory type"):
-                dimms[i]["ram-type"] = line.split(" ")[-2].lower()
+                dimms[i]["ram-type"] = line.split(" ")[-2].upper()
                 if dimms[i]["ram-type"] == "unknown":
                     del dimms[i]["ram-type"]
 
@@ -50,6 +50,9 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
                     dimms[i]["frequency-hertz"] *= 1000 * 1000
                 elif "GHz" in freq[1]:
                     dimms[i]["frequency-hertz"] *= 1000 * 1000 * 1000
+                elif "MT/s" in freq[1]:
+                    dimms[i]["frequency-hertz"] *= 1000 * 1000
+
                 # The official thing is 667 MHz even if they run at 666 MHz
                 if dimms[i]["frequency-hertz"] == 666000000:
                     dimms[i]["frequency-hertz"] = 667000000
@@ -65,18 +68,12 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
                     dimms[i]["capacity-byte"] *= 1024 * 1024 * 1024
 
             # alternatives to "Manufacturer" are "DRAM Manufacturer" and "Module Manufacturer"
-            if "---=== Manufacturer Data ===---" in line:
-                manufacturer_data_type = "Module Manufacturer"
-                fallback_manufacturer_data_type = "DRAM Manufacturer"
-                # Sometimes DRAM Manufacturer isn't present.
-
-            if "---=== Manufacturing Information ===---" in line:
-                manufacturer_data_type = "Manufacturer"
-
-            if manufacturer_data_type and line.startswith(manufacturer_data_type):
-                dimms[i]["brand"] = _ignore_spaces(line, len(manufacturer_data_type))
-            elif fallback_manufacturer_data_type and line.startswith(fallback_manufacturer_data_type):
-                dimms[i]["brand"] = _ignore_spaces(line, len(fallback_manufacturer_data_type))
+            manufacturer_data_types = ["Module Manufacturer", "Manufacturer", "DRAM Manufacturer"]
+            if "brand" not in dimms[i]:
+                for manufacturer_data_type in manufacturer_data_types:
+                    if line.startswith(manufacturer_data_type):
+                        dimms[i]["brand"] = _ignore_spaces(line, len(manufacturer_data_type))
+                        break
 
             # This seems to always be the model (or at least never be the serial number)
             if line.startswith("Part Number"):

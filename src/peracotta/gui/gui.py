@@ -12,7 +12,6 @@ import requests
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 
 from .. import commons
-from ..commons import ParserComponents, make_tree
 from ..config import CONF_DIR, CONFIG
 from ..constants import ICON, PATH, URL, VERSION
 from ..peralog import logger, logdir
@@ -187,8 +186,8 @@ class GUI(QtWidgets.QMainWindow):
 
         # Set the selectors widget
         layout = self.selectorsWidget.layout()
-        niy = ParserComponents.not_implemented_yet()
-        for item in ParserComponents:
+        niy = commons.ParserComponents.not_implemented_yet()
+        for item in commons.ParserComponents:
             checkbox = QtWidgets.QCheckBox(item.value)
             if item in niy:
                 checkbox.setEnabled(False)
@@ -314,7 +313,7 @@ class GUI(QtWidgets.QMainWindow):
     def upload_to_tarallo(self, checkbox: bool, bulk_id=None):
         if bulk_id == "":
             bulk_id = None
-        self.uploader = Uploader(make_tree(self.data), CONFIG["TARALLO_URL"], CONFIG["TARALLO_TOKEN"], bulk_id, checkbox)
+        self.uploader = Uploader(commons.make_tree(self.data), CONFIG["TARALLO_URL"], CONFIG["TARALLO_TOKEN"], bulk_id, checkbox)
         self.uploader.successEvent.connect(self.tarallo_success)
         self.uploader.failureEvent.connect(self.tarallo_failure)
         self.uploader.start()

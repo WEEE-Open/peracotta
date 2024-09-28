@@ -22,6 +22,7 @@ fi
 modprobe at24
 modprobe eeprom
 decode-dimms > "$OUTPATH/dimms.txt"
+udevadm info -e | grep -e MEMORY_DEVICE > "$OUTPATH/udevadm.txt"
 
 dmidecode -t baseboard > "$OUTPATH/baseboard.txt"
 dmidecode -t connector > "$OUTPATH/connector.txt"
