@@ -49,7 +49,7 @@ from .config import CONFIG
 from .constants import VERSION
 from .gui import GUI, errored, gui_excepthook
 from .peralog import logdir, logger
-from .reporter import send_report
+from .crash_reporting import send_crash_notification
 
 
 def parse_common_args():
@@ -80,12 +80,12 @@ def main_gui():
     window = GUI(app)
     app.exec_()
 
-    if CONFIG["AUTOMATIC_REPORT_ERRORS"] and errored():
-        try:
-            send_report()
-        except Exception as e:
-            logger.info("Couldn't upload crash log.")
-            logger.exception(e)
+    try:
+        if CONFIG["AUTOMATIC_REPORT_ERRORS"] and errored() and not send_crash_notification():
+            logger.error("Couldn't upload crash log.")
+    except Exception as e:
+        logger.error(f"Error while sending crash notification: {e}")
+        logger.exception(e)
 
 
 def main_cli():

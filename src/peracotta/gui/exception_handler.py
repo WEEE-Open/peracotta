@@ -5,8 +5,6 @@ from ..crash_reporting import send_crash_notification
 from ..peralog import logger
 from .exceptions import MissingFeaturesError
 
-report = CONFIG["AUTOMATIC_REPORT_ERRORS"]
-
 critical_errors = [MissingFeaturesError]  # error classes that should crash the program
 
 
@@ -41,5 +39,5 @@ def gui_excepthook(exc_type, exc_value, exc_tb):
     # This is loguru syntax and should be modified if the logging system is changed
     options = ((exc_type, exc_value, exc_tb),) + logger._options[1:]
     logger._log("ERROR", False, options, "", None, None)
-    if report:
-        send_crash_notification()
+    # if CONFIG["AUTOMATIC_REPORT_ERRORS"] and not send_crash_notification():
+    #     logger.info("Couldn't upload crash log.")
