@@ -1,7 +1,8 @@
 asttokens==2.4.1
-certifi==2024.2.2
-charset-normalizer==3.3.2
+charset-normal
+chardet==4.0.0
 colorama==0.4.6
+certifi==2024.7.4
 commonmark==0.9.1
 distlib==0.3.8
 executing==2.0.1
