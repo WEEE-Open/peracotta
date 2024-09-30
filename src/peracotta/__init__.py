@@ -90,7 +90,7 @@ def main_gui():
 
 def main_cli():
     """.. todo::Entrypoint for the CLI version"""
-    print("Sorry, peracruda isn't implemented in v2 yet! Use the old one at https://github.com/WEEE-Open/peracotta")
+    print("Sorry, peracruda isn't implemented in v2 yet! Use the old one at https://github.com/WEEE-Open/peracotta/tree/v1.0.0")
     parse_common_args()
     # peracruda.__main() # Doesn't seem to prompt for sudo password and gets stuck
 
