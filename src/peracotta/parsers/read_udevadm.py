@@ -30,22 +30,30 @@ def parse_udevadm(file_content: str) -> List[dict]:
         if device["SPEED_MTS"] == 666:
             device["SPEED_MTS"] = 667
 
-        if device["SERIAL_NUMBER"][0:2] == "0x":
-            device["SERIAL_NUMBER"] = str(int(device["SERIAL_NUMBER"][2:], base=16))
-        if any(c in "abcdefABCDEF" for c in device["SERIAL_NUMBER"]):
-            device["SERIAL_NUMBER"] = str(int(device["SERIAL_NUMBER"], base=16))
+        try:
+            if device["SERIAL_NUMBER"][0:2] == "0x":
+                sn = str(int(device["SERIAL_NUMBER"][2:], base=16))
+            if any(c in "abcdefABCDEF" for c in device["SERIAL_NUMBER"]):
+                sn = str(int(device["SERIAL_NUMBER"], base=16))
+            else:
+                sn = device["SERIAL_NUMBER"]
+        except ValueError:
+            logger.error(f"Error while parsing serial number: {device['SERIAL_NUMBER']}")
+            logger.error(f"{file_content = }")
+            continue
 
-        dimm = {
-            "type": "ram",
-            "working": "yes",
-            "ram-type": device["TYPE"].upper(),
-            "frequency-hertz": int(device["SPEED_MTS"]) * 1000 * 1000,
-            "capacity-byte": int(device["SIZE"]),
-            "brand": device["MANUFACTURER"],
-            "model": device["PART_NUMBER"],
-            "sn": device["SERIAL_NUMBER"],
-        }
-        dimms.append(dimm)
+        if sn:
+            dimm = {
+                "type": "ram",
+                "working": "yes",
+                "ram-type": device["TYPE"].upper(),
+                "frequency-hertz": int(device["SPEED_MTS"]) * 1000 * 1000,
+                "capacity-byte": int(device["SIZE"]),
+                "brand": device["MANUFACTURER"],
+                "model": device["PART_NUMBER"],
+                "sn": sn,
+            }
+            dimms.append(dimm)
 
     # MISSING ECC AND TIMINGS
 
