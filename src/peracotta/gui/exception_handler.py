@@ -25,6 +25,13 @@ def gui_excepthook(exc_type, exc_value, exc_tb):
     """
     global _errored
     _errored = True
+
+    # These two lines are for pretty printing traceback with color
+    # and additional info.
+    # This is loguru syntax and should be modified if the logging system is changed
+    options = ((exc_type, exc_value, exc_tb),) + logger._options[1:]
+    logger._log("ERROR", False, options, "", None, None)
+
     QtWidgets.QMessageBox.warning(
         None,
         "Error",
@@ -34,10 +41,5 @@ def gui_excepthook(exc_type, exc_value, exc_tb):
         logger.error("Encountered a critical error")
         QtWidgets.QApplication.quit()
 
-    # These two lines are for pretty printing traceback with color
-    # and additional info.
-    # This is loguru syntax and should be modified if the logging system is changed
-    options = ((exc_type, exc_value, exc_tb),) + logger._options[1:]
-    logger._log("ERROR", False, options, "", None, None)
     # if CONFIG["AUTOMATIC_REPORT_ERRORS"] and not send_crash_notification():
     #     logger.info("Couldn't upload crash log.")
