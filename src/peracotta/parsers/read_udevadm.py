@@ -58,12 +58,15 @@ def parse_udevadm(file_content: str) -> List[dict]:
                 }
                 dimms.append(dimm)
         except KeyError as e:
-            logger.error(f"{e}")
-            logger.error(f"Error while parsing device in udevadm: {device}")
-            logger.error("file content:")
-            for line in file_content.splitlines():
-                logger.error(f"\t{line}")
-            continue
+            logger.error("Error while parsing device in udevadm")
+            logger.error(f"KeyError {e}")
+            logger.error("device:")
+            logger.error(device)
+
+    if _errored:
+        logger.error("file content:")
+        for line in file_content.splitlines():
+            logger.error(f"\t{line}")
     # MISSING ECC AND TIMINGS
 
     return dimms
