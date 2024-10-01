@@ -45,9 +45,9 @@ jobs:
       - name: Set up local development Tarallo instance
         run: |
           git clone https://github.com/weee-open/tarallo
+          cd tarallo || exit
           docker-compose() { docker compose "$@"; } # tarallo's makefile has the older deprecated docker-compose command
           export -f docker-compose
-          cd tarallo || exit
           make ci
           make up
           cd - &> /dev/null
