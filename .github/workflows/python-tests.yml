@@ -39,7 +39,7 @@ jobs:
             $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
             sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
           sudo apt-get update
-          sudo apt install build-essential libpython3-dev libdbus-1-dev docker-ce docker-ce-cli containerd.iogi docker-compose-plugin
+          sudo apt install build-essential libpython3-dev libdbus-1-dev docker-ce docker-ce-cli containerd.io docker-compose-plugin
           pip install -r requirements-dev.txt
 
       - name: Set up local development Tarallo instance
