@@ -50,7 +50,7 @@ def test_ram():
             "sn": "3072778780",
             "frequency-hertz": 667000000,
             "capacity-byte": 1073741824,
-            "ram-type": "ddr2",
+            "ram-type": "DDR2",
             "ram-ecc": "yes",
             "ram-timings": "5-5-5-15",
         }

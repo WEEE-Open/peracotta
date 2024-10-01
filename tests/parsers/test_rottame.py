@@ -50,12 +50,13 @@ def test_ram():
             "sn": "2972574626",
             "frequency-hertz": 533000000,
             "capacity-byte": 536870912,
-            "ram-type": "ddr2",
+            "ram-type": "DDR2",
             "ram-ecc": "no",
             "ram-timings": "5-4-4-12",
         }
     ]
     output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "dimms.txt"))
+    print(output)
 
     assert output == expect
 

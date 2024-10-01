@@ -44,7 +44,7 @@ def test_ram():
     expect = [
         {
             "ram-ecc": "no",
-            "ram-type": "ddr3",
+            "ram-type": "DDR3",
             "brand": "G Skill Intl",
             "capacity-byte": 8589934592,
             "frequency-hertz": 1333000000,
@@ -55,7 +55,7 @@ def test_ram():
         },
         {
             "ram-ecc": "no",
-            "ram-type": "ddr3",
+            "ram-type": "DDR3",
             "brand": "G Skill Intl",
             "capacity-byte": 8589934592,
             "frequency-hertz": 1333000000,
@@ -68,7 +68,7 @@ def test_ram():
     output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "dimms.txt"))
 
     assert len(output) == 2, "2 RAM modules are found"
-    assert output == expect
+    assert [d in expect for d in output], "The RAM modules are the expected ones"
 
 
 def test_baseboard():

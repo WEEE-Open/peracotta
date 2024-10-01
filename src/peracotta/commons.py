@@ -255,7 +255,12 @@ def call_parsers(
                 item.pop("ram-ecc", None)
                 item.pop("ram-timings", None)
 
-            for bank in parse_udevadm(read_file("udevadm.txt")):
+            try:
+                udevadm_rams = parse_udevadm(read_file("udevadm.txt"))
+            except InputFileNotFoundError:
+                udevadm_rams = []
+
+            for bank in udevadm_rams:
                 for item in tmp:
                     if item["sn"] == bank["sn"]:
                         if any([item[k] != bank[k] for k in item]):  # they found the same item but they are different, manual review is needed

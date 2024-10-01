@@ -8,7 +8,7 @@ from peracotta.gui import GUI
 @pytest.fixture
 def widget(qtbot):
     app = QtWidgets.QApplication.instance()
-    window = GUI(app, CONFIG["TARALLO_TOKEN"])
+    window = GUI(app)
     qtbot.addWidget(window)
     return window
 
