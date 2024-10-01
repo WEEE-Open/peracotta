@@ -1,7 +1,8 @@
 import os
+
 import pytest
 
-import peracommon
+import peracotta.commons as commons
 
 
 def is_product(component: dict):
@@ -23,12 +24,12 @@ for fold in set(test_folders):
 def res(request):
     # noinspection DuplicatedCode
     parsers = {
-        peracommon.ParserComponents.CPU,
-        peracommon.ParserComponents.GPU,
-        peracommon.ParserComponents.MOTHERBOARD,
-        peracommon.ParserComponents.RAM,
-        peracommon.ParserComponents.CASE,
-        peracommon.ParserComponents.PSU,
+        commons.ParserComponents.CPU,
+        commons.ParserComponents.GPU,
+        commons.ParserComponents.MOTHERBOARD,
+        commons.ParserComponents.RAM,
+        commons.ParserComponents.CASE,
+        commons.ParserComponents.PSU,
     }
 
     path = f"tests/source_files/{request.param}"
@@ -36,17 +37,17 @@ def res(request):
         with open(os.path.join(path, "gpu_location.txt"), "r") as f:
             gpu_flag = f.readline()
             if gpu_flag == "cpu":
-                where = peracommon.GpuLocation.CPU
+                where = commons.GpuLocation.CPU
             elif gpu_flag == "gpu":
-                where = peracommon.GpuLocation.DISCRETE
+                where = commons.GpuLocation.DISCRETE
             else:
-                where = peracommon.GpuLocation.MOTHERBOARD
+                where = commons.GpuLocation.MOTHERBOARD
     except FileNotFoundError:
-        where = peracommon.GpuLocation.NONE
+        where = commons.GpuLocation.NONE
 
-    result = peracommon.call_parsers(path, parsers, where, False)
-    result = peracommon.split_products(result)
-    result = peracommon.make_tree(result)
+    result = commons.call_parsers(path, parsers, where, False)
+    result = commons.split_products(result)
+    result = commons.make_tree(result)
 
     return result
 

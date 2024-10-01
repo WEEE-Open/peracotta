@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
-from parsers import read_smartctl
-from parsers import read_decode_dimms
-from parsers import read_dmidecode
-from parsers import read_lspci_and_glxinfo
-from parsers import read_lscpu
+from peracotta.parsers import read_decode_dimms, read_dmidecode, read_lscpu, read_lspci_and_glxinfo
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/rottame/"
@@ -54,12 +50,13 @@ def test_ram():
             "sn": "2972574626",
             "frequency-hertz": 533000000,
             "capacity-byte": 536870912,
-            "ram-type": "ddr2",
+            "ram-type": "DDR2",
             "ram-ecc": "no",
             "ram-timings": "5-4-4-12",
         }
     ]
     output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "dimms.txt"))
+    print(output)
 
     assert output == expect
 

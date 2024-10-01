@@ -535,4 +535,3 @@
 	Capabilities: [800] Latency Tolerance Reporting
 	Kernel driver in use: xhci_hcd
 	Kernel modules: xhci_pci
-

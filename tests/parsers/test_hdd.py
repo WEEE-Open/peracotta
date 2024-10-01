@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from parsers import read_smartctl
-from tests.parsers.read_file import read_file
 import pytest
 
+from peracotta.parsers import read_smartctl
+from tests.parsers.read_file import read_file
 
 results = [
     (

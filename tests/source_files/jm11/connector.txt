@@ -65,4 +65,3 @@ Port Connector Information
 	External Reference Designator: USB 4
 	External Connector Type: Access Bus (USB)
 	Port Type: USB
-

@@ -58,7 +58,7 @@ Maximum Read Data Hold Skew (tQHS)              0.30 ns
 ---=== Manufacturing Information ===---
 Manufacturer                                    SK Hynix (former Hyundai Electronics)
 Manufacturing Location Code                     0x01
-Part Number                                     HYMP112U64CP8-S6  
+Part Number                                     HYMP112U64CP8-S6
 Manufacturing Date                              2009-W06
 Assembly Serial Number                          0x00004020
 
@@ -116,7 +116,7 @@ Maximum Read Data Hold Skew (tQHS)              0.30 ns
 ---=== Manufacturing Information ===---
 Manufacturer                                    SK Hynix (former Hyundai Electronics)
 Manufacturing Location Code                     0x01
-Part Number                                     HYMP112U64CP8-S6  
+Part Number                                     HYMP112U64CP8-S6
 Manufacturing Date                              2009-W06
 Assembly Serial Number                          0x00002020
 
@@ -174,7 +174,7 @@ Maximum Read Data Hold Skew (tQHS)              0.30 ns
 ---=== Manufacturing Information ===---
 Manufacturer                                    SK Hynix (former Hyundai Electronics)
 Manufacturing Location Code                     0x01
-Part Number                                     HYMP112U64CP8-S6  
+Part Number                                     HYMP112U64CP8-S6
 Manufacturing Date                              2009-W06
 Assembly Serial Number                          0x00003020
 
@@ -232,7 +232,7 @@ Maximum Read Data Hold Skew (tQHS)              0.30 ns
 ---=== Manufacturing Information ===---
 Manufacturer                                    SK Hynix (former Hyundai Electronics)
 Manufacturing Location Code                     0x01
-Part Number                                     HYMP112U64CP8-S6  
+Part Number                                     HYMP112U64CP8-S6
 Manufacturing Date                              2009-W06
 Assembly Serial Number                          0x00002021
 

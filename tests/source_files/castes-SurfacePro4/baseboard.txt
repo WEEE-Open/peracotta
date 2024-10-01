@@ -15,4 +15,3 @@ Base Board Information
 	Chassis Handle: 0x0000
 	Type: Unknown
 	Contained Object Handles: 0
-

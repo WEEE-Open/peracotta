@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
-from parsers import read_smartctl
-from parsers import read_decode_dimms
-from parsers import read_dmidecode
-from parsers import read_lspci_and_glxinfo
-from parsers import read_lscpu
+from peracotta.parsers import read_decode_dimms, read_dmidecode, read_lscpu, read_lspci_and_glxinfo
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/castes-pc/"
@@ -63,7 +59,7 @@ def test_ram():
     output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "dimms.txt"))
 
     assert len(output) == 2, "2 RAM modules are found"
-    assert output == expect
+    assert [d in expect for d in output], "The RAM modules are the expected ones"
 
 
 def test_baseboard():

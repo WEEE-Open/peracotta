@@ -165,4 +165,3 @@
 	Capabilities: <access denied>
 	Kernel driver in use: radeon
 	Kernel modules: radeonfb, radeon
-

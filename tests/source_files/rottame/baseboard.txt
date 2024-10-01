@@ -22,4 +22,3 @@ On Board Device Information
 	Type: Video
 	Status: Enabled
 	Description:   To Be Filled By O.E.M.
-

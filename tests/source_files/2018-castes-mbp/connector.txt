@@ -49,4 +49,3 @@ Port Connector Information
 	External Reference Designator: Not Specified
 	External Connector Type: None
 	Port Type: None
-

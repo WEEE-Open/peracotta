@@ -9,7 +9,7 @@ Chassis Information
 	Lock: Not Present
 	Version: Mac-937A206F2EE63C01
 	Serial Number: CENSORED
-	Asset Tag:  
+	Asset Tag:
 	Boot-up State: Safe
 	Power Supply State: Safe
 	Thermal State: Safe
@@ -19,4 +19,3 @@ Chassis Information
 	Number Of Power Cords: Unspecified
 	Contained Elements: 0
 	SKU Number: Not Specified
-

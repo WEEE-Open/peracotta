@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
-from parsers import read_smartctl
-from parsers import read_decode_dimms
-from parsers import read_dmidecode
-from parsers import read_lspci_and_glxinfo
-from parsers import read_lscpu
+from peracotta.parsers import read_decode_dimms, read_dmidecode, read_lscpu, read_lspci_and_glxinfo
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/viavai/"
@@ -54,7 +50,7 @@ def test_ram():
             "sn": "3072778780",
             "frequency-hertz": 667000000,
             "capacity-byte": 1073741824,
-            "ram-type": "ddr2",
+            "ram-type": "DDR2",
             "ram-ecc": "yes",
             "ram-timings": "5-5-5-15",
         }

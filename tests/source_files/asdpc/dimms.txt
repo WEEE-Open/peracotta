@@ -136,4 +136,3 @@ Part Number                                      F3-1600C7-8GTX
 
 
 Number of SDRAM DIMMs detected and decoded: 2
-

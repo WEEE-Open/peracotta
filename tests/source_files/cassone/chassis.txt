@@ -4,15 +4,14 @@ Legacy DMI 2.3 present.
 
 Handle 0x0003, DMI type 3, 17 bytes
 Chassis Information
-	Manufacturer: Matsonic                        
+	Manufacturer: Matsonic
 	Type: Desktop
 	Lock: Not Present
-	Version: 1.0                             
-	Serial Number: 00000000                        
-	Asset Tag: 0123ABC                         
+	Version: 1.0
+	Serial Number: 00000000
+	Asset Tag: 0123ABC
 	Boot-up State: Unknown
 	Power Supply State: Unknown
 	Thermal State: Unknown
 	Security Status: Unknown
 	OEM Information: 0x00000000
-

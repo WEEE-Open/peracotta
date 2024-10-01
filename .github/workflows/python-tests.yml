@@ -9,45 +9,58 @@ on:
 jobs:
 
   run-tests:
-
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ '3.8', '3.9', '3.10', '3.11' ]
+        os: [ubuntu-latest]
+        python-version: [ '3.9', '3.10', '3.11', '3.12' ]
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Python version ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
-      
+
       - name: Install dev dependencies
-        run: pip install -r requirements-dev.txt
-
-      - name: Install dataclasses on Python 3.6
-        run: pip install dataclasses
-        if: matrix.python-version == '3.6'
-
-      - name: Set up local development Tarallo instance
         run: |
-          git clone https://github.com/weee-open/tarallo
-          cd tarallo || exit
-          make ci
-          make up
-          cd - &> /dev/null
-          
-      - name: Create test .env file to access local Tarallo instance
-        run: |
-          echo "export TARALLO_URL=http://127.0.0.1:8080" >> .env
-          echo "export TARALLO_TOKEN=yoLeCHmEhNNseN0BlG0s3A:ksfPYziGg7ebj0goT0Zc7pbmQEIYvZpRTIkwuscAM_k" >> .env
+          sudo apt install build-essential libpython3-dev libdbus-1-dev
+          pip install -r requirements-dev.txt
 
-#      - name: Run tests
-#        uses: GabrielBB/xvfb-action@v1
-#        with:
-#          run: pytest -vv tests
+      #- name: Install dev dependencies
+      #  run: |
+      #    # Add Docker's official GPG key:
+      #    sudo apt-get update
+      #    sudo apt-get install ca-certificates curl
+      #    sudo install -m 0755 -d /etc/apt/keyrings
+      #    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+      #    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+      #    # Add the repository to Apt sources:
+      #    echo \
+      #      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      #      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      #      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+      #    sudo apt-get update
+      #    sudo apt install build-essential libpython3-dev libdbus-1-dev docker-ce docker-ce-cli containerd.io docker-compose-plugin
+      #    pip install -r requirements-dev.txt
+
+      #- name: Set up local development Tarallo instance
+      #  run: |
+      #    git clone https://github.com/weee-open/tarallo
+      #    cd tarallo || exit
+      #    docker-compose() { docker compose "$@"; } # tarallo's makefile has the older deprecated docker-compose command
+      #    export -f docker-compose
+      #    make ci
+      #    make up
+      #    cd - &> /dev/null
+
+      #- name: Run tests
+      #  uses: coactions/setup-xvfb@v1
+      #  with:
+      #    run: pytest -vv tests
 
       - name: Run tests
         run: pytest -vv tests -m "not gui"

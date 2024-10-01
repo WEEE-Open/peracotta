@@ -4,14 +4,13 @@ SMBIOS 2.3 present.
 
 Handle 0x0300, DMI type 3, 13 bytes
 Chassis Information
-	Manufacturer: Dell Inc.                
+	Manufacturer: Dell Inc.
 	Type: Tower
 	Lock: Not Present
 	Version: Not Specified
 	Serial Number: 5ASDL3L
-	Asset Tag:           
+	Asset Tag:
 	Boot-up State: Safe
 	Power Supply State: Safe
 	Thermal State: Safe
 	Security Status: None
-

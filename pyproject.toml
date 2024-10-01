@@ -1,2 +1,63 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "peracotta"
+dynamic = ["version"]
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Environment :: X11 Applications :: Qt",
+  "License :: OSI Approved :: MIT License",
+]
+
+# Unless really needed, dependencies in pyproject.toml should be unpinned.
+# For deployments, use the classic pip freeze > requirements.txt
+# Remember to manually move the dependencies that are not needed in the final package to requirements-dev.txt
+dependencies = [
+  "PyQt5",
+  "pytarallo",
+  "python-dotenv",
+  "requests",
+  "typing-extensions",
+  "urllib3",
+  "importlib_resources",
+  "loguru",
+  "rich",
+  "requests",
+  "toml",
+]
+
+[project.scripts]
+peracruda = "peracotta:main_cli"
+
+[project.gui-scripts]
+peracotta = "peracotta:main_gui"
+
+[tool.setuptools.package-dir]
+peracotta = "src/peracotta"
+
+[tool.setuptools.package-data]
+peracotta = ["*"]
+"peracotta.scripts" = ["*"]
+"peracotta.assets" = ["*", "*/*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "peracotta.constants.VERSION" }
+
 [tool.black]
 line-length = 160
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+markers = ["upload", "gui", "prettyprint", "smartctl"]
+addopts = ["--import-mode=importlib"]
+#mock_use_standalone_module = true

@@ -180,4 +180,3 @@
 	Capabilities: [100] Virtual Channel
 	Kernel driver in use: snd_hda_intel
 	Kernel modules: snd_hda_intel
-

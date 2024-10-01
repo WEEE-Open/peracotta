@@ -1,6 +1,7 @@
 __pycache__/
 .idea/
 venv/
+.venv/
 dev_dmdi_files/
 .DS_Store
 __pycache__/
@@ -18,3 +19,12 @@ pera*.bin
 pera*.build
 pera*.dist
 pera*.onefile-build
+.vscode/
+publish.sh
+dist/
+build/
+*.egg-info
+logs
+*/*.log
+*.egg-info
+.direnv/

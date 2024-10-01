@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from parsers import read_lscpu
+from peracotta.parsers import read_lscpu
 from tests.parsers.read_file import read_file
 
 filedir = "tests/source_files/77-no-disks/"

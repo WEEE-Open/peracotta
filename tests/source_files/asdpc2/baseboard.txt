@@ -6,13 +6,13 @@ Handle 0x0002, DMI type 2, 15 bytes
 Base Board Information
 	Manufacturer: ASUSTeK COMPUTER INC.
 	Product Name: UX305CA
-	Version: 1.0       
+	Version: 1.0
 	Serial Number: BSN12345678901234567
 	Asset Tag: ATN12345678901234567
 	Features:
 		Board is a hosting board
 		Board is replaceable
-	Location In Chassis: MIDDLE              
+	Location In Chassis: MIDDLE
 	Chassis Handle: 0x0003
 	Type: Motherboard
 	Contained Object Handles: 0
@@ -33,7 +33,7 @@ On Board Device 3 Information
 On Board Device 4 Information
 	Type: Sound
 	Status: Enabled
-	Description:  Audio CODEC 
+	Description:  Audio CODEC
 On Board Device 5 Information
 	Type: SATA Controller
 	Status: Enabled
@@ -62,4 +62,3 @@ On Board Device 11 Information
 	Type: Other
 	Status: Enabled
 	Description:  Bluetooth
-

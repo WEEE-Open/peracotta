@@ -554,11 +554,11 @@
 [   14.729954] applesmc: #KEY: read arg fail
 [   14.756798] Bluetooth: hci0: BCM: failed to write update baudrate (-16)
 [   14.756799] Bluetooth: hci0: Failed to set baudrate
-[   14.775873] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched 
-[   14.775874] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched 
-[   14.775874] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched 
+[   14.775873] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched
+[   14.775874] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched
+[   14.775874] amdgpu: [powerplay] Voltage value looks like a Leakage ID but it's not patched
 [   14.787385] amdgpu: [powerplay] Failed to retrieve minimum clocks.
-[   14.787386] amdgpu: [powerplay] Error in phm_get_clock_info 
+[   14.787386] amdgpu: [powerplay] Error in phm_get_clock_info
 [   14.787417] [drm] DM_PPLIB: values for Engine clock
 [   14.787418] [drm] DM_PPLIB:	 214000
 [   14.787418] [drm] DM_PPLIB:	 363000
@@ -1035,7 +1035,7 @@
 [   49.354298] raid6: using algorithm avx2x4 gen() 36672 MB/s
 [   49.354298] raid6: .... xor() 23098 MB/s, rmw enabled
 [   49.354299] raid6: using avx2x2 recovery algorithm
-[   49.356422] xor: automatically using best checksumming function   avx       
+[   49.356422] xor: automatically using best checksumming function   avx
 [   49.427570] Btrfs loaded, crc32c=crc32c-intel
 [   49.479991] applesmc: send_byte(0x10, 0x0304) fail: 0xff
 [   49.479992] applesmc: #KEY: read arg fail

@@ -20,12 +20,12 @@ Launch `peracotta`: that is the GUI that allows you to gather data, parse it and
 
 ![Main peracotta window, displaying a motherboard](docs/peracotta_mobo_screenshot.png)
 
-Options can be configured in the left pane, then after Generate is pressed data is displayed in the right pane.  
+Options can be configured in the left pane, then after Generate is pressed data is displayed in the right pane.
 Some basic editing is possible (add and remove items and features, edit feature values). The result can be saved as a JSON or uploaded directly to tarallo.
 
 ### You are using a slow pc or you don't have PyQt installed
 
-Launch `peracruda` from the terminal: this a script that gathers and parses data, however it offers no editing capabilities.  
+Launch `peracruda` from the terminal: this a script that gathers and parses data, however it offers no editing capabilities.
 At the end, you can save data as a JSON or upload it to tarallo directly.
 
 The saved JSON can be uploaded to tarallo or imported from the `peracotta` GUI e.g. on another computer, to review and edit it before upload.
@@ -39,20 +39,8 @@ You can load those files in `peracruda` (`-f` option) or `peracotta` (`File > Lo
 ## How to install and run
 
 ```bash
-# Clone this repo
-git clone https://github.com/weee-open/peracotta
-
-# Make a virtual environment and activate it
-cd peracotta
-python3 -m venv venv
-source venv/bin/activate
-
-# Install the requirements
-pip install -r requirements.txt
-
-# Copy the example .env file and edit it to your liking
-cp .env.example .env
-nano .env
+sudo apt install libxcb-cursor-dev
+pip install peracotta
 ```
 
 ### Privileges and sudo
@@ -82,13 +70,6 @@ Add this to your .env:
 ```bash
 export GENERATE_FILES_USE_SUDO=0
 ```
-
-#### pkexec
-
-You can run `polkit.py` just once: it will configure pkexec to run generate_files.sh with root privileges. However, the configuration contains hardcoded absolute paths to your generate_files.sh script, so you cannot move it.
-
-Additionally, if anyone edits generate_files.sh, it will be executed with root privileges. Unless you move it to /sbin and change its owner to root:root, this is also not very secure.
-
 #### Manually
 
 Run `sudo generate_files.sh /path/to/output/directory` then load the raw files in peracruda or peracotta. This is probably the safest way, considering that generate_files.sh is pretty short so you can inspect it before running. Everything else will work as usual and won't require root permissions.
@@ -96,14 +77,14 @@ Run `sudo generate_files.sh /path/to/output/directory` then load the raw files i
 ### How to develop
 
 Same as before, until the `pip install` part. Just install `requirements-dev.txt` instead:
-`pip install -r requirements-dev.txt`  
+`pip install -r requirements-dev.txt`
 
 This will allow you to run tests: `pytest -vv tests`
 
 Some markers are also available, e.g. you can run `pytest -m gui` to just test the gui, or `pytest -m 'not gui'` to test everything else. See `pytest.ini` for a list of markers.
 
-If requirements change:  
-- install the correct version of the requirements (e.g. a new library or a new version of an already installed library)  
+If requirements change:
+- install the correct version of the requirements (e.g. a new library or a new version of an already installed library)
 - with the virtual environment activated, run `pip freeze > requirements-dev.txt` and *manually* edit the file (add the `-r requirements.txt` line and remove non-dev requirements)
 
 If you can't run generate_files.sh because you don't have access to `sudo`, such as on our development VM, you can look at `tests/source_files` for examples.
@@ -118,7 +99,7 @@ You can find the usage below, but keep in mind that the three most important arg
 
 - the path for files generation: if none given, it will default to a tmp directory, and if it exists, you will be asked whether you want to overwrite it
 - `-g | -c | -b`: one of these tells the script where the GPU (or graphics card if it's not integrated) is located. If none of them is given, a menu with the same choices will appear during the execution.
-- `--code CODE` and `--owner OWNER`: these two parameters are used to add some more information directly into the output json file. 
+- `--code CODE` and `--owner OWNER`: these two parameters are used to add some more information directly into the output json file.
 - `-f` to read files from the path instead of calling `generate_files.sh` again.
 
 ```
@@ -150,12 +131,12 @@ Just need to run it with `./peracotta` or from your file manager. It does everyt
 
 ### generate_files.sh
 
-This will create some txt files with data related to the computer, that will be parsed by launching 
-`peracruda` with -f/--files argument. The hard work is powered by the many `read_X.py` scripts, which are the actual 
+This will create some txt files with data related to the computer, that will be parsed by launching
+`peracruda` with -f/--files argument. The hard work is powered by the many `read_X.py` scripts, which are the actual
 parsers.
 
-Install dependencies on Debian-based distributions (Debian, Ubuntu, Xubuntu, etc):  
-`sudo apt install pciutils i2c-tools mesa-utils smartmontools dmidecode`  
+Install dependencies on Debian-based distributions (Debian, Ubuntu, Xubuntu, etc):
+`sudo apt install pciutils i2c-tools mesa-utils smartmontools dmidecode`
 These are the actual programs that generate the files that we parse.
 
 ### parsers

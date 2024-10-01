@@ -147,4 +147,3 @@
 	Capabilities: [154] L1 PM Substates
 	Kernel driver in use: iwlwifi
 	Kernel modules: iwlwifi
-
