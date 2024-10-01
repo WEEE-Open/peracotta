@@ -85,7 +85,7 @@ def main(the_args):
             msg += "\nMake sure the file exists or try running generate_files.sh manually"
         exit(3)
 
-    owner = get_owner()
+    owner = get_owner(the_args)
     if owner:
         # List of items
         result = peracommon.add_owner(result, owner)
@@ -93,7 +93,7 @@ def main(the_args):
     # List of items and products
     result = peracommon.split_products(result)
 
-    code = get_code()
+    code = get_code(the_args)
     if code:
         # List of items
         found = peracommon.add_chassis_code(result, code)
@@ -267,7 +267,7 @@ def print_output(output: str, path: str):
     )
 
 
-def get_code() -> Optional[str]:
+def get_code(args) -> Optional[str]:
     if not args.code:
         code = input("Does this have a code already? (optional, ENTER to skip): ").strip()
     else:
@@ -277,7 +277,7 @@ def get_code() -> Optional[str]:
     return None
 
 
-def get_owner() -> Optional[str]:
+def get_owner(args) -> Optional[str]:
     if not args.owner:
         owner = input("Do you want to add a owner? (optional, ENTER to skip): ").strip()
     else:

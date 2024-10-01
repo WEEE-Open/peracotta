@@ -18,7 +18,7 @@ URL = {
     "source_code": "https://github.com/WEEE-Open/peracotta",
 }
 
-VERSION = "2.5.4"
+VERSION = "2.5.5"
 
 PATH = {
     "UI": "assets/interface.ui",
