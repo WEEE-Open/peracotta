@@ -57,10 +57,10 @@ jobs:
       #    make up
       #    cd - &> /dev/null
 
-      - name: Run tests
-        uses: coactions/setup-xvfb@v1
-        with:
-          run: pytest -vv tests
-
       #- name: Run tests
-      #  run: pytest -vv tests -m "not gui"
+      #  uses: coactions/setup-xvfb@v1
+      #  with:
+      #    run: pytest -vv tests
+
+      - name: Run tests
+        run: pytest -vv tests -m "not gui"
