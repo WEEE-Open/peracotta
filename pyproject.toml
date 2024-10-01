@@ -23,8 +23,6 @@ classifiers = [
 # For deployments, use the classic pip freeze > requirements.txt
 # Remember to manually move the dependencies that are not needed in the final package to requirements-dev.txt
 dependencies = [
-  "colorama",
-  "commonmark",
   "PyQt5",
   "pytarallo",
   "python-dotenv",
@@ -62,3 +60,4 @@ line-length = 160
 pythonpath = ["src", "."]
 markers = ["upload", "gui", "prettyprint", "smartctl"]
 addopts = ["--import-mode=importlib"]
+#mock_use_standalone_module = true

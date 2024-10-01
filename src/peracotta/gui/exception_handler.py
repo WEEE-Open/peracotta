@@ -1,7 +1,5 @@
 from PyQt5 import QtWidgets
 
-from ..config import CONFIG
-from ..crash_reporting import send_crash_notification
 from ..peralog import logger
 from .exceptions import MissingFeaturesError
 
