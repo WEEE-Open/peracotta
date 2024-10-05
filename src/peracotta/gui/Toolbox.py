@@ -593,14 +593,14 @@ class ToolBoxWidget(QtWidgets.QToolBox):
         return old
 
     def remove_item_from_toolbox(self, button):
+        logger.debug(f"Removing {button.text()}")
         i = 0
         for item in self.children():
+            if item is button:
+                self.removeItem(i)
+                break
             if isinstance(item, QtWidgets.QAbstractButton):
-                if item == button:
-                    self.removeItem(i)
-                    break
-                else:
-                    i += 1
+                i += 1
 
     def removeItem(self, index: int) -> None:
         i = 0
