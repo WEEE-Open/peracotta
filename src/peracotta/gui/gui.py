@@ -82,6 +82,7 @@ class GUI(QtWidgets.QMainWindow):
         self.intCpuRadioBtn = self.findChild(QtWidgets.QRadioButton, "intCpuRadioBtn")
         self.intMoboRadioBtn = self.findChild(QtWidgets.QRadioButton, "intMoboRadioBtn")
         self.bothGpuRadioBtn = self.findChild(QtWidgets.QRadioButton, "bothGpuRadioBtn")
+        self.GpuRadioBtns = [self.discreteRadioBtn, self.intCpuRadioBtn, self.intMoboRadioBtn, self.bothGpuRadioBtn]
 
         # Selectors area
         self.selectorsWidget = self.findChild(QtWidgets.QWidget, "selectorsWidget")
@@ -189,6 +190,12 @@ class GUI(QtWidgets.QMainWindow):
         niy = commons.ParserComponents.not_implemented_yet()
         for item in commons.ParserComponents:
             checkbox = QtWidgets.QCheckBox(item.value)
+            if item is commons.ParserComponents.GPU:
+                checkbox.toggled.connect(
+                    lambda c=checkbox: [radio.setAutoExclusive(c) or radio.setChecked(False) or radio.setEnabled(c) for radio in self.GpuRadioBtns]
+                )
+                self.discreteRadioBtn.setEnabled(True)
+                # checkbox.toggled.connect(lambda c=checkbox: [radio.setEnabled(~c) for radio in self.GpuRadioBtns])
             if item in niy:
                 checkbox.setEnabled(False)
             layout.addWidget(checkbox)
@@ -512,7 +519,8 @@ class GUI(QtWidgets.QMainWindow):
         if self.perathread.isRunning():
             return
 
-        if not self.set_thread_buttons_values():
+        self.set_thread_buttons_values()
+        if not self.perathread.gpu_location:
             self.perathread.set_default_values()
             return
 
