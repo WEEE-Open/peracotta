@@ -380,7 +380,6 @@ class GUI(QtWidgets.QMainWindow):
             )
             return commons.GpuLocation.DISCRETE
         else:
-            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
             return None
 
     def get_selected_filters(self):
@@ -395,7 +394,11 @@ class GUI(QtWidgets.QMainWindow):
         if self.perathread.isRunning():
             return
 
-        if not self.set_thread_buttons_values():
+        self.set_thread_buttons_values()
+        logger.debug(f"Selected filters: {self.perathread.filters}")
+
+        if not self.perathread.gpu_location and commons.ParserComponents.GPU in self.perathread.filters:
+            QtWidgets.QMessageBox.warning(self, "Warning", "Please, select one of the GPU locations to proceed.")
             self.perathread.set_default_values()
             return
 
@@ -422,12 +425,9 @@ class GUI(QtWidgets.QMainWindow):
 
     def set_thread_buttons_values(self):
         gpu_location = self.gpu_location_from_buttons()
-        if gpu_location is None:
-            return False
-        self.perathread.gpu_location = gpu_location
         self.perathread.owner = self.ownerLineEdit.text()
         self.perathread.filters = self.get_selected_filters()
-        return True
+        self.perathread.gpu_location = gpu_location
 
     def _ask_sudo_pass(self):
         sudo_passwd, ok = QtWidgets.QInputDialog.getText(
