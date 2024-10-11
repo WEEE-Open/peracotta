@@ -23,6 +23,7 @@ For this reasons, there's a .env.example in the source code at the appropriate p
 
 import os
 from pathlib import Path
+import shutil
 from typing import Optional
 
 import toml
@@ -74,12 +75,12 @@ if isinstance(basedir, str):  # If the app is installed as a package basedir is 
     except FileNotFoundError:
         pass
 
-
 # 2) CONF_DIR's .env
 try:
     load_dotenv(CONF_DIR.joinpath(".env"))
 except FileNotFoundError:
     pass
+
 
 for key in keys:
     CONFIG[key] = parse_from_env(os.environ.get(key))
@@ -101,3 +102,10 @@ try:
             CONFIG[k] = _toml_conf[k]
 except FileNotFoundError:
     pass
+
+CONFIG["FEATURES_PATH"] = CONF_DIR.joinpath("features.json")
+if not CONFIG["FEATURES_PATH"].exists():
+    if isinstance(basedir, str):
+        shutil.copy2(basedir + "/features.json", CONFIG["FEATURES_PATH"])
+    else:
+        shutil.copy2(basedir.joinpath("features.json"), CONFIG["FEATURES_PATH"])

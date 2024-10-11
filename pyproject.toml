@@ -5,12 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "peracotta"
 dynamic = ["version"]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = { file = "LICENSE" }
 readme = "README.md"
 classifiers = [
   "Development Status :: 4 - Beta",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",

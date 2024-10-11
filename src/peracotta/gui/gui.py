@@ -201,18 +201,18 @@ class GUI(QtWidgets.QMainWindow):
 
     @staticmethod
     def backup_features_json():
-        shutil.copy2(PATH["FEATURES"], PATH["FEATURES"] + ".bak")
+        shutil.copy2(CONFIG["FEATURES_PATH"], CONFIG["FEATURES_PATH"].with_suffix(".bak"))
 
     @staticmethod
     def restore_features_json():
-        shutil.move(PATH["FEATURES"] + ".bak", PATH["FEATURES"])
+        shutil.move(CONFIG["FEATURES_PATH"].with_suffix(".bak"), CONFIG["FEATURES_PATH"])
 
     def load_features_file(self, auto_update: bool):
         self.features = {}
         has_file = False
 
         try:
-            mtime = os.path.getmtime(PATH["FEATURES"])
+            mtime = os.path.getmtime(CONFIG["FEATURES_PATH"])
             self.backup_features_json()
             has_file = True
         except FileNotFoundError:
@@ -221,7 +221,7 @@ class GUI(QtWidgets.QMainWindow):
         if auto_update and time.time() - mtime > 60 * 60 * 12:
             try:
                 response = requests.get(f"{CONFIG['TARALLO_URL']}/features.json", headers={"User-Agent": "peracotta", "Accept": "application/json"})
-                with open(CONF_DIR.joinpath("features.json"), "w") as fs:
+                with open(CONFIG["FEATURES_PATH"], "w") as fs:
                     json.dump(response.json(), fs)
 
                 has_file = True
@@ -244,7 +244,7 @@ class GUI(QtWidgets.QMainWindow):
             raise MissingFeaturesError("features.json file not present")
 
     def parse_features_file(self):
-        with open(PATH["FEATURES"], "r") as file:
+        with open(CONFIG["FEATURES_PATH"], "r") as file:
             feature_names = {}
             feature_types = {}
             feature_values = {}

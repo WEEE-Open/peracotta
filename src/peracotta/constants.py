@@ -3,13 +3,7 @@ import os
 import sys
 
 if "peracotta" in sys.modules:
-    if sys.version_info >= (3, 9):
-        basedir = importlib.resources.files(__package__)
-    else:
-        import importlib_resources  # backport for python 3.8, remove it when EOL
-
-        basedir = importlib_resources.files(__package__)
-
+    basedir = importlib.resources.files(__package__)
 else:  # in case it's being called without installing the package
     basedir = os.path.dirname(__file__)
 
@@ -18,14 +12,13 @@ URL = {
     "source_code": "https://github.com/WEEE-Open/peracotta",
 }
 
-VERSION = "2.5.6"
+VERSION = "2.5.7"
 
 PATH = {
     "UI": "assets/interface.ui",
     "TARALLOUPLOADDIALOG": "assets/uploadTaralloDialog.ui",
     "ERRORDIALOG": "assets/error.ui",
     "JSON": "copy_this_to_tarallo.json",
-    "FEATURES": "features.json",
     "THEMES": "assets/themes/",
     "TMP_FILES": "tmp/",
     "ICON": "assets/ui/pear_emoji.png",
