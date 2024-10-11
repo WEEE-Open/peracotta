@@ -44,7 +44,7 @@ def test_lscpu():
 def test_ram():
     expect = [
         {
-            "brand": "Micron Technology",
+            "brand": "Crucial Technology",
             "capacity-byte": 8589934592,
             "frequency-hertz": 1600000000,
             "model": "CT102464BA160B.C16",
@@ -56,7 +56,7 @@ def test_ram():
             "working": "yes",
         },
         {
-            "brand": "Micron Technology",
+            "brand": "Crucial Technology",
             "capacity-byte": 8589934592,
             "frequency-hertz": 1600000000,
             "model": "CT102464BA160B.C16",
@@ -70,7 +70,7 @@ def test_ram():
     ]
     output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "dimms.txt"))
     assert len(output) == 2, "2 RAM modules are found"
-    assert [d in expect for d in output], "The RAM modules are the expected ones"
+    assert all([d in expect for d in output]), "The RAM modules are the expected ones"
 
 
 def test_baseboard():

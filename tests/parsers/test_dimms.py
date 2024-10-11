@@ -36,7 +36,7 @@ def test_ecc_ram1():
     output = read_decode_dimms.parse_decode_dimms(read_file(filedir, "ECC/R451-R450.txt"))
 
     assert len(output) == 2, "There are two RAM modules"
-    assert [d in expect for d in output], "The RAM modules are the expected ones"
+    assert all([d in expect for d in output]), "The RAM modules are the expected ones"
 
 
 def test_ecc_ram1_not_an_hex():

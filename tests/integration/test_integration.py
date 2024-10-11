@@ -40,7 +40,7 @@ for fold in set(test_folders):
 
 # def test_get_gpu(args):  # checking that gpu_location is correctly read
 #     # checking mutual exclusion
-#     assert [args.cpu, args.gpu, args.motherboard].count(True) <= 1
+#     assert all([args.cpu, args.gpu, args.motherboard].count(True) <= 1
 
 
 @pytest.fixture(params=test_folders)

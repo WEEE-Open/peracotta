@@ -38,7 +38,7 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
         for line in dimm.splitlines():
             if line.startswith("Fundamental Memory type"):
                 dimms[i]["ram-type"] = line.split(" ")[-2].upper()
-                if dimms[i]["ram-type"] == "unknown":
+                if dimms[i]["ram-type"] == "UNKNOWN":
                     del dimms[i]["ram-type"]
 
             if line.startswith("Maximum module speed"):
