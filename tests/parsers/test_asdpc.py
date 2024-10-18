@@ -44,7 +44,7 @@ def test_ram():
     expect = [
         {
             "ram-ecc": "no",
-            "ram-type": "DDR3",
+            "ram-type": "ddr3",
             "brand": "G Skill Intl",
             "capacity-byte": 8589934592,
             "frequency-hertz": 1333000000,
@@ -55,7 +55,7 @@ def test_ram():
         },
         {
             "ram-ecc": "no",
-            "ram-type": "DDR3",
+            "ram-type": "ddr3",
             "brand": "G Skill Intl",
             "capacity-byte": 8589934592,
             "frequency-hertz": 1333000000,
