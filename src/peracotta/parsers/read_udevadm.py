@@ -49,7 +49,7 @@ def parse_udevadm(file_content: str) -> List[dict]:
                 dimm = {
                     "type": "ram",
                     "working": "yes",
-                    "ram-type": device["TYPE"].upper(),
+                    "ram-type": device["TYPE"].lower(),
                     "frequency-hertz": int(device["SPEED_MTS"]) * 1000 * 1000,
                     "capacity-byte": int(device["SIZE"]),
                     "brand": device["MANUFACTURER"],

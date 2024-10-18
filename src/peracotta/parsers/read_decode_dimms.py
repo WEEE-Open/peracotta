@@ -37,7 +37,7 @@ def parse_decode_dimms(dimms: str, interactive: bool = False) -> List[dict]:
         fallback_manufacturer_data_type = None
         for line in dimm.splitlines():
             if line.startswith("Fundamental Memory type"):
-                dimms[i]["ram-type"] = line.split(" ")[-2].upper()
+                dimms[i]["ram-type"] = line.split(" ")[-2].lower()
                 if dimms[i]["ram-type"] == "UNKNOWN":
                     del dimms[i]["ram-type"]
 
