@@ -106,7 +106,6 @@ except FileNotFoundError:
 
 CONFIG["FEATURES_PATH"] = CONF_DIR.joinpath("features.json")
 if not CONFIG["FEATURES_PATH"].exists():
-    os.mkdir(CONF_DIR)
     if isinstance(basedir, str):
         shutil.copy2(basedir + "/features.json", CONF_DIR)
     else:
