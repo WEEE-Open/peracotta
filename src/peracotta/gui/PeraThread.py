@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtWidgets
 
 from .. import commons
 from ..constants import PATH
+from ..peralog import logger
 
 
 class PeracottaThread(QtCore.QThread):
@@ -68,7 +69,7 @@ class PeracottaThread(QtCore.QThread):
                             QtWidgets.QMessageBox.warning(
                                 None,
                                 "Warning",
-                                "Found conflicting information.\nBE CAREFUL.",
+                                f"Something is wrong with the {item['type']}(s).\nDouble check before uploading, there's at least a duplicate.",
                             )
                             break
                         sns.add(item["sn"])
