@@ -30,8 +30,12 @@ def parse_udevadm(file_content: str) -> List[dict]:
     dimms = []
     for device_id, device in devices.items():
         try:
-            if device["SPEED_MTS"] == 666:
-                device["SPEED_MTS"] = 667
+
+            if "SERIAL_NUMBER" not in device:
+                logger.error("Error while parsing device in udevadm - serial number not found")
+                logger.error("device:")
+                logger.error(device)
+                continue
 
             try:
                 if device["SERIAL_NUMBER"][0:2] == "0x":
@@ -45,19 +49,27 @@ def parse_udevadm(file_content: str) -> List[dict]:
                 logger.error(f"{file_content = }")
                 continue
 
-            if sn:
-                dimm = {
-                    "type": "ram",
-                    "working": "yes",
-                    "ram-type": device["TYPE"].lower(),
-                    "frequency-hertz": int(device["SPEED_MTS"]) * 1000 * 1000,
-                    "capacity-byte": int(device["SIZE"]),
-                    "brand": device["MANUFACTURER"],
-                    "model": device["PART_NUMBER"],
-                    "sn": sn,
-                }
-                dimms.append(dimm)
+            ram_type = device["TYPE"].lower() if "TYPE" in device else None
+            size = device["SIZE"] if "SIZE" in device else None
+            speed = device["SPEED_MTS"] if "SPEED_MTS" in device else None
+            if speed == 666:
+                speed = 667
+            manufacturer = device["MANUFACTURER"] if "MANUFACTURER" in device else None
+            part_number = device["PART_NUMBER"] if "PART_NUMBER" in device else None
+
+            dimm = {
+                "type": "ram",
+                "working": "yes",
+                "ram-type": ram_type,
+                "frequency-hertz": int(speed) * 1000 * 1000,
+                "capacity-byte": int(size),
+                "brand": manufacturer,
+                "model": part_number,
+                "sn": sn,
+            }
+            dimms.append(dimm)
         except KeyError as e:
+            _errored = True
             logger.error("Error while parsing device in udevadm")
             logger.error(f"KeyError {e}")
             logger.error("device:")
