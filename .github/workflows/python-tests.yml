@@ -26,7 +26,8 @@ jobs:
 
       - name: Install dev dependencies
         run: |
-          sudo apt install build-essential libdbus-1-dev libglib2.0-0
+          sudo apt install build-essential libglib2.0-0
+          sudo apt install libdbus-1-dev
           pip install -r requirements-dev.txt
 
       #- name: Install dev dependencies
