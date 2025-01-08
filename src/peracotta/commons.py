@@ -262,7 +262,7 @@ def call_parsers(
 
             for bank in udevadm_rams:
                 for item in tmp:
-                    if item["sn"] == bank["sn"]:
+                    if "sn" in item and item["sn"] == bank["sn"]:
                         if any([item[k] != bank[k] for k in item]):  # they found the same item but they are different, manual review is needed
                             ram_result.append(bank)
                             tmp.append(bank)
