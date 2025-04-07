@@ -61,12 +61,13 @@ def parse_udevadm(file_content: str) -> List[dict]:
                 "type": "ram",
                 "working": "yes",
                 "ram-type": ram_type,
-                "frequency-hertz": int(speed) * 1000 * 1000,
                 "capacity-byte": int(size),
                 "brand": manufacturer,
                 "model": part_number,
                 "sn": sn,
             }
+            if speed:
+                dimm["frequency-hertz"] = int(speed) * 1000 * 1000
             dimms.append(dimm)
         except KeyError as e:
             _errored = True
