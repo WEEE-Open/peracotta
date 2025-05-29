@@ -79,10 +79,9 @@ connectors_map_tuples = {
     (None, None, "*TPM*", None): None,
     (None, None, "*DOCKING*", None): None,
     (None, None, "*EXT HDMI", None): "hdmi-ports-n",
-    (None, None, "*ITP*", None): None, # Intel Intarget Probe?
+    (None, None, "*ITP*", None): None,  # Intel Intarget Probe?
     (None, None, "*LVDS", None): None,
     (None, None, "*AC JACK", None): "mini-jack-ports-n",
-
 }
 extra_connectors = {
     "MagSafe DC Power": {"power-connector": "proprietary"},
@@ -241,6 +240,7 @@ def _get_net(net: str, baseboard: dict, interactive: bool = False) -> List[dict]
     # It even says the type is the exact same one it expects, however it's an error
     # noinspection PyTypeChecker
     return [baseboard] + other_devices
+
 
 def find_connector_from_tuple(connectors, external, external_des, internal, internal_des):
     equal = False
