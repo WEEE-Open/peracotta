@@ -1,5 +1,4 @@
 import json
-from cgitb import text
 from typing import List
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
@@ -11,7 +10,6 @@ class JsonWidget(QtWidgets.QDialog):
     def __init__(self, data: List[dict], window_size: QtCore.QSize):
         super().__init__()
         layout = QtWidgets.QVBoxLayout()
-        text_edit = QtWidgets.QPlainTextEdit()
         text_edit = QtWidgets.QTextEdit()
         text_edit.setWordWrapMode(QtGui.QTextOption.WrapMode.NoWrap)
         text_edit.setPlainText(f"{json.dumps(data, indent=2)}")
@@ -26,7 +24,6 @@ class JsonWidget(QtWidgets.QDialog):
 class ErrorDialog(QtWidgets.QDialog):
     def __init__(self, parent: QtWidgets.QMainWindow, title: str, detailed_error: str):
         super().__init__(parent)
-        pass
         uic.loadUi(PATH["ERRORDIALOG"], self)
         self.setWindowTitle("Error")
         self.iconLabel = self.findChild(QtWidgets.QLabel, "iconLabel")
