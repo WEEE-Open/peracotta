@@ -97,22 +97,25 @@ def test_connector():
         "usb-ports-n": 3,
         "ps2-ports-n": 2,
         "vga-ports-n": 1,
+        "hdmi-ports-n": 1,
+        "mini-jack-ports-n": 1,
         "serial-ports-n": 1,
         "sn": "To be filled by O.E.M",
-        "notes": "Unknown connector: None / Mini Centronics Type-14 (J2A1 / TV Out)\n"
-        "Unknown connector: Other / None (J9A1 - TPM HDR / Not Specified)\n"
-        "Unknown connector: Other / None (J9C1 - PCIE DOCKING CONN / Not Specified)\n"
-        "Unknown connector: Other / None (J6C2 - EXT HDMI / Not Specified)\n"
-        "Unknown connector: Other / None (J1D1 - ITP / Not Specified)\n"
+        "notes":
+        # "Unknown connector: None / Mini Centronics Type-14 (J2A1 / TV Out)\n"
+        # "Unknown connector: Other / None (J9A1 - TPM HDR / Not Specified)\n"
+        # "Unknown connector: Other / None (J9C1 - PCIE DOCKING CONN / Not Specified)\n"
+        # "Unknown connector: Other / None (J6C2 - EXT HDMI / Not Specified)\n"
+        # "Unknown connector: Other / None (J1D1 - ITP / Not Specified)\n"
         "Unknown connector: Other / None (J9E2 - MDC INTPSR / Not Specified)\n"
         "Unknown connector: Other / None (J9E4 - MDC INTPSR / Not Specified)\n"
-        "Unknown connector: Other / None (J9E3 - LPC HOT DOCKING / Not Specified)\n"
+        # "Unknown connector: Other / None (J9E3 - LPC HOT DOCKING / Not Specified)\n"
         "Unknown connector: Other / None (J9E1 - SCAN MATRIX / Not Specified)\n"
         "Unknown connector: Other / None (J9G1 - LPC SIDE BAND / Not Specified)\n"
         "Unknown connector: Other / None (J8F1 - UNIFIED / Not Specified)\n"
-        "Unknown connector: Other / None (J6F1 - LVDS / Not Specified)\n"
-        "Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)\n"
-        "Unknown connector: Other / None (J1G6 - AC JACK / Not Specified)",
+        # "Unknown connector: Other / None (J6F1 - LVDS / Not Specified)\n"
+        "Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)"
+        # "Unknown connector: Other / None (J1G6 - AC JACK / Not Specified)",
     }
     output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
 
