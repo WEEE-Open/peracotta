@@ -107,14 +107,13 @@ def test_connector():
         # "Unknown connector: Other / None (J9C1 - PCIE DOCKING CONN / Not Specified)\n"
         # "Unknown connector: Other / None (J6C2 - EXT HDMI / Not Specified)\n"
         # "Unknown connector: Other / None (J1D1 - ITP / Not Specified)\n"
-        "Unknown connector: Other / None (J9E2 - MDC INTPSR / Not Specified)\n"
-        "Unknown connector: Other / None (J9E4 - MDC INTPSR / Not Specified)\n"
+        "Unknown connector: Other / None (J9E2 - MDC INTPSR / Not Specified)\n" "Unknown connector: Other / None (J9E4 - MDC INTPSR / Not Specified)\n"
         # "Unknown connector: Other / None (J9E3 - LPC HOT DOCKING / Not Specified)\n"
         "Unknown connector: Other / None (J9E1 - SCAN MATRIX / Not Specified)\n"
         "Unknown connector: Other / None (J9G1 - LPC SIDE BAND / Not Specified)\n"
         "Unknown connector: Other / None (J8F1 - UNIFIED / Not Specified)\n"
         # "Unknown connector: Other / None (J6F1 - LVDS / Not Specified)\n"
-        "Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)"
+        "Unknown connector: Other / None (J2G1 - GFX VID / Not Specified)",
         # "Unknown connector: Other / None (J1G6 - AC JACK / Not Specified)",
     }
     output = read_dmidecode._get_connectors(read_file(filedir, "connector.txt"), baseboard)
