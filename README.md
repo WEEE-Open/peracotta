@@ -70,6 +70,7 @@ Add this to your .env:
 ```bash
 export GENERATE_FILES_USE_SUDO=0
 ```
+
 #### Manually
 
 Run `sudo generate_files.sh /path/to/output/directory` then load the raw files in peracruda or peracotta. This is probably the safest way, considering that generate_files.sh is pretty short so you can inspect it before running. Everything else will work as usual and won't require root permissions.
@@ -84,6 +85,7 @@ This will allow you to run tests: `pytest -vv tests`
 Some markers are also available, e.g. you can run `pytest -m gui` to just test the gui, or `pytest -m 'not gui'` to test everything else. See `pytest.ini` for a list of markers.
 
 If requirements change:
+
 - install the correct version of the requirements (e.g. a new library or a new version of an already installed library)
 - with the virtual environment activated, run `pip freeze > requirements-dev.txt` and *manually* edit the file (add the `-r requirements.txt` line and remove non-dev requirements)
 
@@ -151,3 +153,10 @@ This directory contains some images and other files used by the GUI.<br>
 Fan icons created by <a href="https://www.flaticon.com/free-icons/fan" title="fan icons">juicy_fish</a> - Flaticon
 <a href="https://www.flaticon.com/free-icons/more" title="more icons">More icons created by Kirill Kazachek - Flaticon</a><br>
 Down arrow icons created by <a href="https://www.flaticon.com/free-icons/down-arrow" title="down arrow icons">Freepik - Flaticon</a>
+
+## Improving Peracotta
+
+### Publishing new versions
+
+The github workflows are already setup to automatically publish to PyPi each time a new tag is created; feel free to use `master` as a development branch.
+When you're ready, bump the version number in `constants.py` and then create a new tag + release named `v{VERSION}`.
